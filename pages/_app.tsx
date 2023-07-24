@@ -26,8 +26,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "RainbowKit App",
-  projectId: "YOUR_PROJECT_ID",
+  appName: 'Last Man Standing',
+  projectId: '0ee8fb279a23a5ed56af0daddcd32028',
   chains,
 });
 
