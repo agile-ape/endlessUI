@@ -2,6 +2,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { Button } from '../@/components/ui/button';
+
 
 const Home: NextPage = () => {
   return (
@@ -23,7 +25,11 @@ const Home: NextPage = () => {
           <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        <p className={styles.description}>
+        <Button variant='outline'>
+          Hello
+        </Button>
+
+        <p className='text-red-600'>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
