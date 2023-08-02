@@ -1,17 +1,12 @@
-import "../styles/globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import type { AppProps } from "next/app";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  arbitrum,
-  goerli,
-  mainnet,
-  optimism,
-  polygon,
-  zora,
-} from "wagmi/chains";
-import { publicProvider } from "wagmi/providers/public";
+import '../styles/globals.css';
+import '@rainbow-me/rainbowkit/styles.css';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import type { AppProps } from 'next/app';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { arbitrum, goerli, mainnet, optimism, polygon, zora } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
+import Header from '../@/components/Header';
+import { VT323 } from 'next/font/google';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -20,9 +15,9 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     optimism,
     arbitrum,
     zora,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : []),
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
   ],
-  [publicProvider()]
+  [publicProvider()],
 );
 
 const { connectors } = getDefaultWallets({
@@ -38,11 +33,19 @@ const wagmiConfig = createConfig({
   webSocketPublicClient,
 });
 
+const font = VT323({
+  weight: ['400'],
+  subsets: ['latin-ext'],
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <main className={font.className}>
+          <Header />
+          <Component {...pageProps} />
+        </main>
       </RainbowKitProvider>
     </WagmiConfig>
   );
