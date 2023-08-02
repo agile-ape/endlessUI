@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         </h1>
 
         <Button variant='outline'>
-          Hello
+          Hello HEHE
         </Button>
 
         <p className='text-red-600'>
