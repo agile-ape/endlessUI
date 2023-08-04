@@ -1,17 +1,40 @@
 import React from 'react'
 import Image from 'next/image'
-const TicketCard = () => {
+
+interface TicketCardType {
+  linearGradientCard: string;
+  borderColor: string;
+  isFinished: boolean;
+  ticketLastSeen: number;
+  ticketNumber: number;
+  ticketValue: number;
+  ticketBullets: number;
+  ticketKillCount: number
+}
+
+const TicketCard: React.FC<TicketCardType> = ({ 
+  linearGradientCard, borderColor, isFinished, ticketLastSeen, ticketNumber, ticketValue, ticketBullets, ticketKillCount
+}) => {
   return (
     <div className="">
-      <div className="p-[3px] rounded-2xl w-[139.5px]" style={{background: "linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)"}}>
+      <div className="p-[2px] rounded-lg w-[139.5px]" style={{background: borderColor}}>
         <div
-          className=" rounded-2xl text-white flex flex-col gap-5 py-[1rem] px-[0.5rem]" 
-          style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
+          className=" rounded-lg text-white flex flex-col gap-4 py-[1rem] px-[0.5rem]" 
+          style={{background: linearGradientCard}}
         >
-          <p className="text-center text-[24px]">#03</p>
-          <div className="text-center flex flex-col leading-10">
-            <h2 className="text-[40px]">0.057</h2>
-            <p className="text-[1rem]">last seen: 04</p>
+          <p className="text-center text-[24px]">#0{ticketNumber}</p>
+          <div className="text-center flex flex-col mb-3">
+            <div className={`flex justify-center ${isFinished && "flex-row-reverse"} items-center gap-1`}>
+              <h2 className="text-[32px]">{ticketValue}</h2>
+              <Image 
+                priority
+                src={`/logo/${isFinished ? "medal" : "cryptocurrency-color_eth"}.svg`}
+                height={24}
+                width={24}
+                alt="skull"
+              />
+            </div>
+            <p className="text-[1rem]">last seen: 0{ticketLastSeen}</p>
           </div>
           <div className="flex justify-between">
             <div className="flex gap-1">
@@ -22,7 +45,7 @@ const TicketCard = () => {
                 width={24}
                 alt="skull"
               />
-              <p className="text-white">10</p>
+              <p className="text-white">{ticketBullets}</p>
             </div>
             <div className="flex gap-1">
               <Image 
@@ -32,7 +55,7 @@ const TicketCard = () => {
                 width={24}
                 alt="crosshair"
               />
-              <p className="text-white">-</p>
+              <p className="text-white">{ticketKillCount}</p>
             </div>
           </div>
         </div>
