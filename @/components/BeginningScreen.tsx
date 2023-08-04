@@ -8,6 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import Ticket from './ui/ticket';
+import TicketList from './ui/TicketList';
 
 export default function BeginningScreen() {
   return (
@@ -22,6 +24,7 @@ export default function BeginningScreen() {
         <div className="flex justify-center">
           <CustomConnectButton />
         </div>
+        <Ticket />
         <div className="text-center">
           <div className="flex justify-center items-center">
             <p className="text-[20px]">Time Left:</p>
@@ -62,6 +65,7 @@ export default function BeginningScreen() {
             />
           </div>
         </div>
+        <TicketList />
       </div>
     </div>
   );
