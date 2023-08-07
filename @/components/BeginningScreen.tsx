@@ -10,6 +10,11 @@ import {
 } from "@/components/ui/tooltip"
 import Ticket from './ui/ticket';
 import TicketList from './ui/TicketList';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default function BeginningScreen() {
   return (
@@ -28,14 +33,10 @@ export default function BeginningScreen() {
         <div className="text-center">
           <div className="flex justify-center items-center">
             <p className="text-[20px]">Time Left:</p>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></TooltipTrigger>
-                <TooltipContent>
-                  <p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Popover>
+              <PopoverTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></PopoverTrigger>
+              <PopoverContent><p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p></PopoverContent>
+            </Popover>
             
           </div>
           <h2 className="text-[40px]">04:10</h2>
@@ -44,14 +45,10 @@ export default function BeginningScreen() {
         <div className="bg-[#F6F6F6] border border-[#EBEBEB] text-center w-[220px] mx-auto rounded-lg p-2">
           <div className="flex justify-center items-center gap-1">
             <p className="font-extralight">Next Claim</p>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></TooltipTrigger>
-                <TooltipContent>
-                  <p><strong>Lorem Ipsum.</strong> dolor sit jamet.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Popover>
+              <PopoverTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></PopoverTrigger>
+              <PopoverContent><p><strong>Lorem Ipsum.</strong> dolor sit jamet.</p></PopoverContent>
+            </Popover>
           </div>
           
           <div className="flex justify-center gap-2">
