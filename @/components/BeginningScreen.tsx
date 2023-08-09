@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import Ticket from './ui/ticket';
+import Ticket from './ui/Ticket';
 import TicketList from './ui/TicketList';
 import {
   Popover,

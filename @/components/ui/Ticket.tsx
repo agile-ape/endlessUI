@@ -2,6 +2,7 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Image from 'next/image'
 import { Button } from './button'
+import GameTextVariant from './GameTextVariant'
 
 const Ticket = () => {
   return (
@@ -67,7 +68,31 @@ const Ticket = () => {
           <Button className="bg-[#31197B] text-[1rem] rounded-xl">Buy Next Ticket</Button>
         </TabsContent>
 
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="password" className="flex flex-col gap-3">
+          <div
+            className="sm:w-[400px] w-[95%] rounded-2xl text-white flex flex-col border border-[#999999]" 
+            // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
+          >
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="triggered_change" number={13} text='the phase change from day to dusk' timestamp="4 minutes" isLastIndex={false} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="new_entry" number={14} text='for 130ETH. Prize pool is now 100ETH.' timestamp="4 minutes" isLastIndex={false} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="checked_in" number={15} text='Ticket value: 10.000ETH' timestamp="4 minutes" isLastIndex={false} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="exit" number={11} text='at Rank 10 with 1.5ETH (0.5 from pool)' timestamp="4 minutes" isLastIndex={false} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="safe" number={14} text='(attacker: 12)' timestamp="4 minutes" isLastIndex={false} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <GameTextVariant variant="killed" number={13} text='(attacker: 12)' timestamp="4 minutes" isLastIndex={true} />
+            </div>
+          </div>
+        </TabsContent>
       </div>
       
     </Tabs>
