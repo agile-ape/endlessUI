@@ -9,8 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 // import * as Popover from '@radix-ui/react-popover';
-import { useTheme } from "next-themes"
-
+import { DarkModeSwitcher } from './ui/DarkModeSwitcher';
 
 import Ticket from './ui/Ticket';
 import TicketList from './ui/TicketList';
@@ -21,13 +20,11 @@ import {
 } from "@/components/ui/popover"
 
 export default function BeginningScreen() {
-  const { setTheme } = useTheme()
 
   return (
     <div className="max-w-lg mx-auto my-[26px]">
-      <div className="flex justify-around">
-        <button onClick={() => setTheme("light")}>light</button>
-        <button onClick={() => setTheme("dark")}>dark</button>
+      <div className="flex justify-end">
+        <DarkModeSwitcher />
       </div>
       <div className="text-center">
         <p className="text-lg">Round 01</p>
