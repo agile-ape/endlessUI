@@ -7,6 +7,7 @@ import { arbitrum, goerli, mainnet, optimism, polygon, zora } from 'wagmi/chains
 import { publicProvider } from 'wagmi/providers/public';
 import Header from '../@/components/Header';
 import { VT323 } from 'next/font/google';
+import { ThemeProvider } from "@/components/theme-provider"
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -42,10 +43,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <main className={font.className}>
-          <Header />
-          <Component {...pageProps} />
-        </main>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <main className={font.className}>
+            <Header />
+            <Component {...pageProps} />
+          </main>
+        </ThemeProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

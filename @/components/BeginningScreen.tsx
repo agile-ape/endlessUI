@@ -8,6 +8,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+// import * as Popover from '@radix-ui/react-popover';
+import { useTheme } from "next-themes"
+
+
 import Ticket from './ui/Ticket';
 import TicketList from './ui/TicketList';
 import {
@@ -17,8 +21,14 @@ import {
 } from "@/components/ui/popover"
 
 export default function BeginningScreen() {
+  const { setTheme } = useTheme()
+
   return (
     <div className="max-w-lg mx-auto my-[26px]">
+      <div className="flex justify-around">
+        <button onClick={() => setTheme("light")}>light</button>
+        <button onClick={() => setTheme("dark")}>dark</button>
+      </div>
       <div className="text-center">
         <p className="text-lg">Round 01</p>
         <p className="text-lg">Beginnings</p>
@@ -33,9 +43,14 @@ export default function BeginningScreen() {
         <div className="text-center">
           <div className="flex justify-center items-center">
             <p className="text-[20px]">Time Left:</p>
+            {/* <Popover.Root>
+              <Popover.Trigger asChild><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></Popover.Trigger>
+              <Popover.Content className="PopoverContent" sideOffset={5}><p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p></Popover.Content>
+            </Popover.Root> */}
+
             <Popover>
               <PopoverTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></PopoverTrigger>
-              <PopoverContent><p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p></PopoverContent>
+              <PopoverContent asChild className="PopoverContent" sideOffset={5}><p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p></PopoverContent>
             </Popover>
             
           </div>
@@ -45,10 +60,10 @@ export default function BeginningScreen() {
         <div className="bg-[#F6F6F6] border border-[#EBEBEB] text-center w-[220px] mx-auto rounded-lg p-2">
           <div className="flex justify-center items-center gap-1">
             <p className="font-extralight">Next Claim</p>
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></PopoverTrigger>
               <PopoverContent><p><strong>Lorem Ipsum.</strong> dolor sit jamet.</p></PopoverContent>
-            </Popover>
+            </Popover> */}
           </div>
           
           <div className="flex justify-center gap-2">

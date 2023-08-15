@@ -6,7 +6,7 @@ import GameTextVariant from './GameTextVariant'
 
 const Ticket = () => {
   return (
-    <Tabs defaultValue="account" className="w-[70%] mx-auto">
+    <Tabs defaultValue="account" className="w-[85%] mx-auto">
       <div className="flex justify-center">
         <TabsList className="rounded-2xl w-[190px] h-[41px] mx-auto">
           <TabsTrigger value="account" className="rounded-2xl w-[48%] p-1 text-[1rem]">Ticket</TabsTrigger>
@@ -70,7 +70,7 @@ const Ticket = () => {
 
         <TabsContent value="password" className="flex flex-col gap-3">
           <div
-            className="sm:w-[400px] w-[95%] rounded-2xl text-white flex flex-col border border-[#999999]" 
+            className="md:w-[400px] w-[100%] rounded-2xl text-white flex flex-col border border-[#999999]" 
             // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
           >
             <div className="flex flex-col gap-2">

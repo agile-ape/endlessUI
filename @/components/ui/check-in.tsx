@@ -29,6 +29,7 @@ const CheckIn: React.FC = () => {
             }}
             shouldAutoFocus={true}
             placeholder="3333"
+            className="dark:text-white text-black"
           />
         </div>
         <Button>Submit</Button>

@@ -49,7 +49,7 @@ const textVariant = (variant: string) => {
 
 const GameTextVariant: React.FC<GameTextVariantType> = ({ variant, timestamp, text, number, isLastIndex }) => {
   return (
-    <div className={`flex justify-between items-center text-black px-4 ${!isLastIndex && "border-b-[1px]"} py-2`}>
+    <div className={`flex justify-between gap-2 w-[100%] items-center text-black dark:text-white px-3 ${!isLastIndex && "border-b-[1px]"} py-2`}>
       <div className="flex gap-2 items-center">
         <div 
           className="text-[18px]"
@@ -66,7 +66,9 @@ const GameTextVariant: React.FC<GameTextVariantType> = ({ variant, timestamp, te
 
           // }}
         >{number}</div>
-        <p className="text-[14px]">{textVariant(variant)} {text}</p>
+        <div className="md:w-[250px] w-[195px]">
+          <p className="text-[14px] dark:text-white light:text-black">{textVariant(variant)} {text}</p>
+        </div>
       </div>
       <p className="text-[12px] text-[#999]">{timestamp} ago</p>
     </div>
