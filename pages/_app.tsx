@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className={font.className}>
+          <main className={`${font.className} dark:bg-slate-800`}>
             <Header />
             <Component {...pageProps} />
           </main>
