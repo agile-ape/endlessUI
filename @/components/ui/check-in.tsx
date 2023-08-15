@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import Image from 'next/image';
 import { Button } from './button';
+import { useTheme } from 'next-themes';
 
 const CheckIn: React.FC = () => {
   const [otpInput, setOtpInput] = useState<string>();
-
+  const { theme } = useTheme()
+  console.log({theme})
   return (
     <div className="w-[327px] border-[3px] border-[#084E0B] rounded-xl bg-[#209902] p-[1rem] flex flex-col gap-[1rem] mx-auto">
       <div className="flex justify-between items-center">
@@ -22,10 +24,11 @@ const CheckIn: React.FC = () => {
             inputStyle={{
               width: '80%',
               height: '70px',
-              color: 'black',
+              color: theme === "light" ? 'black' : 'white',
               borderRadius: '8px',
               margin: '0 auto',
               fontSize: '48px',
+
             }}
             shouldAutoFocus={true}
             placeholder="3333"
