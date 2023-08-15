@@ -22,7 +22,7 @@ import {
 export default function BeginningScreen() {
 
   return (
-    <div className="max-w-lg mx-auto my-[26px]">
+    <div className="max-w-lg mx-auto my-[26px] pb-[1rem]">
       <div className="flex justify-end">
         <DarkModeSwitcher />
       </div>
@@ -54,7 +54,7 @@ export default function BeginningScreen() {
           <h2 className="text-[40px]">04:10</h2>
         </div>
         <CheckIn />
-        <div className="bg-[#F6F6F6] border border-[#EBEBEB] text-center w-[220px] mx-auto rounded-lg p-2">
+        <div className="bg-[#F6F6F6] dark:bg-[#1C1C1C] border border-[#EBEBEB] dark:border-[#444242] text-center w-[220px] mx-auto rounded-lg p-2">
           <div className="flex justify-center items-center gap-1">
             <p className="font-extralight">Next Claim</p>
             {/* <Popover>

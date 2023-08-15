@@ -65,7 +65,7 @@ const Ticket = () => {
               </div>
             </div>
           </div>
-          <Button className="bg-[#31197B] text-[1rem] rounded-xl">Buy Next Ticket</Button>
+          <Button className="bg-[#31197B] text-[1rem] rounded-xl dark:text-white">Buy Next Ticket</Button>
         </TabsContent>
 
         <TabsContent value="password" className="flex flex-col gap-3">

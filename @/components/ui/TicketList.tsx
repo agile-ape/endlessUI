@@ -5,9 +5,9 @@ import { Button } from './button'
 const TicketList = () => {
   const [ticketState, setTicketState] = useState<string>("aroundMe")
   return (
-    <div>
+    <div className="">
       {/* collapsible */}
-      <details className="w-[350px] mx-auto border-[4px] border-[#EBEBEB] bg-[#F6F6F6] shadow rounded-2xl group text-black">
+      <details className="w-[350px] mx-auto border-[4px] border-[#EBEBEB] bg-[#F6F6F6] dark:bg-[#1C1C1C] dark:border-[#444242] shadow rounded-2xl group text-black dark:text-white">
         <summary className="list-none flex flex-wrap items-center cursor-pointer
         focus-visible:outline-none focus-visible:ring 
         rounded group-open:rounded-b-none group-open:z-[1] relative 
@@ -26,18 +26,18 @@ const TicketList = () => {
         <div className="px-4 pb-4 pt-2">
           <p>Tickets At The Start: 132</p>
           <p>Tickets Remaining: 23</p>
-          <div className="flex gap-3 mt-3">
+          <div className="flex gap-3 mt-3 ">
             <Button 
               onClick={() => setTicketState("aroundMe")} 
-              className={`${ticketState === "aroundMe" ? "bg-black" : "bg-[#777777]"}`}
+              className={`${ticketState === "aroundMe" ? "bg-black text-white" : "bg-[#777777]"} `}
             >Around Me</Button>
             <Button 
               onClick={() => setTicketState("mostValue")} 
-              className={`${ticketState === "mostValue" ? "bg-black" : "bg-[#777777]"}`}
+              className={`${ticketState === "mostValue" ? "bg-black text-white" : "bg-[#777777]"}`}
             >Most Value</Button>
             <Button 
               onClick={() => setTicketState("inPlay")} 
-              className={`${ticketState === "inPlay" ? "bg-black" : "bg-[#777777]"}`}
+              className={`${ticketState === "inPlay" ? "bg-black text-white" : "bg-[#777777]"}`}
             >In Play</Button>
           </div>
           <div className="grid grid-cols-2 gap-x-1 gap-y-5 items-center place-items-center">
