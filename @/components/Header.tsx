@@ -1,46 +1,59 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { CaretDownIcon, TriangleDownIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
+import CustomConnectButton from '@/components/ui/connect-button';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useState, useEffect } from 'react';
+import Menu from './Menu';
+import SideMenu from './SideMenu';
 
 function Header() {
-  return (
-    <nav className="max-w-lg mx-auto pt-4 flex justify-center gap-4">
-      <DropdownMenu>
-        <DropdownMenuTrigger className="bg-[#585858] py-1 px-4 rounded text-white inline-flex items-center gap-3 uppercase">
-          How To Play
-          <TriangleDownIcon className="w-[20px] h-[20px]" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+  const [windowWidth, setWindowWidth] = useState(0);
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="bg-[#585858] py-1 px-4 rounded text-white inline-flex items-center gap-3 uppercase">
-          Links
-          <TriangleDownIcon className="w-[20px] h-[20px]" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </nav>
+  useEffect(() => {
+    if (typeof window != 'undefined') {
+      setWindowWidth(window.innerWidth);
+    }
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return (
+    <div className="grid grid-cols-3 gap-2 mx-32 my-3">
+      <div className="flex justify-start">
+        <Image
+          priority
+          src="/logo/game-logo.png"
+          height={35}
+          width={35}
+          alt="ethereum logo"
+          className="min-w-35 min-h-35"
+        />
+      </div>
+
+      <div className="flex justify-center">{windowWidth > 1200 ? <Menu /> : <SideMenu />}</div>
+
+      <div className="flex justify-end">
+        {/* <CustomConnectButton /> */}
+        <ConnectButton
+          chainStatus={{
+            smallScreen: 'none',
+            largeScreen: 'icon',
+          }}
+          accountStatus={{
+            smallScreen: 'avatar',
+            largeScreen: 'full',
+          }}
+          showBalance={false}
+        />
+      </div>
+    </div>
   );
 }
 

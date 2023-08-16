@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { arbitrum, goerli, mainnet, optimism, polygon, zora } from 'wagmi/chains';
@@ -41,7 +41,18 @@ const font = VT323({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider
+        theme={lightTheme({
+          accentColor: 'linear-gradient(to right, #7dd3fc, #6366f1)',
+          accentColorForeground: 'white',
+          borderRadius: 'large',
+          fontStack: 'system',
+          overlayBlur: 'small',
+        })}
+        coolMode
+        modalSize="compact"
+        chains={chains}
+      >
         <main className={font.className}>
           <Header />
           <Component {...pageProps} />

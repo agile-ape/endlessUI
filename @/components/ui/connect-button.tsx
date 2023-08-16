@@ -1,4 +1,7 @@
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Image from 'next/image';
+
 export default function CustomConnectButton() {
   return (
     <ConnectButton.Custom>
@@ -36,7 +39,14 @@ export default function CustomConnectButton() {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="bg-[#31197B] py-[4px] px-[24px] rounded text-white uppercase text-xl"
+                    className={`h-10 w-max rounded-xl
+                    bg-gradient-to-r from-sky-300 to-indigo-500
+                    py-[4px] px-[24px]
+                    text-sm font-semibold text-white uppercase
+                    transition-colors
+                    hover:bg-accent hover:text-indigo-900
+                    focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
+                    `}
                   >
                     Connect Wallet
                   </button>
@@ -44,43 +54,75 @@ export default function CustomConnectButton() {
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
+                  <button
+                    onClick={openChainModal}
+                    type="button"
+                    className={`h-10 w-max rounded-xl
+                    bg-gradient-to-r from-sky-300 to-indigo-500
+                    py-[4px] px-[24px]
+                    text-sm font-semibold text-rose-900 uppercase
+                    transition-colors
+                    hover:bg-accent hover:text-indigo-900
+                    focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
+                    `}
+                  >
+                    <Image
+                      priority
+                      src="/logo/game-logo.png"
+                      height={25}
+                      width={25}
+                      alt="ethereum logo"
+                      className="min-w-25 min-h-25 inline mr-1"
+                    />
                     Wrong network
                   </button>
                 );
               }
+
+              /* if chain got icon, show icon. if not, just show chain name */
+              /* conditional rendering block */
+
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button
-                    onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    type="button"
-                  >
+                <div
+                  className="
+                  h-10 w-max flex gap-x-2 items-center text-sm
+                  "
+                >
+                  <div className="flex gap-x-2">
                     {chain.hasIcon && (
                       <div
                         style={{
                           background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
+                          width: 25,
+                          height: 25,
                           borderRadius: 999,
                           overflow: 'hidden',
-                          marginRight: 4,
                         }}
                       >
                         {chain.iconUrl && (
                           <img
                             alt={chain.name ?? 'Chain icon'}
                             src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
+                            style={{ width: 25, height: 25 }}
                           />
                         )}
                       </div>
                     )}
-                    {chain.name}
-                  </button>
-                  <button onClick={openAccountModal} type="button">
+
+                    {/* {chain.name} */}
+                  </div>
+
+                  <button
+                    onClick={openAccountModal}
+                    type="button"
+                    className="
+                    rounded-full bg-slate-300 p-2 text-sm
+                    bg-gradient-to-r from-sky-300 to-indigo-500
+                    text-white
+                    "
+                  >
                     {account.displayName}
-                    {account.displayBalance ? ` (${account.displayBalance})` : ''}
+                    {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </button>
                 </div>
               );

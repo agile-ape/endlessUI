@@ -27,7 +27,7 @@ const CheckIn: React.FC = () => {
               margin: '0 auto',
               fontSize: '48px',
             }}
-            shouldAutoFocus={true}
+            shouldAutoFocus={false}
             placeholder="3333"
           />
         </div>
