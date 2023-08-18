@@ -1,31 +1,18 @@
 import Image from 'next/image';
 import CustomConnectButton from './ui/connect-button';
 import CheckIn from './ui/check-in';
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 // import * as Popover from '@radix-ui/react-popover';
-import { DarkModeSwitcher } from './ui/DarkModeSwitcher';
 
 import Ticket from './ui/Ticket';
 import TicketList from './ui/TicketList';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export default function BeginningScreen() {
-
   return (
     <div className="max-w-lg mx-auto my-[26px] pb-[1rem]">
-      <div className="flex justify-end">
-        <DarkModeSwitcher />
-      </div>
+      <div className="flex justify-end"></div>
       <div className="text-center">
         <p className="text-lg">Round 01</p>
         <p className="text-lg">Beginnings</p>
@@ -46,10 +33,16 @@ export default function BeginningScreen() {
             </Popover.Root> */}
 
             <Popover>
-              <PopoverTrigger><QuestionMarkCircledIcon className="w-[18px] h-[18px]"/></PopoverTrigger>
-              <PopoverContent asChild className="PopoverContent" sideOffset={5}><p><strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger the phase change.</p></PopoverContent>
+              <PopoverTrigger>
+                <QuestionMarkCircledIcon className="w-[18px] h-[18px]" />
+              </PopoverTrigger>
+              <PopoverContent asChild className="PopoverContent" sideOffset={5}>
+                <p>
+                  <strong>Time left for this phase.</strong> Once timer hits zero, anyone can
+                  trigger the phase change.
+                </p>
+              </PopoverContent>
             </Popover>
-            
           </div>
           <h2 className="text-[40px]">04:10</h2>
         </div>
@@ -62,7 +55,7 @@ export default function BeginningScreen() {
               <PopoverContent><p><strong>Lorem Ipsum.</strong> dolor sit jamet.</p></PopoverContent>
             </Popover> */}
           </div>
-          
+
           <div className="flex justify-center gap-2">
             <p className="text-[36px]">0.500</p>
             <Image

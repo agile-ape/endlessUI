@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { CaretDownIcon, TriangleDownIcon } from '@radix-ui/react-icons';
+import DarkModeSwitcher from './ui/DarkModeSwitcher';
 
 function Header() {
   return (
@@ -40,6 +41,8 @@ function Header() {
           <DropdownMenuItem>Subscription</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <DarkModeSwitcher />
     </nav>
   );
 }
