@@ -1,17 +1,21 @@
-import Image from 'next/image';
-import CustomConnectButton from './ui/connect-button';
-import CheckIn from './ui/check-in';
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import Image from 'next/image'
+import CheckIn from './ui/check-in'
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 // import * as Popover from '@radix-ui/react-popover';
 
-import Ticket from './ui/Ticket';
-import TicketList from './ui/TicketList';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import Ticket from './ui/Ticket'
+import TicketList from './ui/TicketList'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useAccount } from 'wagmi'
+import dynamic from 'next/dynamic'
+
+const CustomConnectButton = dynamic(() => import('./ui/connect-button'), { ssr: false })
 
 export default function BeginningScreen() {
+  const { isConnected } = useAccount()
   return (
-    <div className="max-w-lg mx-auto my-[26px] pb-[1rem]">
+    <div className="container mx-auto my-[26px] pb-[1rem]">
       <div className="flex justify-end"></div>
       <div className="text-center">
         <p className="text-lg">Round 01</p>
@@ -20,9 +24,7 @@ export default function BeginningScreen() {
       </div>
 
       <div className="mx-auto flex flex-col gap-7 mt-20">
-        <div className="flex justify-center">
-          <CustomConnectButton />
-        </div>
+        <div className="flex justify-center">{!isConnected ? <CustomConnectButton /> : null}</div>
         <Ticket />
         <div className="text-center">
           <div className="flex justify-center items-center">
@@ -70,5 +72,5 @@ export default function BeginningScreen() {
         <TicketList />
       </div>
     </div>
-  );
+  )
 }

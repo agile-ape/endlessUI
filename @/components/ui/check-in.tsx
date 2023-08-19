@@ -30,7 +30,7 @@ const CheckIn: React.FC = () => {
               fontSize: '48px',
 
             }}
-            shouldAutoFocus={true}
+            shouldAutoFocus={false}
             placeholder="3333"
             className="dark:text-white text-black"
           />

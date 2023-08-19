@@ -1,50 +1,37 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { CaretDownIcon, TriangleDownIcon } from '@radix-ui/react-icons';
-import DarkModeSwitcher from './ui/DarkModeSwitcher';
+import Image from 'next/image'
+import CustomConnectButton from '@/components/ui/connect-button'
+import { useState, useEffect } from 'react'
+import Menu from './Menu'
+import SideMenu from './SideMenu'
+import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 function Header() {
   return (
-    <nav className="max-w-lg mx-auto pt-4 flex justify-center gap-4">
-      <DropdownMenu>
-        <DropdownMenuTrigger className="bg-[#585858] py-1 px-4 rounded text-white inline-flex items-center gap-3 uppercase">
-          How To Play
-          <TriangleDownIcon className="w-[20px] h-[20px]" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="flex items-center justify-between container mx-auto gap-8 pt-4">
+      <div className="shrink-0">
+        <Image
+          src={`/logo/game-logo.png`}
+          width={35}
+          height={35}
+          alt="Last Man Standing Logo"
+          className="max-w-full"
+        />
+      </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="bg-[#585858] py-1 px-4 rounded text-white inline-flex items-center gap-3 uppercase">
-          Links
-          <TriangleDownIcon className="w-[20px] h-[20px]" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="hidden md:block">
+        <Menu />
+      </div>
 
-      <DarkModeSwitcher />
-    </nav>
-  );
+      <div className="md:hidden order-10">
+        <SideMenu />
+      </div>
+
+      <div className="flex items-center gap-2">
+        <DarkModeSwitcher />
+        <CustomConnectButton />
+      </div>
+    </div>
+  )
 }
 
-export default Header;
+export default Header
