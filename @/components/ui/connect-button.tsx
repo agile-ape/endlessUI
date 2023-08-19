@@ -1,6 +1,6 @@
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import Image from 'next/image';
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import Image from 'next/image'
 
 export default function CustomConnectButton() {
   return (
@@ -16,12 +16,12 @@ export default function CustomConnectButton() {
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== 'loading';
+        const ready = mounted && authenticationStatus !== 'loading'
         const connected =
           ready &&
           account &&
           chain &&
-          (!authenticationStatus || authenticationStatus === 'authenticated');
+          (!authenticationStatus || authenticationStatus === 'authenticated')
         return (
           <div
             {...(!ready && {
@@ -50,7 +50,7 @@ export default function CustomConnectButton() {
                   >
                     Connect Wallet
                   </button>
-                );
+                )
               }
               if (chain.unsupported) {
                 return (
@@ -76,7 +76,7 @@ export default function CustomConnectButton() {
                     />
                     Wrong network
                   </button>
-                );
+                )
               }
 
               /* if chain got icon, show icon. if not, just show chain name */
@@ -91,6 +91,9 @@ export default function CustomConnectButton() {
                   <div className="flex gap-x-2">
                     {chain.hasIcon && (
                       <div
+                        onClick={openChainModal}
+                        role="presentation"
+                        className="cursor-pointer"
                         style={{
                           background: chain.iconBackground,
                           width: 25,
@@ -116,20 +119,20 @@ export default function CustomConnectButton() {
                     onClick={openAccountModal}
                     type="button"
                     className="
-                    rounded-full bg-slate-300 p-2 text-sm
+                    rounded-full bg-slate-300 text-base
                     bg-gradient-to-r from-sky-300 to-indigo-500
-                    text-white
+                    text-white px-3 py-1
                     "
                   >
                     {account.displayName}
                     {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </button>
                 </div>
-              );
+              )
             })()}
           </div>
-        );
+        )
       }}
     </ConnectButton.Custom>
-  );
+  )
 }

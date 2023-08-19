@@ -1,20 +1,20 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import * as React from 'react'
+import { Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import dynamic from 'next/dynamic';
+} from '@/components/ui/dropdown-menu'
+import dynamic from 'next/dynamic'
 
 function DarkModeSwitcher() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
 
   return (
     <Button
@@ -34,9 +34,9 @@ function DarkModeSwitcher() {
         </>
       )}
     </Button>
-  );
+  )
 }
 
 export default dynamic(() => Promise.resolve(DarkModeSwitcher), {
   ssr: false,
-});
+})

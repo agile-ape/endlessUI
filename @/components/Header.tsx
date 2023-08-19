@@ -1,60 +1,37 @@
-import Image from 'next/image';
-import CustomConnectButton from '@/components/ui/connect-button';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useState, useEffect } from 'react';
-import Menu from './Menu';
-import SideMenu from './SideMenu';
+import Image from 'next/image'
+import CustomConnectButton from '@/components/ui/connect-button'
+import { useState, useEffect } from 'react'
+import Menu from './Menu'
+import SideMenu from './SideMenu'
+import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 function Header() {
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    if (typeof window != 'undefined') {
-      setWindowWidth(window.innerWidth);
-    }
-
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
-    <div className="grid grid-cols-3 gap-2 mx-32 my-3">
-      <div className="flex xl:justify-start md:justify-end justify-center order-3 xl:order-1">
+    <div className="flex items-center justify-between container mx-auto gap-8 pt-4">
+      <div className="shrink-0">
         <Image
-          priority
-          src="/logo/game-logo.png"
-          height={35}
+          src={`/logo/game-logo.png`}
           width={35}
-          alt="ethereum logo"
-          className="min-w-35 min-h-35"
+          height={35}
+          alt="Last Man Standing Logo"
+          className="max-w-full"
         />
       </div>
 
-      <div className="flex xl:justify-center justify-start order-1 xl:order-2">{windowWidth > 1200 ? <Menu /> : <SideMenu />}</div>
+      <div className="hidden md:block">
+        <Menu />
+      </div>
 
-      <div className="flex justify-end xl:order-last order-2">
-        {/* <CustomConnectButton /> */}
-        <ConnectButton
-          chainStatus={{
-            smallScreen: 'none',
-            largeScreen: 'icon',
-          }}
-          accountStatus={{
-            smallScreen: 'avatar',
-            largeScreen: 'full',
-          }}
-          showBalance={false}
-        />
+      <div className="md:hidden order-10">
+        <SideMenu />
+      </div>
+
+      <div className="flex items-center gap-2">
+        <DarkModeSwitcher />
+        <CustomConnectButton />
       </div>
     </div>
-  );
+  )
 }
 
-export default Header;
+export default Header

@@ -8,14 +8,14 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
   navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
-import { ExternalLinkIcon } from '@radix-ui/react-icons';
-import DarkModeSwitcher from './ui/DarkModeSwitcher';
+} from '@/components/ui/navigation-menu'
+import { ExternalLinkIcon } from '@radix-ui/react-icons'
+import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 export default function Menu() {
   return (
     <NavigationMenu>
-      <NavigationMenuList className="relative">
+      <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="rounded-xl text-sm shadow-md">
             How To Play
@@ -54,11 +54,7 @@ export default function Menu() {
             Huddle Up <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <DarkModeSwitcher />
-        </NavigationMenuItem>
-
       </NavigationMenuList>
     </NavigationMenu>
-  );
+  )
 }
