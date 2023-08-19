@@ -7,7 +7,7 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 function Header() {
   return (
-    <div className="flex items-center justify-between container mx-auto gap-8 pt-4">
+    <div className="flex items-center justify-between container mx-auto  pt-4">
       <div className="shrink-0">
         <Image
           src={`/logo/game-logo.png`}

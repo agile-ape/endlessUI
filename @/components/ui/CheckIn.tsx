@@ -1,18 +1,18 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { TriangleRightIcon } from '@radix-ui/react-icons';
-import { TriangleDownIcon } from '@radix-ui/react-icons';
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { Button } from './button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import Link from 'next/link';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { TriangleRightIcon } from '@radix-ui/react-icons'
+import { TriangleDownIcon } from '@radix-ui/react-icons'
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { Button } from './button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
 
-import React, { useState } from 'react';
-import OtpInput from 'react-otp-input';
+import React, { useState } from 'react'
+import OtpInput from 'react-otp-input'
 // import { useTheme } from 'next-themes';
 
 function CheckInBox() {
   // const [open, setOpen] = React.useState(true);
-  const [otpInput, setOtpInput] = useState<string>();
+  const [otpInput, setOtpInput] = useState<string>()
   // const { theme } = useTheme();
 
   return (
@@ -87,10 +87,12 @@ function CheckInBox() {
           className="dark:text-white text-black"
         />
 
-        <Button className="text-lg dark:text-white dark:bg-grey-200">Submit</Button>
+        <Button className="text-lg dark:text-white dark:bg-grey-200 dark:hover:text-black">
+          Submit
+        </Button>
       </div>
     </details>
-  );
+  )
 }
 
-export default CheckInBox;
+export default CheckInBox

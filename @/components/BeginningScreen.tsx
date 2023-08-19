@@ -16,7 +16,7 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 export default function BeginningScreen() {
   return (
-    <div className="mx-auto max-w-lg my-[26px] flex flex-col gap-7 mt-7">
+    <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <Round />
       <Ticket />
       <Countdown />

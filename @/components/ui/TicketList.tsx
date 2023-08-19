@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import TicketCard from './TicketCard';
-import { Button } from './button';
+import React, { useState } from 'react'
+import TicketCard from './TicketCard'
+import { Button } from './button'
 
 const TicketList = () => {
-  const [ticketState, setTicketState] = useState<string>('aroundMe');
+  const [ticketState, setTicketState] = useState<string>('aroundMe')
   return (
     <div className="">
       {/* collapsible */}
@@ -51,9 +51,7 @@ const TicketList = () => {
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-x-1 gap-y-5 items-center place-items-center">
-            {/* map ticket */}
             <div className="w-[139.5px]">
-              {/* ini w gatau seleksinya buat muncul your ticket apaan, jd w taro sini aja y buat contoh */}
               <div className="uppercase px-4 py-1 rounded-xl bg-[#084E0B] text-white text-center w-[70%] mx-auto text-[12px] relative top-4 border-[1px] border-[#209902]">
                 Your Ticket
               </div>
@@ -67,7 +65,7 @@ const TicketList = () => {
                 ticketBullets={10}
                 ticketKillCount={10}
               />
-              <Button className="w-full mt-3">Check</Button>
+              <Button className="w-full mt-3 dark:text-white dark:hover:text-black">Check</Button>
             </div>
             <div className="mt-[27px]">
               <TicketCard
@@ -80,7 +78,7 @@ const TicketList = () => {
                 ticketBullets={10}
                 ticketKillCount={10}
               />
-              <Button className="w-full mt-3">Check</Button>
+              <Button className="w-full mt-3 dark:text-white dark:hover:text-black">Check</Button>
             </div>
             <div className="mt-[27px]">
               <TicketCard
@@ -93,7 +91,7 @@ const TicketList = () => {
                 ticketBullets={10}
                 ticketKillCount={10}
               />
-              <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
+              <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
             </div>
             <div className="mt-[27px]">
               <TicketCard
@@ -112,7 +110,7 @@ const TicketList = () => {
         </div>
       </details>
     </div>
-  );
-};
+  )
+}
 
-export default TicketList;
+export default TicketList
