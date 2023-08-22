@@ -34,15 +34,15 @@ const PriceAmount: FC<PriceAmountType> = ({ amount, type }) => {
     <div
       className="bg-[#F6F6F6] dark:bg-[#1C1C1C]
       border border-[#EBEBEB] dark:border-[#444242]
-      text-center w-[150px] mx-auto rounded-lg p-2"
+      text-center w-[150px] mx-auto rounded-lg p-[12px]"
     >
       <div className="flex items-center gap-2">
-        <p className="font-extralight text-base">{typeWording[type as keyof TypeWordingVariants]}</p>
+        <p className="font-extralight text-[14px]">{typeWording[type as keyof TypeWordingVariants]}</p>
 
         <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
-              <QuestionMarkCircledIcon className="w-[20px] h-[20px]" />
+              <QuestionMarkCircledIcon className="w-[18px] h-[18px]" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
