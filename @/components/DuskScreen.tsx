@@ -8,7 +8,6 @@ import Countdown from './ui/Countdown'
 import NextClaim from './ui/NextClaim'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-// import * as Popover from '@radix-ui/react-popover';
 
 import Ticket from './ui/Ticket'
 import TicketList from './ui/TicketList'
@@ -18,14 +17,16 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 export default function DuskScreen() {
   return (
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
-      <Round 
+      <Round
         fontTitleSize="text-4xl"
-        stageRound={'Stage 1 Round 2'} 
-        stageType={'dusk'} 
-        title1={`it's dusk. i smell`} 
-        title2={`blood in the air`} 
-        title3={'😊❤️😊❤️'} 
-        title4={undefined} 
+        stageRound={'Stage 1 Round 2'}
+        stageType={'dusk'}
+        title={
+          <>
+            <h1 className="text-[40px]">It's Dusk!</h1>
+            <p className="text-[25px]">I Smell Blood in the air. 😊❤️😊❤️</p>
+          </>
+        }
       />
       <Ticket isCouldBuyTicket={false} />
       <AllPrice />

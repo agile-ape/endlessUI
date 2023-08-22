@@ -14,20 +14,29 @@ import TicketList from './ui/TicketList'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
+const Title = () => {
+  return (
+    <div>
+      <h1 className="text-[40px]">It's a new day!</h1>
+      <p className="text-[25px]">I Smell Blood in the air. 😊❤️😊❤️</p>
+    </div>
+  )
+}
+
 export default function BeginningScreen() {
   return (
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
-      <Round 
+      <Round
         stageRound={'Round 01'}
-        fontTitleSize='text-xl'
-        title1={'are you the last man standing?'}
-        stageType={'beginning'} 
+        fontTitleSize="text-xl"
+        title={<Title />}
+        stageType={'beginning'}
       />
       <Ticket isCouldBuyTicket={true} />
       <Countdown />
       <CheckIn />
       <NextClaim />
-      <TicketList stage='beginning' />
+      <TicketList stage="beginning" />
     </div>
   )
 }

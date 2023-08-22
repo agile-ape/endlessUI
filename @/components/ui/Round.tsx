@@ -1,32 +1,22 @@
-import React, { FC } from "react";
+import React from 'react'
+import type { FC } from 'react'
+import type { IApp } from 'types/app'
+
 type RoundType = {
-  stageRound: string;
-  stageType: string;
-  title1: string;
-  title2?: string;
-  title3?: string;
-  title4?: string;
-  fontTitleSize: string;
+  stageRound: string
+  stageType: IApp['stage']
+  title?: JSX.Element
+  fontTitleSize: string
 }
-const Round: FC<RoundType> = ({ stageRound, stageType, title1, title2, title3, title4, fontTitleSize }) => {
+
+const Round: FC<RoundType> = ({ stageRound, stageType, title, fontTitleSize }) => {
   return (
     <div className="text-center">
-      {stageType === "beginning" && (
-        <p className="text-lg">Beginnings</p>
-      )}
+      {stageType === 'beginning' && <p className="text-lg">Beginnings</p>}
       <p className="text-lg">{stageRound}</p>
-      <h1 className={`uppercase mt-2 ${fontTitleSize}`}>{title1}</h1>
-      {title2 && (
-        <h1 className={`uppercase ${fontTitleSize}`}>{title2}</h1>
-      )}
-      {title3 && (
-        <h1 className={`uppercase ${fontTitleSize}`}>{title3}</h1>
-      )}
-      {title4 && (
-        <h1 className={`uppercase ${fontTitleSize}`}>{title4}</h1>
-      )}
+      {title}
     </div>
-  );
+  )
 }
 
 export default Round

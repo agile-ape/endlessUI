@@ -16,8 +16,10 @@
     "incremental": true,
     "paths": {
       "@/lib/utils": ["./@/lib/utils"],
-      "@/*": ["./@/*"]
-    }
+      "@/*": ["./@/*"],
+      "types/*": ["./types/*"]
+    },
+    "verbatimModuleSyntax": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
