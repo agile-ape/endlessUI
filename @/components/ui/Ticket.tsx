@@ -4,7 +4,12 @@ import Image from 'next/image';
 import { Button } from './button';
 import GameTextVariant from './GameTextVariant';
 
-const Ticket = () => {
+type TicketType = {
+  onBuy?: () => Promise<void>;
+  isCouldBuyTicket: boolean;
+}
+
+const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy }) => {
   return (
     <Tabs defaultValue="account" className="w-[85%] mx-auto">
       <div className="flex justify-center">
@@ -51,9 +56,14 @@ const Ticket = () => {
               </div>
             </div>
           </div>
-          <Button className="bg-[#31197B] text-[1rem] rounded-xl dark:text-white">
-            Buy Next Ticket
-          </Button>
+          {isCouldBuyTicket && (
+            <Button 
+              className="bg-[#31197B] text-[1rem] rounded-xl dark:text-white"
+              onClick={onBuy}
+            >
+              Buy Next Ticket
+            </Button>
+          )}
         </TabsContent>
 
         <TabsContent value="password" className="flex flex-col gap-3">

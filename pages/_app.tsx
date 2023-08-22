@@ -39,6 +39,20 @@ const font = VT323({
   subsets: ['latin-ext'],
 });
 
+type TypeStageVariants = {
+  beginning: Element;
+  day: Element;
+  night: Element;
+  dusk: Element;
+}
+
+const typeStage = {
+  'beginning': "City",
+  'day': "Desert",
+  'dusk': "Dusk",
+  'night': "Night"
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
@@ -55,7 +69,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         modalSize="compact"
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className={`${font.className} dark:bg-[#2D2D2D]`}>
+          <main 
+            className={`${font.className} dark:bg-[#2D2D2D]`}
+            style={{ backgroundImage: `url(/background/${typeStage["dusk" as keyof TypeStageVariants]}.svg)` }}
+          >
             <Header />
             <Component {...pageProps} />
           </main>
