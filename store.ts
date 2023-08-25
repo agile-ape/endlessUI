@@ -2,7 +2,7 @@ import { createStore, action, createTypedHooks } from 'easy-peasy'
 import type { StoreModel } from './types/store'
 
 export const appStore = createStore<StoreModel>({
-  stage: 'beginning',
+  stage: 'night',
   insertKeyword: action((state, payload) => {
     console.log('insertKeyword', payload)
   }),

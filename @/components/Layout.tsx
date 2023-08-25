@@ -26,6 +26,9 @@ const Layout = ({ children }: LayoutProps) => {
       className={`${font.className} dark:bg-[#2D2D2D]`}
       style={{
         backgroundImage: `url(/background/${typeStage[stage]}.svg)`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover"
       }}
     >
       <Header />

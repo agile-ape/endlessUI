@@ -7,23 +7,21 @@ import Countdown from './ui/Countdown'
 import NextClaim from './ui/NextClaim'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-// import * as Popover from '@radix-ui/react-popover';
-
+import { Button } from "./ui/button";
 import Ticket from './ui/Ticket'
 import TicketList from './ui/TicketList'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 const Title = () => {
   return (
-    <div>
-      <h1 className="text-[40px] uppercase">It's a new Beginning.</h1>
-      <p className="text-[25px] uppercase">hope is in the air.<br />😊❤️😊❤️</p>
+    <div className="text-white">
+      <h1 className="text-[40px] uppercase">It's a new day.</h1>
+      <h1 className="text-[40px] uppercase">bright and early.</h1>
+      <p className="text-[40px] uppercase">remember to check in.<br />😊❤️😊❤️</p>
     </div>
   )
 }
 
-export default function BeginningScreen() {
+export default function NightScreen() {
   return (
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <Round
@@ -32,11 +30,10 @@ export default function BeginningScreen() {
         title={<Title />}
         stageType={'beginning'}
       />
-      <Ticket isCouldBuyTicket={true} />
+      <Ticket isCouldRedeemedTicket={true} />
       <Countdown />
-      <CheckIn />
       <NextClaim />
       <TicketList stage="beginning" />
     </div>
-  )
+  );
 }

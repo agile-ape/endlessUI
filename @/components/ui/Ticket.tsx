@@ -6,10 +6,11 @@ import GameTextVariant from './GameTextVariant';
 
 type TicketType = {
   onBuy?: () => Promise<void>;
-  isCouldBuyTicket: boolean;
+  isCouldBuyTicket?: boolean;
+  isCouldRedeemedTicket?: boolean;
 }
 
-const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy }) => {
+const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy, isCouldRedeemedTicket }) => {
   return (
     <Tabs defaultValue="account" className="w-[85%] mx-auto">
       <div className="flex justify-center">
@@ -62,6 +63,14 @@ const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy }) => {
               onClick={onBuy}
             >
               Buy Next Ticket
+            </Button>
+          )}
+          {isCouldRedeemedTicket && (
+            <Button 
+              className="bg-[#FFF5F5] text-[1rem] rounded-xl border border-[#F10000] text-[#F10000]"
+              onClick={onBuy}
+            >
+              Redeem Ticket
             </Button>
           )}
         </TabsContent>

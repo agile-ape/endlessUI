@@ -16,15 +16,15 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 export default function DuskScreen() {
   return (
-    <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
+    <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7 min-h-screen">
       <Round
         fontTitleSize="text-4xl"
         stageRound={'Stage 1 Round 2'}
         stageType={'dusk'}
         title={
           <>
-            <h1 className="text-[40px]">It's Dusk!</h1>
-            <p className="text-[25px]">I Smell Blood in the air. 😊❤️😊❤️</p>
+            <h1 className="text-[40px] uppercase">It's Dusk. I smell</h1>
+            <p className="text-[40px] uppercase">Blood in the air.<br/>😊❤️😊❤️</p>
           </>
         }
       />
