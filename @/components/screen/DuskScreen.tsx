@@ -7,10 +7,10 @@ import CheckIn from '../ui/check-in'
 
 export default function DuskScreen() {
   return (
-    <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7 min-h-screen">
+    <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
-        <p className="text-xl"> Dusk </p>
-        <Round round={0} />
+        <p className="text-xl text-white"> Dusk </p>
+        <Round round={0} stageType={'dusk'} />
         <Title stageType={'dusk'} />
       </div>
 

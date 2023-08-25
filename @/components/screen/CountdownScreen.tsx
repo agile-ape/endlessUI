@@ -6,24 +6,26 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
+import AllPrice from '../ui/AllPrice'
 
-function BeginningsScreen() {
+function CountdownScreen() {
   return (
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
-        <p className="text-xl text-white"> Beginnings </p>
-        <Round round={0} stageType={'beginnings'} />
-        <Title stageType={'beginnings'} />
+        <p className="text-xl text-white"> Game Has Not Started </p>
+        {/* <Round round={0} stageType={'countdown'} /> */}
+        <Title stageType={'countdown'} />
       </div>
 
-      <Ticket isCouldBuyTicket={true} />
+      <Ticket isCouldBuyTicket={false} />
 
       <Countdown />
+      <AllPrice />
       <TicketList stage="beginning" />
     </div>
   )
 }
 
-BeginningsScreen.theme = 'light'
+CountdownScreen.theme = 'light'
 
-export default BeginningsScreen
+export default CountdownScreen

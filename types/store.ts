@@ -4,6 +4,7 @@ import type { IApp } from './app'
 interface StoreModel {
   stage: IApp['stage']
   round: IApp['round']
+  ticketState: IApp['ticketState']
   insertKeyword: Action<StoreModel, string>
 }
 

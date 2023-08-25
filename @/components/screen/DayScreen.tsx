@@ -10,8 +10,8 @@ export default function DayScreen() {
   return (
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
-        <p className="text-xl"> Beginnings </p>
-        <Round round={0} />
+        <p className="text-xl text-black"> Day </p>
+        <Round round={0} stageType={'day'} />
         <Title stageType={'day'} />
       </div>
       <Ticket isCouldRedeemedTicket={true} />

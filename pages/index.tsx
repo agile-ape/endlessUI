@@ -10,6 +10,7 @@ import type { IApp } from '../types/app'
 import DayScreen from '@/components/screen/DayScreen'
 import DuskScreen from '@/components/screen/DuskScreen'
 import NightScreen from '@/components/screen/NightScreen'
+import CountdownScreen from '@/components/screen/CountdownScreen'
 
 const Home: NextPage = () => {
   const stage = useStoreState((state) => state.stage)
@@ -17,7 +18,7 @@ const Home: NextPage = () => {
   const screen: Record<IApp['stage'], JSX.Element> = {
     whitelist: <WhitelistScreen />,
     beginnings: <BeginningsScreen />,
-    countdown: <BeginningsScreen />,
+    countdown: <CountdownScreen />,
     day: <DayScreen />,
     dusk: <DuskScreen />,
     night: <NightScreen />,

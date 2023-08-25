@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
 import { Button } from './button';
 import GameTextVariant from './GameTextVariant';
+import { useStoreState } from '../../../store';
+import { cn } from '@/lib/utils';
 
 type TicketType = {
   onBuy?: () => Promise<void>;
@@ -10,7 +12,29 @@ type TicketType = {
   isCouldRedeemedTicket?: boolean;
 }
 
+const bgTicketColor = {
+  'default': "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)",
+  'checked': "#122148",
+  'checkin': "#10330F",
+  'dead': "#363636",
+  'redeemed': "#363636",
+  'beforeBuy': "#2D2008"
+}
+
+const borderTicketColor = {
+  'default': "linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)",
+  'checked': "#00B5FF",
+  'checkin': "#70ED6C",
+  'dead': "#C2C2C2",
+  'redeemed': "#C2C2C2",
+  'beforeBuy': "#7E5F30"
+}
+
 const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy, isCouldRedeemedTicket }) => {
+  const ticketState = useStoreState((state) => state.ticketState)
+  const stage = useStoreState((state) => state.stage)
+
+  console.log({ticketState})
   return (
     <Tabs defaultValue="account" className="w-[85%] mx-auto">
       <div className="flex justify-center">
@@ -26,23 +50,51 @@ const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy, isCouldRedeemed
       <div className="flex justify-center">
         <TabsContent value="account" className="flex flex-col gap-3 p-2">
           <div
-            className="p-2 rounded-2xl"
-            style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
+            className={cn(
+              "p-[4px] rounded-2xl",
+              (ticketState === "dead" || ticketState === "redeemed") && "opacity-80"
+            )}
+            style={{ background: borderTicketColor[ticketState] }}
           >
             <div
               className="w-[220px] rounded-2xl text-white flex flex-col gap-8 py-[1rem] px-[0.5rem]"
-              style={{ background: 'linear-gradient(140deg, #0D032D 0%, #1E1049 100%)' }}
+              style={{ background: bgTicketColor[ticketState] }}
             >
               <p className="text-center text-[24px]">#03</p>
               <div className="text-center flex flex-col leading-10">
-                <h2 className="text-[4rem]">0.057</h2>
-                <p className="text-[1rem]">last seen: 04</p>
+                {ticketState === "redeemed" ? (
+                  <div className="flex justify-center gap-2">
+                    <Image
+                      priority
+                      src={`/logo/medal.svg`}
+                      height={30}
+                      width={30}
+                      alt="skull"
+                    />
+                    <h2 className="text-[3.5rem]">140</h2>
+                  </div>
+                ) : (
+                  <>
+                    <h2 className="text-[4rem]">{ticketState === "dead" ? "-" : "0.057"}</h2>
+                    <p className="text-[1rem]">last seen: 04</p>
+                  </>
+                )}
+                
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-around gap-5">
                 <div className="flex gap-1">
-                  <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
-                  <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
-                  <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
+                  {(stage === "day" || stage === "night") ? (
+                    <>
+                      <Image priority src="/icon/bullet.svg" height={24} width={24} alt="skull" />
+                      <p className="text-white">10</p>
+                    </>
+                  ) : (
+                    <>
+                      <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
+                      <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
+                      <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
+                    </>
+                  )}
                 </div>
                 <div className="flex gap-1">
                   <Image
@@ -67,7 +119,7 @@ const Ticket: React.FC<TicketType> = ({ isCouldBuyTicket, onBuy, isCouldRedeemed
           )}
           {isCouldRedeemedTicket && (
             <Button 
-              className="bg-[#FFF5F5] text-[1rem] rounded-xl border border-[#F10000] text-[#F10000]"
+              className="bg-[#FFF5F5] hover:bg-[#EEEEEE] text-[1rem] rounded-xl border border-[#F10000] text-[#F10000]"
               onClick={onBuy}
             >
               Redeem Ticket
