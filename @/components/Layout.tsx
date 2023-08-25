@@ -2,6 +2,8 @@ import Header from './Header'
 import { VT323 } from 'next/font/google'
 import type { IApp } from 'types/app'
 import { useStoreState } from '../../store'
+import { ThemeProvider } from '@/components/theme-provider'
+import { useTheme } from 'next-themes'
 
 const font = VT323({
   weight: ['400'],
@@ -9,10 +11,13 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['stage'], string> = {
-  beginning: 'City',
+  whitelist: 'City',
+  beginnings: 'City',
+  countdown: 'City',
   day: 'Desert',
   dusk: 'Dusk',
   night: 'Night',
+  lastmanfound: 'Snow',
 }
 
 type LayoutProps = {
@@ -21,14 +26,15 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const stage = useStoreState((state) => state.stage)
+
   return (
     <main
-      className={`${font.className} dark:bg-[#2D2D2D]`}
+      className={`${font.className} bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
       style={{
         backgroundImage: `url(/background/${typeStage[stage]}.svg)`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover"
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
       }}
     >
       <Header />

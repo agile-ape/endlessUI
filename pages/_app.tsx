@@ -12,6 +12,7 @@ import { StoreProvider } from 'easy-peasy'
 import { appStore, useStoreState } from '../store'
 import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
+import { useTheme } from 'next-themes'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -37,18 +38,6 @@ const wagmiConfig = createConfig({
   publicClient,
   webSocketPublicClient,
 })
-
-const font = VT323({
-  weight: ['400'],
-  subsets: ['latin-ext'],
-})
-
-const typeStage: Record<IApp['stage'], string> = {
-  beginning: 'City',
-  day: 'Desert',
-  dusk: 'Dusk',
-  night: 'Night',
-}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
