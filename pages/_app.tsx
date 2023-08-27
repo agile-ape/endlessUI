@@ -13,6 +13,7 @@ import { appStore, useStoreState } from '../store'
 import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
 import { useTheme } from 'next-themes'
+import { Toaster } from '@/components/ui/toaster'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -58,6 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Layout>
               <Component {...pageProps} />
+              <Toaster />
             </Layout>
           </ThemeProvider>
         </StoreProvider>

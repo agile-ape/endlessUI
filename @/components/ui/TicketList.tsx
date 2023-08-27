@@ -3,17 +3,23 @@ import TicketCard from './TicketCard'
 import { Button } from './button'
 
 type TicketListType = {
-  stage: string;
+  stage: string
 }
 
 const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const [ticketState, setTicketState] = useState<string>('aroundMe')
-  const fixedPurpleBg = ["dusk"]
-  console.log(fixedPurpleBg.includes(stage))
+  const fixedPurpleBg = ['dusk']
+
   return (
     <div className="">
       {/* collapsible */}
-      <details className={`w-[350px] mx-auto border-[4px] ${fixedPurpleBg.includes(stage) ? "bg-[#0D032D] border-[#36217A] text-white" : "border-[#EBEBEB] bg-[#F6F6F6] dark:bg-[#1C1C1C] dark:border-[#444242] text-black dark:text-white"} shadow rounded-2xl group `}>
+      <details
+        className={`w-[350px] mx-auto border-[4px] ${
+          fixedPurpleBg.includes(stage)
+            ? 'bg-[#0D032D] border-[#36217A] text-white'
+            : 'border-[#EBEBEB] bg-[#F6F6F6] dark:bg-[#1C1C1C] dark:border-[#444242] text-black dark:text-white'
+        } shadow rounded-2xl group `}
+      >
         <summary
           className="list-none flex flex-wrap items-center cursor-pointer
         focus-visible:outline-none focus-visible:ring
@@ -25,7 +31,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           </div>
           <div className="flex w-5 items-center justify-center">
             <div
-              className={`border-8 border-transparent ${fixedPurpleBg.includes(stage) ? "border-l-white" : "border-l-black dark:border-l-white"} ml-2 group-open:ml-5 group-open:mb-1
+              className={`border-8 border-transparent ${
+                fixedPurpleBg.includes(stage)
+                  ? 'border-l-white'
+                  : 'border-l-black dark:border-l-white'
+              } ml-2 group-open:ml-5 group-open:mb-1
             group-open:rotate-90 transition-transform origin-left
             `}
             ></div>

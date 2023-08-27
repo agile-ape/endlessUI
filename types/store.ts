@@ -6,6 +6,7 @@ interface StoreModel {
   round: IApp['round']
   ticketState: IApp['ticketState']
   insertKeyword: Action<StoreModel, string>
+  updateStage: Action<StoreModel, IApp['stage']>
 }
 
 export type { StoreModel }

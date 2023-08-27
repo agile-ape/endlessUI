@@ -4,6 +4,8 @@ import type { IApp } from 'types/app'
 import { useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
+import { useAccount, useContractReads } from 'wagmi'
+import { defaultContractObj } from '../../services/constant'
 
 const font = VT323({
   weight: ['400'],
@@ -26,6 +28,29 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const stage = useStoreState((state) => state.stage)
+
+  const { isConnected } = useAccount()
+
+  const { data } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'round',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'phase',
+      },
+    ],
+    enabled: isConnected,
+    onSettled(data, error) {
+      if (error) {
+        console.error(error)
+      }
+
+      console.log('data', data)
+    },
+  })
 
   return (
     <main

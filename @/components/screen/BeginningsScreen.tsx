@@ -6,8 +6,23 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
+import { useContractWrite } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
+import { parseUnits } from 'viem'
 
 function BeginningsScreen() {
+  const { write } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'buyTicket',
+    value: parseUnits('0.001', 18),
+    onSettled(data, error, variables, context) {
+      console.log({
+        data,
+        error,
+      })
+    },
+  })
+
   return (
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
@@ -16,7 +31,7 @@ function BeginningsScreen() {
         <Title stageType={'beginnings'} />
       </div>
 
-      <Ticket isCouldBuyTicket={true} />
+      <Ticket isCouldBuyTicket={true} onBuy={write} />
 
       <Countdown />
       <TicketList stage="beginning" />
