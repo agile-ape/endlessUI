@@ -14,7 +14,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
     <div className="">
       {/* collapsible */}
       <details
-        className={`w-[350px] mx-auto border-[4px] ${
+        className={`w-[350px] max-w-[100%] mx-auto border-[4px] ${
           fixedPurpleBg.includes(stage)
             ? 'bg-[#0D032D] border-[#36217A] text-white'
             : 'border-[#EBEBEB] bg-[#F6F6F6] dark:bg-[#1C1C1C] dark:border-[#444242] text-black dark:text-white'
