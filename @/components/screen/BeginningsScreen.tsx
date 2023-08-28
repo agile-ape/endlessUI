@@ -6,18 +6,22 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { parseUnits } from 'viem'
 
 function BeginningsScreen() {
-  const { config } = usePrepareContractWrite({
+  const { data, writeAsync, error, write } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
     value: parseUnits('0.001', 18),
   })
 
-  const { write } = useContractWrite(config)
+  const { data: txData } = useWaitForTransaction({
+    hash: data?.hash,
+  })
+
+  console.log({ txData, data })
 
   return (
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
