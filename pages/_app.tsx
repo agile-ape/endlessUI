@@ -3,7 +3,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import type { AppProps } from 'next/app'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { arbitrum, goerli, mainnet, optimism, polygon, zora } from 'wagmi/chains'
+import { arbitrum, arbitrumGoerli, goerli, mainnet, optimism, polygon, zora } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import Header from '../@/components/Header'
 import { VT323 } from 'next/font/google'
@@ -16,14 +16,7 @@ import { useTheme } from 'next-themes'
 import { Toaster } from '@/components/ui/toaster'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    zora,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
-  ],
+  [arbitrumGoerli],
   [publicProvider()],
 )
 
@@ -41,6 +34,7 @@ const wagmiConfig = createConfig({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
+  console.log({ pageProps })
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
@@ -57,7 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <StoreProvider store={appStore}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Layout>
+            <Layout metadata={pageProps.metadata}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>

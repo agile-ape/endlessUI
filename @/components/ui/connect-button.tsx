@@ -59,8 +59,8 @@ export default function CustomConnectButton() {
                     type="button"
                     className={`h-10 w-max rounded-xl
                     bg-gradient-to-r from-sky-300 to-indigo-500
-                    py-[4px] px-[24px]
-                    text-sm font-semibold text-rose-900 uppercase
+                    py-[4px] px-[20px]
+                    text-base font-semibold text-rose-900 uppercase
                     transition-colors
                     hover:bg-accent hover:text-indigo-900
                     focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
@@ -72,7 +72,7 @@ export default function CustomConnectButton() {
                       height={25}
                       width={25}
                       alt="ethereum logo"
-                      className="min-w-25 min-h-25 inline mr-1"
+                      className="shrink-0 inline mr-1"
                     />
                     Wrong network
                   </button>
@@ -124,7 +124,7 @@ export default function CustomConnectButton() {
                     text-white px-3 py-1
                     "
                   >
-                    {account.displayName}
+                    {account.displayName} {account.displayBalance}
                     {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </button>
                 </div>
