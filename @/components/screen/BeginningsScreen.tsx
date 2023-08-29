@@ -20,7 +20,7 @@ function BeginningsScreen() {
   const { data, writeAsync, error, write } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
-    value: parseUnits('0.001', 18),
+    value: parseUnits('0.002', 18),
     onError: (error) => {
       console.log({ error: error?.cause })
       // @ts-ignore

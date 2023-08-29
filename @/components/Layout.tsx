@@ -7,6 +7,7 @@ import { useTheme } from 'next-themes'
 import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
+import dynamic from 'next/dynamic'
 
 const font = VT323({
   weight: ['400'],
@@ -76,4 +77,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   )
 }
 
-export default Layout
+export default dynamic(() => Promise.resolve(Layout), {
+  ssr: false,
+})

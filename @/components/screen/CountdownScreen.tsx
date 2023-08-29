@@ -6,7 +6,9 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
-import AllPrice from '../ui/AllPrice'
+import AllPrize from '../ui/AllPrize'
+import PrizeInfo from '../ui/PrizeInfo'
+import dynamic from 'next/dynamic'
 
 function CountdownScreen() {
   return (
@@ -20,7 +22,7 @@ function CountdownScreen() {
       <Ticket isCouldBuyTicket={false} />
 
       <Countdown />
-      <AllPrice />
+      <PrizeInfo display="total" />
       <TicketList stage="beginning" />
     </div>
   )
@@ -28,4 +30,6 @@ function CountdownScreen() {
 
 CountdownScreen.theme = 'light'
 
-export default CountdownScreen
+export default dynamic(() => Promise.resolve(CountdownScreen), {
+  ssr: false,
+})

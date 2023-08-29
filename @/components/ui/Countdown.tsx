@@ -1,24 +1,24 @@
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Button } from './button';
-import { useEffect, useState } from 'react';
-import { calculateTimeLeft } from '@/lib/utils';
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from './button'
+import { useEffect, useState } from 'react'
+import { calculateTimeLeft } from '@/lib/utils'
 
 type TimeLeftType = {
   // days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
+  hours: number
+  minutes: number
+  seconds: number
 }
 
 export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeftType>(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeftType>(calculateTimeLeft())
 
   useEffect(() => {
     setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-  });
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
+  })
 
   return (
     <div
@@ -50,10 +50,9 @@ export default function Countdown() {
 
       <h2 className="text-[40px]">
         {/* {timeLeft.days ? `${timeLeft.days}:`: ""} */}
-        {timeLeft.hours ? `${timeLeft.hours}:`: ""}
+        {timeLeft.hours ? `${timeLeft.hours}:` : ''}
         {timeLeft.minutes}:{timeLeft.seconds}
       </h2>
-
     </div>
-  );
+  )
 }
