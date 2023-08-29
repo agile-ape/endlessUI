@@ -76,7 +76,7 @@ export default function CustomConnectButton() {
                   "
                 >
                   <div className="flex gap-x-2">
-                    {/* {chain.hasIcon && (
+                    {chain.hasIcon && (
                       <div
                         onClick={openChainModal}
                         role="presentation"
@@ -97,7 +97,7 @@ export default function CustomConnectButton() {
                           />
                         )}
                       </div>
-                    )} */}
+                    )}
 
                     {/* {chain.name} */}
                   </div>
