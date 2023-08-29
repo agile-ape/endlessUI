@@ -15,13 +15,13 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['stage'], string> = {
-  whitelist: 'City',
-  beginnings: 'City',
-  countdown: 'City',
-  day: 'Desert',
-  dusk: 'Dusk',
-  night: 'Night',
-  lastmanfound: 'Snow',
+  whitelist: 'City.svg',
+  beginnings: 'City.svg',
+  countdown: 'City.svg',
+  day: 'Desert.svg',
+  dusk: 'Dusk.svg',
+  night: 'Night.avif',
+  lastmanfound: 'Snow.svg',
 }
 
 type LayoutProps = {
@@ -50,19 +50,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     enabled: isConnected,
   })
 
-  if (data && data?.length > 0) {
-    const round = data[0]?.result
-    const stage = data[1]?.result || 0
+  // if (data && data?.length > 0) {
+  //   const round = data[0]?.result
+  //   const stage = data[1]?.result || 0
 
-    updateStage(Number(stage))
-    updateRound(Number(round))
-  }
+  //   updateStage(Number(stage))
+  //   updateRound(Number(round))
+  // }
 
   return (
     <main
       className={`${font.className} bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
       style={{
-        backgroundImage: `url(/background/${typeStage[stage]}.svg)`,
+        backgroundImage: `url(/background/${typeStage[stage]})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',

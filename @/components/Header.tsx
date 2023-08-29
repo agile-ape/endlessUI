@@ -1,32 +1,26 @@
 import Image from 'next/image'
 import CustomConnectButton from '@/components/ui/connect-button'
-import { useState, useEffect } from 'react'
 import Menu from './Menu'
+import Logo from './ui/Logo'
 import SideMenu from './SideMenu'
 import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 function Header() {
   return (
-    <div className="flex items-center justify-between container mx-auto  pt-4">
-      <div className="shrink-0">
-        <Image
-          src={`/logo/game-logo.png`}
-          width={35}
-          height={35}
-          alt="Last Man Standing Logo"
-          className="max-w-full"
-        />
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 items-center container mx-auto pt-4">
+      <div className="flex justify-start order-1">
+        <Logo />
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden md:block order-2">
         <Menu />
       </div>
 
-      <div className="md:hidden order-10">
+      <div className="flex justify-self-end md:hidden order-4">
         <SideMenu />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="hidden md:flex justify-self-end gap-2 order-3">
         <DarkModeSwitcher />
         <CustomConnectButton />
       </div>

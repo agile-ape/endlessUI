@@ -1,7 +1,8 @@
 import Countdown from '../ui/Countdown'
+import GameTab from '../ui/GameTab'
 import NextClaim from '../ui/NextClaim'
 import Round from '../ui/Round'
-import Ticket from '../ui/Ticket'
+// import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/check-in'
@@ -14,7 +15,7 @@ export default function DayScreen() {
         <Round round={0} stageType={'day'} />
         <Title stageType={'day'} />
       </div>
-      <Ticket isCouldRedeemedTicket={true} />
+      <GameTab isCouldBuyTicket={true} />
       <Countdown />
       <CheckIn />
       <NextClaim />

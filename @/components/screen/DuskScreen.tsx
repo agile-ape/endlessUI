@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic'
 import AllPrice from '../ui/AllPrize'
 import Round from '../ui/Round'
-import Ticket from '../ui/Ticket'
+// import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/check-in'
+import GameTab from '../ui/GameTab'
 
 function DuskScreen() {
   return (
@@ -15,7 +16,7 @@ function DuskScreen() {
         <Title stageType={'dusk'} />
       </div>
 
-      <Ticket isCouldBuyTicket={false} />
+      <GameTab isCouldBuyTicket={true} />
       <AllPrice />
       <TicketList stage="dusk" />
     </div>

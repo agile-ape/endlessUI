@@ -11,17 +11,15 @@ export default function CustomConnectButton() {
         openAccountModal,
         openChainModal,
         openConnectModal,
-        authenticationStatus,
+        // authenticationStatus,
         mounted,
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== 'loading'
-        const connected =
-          ready &&
-          account &&
-          chain &&
-          (!authenticationStatus || authenticationStatus === 'authenticated')
+        const ready = mounted
+        //  && authenticationStatus !== 'loading'
+        const connected = ready && account && chain
+        // && (!authenticationStatus || authenticationStatus === 'authenticated')
         return (
           <div
             {...(!ready && {
@@ -36,18 +34,7 @@ export default function CustomConnectButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <button
-                    onClick={openConnectModal}
-                    type="button"
-                    className={`h-10 w-max rounded-xl
-                    bg-gradient-to-r from-sky-300 to-indigo-500
-                    py-[4px] px-[24px]
-                    text-sm font-semibold text-white uppercase
-                    transition-colors
-                    hover:bg-accent hover:text-indigo-900
-                    focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
-                    `}
-                  >
+                  <button onClick={openConnectModal} type="button" className={`connect-btn-last`}>
                     Connect Wallet
                   </button>
                 )
@@ -89,7 +76,7 @@ export default function CustomConnectButton() {
                   "
                 >
                   <div className="flex gap-x-2">
-                    {chain.hasIcon && (
+                    {/* {chain.hasIcon && (
                       <div
                         onClick={openChainModal}
                         role="presentation"
@@ -110,7 +97,7 @@ export default function CustomConnectButton() {
                           />
                         )}
                       </div>
-                    )}
+                    )} */}
 
                     {/* {chain.name} */}
                   </div>

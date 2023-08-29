@@ -1,6 +1,6 @@
 import Round from '../ui/Round'
 import Title from '../ui/Title'
-import Ticket from '../ui/Ticket'
+// import Ticket from '../ui/Ticket'
 // import CheckInBox from './ui/CheckIn'
 import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
@@ -9,6 +9,7 @@ import TicketList from '../ui/TicketList'
 import AllPrize from '../ui/AllPrize'
 import PrizeInfo from '../ui/PrizeInfo'
 import dynamic from 'next/dynamic'
+import GameTab from '../ui/GameTab'
 
 function CountdownScreen() {
   return (
@@ -19,7 +20,7 @@ function CountdownScreen() {
         <Title stageType={'countdown'} />
       </div>
 
-      <Ticket isCouldBuyTicket={false} />
+      <GameTab isCouldBuyTicket={true} />
 
       <Countdown />
       <PrizeInfo display="total" />

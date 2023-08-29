@@ -1,6 +1,7 @@
 import Round from '../ui/Round'
 import Title from '../ui/Title'
-import Ticket from '../ui/Ticket'
+import GameTab from '../ui/GameTab'
+// import Ticket from '../ui/Ticket'
 // import CheckInBox from './ui/CheckIn'
 import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
@@ -16,6 +17,14 @@ import { toast } from '../ui/use-toast'
 
 function BeginningsScreen() {
   const round = useStoreState((state) => state.round)
+
+  const onBuy = async () => {
+    try {
+      write()
+    } catch (error) {
+      console.log({ error })
+    }
+  }
 
   const { data, writeAsync, error, write } = useContractWrite({
     ...defaultContractObj,
@@ -66,7 +75,9 @@ function BeginningsScreen() {
         <Title stageType={'beginnings'} />
       </div>
 
-      <Ticket isCouldBuyTicket={true} onBuy={write} />
+      <GameTab isCouldBuyTicket={true} onBuy={onBuy} />
+
+      {/* <Ticket isCouldBuyTicket={true} onBuy={write} /> */}
 
       <Countdown />
       <TicketList stage="beginning" />

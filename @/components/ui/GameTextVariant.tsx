@@ -1,11 +1,11 @@
 import React from 'react'
 
 interface GameTextVariantType {
-  variant: string;
-  timestamp: string;
-  text: string;
-  number: number;
-  isLastIndex: boolean;
+  variant: string
+  timestamp: string
+  text: string
+  number: number
+  isLastIndex: boolean
 }
 
 const colorVariant = (variant: string) => {
@@ -13,93 +13,92 @@ const colorVariant = (variant: string) => {
     case 'checked_in':
       return 'text-[#47C77C]'
     case 'triggered_change':
-      return 'text-[#EC8915]';
+      return 'text-[#EC8915]'
     case 'new_entry':
-      return 'text-[#9049A9]';
+      return 'text-[#9049A9]'
     case 'exit':
-      return 'text-[#FC1616]';
+      return 'text-[#FC1616]'
     case 'safe':
-      return 'text-[#2B3984]';
+      return 'text-[#2B3984]'
     case 'killed':
-      return 'text-[#2B3984]';
+      return 'text-[#2B3984]'
     default:
-      return '';
+      return ''
   }
 }
 
 const textVariant = (variant: string) => {
   switch (variant) {
     case 'checked_in':
-      return (<>just <span className={`${colorVariants[variant]}`}>checked in.</span></>)
+      return (
+        <>
+          just <span className={`${colorVariants[variant]}`}>checked in.</span>
+        </>
+      )
     case 'triggered_change':
-      return (<span className={`${colorVariants[variant]} opacity-90`}>triggered</span>)
-      // return (<span className={`text-red-100 opacity-90`}>triggered</span>)
+      return <span className={`${colorVariants[variant]} opacity-90`}>triggered</span>
+    // return (<span className={`text-red-100 opacity-90`}>triggered</span>)
     case 'new_entry':
-      return (<span className={`${colorVariants[variant]} opacity-90`}>is bought</span>);
+      return <span className={`${colorVariants[variant]} opacity-90`}>is bought</span>
     case 'exit':
-      return (<span className={`${colorVariants[variant]} opacity-90`}>has exited</span>);
+      return <span className={`${colorVariants[variant]} opacity-90`}>has exited</span>
     case 'safe':
-      return (<span className={`${colorVariants[variant]} opacity-90`}>is safe</span>);
+      return <span className={`${colorVariants[variant]} opacity-90`}>is safe</span>
     case 'killed':
-      return (<span className={`${colorVariants[variant]} opacity-90`}>is killed</span>);
+      return <span className={`${colorVariants[variant]} opacity-90`}>is killed</span>
     default:
-      return <span></span>;
+      return <span></span>
   }
 }
 
 const colorVariants = {
-  'checked_in': 'text-[#47C77C]',
-  'triggered_change': 'text-[#EC8915]',
-  'new_entry': 'text-[#9049A9]',
-  'exit': 'text-[#FC1616]',
-  'safe': 'text-[#2B3984]',
-  'killed': 'text-[#2B3984]'
+  checked_in: 'text-[#47C77C]',
+  triggered_change: 'text-[#EC8915]',
+  new_entry: 'text-[#9049A9]',
+  exit: 'text-[#FC1616]',
+  safe: 'text-[#2B3984]',
+  killed: 'text-[#2B3984]',
 }
 
 const textVariants = {
-  'checked_in': (<>just <span className='text-[#47C77C]'>checked in.</span></>),
-  'triggered_change': (<span className={`text-[#EC8915] opacity-90`}>triggered</span>),
-  'new_entry': (<span className={`text-[#9049A9] opacity-90`}>is bought</span>),
-  'exit': (<span className={`text-[#FC1616] opacity-90`}>has exited</span>),
-  'safe': (<span className={`text-[#2B3984] opacity-90`}>is safe</span>),
-  'killed': (<span className={`text-[#2B3984] opacity-90`}>is killed</span>)
+  checked_in: <span className="text-[#47C77C]">checked in.</span>,
+  triggered_change: <span className={`text-[#EC8915] opacity-90`}>triggered</span>,
+  new_entry: <span className={`text-[#9049A9] opacity-90`}>is bought</span>,
+  exit: <span className={`text-[#FC1616] opacity-90`}>has exited</span>,
+  safe: <span className={`text-[#2B3984] opacity-90`}>is safe</span>,
+  killed: <span className={`text-[#2B3984] opacity-90`}>is killed</span>,
 }
 
 type TextVariants = {
-  checked_in: Element;
-  triggered_change: Element;
-  new_entry: Element;
-  exit: Element;
-  safe: Element;
-  killed: Element;
+  checked_in: Element
+  triggered_change: Element
+  new_entry: Element
+  exit: Element
+  safe: Element
+  killed: Element
 }
 
-const GameTextVariant: React.FC<GameTextVariantType> = ({ variant, timestamp, text, number, isLastIndex }) => {
+const GameTextVariant: React.FC<GameTextVariantType> = ({
+  variant,
+  timestamp,
+  text,
+  number,
+  isLastIndex,
+}) => {
   return (
-    <div className={`flex justify-between gap-2 w-[100%] items-center text-black dark:text-white px-3 ${!isLastIndex && "border-b-[1px]"} py-2`}>
-      <div className="flex gap-2 items-center">
-        <div 
-          className="text-[18px]"
-          // style={{
-          //   fontWeight: "900",
-          //   backgroundImage: 'linear-gradient(180deg, #F00000 0%, rgba(252, 231, 45, 0.84) 16.15%, rgba(115, 239, 17, 0.58) 41.67%, rgba(13, 243, 133, 0.37) 63.02%, rgba(20, 137, 245, 0.25) 75%, rgba(79, 2, 243, 0.00) 82.29%)',
-          //   // backgroundImage: '-webkit-linear-gradient(180deg, #F00000 0%, rgba(252, 231, 45, 0.84) 16.15%, rgba(115, 239, 17, 0.58) 41.67%, rgba(13, 243, 133, 0.37) 63.02%, rgba(20, 137, 245, 0.25) 75%, rgba(79, 2, 243, 0.00) 82.29%)',
-          //   // WebkitBackgroundClip: 'text',
-          //   // WebkitTextFillColor: 'transparent',
-
-          //   // WebkitBackgroundClip: 'text',
-          //   WebkitBackgroundClip: 'text',
-          //   WebkitTextFillColor: 'transparent',
-
-          // }}
-        >{number}</div>
-        <div className="md:w-[250px] w-[195px]">
-          <p className="text-[14px] dark:text-white light:text-black">{textVariants[variant as keyof TextVariants]} {text}</p>
-        </div>
+    <div
+      className={`flex justify-between gap-4 w-[100%] items-end py-2
+    text-black dark:text-white ${!isLastIndex && 'border-b-[1px] border-zinc-600'}`}
+    >
+      <div className="w-[250px] leading-tight">
+        <p className="text-[14px] dark:text-white light:text-black text-left">
+          <span className="ticket-last">{number}</span>{' '}
+          {textVariants[variant as keyof TextVariants]} {text}
+        </p>
       </div>
       <p className="text-[12px] text-[#999]">{timestamp} ago</p>
     </div>
   )
 }
 
-export default GameTextVariant;
+export default GameTextVariant

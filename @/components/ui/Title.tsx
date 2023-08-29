@@ -31,11 +31,18 @@ const title = {
 }
 
 const Title: FC<TitleType> = ({ stageType }) => {
-  return <p className={cn(
-    'text-3xl uppercase',
-    (stageType === "dusk" || stageType === "beginnings" || stageType === "night") && 'text-white',
-    (stageType === "day") && 'text-black'
-  )}> {title[stageType]} </p>
+  return (
+    <p
+      className={cn(
+        'text-3xl uppercase',
+        (stageType === 'dusk' || stageType === 'beginnings' || stageType === 'night') &&
+          'text-white',
+        stageType === 'day' && 'text-black',
+      )}
+    >
+      {title[stageType]}
+    </p>
+  )
 }
 
 export default dynamic(() => Promise.resolve(Title), {
