@@ -8,7 +8,7 @@ type TimeLeftType = {
   // days: number;
   hours: number
   minutes: number
-  seconds: number
+  // seconds: number
 }
 
 export default function Countdown() {
@@ -51,7 +51,8 @@ export default function Countdown() {
       <h2 className="text-[40px]">
         {/* {timeLeft.days ? `${timeLeft.days}:`: ""} */}
         {timeLeft.hours ? `${timeLeft.hours}:` : ''}
-        {timeLeft.minutes}:{timeLeft.seconds}
+        {timeLeft.minutes}
+        {/* :{timeLeft.seconds} */}
       </h2>
     </div>
   )

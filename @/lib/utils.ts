@@ -11,7 +11,7 @@ export const calculateTimeLeft = () => {
     // days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0
+    // seconds: 0
   };
   if (difference > 0) {
     timeLeft = {
@@ -19,8 +19,9 @@ export const calculateTimeLeft = () => {
       // days: Math.floor(difference / (1000 * 60 * 60 * 24)),
       // hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
       hours: Math.floor(difference / (1000 * 60 * 60)),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
+      // minutes: Math.floor((difference / 1000 / 60) % 60),
+      // seconds: Math.floor((difference / 1000) % 60),
+      minutes: Math.floor((difference / (1000 * 60)) % 60)
     };
   }
 
