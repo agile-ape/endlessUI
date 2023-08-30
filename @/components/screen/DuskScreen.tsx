@@ -6,6 +6,7 @@ import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/check-in'
 import GameTab from '../ui/GameTab'
+import PrizeInfo from '../ui/PrizeInfo'
 
 function DuskScreen() {
   return (
@@ -17,7 +18,8 @@ function DuskScreen() {
       </div>
 
       <GameTab isCouldBuyTicket={true} />
-      <AllPrice />
+      {/* <AllPrice /> */}
+      <PrizeInfo display="total" />
       <TicketList stage="dusk" />
     </div>
   )
