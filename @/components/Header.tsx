@@ -12,11 +12,11 @@ function Header() {
         <Logo />
       </div>
 
-      <div className="hidden md:block order-2">
+      <div className="hidden lg:block order-2">
         <Menu />
       </div>
 
-      <div className="flex justify-self-end md:hidden order-4">
+      <div className="flex justify-self-end lg:hidden order-4">
         <SideMenu />
       </div>
 
