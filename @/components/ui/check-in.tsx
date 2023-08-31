@@ -35,7 +35,7 @@ const CheckIn: React.FC = () => {
             className="dark:text-white text-black"
           />
         </div>
-        <Button>Submit</Button>
+        <Button className="dark:text-white dark:hover:text-black">Submit</Button>
       </div>
     </div>
   );

@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      // fontFamily: {
+      //   vt323: ['VT323', 'monospace']
+      // },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
