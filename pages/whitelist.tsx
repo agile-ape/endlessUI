@@ -77,7 +77,7 @@ const Whitelist: NextPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-center mt-7">
+      <div className="flex flex-col mx-auto gap-5 justify-center mt-7">
         <Button
           disabled={!write || isAddressWhitelisted}
           size="lg"
@@ -91,6 +91,24 @@ const Whitelist: NextPage = () => {
         >
           {isAddressWhitelisted ? 'Your address is whitelisted, yay!' : 'Join Whitelist'}
         </Button>
+        <a
+          className={cn(
+            'rounded-xl text-xl w-full h-auto px-4 py-2 cursor-pointer flex gap-2 mx-auto justify-center bg-white text-black hover:bg-[#f6f5f5] border-2 border-gray-500',
+            // isAddressWhitelisted && '',
+          )}
+          href="https://twitter.com/intent/tweet?text=Hello%20world"
+          target='_blank'
+        >
+          Share
+          <Image
+            priority
+            src="/logo/x-twitter.svg"
+            className="place-self-center"
+            height={18}
+            width={18}
+            alt="share to twitter"
+          />
+        </a>
       </div>
     </div>
   )
