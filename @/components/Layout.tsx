@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic'
 const font = VT323({
   weight: ['400'],
   subsets: ['latin-ext'],
+  variable: '--font-vt323',
 })
 
 const typeStage: Record<IApp['stage'], string> = {
