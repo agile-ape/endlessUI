@@ -76,13 +76,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* font-family: 'VT323', monospace; */
   }
 }
-
-/* body {
-  font-family: 'VT323', sans-serif;
-} */
 
 @layer components {
   .connect-btn-last {

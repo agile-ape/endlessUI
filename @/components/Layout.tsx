@@ -16,7 +16,6 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['stage'], string> = {
-  whitelist: 'City.svg',
   beginnings: 'City.svg',
   countdown: 'City.svg',
   day: 'Desert.svg',

@@ -32,6 +32,7 @@ export default function Menu() {
           <NavigationMenuLink
             className={`rounded-xl text-base shadow-md ${navigationMenuTriggerStyle()}`}
             href="https://github.com"
+            target="_blank"
           >
             Learn More <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
           </NavigationMenuLink>
@@ -41,6 +42,7 @@ export default function Menu() {
           <NavigationMenuLink
             className={`rounded-xl text-base shadow-md ${navigationMenuTriggerStyle()}`}
             href="https://github.com"
+            target="_blank"
           >
             Follow Us <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
           </NavigationMenuLink>
@@ -50,6 +52,7 @@ export default function Menu() {
           <NavigationMenuLink
             className={`rounded-xl text-base shadow-md ${navigationMenuTriggerStyle()}`}
             href="https://github.com"
+            target="_blank"
           >
             Huddle Up <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
           </NavigationMenuLink>

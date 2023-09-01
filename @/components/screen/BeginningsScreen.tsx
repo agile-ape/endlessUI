@@ -85,7 +85,7 @@ function BeginningsScreen() {
   )
 }
 
-BeginningsScreen.theme = 'light'
+// BeginningsScreen.theme = 'dark'
 
 export default dynamic(() => Promise.resolve(BeginningsScreen), {
   ssr: false,
