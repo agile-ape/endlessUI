@@ -20,7 +20,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: 'Last Man Standing',
-  projectId: '0ee8fb279a23a5ed56af0daddcd32028',
+  projectId: '1b74fa3e81f49fa371e6af83a2cfa750',
   chains,
 })
 

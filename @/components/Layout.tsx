@@ -8,6 +8,7 @@ import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
 const font = VT323({
   weight: ['400'],
@@ -33,6 +34,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const stage = useStoreState((state) => state.stage)
   const updateStage = useStoreActions((actions) => actions.updateStage)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const router = useRouter()
 
   const { isConnected } = useAccount()
 
@@ -58,11 +60,13 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   //   updateRound(Number(round))
   // }
 
+  const background = router.pathname.includes('whitelist') ? 'night.svg' : typeStage[stage]
+
   return (
     <main
       className={`${font.className} bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
       style={{
-        backgroundImage: `url(/background/${typeStage[stage]})`,
+        backgroundImage: `url(/background/${background})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
