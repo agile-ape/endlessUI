@@ -6,7 +6,7 @@ const TicketUI = () => {
     <>
       <div className="flex flex-col gap-3 w-[236px] h-[229px] my-5">
         <div
-          className="p-2 pt-[0.5rem] rounded-2xl bg-[#4C69FF] w-[236px] h-[229px] opacity-90"
+          className="p-2 pt-[0.5rem] rounded-2xl bg-[#4C69FF] w-[236px] h-[229px]"
           // style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
           style={{ backgroundImage: `url('/pepe/pepeTicket.png')`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
         >
