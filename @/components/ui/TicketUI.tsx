@@ -6,7 +6,7 @@ const TicketUI = () => {
     <>
       <div className="flex flex-col gap-3 w-[236px] h-[229px] my-5">
         <div
-          className="p-2 pt-[0.7rem] rounded-2xl bg-[#4C69FF] w-[236px] h-[229px] opacity-90"
+          className="p-2 pt-[0.5rem] rounded-2xl bg-[#4C69FF] w-[236px] h-[229px] opacity-90"
           // style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
           style={{ backgroundImage: `url('/pepe/pepeTicket.png')`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
         >
@@ -15,9 +15,10 @@ const TicketUI = () => {
             style={{ background: `url('/background/subtractTicket.svg')` }}
           >
             <p className="text-center text-[30px]">Ticket #003</p>
-            <div className="text-center flex flex-col leading-8  p-3 rounded-xl">
-              <h2 className="text-[48px] flex mx-auto">
-                <Image priority src="/logo/diamondEth.svg" height={26} width={17} alt="diamond eth" className="mr-1" />0.057
+            <div className="text-center flex justify-center leading-8 p-3 rounded-xl">
+              <Image priority src="/logo/diamondEth.svg" height={26} width={17} alt="diamond eth" className="mr-1 mb-1" />
+              <h2 className="text-[48px] ">
+                0.057
                 <span className='text-[24px]'>ETH</span>
               </h2>
               {/* <p className="text-[1rem]">last seen: 04</p> */}
