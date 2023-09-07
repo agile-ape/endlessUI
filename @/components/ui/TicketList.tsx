@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import TicketCardOld from './_TicketCard'
 import TicketCard from './TicketCard'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -111,7 +112,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         className="grid
             grid-cols-1
             sm:grid-cols-2
-            md:grid-cols-3
+            md:grid-cols-2
             xl:grid-cols-4
             2xl:grid-cols-6
             3xl:grid-cols-7
@@ -128,14 +129,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             overflow-y-scroll
           "
       >
-        <div className="w-[139.5px]">
-          <div className="uppercase px-4 py-1 rounded-xl bg-[#084E0B] text-white text-center w-[70%] mx-auto text-[12px] relative top-4 border-[1px] border-[#209902]">
-            Your Ticket
-          </div>
-
+        <div className="mt-[27px]">
           <TicketCard
-            linearGradientCard="#084E0B"
-            borderColor="#209902"
+            bgCard='bg-[#0B2D03B2]'
+            bgColorSubtract="#0B2D03B2"
+            bgValue="bg-[#0C2D1DE5]"
             isFinished={false}
             ticketLastSeen={4}
             ticketNumber={3}
@@ -149,8 +147,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
         <div className="mt-[27px]">
           <TicketCard
-            linearGradientCard="linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"
-            borderColor="linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)"
+            bgCard='bg-[#8100D0]'
+            bgColorSubtract="#0B012B"
+            bgValue="bg-[#360057CC]"
             isFinished={false}
             ticketLastSeen={4}
             ticketNumber={3}
@@ -164,8 +163,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
         <div className="mt-[27px]">
           <TicketCard
-            linearGradientCard="linear-gradient(140deg, #B18A00 0%, #E9C655 51.56%, #B18A00 77.60%)"
-            borderColor="#FFCE31"
+            bgCard='bg-[#4C69FF]'
+            bgColorSubtract="rgba(13, 3, 45, 0.80)"
+            bgValue="bg-[#0D0C2D]"
             isFinished
             ticketLastSeen={4}
             ticketNumber={5}
@@ -174,304 +174,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             ticketKillCount={10}
           />
           <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
-        </div>
-
-        <div className="mt-[27px]">
-          <TicketCard
-            linearGradientCard="#363636"
-            borderColor="#C2C2C2"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={6}
-            ticketValue={133}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777]">Check</Button>
         </div>
       </div>
       {/* </div> */}

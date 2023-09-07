@@ -1,12 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
+import SubtractSvg from './SubtractSvg'
 
 const TicketUI = () => {
   return (
     <>
       <div className="flex flex-col gap-3 w-[236px] h-[229px] my-5">
         <div
-          className="p-2 pt-[0.5rem] rounded-2xl bg-[#4C69FF] w-[236px] h-[229px]"
+          className="p-2 pt-[0.5rem] rounded-2xl bg-[#8100D0] w-[236px] h-[229px]"
           // style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
           style={{
             backgroundImage: `url('/pepe/pepeTicket.png')`,
@@ -14,12 +15,20 @@ const TicketUI = () => {
             backgroundSize: 'cover',
           }}
         >
+          {/* <Image priority src="/background/subtractTicket.svg" height={220} width={213} alt="subtract background" 
+            className="relative left-[3px] top-[2px] opacity-75" 
+            // style={{ fill: '#0B2D03B3' }}
+          /> */}
+          <SubtractSvg color={'#0B012B'}
+            className="relative left-[0.5px] top-[2px] opacity-75" 
+            // style={{ fill: '#0B2D03B3' }}
+          />
           <div
-            className="w-[220px] rounded-2xl text-white flex flex-col gap-5 py-[0.9rem] px-[0.5rem]"
-            style={{ background: `url('/background/subtractTicket.svg')` }}
+            className="relative -top-[210px] w-[220px] rounded-2xl text-white flex flex-col gap-5 py-[0.9rem] px-[0.5rem]"
+            // style={{ background: `url('/background/subtractTicket.svg')` }}
           >
             <p className="text-center text-[30px]">Ticket #003</p>
-            <div className="text-center flex justify-center leading-8 p-3 rounded-xl">
+            <div className="text-center flex justify-center leading-8 p-3 rounded-xl bg-[#360057CC] shadow-sm">
               <Image
                 priority
                 src="/logo/diamondEth.svg"
