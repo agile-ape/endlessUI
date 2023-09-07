@@ -15,14 +15,21 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+
+        whitelist:
+          'text-white bg-pink-900 hover:bg-pink-700 active:bg-pink-500 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-80',
+
+        check:
+          'text-white bg-blue-950 border border-slate-500 hover:bg-blue-700 active:bg-blue-500 focus: outline-none focus:ring focus:ring-blue-300 disabled:pointer-events-none disabled:opacity-50',
         enter:
-          'bg-blue-700 border border-2 border-zinc-200 hover:bg-blue-600 active:bg-blue-200 focus: outline-none focus:ring focus:ring-blue-300 text-white text-sm ',
-        transparent: 'bg-transparent border-none text-white text-sm',
+          'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 focus: outline-none focus:ring focus:ring-purple-300 disabled:pointer-events-none disabled:opacity-50',
+        submit:
+          'text-white bg-green-900 hover:bg-green-950 active:bg-green-800 focus: outline-none focus:ring focus:ring-green-300 disabled:pointer-events-none disabled:opacity-50',
       },
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-xl px-8',
+        lg: 'h-12 rounded-xl px-8 py-2 text-lg leading-6',
         icon: 'h-10 w-10',
       },
     },

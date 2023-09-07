@@ -1,15 +1,11 @@
-import Image from 'next/image'
+import localFont from 'next/font/local'
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 
-function Logo() {
-  return (
-    <Image
-      src={`/logo/game-logo.png`}
-      width={35}
-      height={35}
-      alt="Last Man Standing Logo"
-      className="max-w-full"
-    />
-  )
+const headlineFont = localFont({
+  src: '../../../public/fonts/headline.ttf',
+  display: 'swap',
+  // fallback: ['sans-serif'],
+})
+export default function Logo() {
+  return <div className={`logo-last ${headlineFont.className}`}>last</div>
 }
-
-export default Logo

@@ -12,7 +12,7 @@ const stagePayload: Record<number, IApp['stage']> = {
 }
 
 export const appStore = createStore<StoreModel>({
-  stage: 'countdown', // initial state will be whitelist
+  stage: 'countdown', 
   ticketState: 'default',
   round: 0,
   insertKeyword: action((state, payload) => {

@@ -34,25 +34,14 @@ export default function CustomConnectButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button" className={`connect-btn-last`}>
+                  <button onClick={openConnectModal} type="button" className="connect-last">
                     Connect Wallet
                   </button>
                 )
               }
               if (chain.unsupported) {
                 return (
-                  <button
-                    onClick={openChainModal}
-                    type="button"
-                    className={`h-10 w-max rounded-xl
-                    bg-gradient-to-r from-sky-300 to-indigo-500
-                    py-[4px] px-[20px]
-                    text-base font-semibold text-rose-900 uppercase
-                    transition-colors
-                    hover:bg-accent hover:text-indigo-900
-                    focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
-                    `}
-                  >
+                  <button onClick={openChainModal} type="button" className="connect-last">
                     <Image
                       priority
                       src="/logo/game-logo.png"
@@ -105,13 +94,9 @@ export default function CustomConnectButton() {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="
-                    rounded-full bg-slate-300 text-base
-                    bg-gradient-to-r from-sky-300 to-indigo-500
-                    text-white px-3 py-1
-                    "
+                    className="connect-last"
                   >
-                    {account.displayName} {account.displayBalance}
+                    {account.displayName}
                     {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </button>
                 </div>

@@ -1,10 +1,13 @@
 import React from 'react'
 import type { FC } from 'react'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { HelpCircle } from 'lucide-react'
+
 import AllPrize from './AllPrize'
 import PrizeAmount from './PrizeAmount'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Image from 'next/image'
+// import EtherSVG as ReactComponent from '../../../public/icon/ether.svg'
 
 interface PrizeInfoType {
   display: string
@@ -27,8 +30,7 @@ type TitleWordingVariants = {
 const PrizeInfo: FC<PrizeInfoType> = ({ display }) => {
   return (
     <div
-      className="text-center bg-[#F6F6F6] dark:bg-[#1C1C1C]
-    border border-[#EBEBEB] dark:border-[#444242]
+      className="text-center bg-slate-900 dark:bg-slate-800 text-white
     flex flex-col items-center w-[220px] mx-auto rounded-lg p-2"
     >
       <div className="flex justify-center items-center gap-2">
@@ -37,7 +39,8 @@ const PrizeInfo: FC<PrizeInfoType> = ({ display }) => {
         <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
-              <QuestionMarkCircledIcon className="w-[20px] h-[20px]" />
+              {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
+              <HelpCircle size={24} className="stroke-slate-100" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <AllPrize />
@@ -50,7 +53,8 @@ const PrizeInfo: FC<PrizeInfoType> = ({ display }) => {
         <Image
           priority
           src={`/icon/ether.svg`}
-          style={{ marginLeft: '1px' }}
+          className="ml-1 stroke-slate-900"
+          // style={{ marginLeft: '1px' }}
           height={14}
           width={14}
           alt="ether"

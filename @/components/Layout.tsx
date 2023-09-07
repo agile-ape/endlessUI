@@ -19,10 +19,11 @@ const font = VT323({
 const typeStage: Record<IApp['stage'], string> = {
   beginnings: 'City.svg',
   countdown: 'City.svg',
+  // countdown: 'DayPepe.svg',
   day: 'Desert.svg',
   dusk: 'Dusk.svg',
   night: 'Night.avif',
-  lastmanfound: 'Snow.svg',
+  lastmanfound: 'Snow.avif',
 }
 
 type LayoutProps = {
@@ -60,20 +61,17 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   //   updateRound(Number(round))
   // }
 
-  const background = router.pathname.includes('whitelist') ? 'night.svg' : typeStage[stage]
+  const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[stage]
 
   return (
     <main
       className={`${font.className} bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
       style={{
         backgroundImage: `url(/background/${background})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
       }}
     >
       <Metadata {...metadata} />
-      <div>
+      <div className="container mx-auto min-w-[400px]">
         <Header />
         {children}
       </div>

@@ -7,12 +7,12 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 function Header() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 items-center container mx-auto pt-4">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 items-center py-3 px-5">
       <div className="flex justify-start order-1">
         <Logo />
       </div>
 
-      <div className="hidden lg:block order-2">
+      <div className="hidden lg:block order-2 flex justify-self-center">
         <Menu />
       </div>
 
@@ -20,7 +20,7 @@ function Header() {
         <SideMenu />
       </div>
 
-      <div className="hidden md:flex justify-self-end gap-2 order-3">
+      <div className="hidden lg:flex justify-self-end gap-2 order-3">
         <DarkModeSwitcher />
         <CustomConnectButton />
       </div>

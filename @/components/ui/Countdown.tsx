@@ -1,4 +1,8 @@
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import Image from 'next/image'
+
+import { HelpCircle } from 'lucide-react'
+import { Timer } from 'lucide-react'
+
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
@@ -7,7 +11,7 @@ type TimeLeftType = {
   // days: number;
   hours: number
   minutes: number
-  // seconds: number
+  seconds: number
 }
 
 type Props = {
@@ -23,6 +27,7 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   return {
     hours,
     minutes,
+    seconds,
   }
 }
 
@@ -49,41 +54,41 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
 
   return (
     <div
-      className="text-center bg-[#F6F6F6] dark:bg-[#1C1C1C]
-    border border-[#EBEBEB] dark:border-[#444242]
-    w-[220px] mx-auto rounded-lg p-2"
+      className="flex justify-center"
     >
-      <div className="flex justify-center items-center gap-2">
-        <p className="text-[20px]">Time Left</p>
+      <div className="flex flex-row rounded-xl bg-neutral-300 dark:bg-neutral-800 p-1 items-center gap-2">
+        
+        <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
+
+        <div className="text-2xl">
+            {timeLeft && !isNaN(timeLeft) ? (
+              <>
+                {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:{formatTime(timeLeft).seconds} 
+              </>
+            ) : (
+              '00:00'
+            )}
+        </div>
+        {/* use this button if the states supports change phase */}
+        {/* <Button
+          className="bg-[#31197B] text-white rounded-xl my-3"
+        >Change Phase</Button> */}
 
         <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
-              <QuestionMarkCircledIcon className="w-[20px] h-[20px]" />
+              {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
+              <HelpCircle size={24} className="stroke-slate-900 dark:stroke-slate-100" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                <strong>Time left for this phase.</strong> Once timer hits zero, anyone can trigger
-                the phase change.
+                <strong>Time left for this phase (HH:MM:SS) </strong> Once timer hits zero, anyone
+                can trigger the phase change.
               </p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
-      {/* use this button if the states supports change phase */}
-      {/* <Button
-        className="bg-[#31197B] text-white rounded-xl my-3"
-      >Change Phase</Button> */}
-
-      <h2 className="text-[40px]">
-        {timeLeft && !isNaN(timeLeft) ? (
-          <>
-            {formatTime(timeLeft).hours}H:{formatTime(timeLeft).minutes}M
-          </>
-        ) : (
-          '00:00'
-        )}
-      </h2>
     </div>
   )
 }

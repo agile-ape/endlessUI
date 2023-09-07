@@ -5,7 +5,7 @@ import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/check-in'
+import CheckIn from '../ui/CheckIn'
 
 export default function DayScreen() {
   return (
@@ -16,8 +16,8 @@ export default function DayScreen() {
         <Title stageType={'day'} />
       </div>
       <GameTab isCouldBuyTicket={true} />
-      <Countdown />
-      <CheckIn />
+      <Countdown countdownTime={0} timeFlag={0} />
+      {/* <CheckIn /> */}
       <NextClaim />
       <TicketList stage="beginning" />
     </div>

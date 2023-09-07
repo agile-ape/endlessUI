@@ -3,6 +3,8 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 
 import { Button } from '../@/components/ui/button'
+import { HelpCircle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { whitelistContractObj } from '../services/constant'
@@ -43,14 +45,27 @@ const Whitelist: NextPage = () => {
   return (
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
-        <p className="text-xl"> Crypto is about endurance </p>
-        <p className="text-xl"> How many rounds can you go</p>
-        <p className="text-3xl uppercase">
-          {' '}
-          Join the whitelist for{' '}
+        <p className="text-xl text-white"> Endurance is the game </p>
+        <p className="text-xl text-white"> How many rounds can you go</p>
+        <p className="flex justify-center items-center">
+          <span className="text-3xl uppercase text-white">Join the whitelist now</span>
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircle size={24} className="ml-1 align-end text-white" />
+              </TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                  Joining the whitelist allows you to buy tickets before others when the game
+                  begins. Learn more, Follow us, or Huddle up to find out more.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* for{' '}
           <a href="https://github.com/" target="_blank" className="underline">
             early access
-          </a>
+          </a> */}
         </p>
       </div>
       <div className="flex place-content-center">
@@ -77,38 +92,16 @@ const Whitelist: NextPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col mx-auto gap-5 justify-center mt-7">
+      <div className="flex justify-center mt-7">
         <Button
           disabled={!write || isAddressWhitelisted}
           size="lg"
-          variant="enter"
-          className={cn(
-            'text-xl w-fit h-auto px-4 py-2 cursor-pointer',
-            isAddressWhitelisted && '',
-          )}
+          variant="whitelist"
           onClick={() => write()}
           isLoading={isLoading && !isAddressWhitelisted}
         >
-          {isAddressWhitelisted ? 'Your address is whitelisted, yay!' : 'Join Whitelist'}
+          {isAddressWhitelisted ? 'Your address is whitelisted' : 'Join Whitelist'}
         </Button>
-        <a
-          className={cn(
-            'rounded-xl text-xl w-full h-auto px-4 py-2 cursor-pointer flex gap-2 mx-auto justify-center bg-white text-black hover:bg-[#f6f5f5] border-2 border-gray-500',
-            // isAddressWhitelisted && '',
-          )}
-          href="https://twitter.com/intent/tweet?text=Hello%20world"
-          target='_blank'
-        >
-          Share
-          <Image
-            priority
-            src="/logo/x-twitter.svg"
-            className="place-self-center"
-            height={18}
-            width={18}
-            alt="share to twitter"
-          />
-        </a>
       </div>
     </div>
   )

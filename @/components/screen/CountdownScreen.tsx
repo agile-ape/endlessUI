@@ -42,18 +42,30 @@ function CountdownScreen() {
   }
 
   return (
-    <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
+    <div className="flex flex-col gap-5">
       <div className="text-center">
-        <p className="text-xl text-white"> Game Has Not Started </p>
-        {/* <Round round={0} stageType={'countdown'} /> */}
+        <p className="text-3xl uppercase beginnings-last"> Countdown </p>
+        <Round round={0} stageType={'countdown'} />
+        <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
         <Title stageType={'countdown'} />
       </div>
 
-      <GameTab isCouldBuyTicket={true} />
+      <div className="flex flex-col lg:flex-row gap-3 mx-8 mb-8">
+        <div>
+          <div
+            className="flex flex-col gap-3 rounded-xl px-3 py-4
+            lg:bg-slate-300 lg:bg-opacity-50
+            dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
+          >
+            <GameTab isCouldBuyTicket={true} />
+            <PrizeInfo display="total" />
+          </div>
+        </div>
 
-      <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-      <PrizeInfo display="total" />
-      <TicketList stage="beginning" />
+        <div className="grow">
+          <TicketList stage="beginning" />
+        </div>
+      </div>
     </div>
   )
 }

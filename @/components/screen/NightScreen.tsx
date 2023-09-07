@@ -6,7 +6,7 @@ import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/check-in'
+import CheckIn from '../ui/CheckIn'
 import GameTab from '../ui/GameTab'
 
 function NightScreen() {

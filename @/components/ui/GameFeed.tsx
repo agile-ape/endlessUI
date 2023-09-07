@@ -6,8 +6,8 @@ const GameFeed = () => {
   return (
     <div
       className="md:w-[400px] w-[100%] rounded-2xl
-      mx-auto px-4 py-2 grid grid-cols-1 text-white
-      bg-muted dark:bg-[#272727] overflow-auto max-h-[300px]
+      mx-auto px-4 py-2 grid grid-cols-1 text-white text-2xl
+      bg-neutral-400 dark:bg-neutral-800 overflow-auto max-h-[680px]
     "
       // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
     >
@@ -56,7 +56,31 @@ const GameFeed = () => {
         number={13}
         text="(attacker: 12)"
         timestamp="4 minutes"
-        isLastIndex={true}
+        isLastIndex={false}
+      />
+
+      <GameTextVariant
+        variant="checked_in"
+        number={15}
+        text="Ticket value: 10.000ETH"
+        timestamp="4 minutes"
+        isLastIndex={false}
+      />
+
+      <GameTextVariant
+        variant="exit"
+        number={11}
+        text="at Rank 10 with 1.5ETH (0.5 from pool)"
+        timestamp="4 minutes"
+        isLastIndex={false}
+      />
+
+      <GameTextVariant
+        variant="killed"
+        number={13}
+        text="(attacker: 12)"
+        timestamp="4 minutes"
+        isLastIndex={false}
       />
 
       <GameTextVariant
@@ -80,7 +104,7 @@ const GameFeed = () => {
         number={14}
         text="(attacker: 12)"
         timestamp="4 minutes"
-        isLastIndex={false}
+        isLastIndex={true}
       />
     </div>
   )

@@ -1,7 +1,6 @@
-import { HamburgerMenuIcon } from '@radix-ui/react-icons'
+import { Menu } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import CustomConnectButton from '@/components/ui/connect-button'
-import { ExternalLinkIcon } from '@radix-ui/react-icons'
-import Image from 'next/image'
 
 import {
   DropdownMenu,
@@ -21,48 +20,38 @@ import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 export default function SideMenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        className="rounded-xl text-base p-2 shadow-md
-        bg-gradient-to-r from-sky-300 to-indigo-500
-        hover:bg-red hover:text-indigo-900
-        focus:bg-red focus:text-indigo-900
-        "
-      >
-        <HamburgerMenuIcon className="h-4 w-4"></HamburgerMenuIcon>
-        {/* <Image
-          priority
-          className="stroke-3 fill-slate-300"
-          src="/icon/hamburger.svg"
-          height={18}
-          width={18}
-          alt="hamburger-icon"
-        /> */}
+      <DropdownMenuTrigger className="connect-last px-2 py-2">
+        <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuSub>
+      <DropdownMenuContent align="end" className="bg-neutral-200">
+        <DropdownMenuSub >
           <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent
               hideWhenDetached={false}
               sideOffset={5}
-              className="sm:w-[100px] p-2 rounded-xl text-sm shadow-md"
+              className="w-[50px] sm:w-[100px] p-2 rounded-xl text-sm shadow-md"
             >
-              Party rock Let's go! Party rock is in the house tonight Everybody just have a good
-              time And we gon' make you lose your mind Everybody just have a good time (clap!) Party
-              rock is in the house tonight Everybody just have a good time (I can feel it baby!) And
-              we gon' make you lose your mind We just wanna see you... shake that!
+              <ol>
+              <li>1. Buy your ticket during <span>Beginning / Countdown</span> </li>
+              <li>2. Submit the <a href="https://github.com" target="_blank">keyword of the day</a> during <span>Day</span></li>
+              <li>3. Check and kill others that didn't submit the right keyword in the <span>Night</span></li>
+              <li>4. Value of dead ticket goes to ticket below - Dead #4 --{'>'} #3</li>
+              <li>5. The longer you last, the more you earn from the prize pool</li>
+              <li>6. You can leave the game anytime during the <span>Day</span></li>
+            </ol>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuItem className="cursor-pointer">
           Learn more
-          <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
+          <ExternalLink size={16} className="ml-1"></ExternalLink>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          Follow Us <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
+        <DropdownMenuItem className="cursor-pointer">
+          Follow Us <ExternalLink size={16} className="ml-1"></ExternalLink>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          Huddle Up <ExternalLinkIcon className="ml-1"></ExternalLinkIcon>
+        <DropdownMenuItem className="cursor-pointer">
+          Huddle Up <ExternalLink size={16} className="ml-1"></ExternalLink>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <CustomConnectButton />

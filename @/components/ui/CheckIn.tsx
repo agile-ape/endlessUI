@@ -2,6 +2,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { TriangleRightIcon } from '@radix-ui/react-icons'
 import { TriangleDownIcon } from '@radix-ui/react-icons'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { HelpCircle } from 'lucide-react'
+import type { IApp } from 'types/app'
+
+import type { FC } from 'react'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
@@ -13,32 +17,35 @@ import OtpInput from 'react-otp-input'
 function CheckInBox() {
   // const [open, setOpen] = React.useState(true);
   const [otpInput, setOtpInput] = useState<string>()
+  // const [isOpen, setIsOpen] = useState(!disabled)
   // const { theme } = useTheme();
-
+  // outer box - #209902]
+  // innter box - [#54B060]
   return (
     <details
       className="
-      group w-[327px] border-[1px] border-[#084E0B] rounded-xl
+      group w-[220px] rounded-xl
       cursor-pointer
-      bg-[#209902] flex flex-col mx-auto"
+      bg-green-700 flex flex-col mx-auto"
       open
     >
       <summary
         className="mb-1 flex justify-between flex-wrap items-center
         focus-visible:outline-none focus-visible:ring
         rounded group-open:rounded-b-none group-open:z-[1] relative
-        px-4 py-3"
+        px-3 py-1"
       >
         <div className="flex gap-2">
           <div className="text-2xl capitalize text-white">Check in</div>
 
-          <TooltipProvider delayDuration={50}>
+          <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger>
-                <QuestionMarkCircledIcon className="w-[20px] h-[20px] text-white" />
+                {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px] text-white" /> */}
+                <HelpCircle size={24} className="stroke-slate-100" />
               </TooltipTrigger>
               <TooltipContent side="top" align="center">
-                <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                   Enter the 4-letter keyword of the day to stay in the game. Keyword can be found on{' '}
                   <Link href="https://twitter.com/home">
                     <a className="text-blue-500 underline"> Twitter/X</a>{' '}
@@ -64,10 +71,10 @@ function CheckInBox() {
       <div
         className="
           m-4 mt-0
-          rounded-xl py-[16px] px-[24px]
-          bg-[#54B060]
+          rounded-xl py-3 px-3
+          bg-green-600
           capitalize text-center text-white
-          flex flex-col gap-4"
+          flex flex-col gap-5"
       >
         <p className="text-xl">Enter keyword</p>
 
@@ -76,8 +83,8 @@ function CheckInBox() {
           onChange={setOtpInput}
           numInputs={4}
           inputStyle={{
-            width: '80%',
-            height: '60px',
+            width: '90%',
+            height: '50px',
             // color: theme === 'light' ? 'black' : 'white',
             borderRadius: '12px',
             margin: '0 auto',
@@ -87,7 +94,7 @@ function CheckInBox() {
           className="dark:text-white text-black"
         />
 
-        <Button className="text-lg dark:text-white dark:bg-grey-200 dark:hover:text-black">
+        <Button variant="submit" size="lg">
           Submit
         </Button>
       </div>
