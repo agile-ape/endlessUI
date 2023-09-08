@@ -14,7 +14,11 @@ import React, { useState } from 'react'
 import OtpInput from 'react-otp-input'
 // import { useTheme } from 'next-themes';
 
-function CheckInBox() {
+type Props = {
+  onSubmit: (input: string) => Promise<void>
+}
+
+function CheckInBox({ onSubmit }: Props) {
   // const [open, setOpen] = React.useState(true);
   const [otpInput, setOtpInput] = useState<string>()
   // const [isOpen, setIsOpen] = useState(!disabled)
@@ -94,7 +98,16 @@ function CheckInBox() {
           className="dark:text-white text-black"
         />
 
-        <Button variant="submit" size="lg">
+        <Button
+          variant="submit"
+          size="lg"
+          onClick={async () => {
+            if (otpInput) {
+              await onSubmit(otpInput)
+              setOtpInput('')
+            }
+          }}
+        >
           Submit
         </Button>
       </div>

@@ -9,6 +9,10 @@ import GameFeed from './GameFeed'
 import GameTextVariant from './GameTextVariant'
 import CheckIn from '../ui/CheckIn'
 import { HelpCircle } from 'lucide-react'
+import { useContractWrite, useSignMessage } from 'wagmi'
+import { encodePacked, keccak256 } from 'viem'
+import { defaultContractObj } from '../../../services/constant'
+import { toast } from './use-toast'
 
 type GameTabType = {
   onBuy?: () => Promise<void>
@@ -16,6 +20,47 @@ type GameTabType = {
 }
 
 const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
+  const { signMessageAsync } = useSignMessage({})
+  const { writeAsync } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkIn',
+  })
+
+  const onSubmit = async (input: string) => {
+    try {
+      const hashedInput = keccak256(encodePacked(['string'], [input]))
+      const hash = await signMessageAsync({
+        message: hashedInput,
+      })
+
+      const r = hash.slice(0, 66) as `0x${string}`
+      const s = ('0x' + hash.slice(66, 130)) as `0x${string}`
+      const v = '0x' + hash.slice(130, 132)
+
+      const signature = encodePacked(['bytes32', 'bytes32', 'uint8'], [r, s, Number(v)])
+
+      const result = await writeAsync({
+        args: [signature],
+      })
+
+      toast({
+        title: 'Check in success!',
+        description: <p className="text-base">You have successfully checked in.</p>,
+      })
+
+      console.log(result)
+    } catch (error: any) {
+      console.log({ error: error?.cause })
+      // @ts-ignore
+      const errorMsg = error?.cause?.shortMessage || error?.message
+      toast({
+        variant: 'destructive',
+        title: 'Buy ticket failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
+
   return (
     <Tabs defaultValue="ticket" className="mx-auto">
       <TabsList className="flex justify-center rounded-xl w-[220px] mx-auto px-2 py-2">
@@ -65,7 +110,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
           )}
 
           {!isCouldBuyTicket && <div className="flex justify-center mb-4">Your Ticket</div>}
-          <CheckIn />
+          <CheckIn onSubmit={onSubmit} />
         </TabsContent>
         <TabsContent value="game">
           <GameFeed />
