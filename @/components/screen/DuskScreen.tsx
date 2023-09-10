@@ -13,7 +13,7 @@ function DuskScreen() {
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-white"> Dusk </p>
-        <Round round={0} stageType={'dusk'} />
+        <Round round={0} phaseType={'dusk'} />
         <Title stageType={'dusk'} />
       </div>
 

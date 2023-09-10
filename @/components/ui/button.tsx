@@ -9,15 +9,25 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-black text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        default: 'text-black dark:text-white whitespace-nowrap bg-neutral-400 hover:bg-neutral-500 dark:hover:bg-neutral-800 dark:bg-neutral-900 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+        destructive: 'text-black dark:text-white whitespace-nowrap bg-transparent hover:border hover:border-neutral-500 dark:hover:border dark:hover:bg-neutral-700 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+        
+        // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-
+        
+        play: 'text-lime-800 dark:text-lime-300 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-300 focus:outline-none focus:ring focus:ring-lime-500 disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-300',
+        
+        // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
+        
+        link: 'text-black dark:text-white whitespace-nowrap bg-transparent focus: outline-none focus:ring disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
+        
         whitelist:
-          'text-white bg-pink-900 hover:bg-pink-700 active:bg-pink-500 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-80',
+          'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+        
+        whitelist2:
+          'text-white pink-900 hover:bg-pink-700 active:bg-pink-500 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-80',
 
         check:
           'text-white bg-blue-950 border border-slate-500 hover:bg-blue-700 active:bg-blue-500 focus: outline-none focus:ring focus:ring-blue-300 disabled:pointer-events-none disabled:opacity-50',
@@ -29,7 +39,8 @@ const buttonVariants = cva(
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
-        lg: 'h-12 rounded-xl px-8 py-2 text-lg leading-6',
+        md: 'h-10 rounded-md px-3 text-base leading-6',
+        lg: 'h-12 rounded-xl px-5 py-1 text-lg leading-10',
         icon: 'h-10 w-10',
       },
     },

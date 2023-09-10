@@ -12,11 +12,11 @@ export default function LastManScreen() {
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-white"> Last Man Found </p>
-        <Round round={0} stageType={'lastmanfound'} />
+        <Round round={0} phaseType={'lastmanfound'} />
         <Title stageType={'night'} />
       </div>
       {/* <Ticket isCouldRedeemedTicket={true} /> */}
-      <Countdown />
+      <Countdown countdownTime={0} timeFlag={0} />
       <NextClaim />
       <TicketList stage="beginning" />
     </div>

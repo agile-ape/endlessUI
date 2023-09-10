@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import React, { useState } from 'react'
-
+import React from 'react'
 import { Button } from '../@/components/ui/button'
-import { HelpCircle } from 'lucide-react'
+import { AlertCircle, HelpCircle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
@@ -29,15 +28,25 @@ const Whitelist: NextPage = () => {
       const errorMsg = error?.cause?.shortMessage || error?.message
       toast({
         variant: 'destructive',
-        title: 'Whitelist failed 😭',
-        description: <p className="text-base">Reason: {errorMsg}</p>,
+        // title: 'Whitelist failed 😭',
+        description: (
+          <div className="flex flex-row">
+            <AlertCircle size={24} className="mr-2 stroke-red-800" />
+            <span className="text-base">Reason: {errorMsg}</span>
+          </div>
+        ),
       })
     },
     onSuccess(data) {
       console.log('Success', data)
       toast({
-        title: 'Whitelist success',
-        description: 'Enjoy your early access!',
+        variant: 'success',
+        description: (
+          <div className="flex flex-row">
+            <AlertCircle size={24} className="mr-2 stroke-green-800" />
+            <span className="text-base"> Welcome! Congrats on being early.</span>
+          </div>
+        ),
       })
     },
   })
@@ -45,10 +54,10 @@ const Whitelist: NextPage = () => {
   return (
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
-        <p className="text-xl text-white"> Endurance is the game </p>
-        <p className="text-xl text-white"> How many rounds can you go</p>
+        <p className="text-xl text-white capitalize"> A game of endurance</p>
+        <p className="text-xl text-gray-400"> How many rounds can you last</p>
         <p className="flex justify-center items-center">
-          <span className="text-3xl uppercase text-white">Join the whitelist now</span>
+          <span className="text-3xl uppercase text-white">Join whitelist now</span>
           <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger>
@@ -57,7 +66,7 @@ const Whitelist: NextPage = () => {
               <TooltipContent side="top" align="center">
                 <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
                   Joining the whitelist allows you to buy tickets before others when the game
-                  begins. Learn more, Follow us, or Huddle up to find out more.
+                  begins. Follow us on Twitter to get updates.
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -93,15 +102,17 @@ const Whitelist: NextPage = () => {
       </div>
 
       <div className="flex justify-center mt-7">
-        <Button
-          disabled={!write || isAddressWhitelisted}
-          size="lg"
-          variant="whitelist"
-          onClick={() => write()}
-          isLoading={isLoading && !isAddressWhitelisted}
-        >
-          {isAddressWhitelisted ? 'Your address is whitelisted' : 'Join Whitelist'}
-        </Button>
+        <div className="bg-gradient-to-br from-orange-600 to-yellow-400 rounded-xl p-0.5 shadow-md shadow-orange-400/70">
+          <Button
+            disabled={!write || isAddressWhitelisted}
+            size="lg"
+            variant="whitelist"
+            onClick={() => write()}
+            isLoading={isLoading && !isAddressWhitelisted}
+          >
+            {isAddressWhitelisted ? 'Your address is whitelisted' : 'Join Whitelist'}
+          </Button>
+        </div>
       </div>
     </div>
   )

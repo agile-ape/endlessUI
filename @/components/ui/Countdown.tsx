@@ -1,11 +1,16 @@
 import Image from 'next/image'
 
+
 import { HelpCircle } from 'lucide-react'
 import { Timer } from 'lucide-react'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
+import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
+import { toast } from '@/components/ui/use-toast'
+import PhaseChange from './PhaseChange'
 
 type TimeLeftType = {
   // days: number;
@@ -32,9 +37,10 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 }
 
 export default function Countdown({ timeFlag, countdownTime }: Props) {
+   
   const endTime = new Date(timeFlag * 1000 + countdownTime * 1000)
   const [timeLeft, setTimeLeft] = useState<number>()
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       // Calculate the time left in each tick
@@ -58,21 +64,18 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
     >
       <div className="flex flex-row rounded-xl bg-neutral-300 dark:bg-neutral-800 p-1 items-center gap-2">
         
-        <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
-
-        <div className="text-2xl">
-            {timeLeft && !isNaN(timeLeft) ? (
+        <div className="text-2xl flex flex-row">
+            {/* {timeLeft && !isNaN(timeLeft) ? (
               <>
+                <Timer size={28} className="mr-1 stroke-slate-900 dark:stroke-slate-100" />
                 {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:{formatTime(timeLeft).seconds} 
               </>
-            ) : (
-              '00:00'
-            )}
+            ) : ( */}
+              <PhaseChange phaseType={'night'} />
+            {/* )} */}
         </div>
-        {/* use this button if the states supports change phase */}
-        {/* <Button
-          className="bg-[#31197B] text-white rounded-xl my-3"
-        >Change Phase</Button> */}
+        
+        <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
 
         <TooltipProvider delayDuration={50}>
           <Tooltip>

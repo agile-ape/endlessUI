@@ -40,6 +40,7 @@ module.exports = {
       // },
       fontFamily: {
         sans: ['VT323', ...defaultTheme.fontFamily.sans],
+        headline:["headline"],
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -1,7 +1,8 @@
 interface IApp {
-  stage: 'beginnings' | 'countdown' | 'day' | 'dusk' | 'night' | 'lastmanfound'
+  phase: 'beginnings' | 'countdown' | 'day' | 'dusk' | 'night' | 'lastmanfound'
   round: number
   ticketState: 'default' | 'checked' | 'checkin' | 'dead' | 'redeemed' | 'beforeBuy'
+  id: bigint
   // disabled: boolean
 }
 

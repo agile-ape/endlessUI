@@ -21,7 +21,7 @@ function Header() {
       </div>
 
       <div className="hidden lg:flex justify-self-end gap-2 order-3">
-        <DarkModeSwitcher />
+        {/* <DarkModeSwitcher /> */}
         <CustomConnectButton />
       </div>
     </div>

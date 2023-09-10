@@ -14,6 +14,8 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
+import HowToPlay from './ui/HowToPlay'
+import { Button } from './ui/button'
 
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 
@@ -23,10 +25,15 @@ export default function SideMenu() {
       <DropdownMenuTrigger className="connect-last px-2 py-2">
         <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-neutral-200">
-        <DropdownMenuSub >
-          <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
+      <DropdownMenuContent align="end" className="bg-blue-950 flex flex-col justify-center">
+        
+        <DropdownMenuSub>
+          <HowToPlay />
+        </DropdownMenuSub>
+
+        
+          {/* <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger> */}
+          {/* <DropdownMenuPortal>
             <DropdownMenuSubContent
               hideWhenDetached={false}
               sideOffset={5}
@@ -41,18 +48,13 @@ export default function SideMenu() {
               <li>6. You can leave the game anytime during the <span>Day</span></li>
             </ol>
             </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+          </DropdownMenuPortal> */}
         <DropdownMenuItem className="cursor-pointer">
-          Learn more
-          <ExternalLink size={16} className="ml-1"></ExternalLink>
+          <a href="https://twitter.com/lastman0x" target="_blank">
+          <Button variant="link" size="md">Follow Us <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
+          </a> 
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          Follow Us <ExternalLink size={16} className="ml-1"></ExternalLink>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          Huddle Up <ExternalLink size={16} className="ml-1"></ExternalLink>
-        </DropdownMenuItem>
+        
         <DropdownMenuItem>
           <CustomConnectButton />
         </DropdownMenuItem>

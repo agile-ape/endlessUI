@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+@font-face {
+  font-family: "headline";
+  src: url("../public/fonts/headline.ttf");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,32 +101,32 @@
     text-[30px]
     text-white
     transition-colors
-    hover:bg-zinc-200 hover:text-indigo-900
+    /* hover:bg-zinc-200 hover:text-indigo-900 */
+    hover:bg-zinc-200 hover:text-blue-950
+
     cursor-default
   }
 
   .menu-last {
     @apply
-    bg-slate-900
+    /* bg-transparent */
     text-white
-    dark:border
-    dark:border-white
     shadow-md
-    hover:bg-slate-500
-    focus:bg-slate-500
-    data-[active]:bg-slate-700
-    data-[state=open]:bg-slate-900
+    /* hover:bg-slate-500 */
+    /* focus:bg-slate-500 */
+    /* data-[active]:bg-slate-700 */
+    data-[state=open]:bg-blue-950
     disabled:pointer-events-none
     disabled:opacity-50
   }
 
   .beginnings-last {
-    @apply text-blue-200
+    @apply text-blue-100
 
   }
 
   .day-last {
-    @apply text-lime-700
+    @apply text-lime-500
 
   }
 

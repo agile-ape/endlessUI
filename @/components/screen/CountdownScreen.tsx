@@ -44,9 +44,10 @@ function CountdownScreen() {
   return (
     <div className="flex flex-col gap-5">
       <div className="text-center">
-        <p className="text-3xl uppercase beginnings-last"> Countdown </p>
-        <Round round={0} stageType={'countdown'} />
+        <p className="text-3xl font-headline uppercase beginnings-last"> Countdown </p>
+        <Round round={0} phaseType={'countdown'} />
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
+        {/* <br></br> */}
         <Title stageType={'countdown'} />
       </div>
 
@@ -62,9 +63,10 @@ function CountdownScreen() {
           </div>
         </div>
 
-        <div className="grow">
-          <TicketList stage="beginning" />
-        </div>
+          <div className="grow">
+            <TicketList stage="beginning" />
+          </div>
+        
       </div>
     </div>
   )

@@ -16,9 +16,10 @@ const font = VT323({
   variable: '--font-vt323',
 })
 
-const typeStage: Record<IApp['stage'], string> = {
+const typeStage: Record<IApp['phase'], string> = {
   beginnings: 'City.svg',
   countdown: 'City.svg',
+  // countdown: 'DayPepe.svg',
   // countdown: 'DayPepe.svg',
   day: 'Desert.svg',
   dusk: 'Dusk.svg',
@@ -32,7 +33,7 @@ type LayoutProps = {
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
-  const stage = useStoreState((state) => state.stage)
+  const phase = useStoreState((state) => state.phase)
   const updateStage = useStoreActions((actions) => actions.updateStage)
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const router = useRouter()
@@ -61,7 +62,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   //   updateRound(Number(round))
   // }
 
-  const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[stage]
+  const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[phase]
 
   return (
     <main
@@ -71,7 +72,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       }}
     >
       <Metadata {...metadata} />
-      <div className="container mx-auto min-w-[400px]">
+      <div className="container mx-auto min-w-[360px]">
         <Header />
         {children}
       </div>

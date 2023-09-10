@@ -1,5 +1,4 @@
 import localFont from 'next/font/local'
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 
 const headlineFont = localFont({
   src: '../../../public/fonts/headline.ttf',
@@ -8,4 +7,5 @@ const headlineFont = localFont({
 })
 export default function Logo() {
   return <div className={`logo-last ${headlineFont.className}`}>last</div>
+  // return <div className="logo-last font-headline">last</div>
 }

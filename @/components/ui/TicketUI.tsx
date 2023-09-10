@@ -1,34 +1,90 @@
+// @ts-nocheck
 import React from 'react'
+import type { FC } from 'react'
+import type { IApp } from 'types/app'
 import Image from 'next/image'
-import SubtractSvg from './SubtractSvg'
+import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 
-const TicketUI = () => {
+type TicketUIType = {
+  ticketType: IApp['id']
+}
+
+const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
+  const { data: playerAddress } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'idToPlayer',
+    args: [ticketType as bigint],
+  })
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [playerAddress as `0x${string}`],
+  })
+
+  console.log(playerTicket)
+  let ticketId = playerTicket[0]?.toString()
+  let ticketAddress = playerTicket[1]?.toString()
+  let ticketSignature = playerTicket[2]?.toString()
+  let ticketStatus = playerTicket[3]?.toString()
+  let ticketLastSeen = playerTicket[4]?.toString()
+  let ticketIsInPlay = playerTicket[5]?.toString()
+  let ticketValue = (playerTicket[6] / BigInt(100000000000000000))?.toString()
+  let ticketPurchasePrice = playerTicket[7]?.toString()
+  let ticketRedeemValue = playerTicket[8]?.toString()
+  let ticketBullets = playerTicket[9]?.toString()
+  let ticketKillCount = playerTicket[10]?.toString()
+  let ticketRank = playerTicket[11]?.toString()
+
+  //  0 uint id;
+  //  1 address player;
+  //  2 bytes sign;
+  //  3 Status status;
+  //  4 uint lastSeen;
+  //  5 bool isInPlay;
+  //  6 uint value;
+  //  7 uint purchasePrice;
+  //  8 uint redeemValue;
+  //  9 uint bullets;
+  //  10 uint killCount;
+  //  11 uint rank;
+
   return (
     <>
-      <div className="flex flex-col gap-3 w-[236px] h-[229px] my-5">
+      <div className="flex flex-col gap-3 m-3 w-[240px]">
         <div
-          className="p-2 pt-[0.5rem] rounded-2xl bg-[#8100D0] w-[236px] h-[229px]"
-          // style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
+          // checked bg-blue-800
+          // new bg-purple-800
+          // checkedIn bg-lime-700
+          // killed bg-stone-700
+          // redeem
+          className="p-2 rounded-2xl bg-gray-100/10"
           style={{
-            backgroundImage: `url('/pepe/pepeTicket.png')`,
+            backgroundImage: `url('/pepe/motif.svg')`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
           }}
         >
-          {/* <Image priority src="/background/subtractTicket.svg" height={220} width={213} alt="subtract background" 
-            className="relative left-[3px] top-[2px] opacity-75" 
-            // style={{ fill: '#0B2D03B3' }}
-          /> */}
-          <SubtractSvg color={'#0B012B'}
-            className="relative left-[0.5px] top-[2px] opacity-75" 
-            // style={{ fill: '#0B2D03B3' }}
-          />
           <div
-            className="relative -top-[210px] w-[220px] rounded-2xl text-white flex flex-col gap-5 py-[0.9rem] px-[0.5rem]"
-            // style={{ background: `url('/background/subtractTicket.svg')` }}
+            className="rounded-2xl flex flex-col gap-1 py-[0.9rem] px-[0.5rem]"
+            style={{
+              // checkedTicket.svg
+              // newTicket.svg
+              backgroundImage: `url('/background/redeemedTicket.svg')`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+            }}
           >
-            <p className="text-center text-[30px]">Ticket #003</p>
-            <div className="text-center flex justify-center leading-8 p-3 rounded-xl bg-[#360057CC] shadow-sm">
+            <p className="text-center text-3xl py-2">Ticket #{ticketId}</p>
+
+            <div
+              // checked bg-blue-950/50
+              // new bg-purple-950/50
+              // checkin bg-lime-950/50
+              // checkin bg-stone-950/50
+              className="text-center bg-gray-300/50 flex justify-center leading-8 px-3 py-2 rounded-xl"
+            >
               <Image
                 priority
                 src="/logo/diamondEth.svg"
@@ -37,88 +93,34 @@ const TicketUI = () => {
                 alt="diamond eth"
                 className="mr-1 mb-1"
               />
-              <h2 className="text-[48px] ">
-                0.057
-                <span className="text-[24px]">ETH</span>
+              <h2 className="text-5xl">
+                {ticketValue}
+                <span className="text-2xl">ETH</span>
               </h2>
-              {/* <p className="text-[1rem]">last seen: 04</p> */}
             </div>
-            <div className="flex justify-between px-3">
+
+            <div className="flex justify-between px-3 text-white text-xl">
               <div className="flex gap-2">
-                <Image priority src="/icon/sword.svg" height={24} width={24} alt="skull" />
-                <p className="text-[24px]">3</p>
+                <Image priority src="/icon/sword.svg" height={24} width={24} alt="sword" />
+                <p className="">{ticketBullets}</p>
               </div>
               {/* <div className="relative w-16 h-8 bg-blue-500 overflow-hidden">
-                <div className="absolute inset-0 h-full w-full bg-blue-500 rounded-full" 
+                <div className="absolute inset-0 h-full w-full bg-blue-500 rounded-full"
                   style={{clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%)"}}>
                 </div>
               </div> */}
               <div className="flex gap-2">
                 <Image priority src="/pepe/pepeDead.svg" height={24} width={24} alt="crosshair" />
-                <p className="text-white text-[24px]">3</p>
+                <p className="">{ticketKillCount}</p>
               </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-center mt-2 mb-0 pb-0">last seen: {ticketLastSeen}</p>
             </div>
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col gap-3">
-        <div
-          className="p-2 rounded-2xl"
-          style={{ background: 'linear-gradient(140deg, #534CFFB2 0%, #534CFF26 100%)' }}
-        >
-          <div
-            className="w-[220px] rounded-2xl text-white flex flex-col gap-8 py-[1rem] px-[0.5rem]"
-            style={{ background: 'linear-gradient(140deg, #0D032D 0%, #1E1049 100%)' }}
-          >
-            <p className="text-center text-[24px]">#03</p>
-            <div className="text-center flex flex-col leading-10">
-              <h2 className="text-[4rem]">0.057</h2>
-              <p className="text-[1rem]">last seen: 04</p>
-            </div>
-            <div className="flex justify-between">
-              <div className="flex gap-1">
-                <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
-                <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
-                <Image priority src="/icon/skull.svg" height={24} width={24} alt="skull" />
-              </div>
-              <div className="flex gap-1">
-                <Image priority src="/icon/crosshair.svg" height={24} width={24} alt="crosshair" />
-                <p className="text-white">-</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-      {/* <div className="flex flex-col gap-3">
-        <div
-          className="p-2 rounded-2xl bg-[#4C69FF]"
-          style={{ backgroundImage: `url('/pepe/pepeTicket.png')`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
-        >
-          <div
-            className="w-[220px] rounded-2xl text-white flex flex-col gap-5 py-[1.4rem] px-[0.5rem] opacity-80"
-            style={{ background: 'linear-gradient(140deg, #0D032D 0%, #1E1049 100%)' }}
-          >
-            <p className="text-center text-[30px]">Ticket #003</p>
-            <div className="text-center flex flex-col leading-10 border-4 border-gray-100 border-opacity-25 p-3 rounded-xl">
-              <h2 className="text-[48px] flex mx-auto">
-                <Image priority src="/logo/diamondEth.svg" height={26} width={17} alt="diamond eth" className="mr-1" />0.057
-                <span className='text-[24px]'>ETH</span>
-              </h2>
-            </div>
-            <div className="flex justify-between px-3">
-              <div className="flex gap-2">
-                <Image priority src="/icon/sword.svg" height={24} width={24} alt="skull" />
-                <p className="text-[24px]">3</p>
-              </div>
-              <div className="flex gap-2">
-                <Image priority src="/pepe/pepeDead.svg" height={24} width={24} alt="crosshair" />
-                <p className="text-white text-[24px]">3</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   )
 }

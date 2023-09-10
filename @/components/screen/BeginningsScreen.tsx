@@ -71,7 +71,7 @@ function BeginningsScreen() {
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-white"> Beginnings </p>
-        <Round round={round} stageType={'beginnings'} />
+        <Round round={round} phaseType={'beginnings'} />
         <Title stageType={'beginnings'} />
       </div>
 
@@ -79,7 +79,7 @@ function BeginningsScreen() {
 
       {/* <Ticket isCouldBuyTicket={true} onBuy={write} /> */}
 
-      <Countdown />
+      <Countdown timeFlag={0} countdownTime={0} />
       <TicketList stage="beginning" />
     </div>
   )

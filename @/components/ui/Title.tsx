@@ -5,7 +5,7 @@ import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
 
 type TitleType = {
-  stageType: IApp['stage']
+  stageType: IApp['phase']
 }
 
 const dayPhrase = [

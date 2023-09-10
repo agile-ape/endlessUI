@@ -74,7 +74,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
       </TabsList>
 
       <div className="mt-2 flex justify-center">
-        <TabsContent value="ticket" className="flex flex-col justify-center">
+        <TabsContent value="ticket" className="flex flex-col justify-center ">
           {isCouldBuyTicket && (
             <>
               <div className="flex justify-center items-center text-xl">
@@ -96,7 +96,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <TicketUI />
+              <TicketUI ticketType={BigInt(1)} />
               <Button
                 // disabled={!write || isAddressBoughtTickets}
                 size="lg"

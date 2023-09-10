@@ -13,9 +13,9 @@ import CountdownScreen from '@/components/screen/CountdownScreen'
 import LastManScreen from '@/components/screen/LastManScreen'
 
 const Home: NextPage = () => {
-  const stage = useStoreState((state) => state.stage)
+  const stage = useStoreState((state) => state.phase)
 
-  const screen: Record<IApp['stage'], JSX.Element> = {
+  const screen: Record<IApp['phase'], JSX.Element> = {
     beginnings: <BeginningsScreen />,
     countdown: <CountdownScreen />,
     day: <DayScreen />,

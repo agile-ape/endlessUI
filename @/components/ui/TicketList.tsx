@@ -60,18 +60,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           </h3>
         </div>
 
-        {/* <div className="flex m-4">
-            <div
-              className={`border-8 border-transparent ${
-                fixedPurpleBg.includes(stage)
-                  ? 'border-l-white'
-                  : 'border-l-black dark:border-l-white'
-              } ml-2 group-open:ml-5 group-open:mb-1
-              group-open:rotate-90 transition-transform origin-left
-              `}
-            ></div>
-          </div> */}
-
         {/* detail collapsible */}
         {/* <div className="px-4 pb-4 pt-2"> */}
         <div className="flex gap-3 px-4 pb-4 pt-2">
@@ -141,7 +129,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             ticketBullets={10}
             ticketKillCount={10}
           />
-          <Button variant="check" size="lg" className="w-full mt-3">
+          <Button variant="check" size="md" className="w-full mt-3">
             Check
           </Button>
         </div>
@@ -157,7 +145,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             ticketBullets={10}
             ticketKillCount={10}
           />
-          <Button variant="check" size="lg" disabled className="w-full mt-3">
+          <Button variant="check" size="md" disabled className="w-full mt-3">
             Check
           </Button>
         </div>

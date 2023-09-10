@@ -13,14 +13,15 @@ import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [arbitrumGoerli],
-  [publicProvider()],
-)
+const chainsConfig = [...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli])]
+
+const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
+  publicProvider(),
+])
 
 const { connectors } = getDefaultWallets({
   appName: 'Last Man Standing',
-  projectId: '1b74fa3e81f49fa371e6af83a2cfa750',
+  projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
   chains,
 })
 
@@ -32,7 +33,6 @@ const wagmiConfig = createConfig({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log({ pageProps })
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider

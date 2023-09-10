@@ -5,17 +5,17 @@ import type { IApp } from 'types/app'
 
 type RoundType = {
   round: IApp['round']
-  stageType: IApp['stage']
+  phaseType: IApp['phase']
 }
 
-const Round: FC<RoundType> = ({ round, stageType }) => {
+const Round: FC<RoundType> = ({ round, phaseType }) => {
   return (
     <p
       className={cn(
         'text-xl',
-        (stageType === 'dusk' || stageType === 'beginnings' || stageType === 'night') &&
+        (phaseType === 'dusk' || phaseType === 'beginnings' || phaseType === 'night') &&
           'text-white',
-        stageType === 'day' && 'text-black',
+        phaseType === 'day' && 'text-black',
       )}
     >
       Round {round}

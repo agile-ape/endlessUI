@@ -12,7 +12,7 @@ export default function DayScreen() {
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-black"> Day </p>
-        <Round round={0} stageType={'day'} />
+        <Round round={0} phaseType={'day'} />
         <Title stageType={'day'} />
       </div>
       <GameTab isCouldBuyTicket={true} />

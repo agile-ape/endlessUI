@@ -38,7 +38,7 @@ const PrizeAmount: FC<PrizeAmountType> = ({
         width={logoWidth}
         alt={category}
       />
-      <p className="ml-1">0.0822</p>
+      <p className="ml-1 text-white">0.0822</p>
     </div>
   )
 }
