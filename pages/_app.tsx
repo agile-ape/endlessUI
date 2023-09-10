@@ -12,6 +12,7 @@ import { appStore, useStoreState } from '../store'
 import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
+import Metadata from '@/components/Metadata'
 
 const chainsConfig = [...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli])]
 
@@ -53,7 +54,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             enableSystem
             forcedTheme={pageProps.theme ? pageProps.theme : null}
           >
-            <Layout metadata={pageProps.metadata}>
+            <Metadata {...pageProps.metadata} />
+            <Layout metadata={...pageProps.metadata}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>
