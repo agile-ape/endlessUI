@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '../@/components/ui/button'
@@ -116,6 +116,17 @@ const Whitelist: NextPage = () => {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res, locale }) => {
+  return {
+    props: {
+      metadata: {
+        title: 'Whitelist',
+      },
+      theme: 'dark',
+    },
+  }
 }
 
 export default Whitelist

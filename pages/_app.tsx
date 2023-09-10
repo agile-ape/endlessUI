@@ -48,7 +48,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         modalSize="compact"
       >
         <StoreProvider store={appStore}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider
+            attribute="class"
+            enableSystem
+            forcedTheme={pageProps.theme ? pageProps.theme : null}
+          >
             <Layout metadata={pageProps.metadata}>
               <Component {...pageProps} />
               <Toaster />

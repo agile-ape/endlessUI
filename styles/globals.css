@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 @font-face {
-  font-family: "headline";
-  src: url("../public/fonts/headline.ttf");
+  font-family: 'headline';
+  src: url('/fonts/headline.ttf');
 }
 
 @tailwind base;
@@ -11,7 +11,7 @@
 
 @layer base {
   :root {
-     --background: 0 0% 100%;
+    --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
     --muted: 240 4.8% 95.9%;
@@ -78,23 +78,21 @@
 
 @layer components {
   .player-last {
-    @apply font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-indigo-500
+    @apply font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-indigo-500;
   }
   .connect-last {
-    @apply
-    bg-gradient-to-r from-sky-300 to-indigo-500
+    @apply bg-gradient-to-r from-sky-300 to-indigo-500
     text-sm text-white uppercase font-semibold
     shadow-md
     transition-colors
     hover:bg-gradient-to-l from-sky-300 to-indigo-500
     hover:text-indigo-900
     focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
-    h-10 w-max py-[2px] px-[16px] rounded-xl
+    h-10 w-max py-[2px] px-[16px] rounded-xl;
   }
 
   .logo-last {
-    @apply
-    w-max rounded-md
+    @apply w-max rounded-md
     bg-red-800
     py-0 px-2
     items-center justify-center align-middle
@@ -104,12 +102,11 @@
     /* hover:bg-zinc-200 hover:text-indigo-900 */
     hover:bg-zinc-200 hover:text-blue-950
 
-    cursor-default
+    cursor-default;
   }
 
   .menu-last {
-    @apply
-    /* bg-transparent */
+    @apply /* bg-transparent */
     text-white
     shadow-md
     /* hover:bg-slate-500 */
@@ -117,35 +114,30 @@
     /* data-[active]:bg-slate-700 */
     data-[state=open]:bg-blue-950
     disabled:pointer-events-none
-    disabled:opacity-50
+    disabled:opacity-50;
   }
 
   .beginnings-last {
-    @apply text-blue-100
-
+    @apply text-blue-100;
   }
 
   .day-last {
-    @apply text-lime-500
-
+    @apply text-lime-500;
   }
 
   .dusk-last {
-    @apply text-purple-200
-
+    @apply text-purple-200;
   }
 
   .night-last {
-    @apply text-amber-500
+    @apply text-amber-500;
   }
 
   .snow-last {
-    @apply text-slate-300
+    @apply text-slate-300;
   }
-
-
 }
-    /* hover:bg-accent hover:text-accent-foreground */
-    /* focus:bg-accent focus:text-accent-foreground focus:outline-none */
-    /* disabled:pointer-events-none disabled:opacity-50 */
-    /* data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 */
+/* hover:bg-accent hover:text-accent-foreground */
+/* focus:bg-accent focus:text-accent-foreground focus:outline-none */
+/* disabled:pointer-events-none disabled:opacity-50 */
+/* data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 */
