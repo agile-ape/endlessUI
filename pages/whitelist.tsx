@@ -9,6 +9,11 @@ import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { whitelistContractObj } from '../services/constant'
 import { cn } from '@/lib/utils'
 import { toast } from '@/components/ui/use-toast'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 const Whitelist: NextPage = () => {
   const { address, isConnected } = useAccount()
@@ -58,6 +63,8 @@ const Whitelist: NextPage = () => {
         <p className="text-xl text-gray-400"> How many rounds can you last</p>
         <p className="flex justify-center items-center">
           <span className="text-3xl uppercase text-white">Join whitelist now</span>
+          
+          <span className="hidden lg:inline">  
           <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger>
@@ -71,10 +78,22 @@ const Whitelist: NextPage = () => {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          {/* for{' '}
-          <a href="https://github.com/" target="_blank" className="underline">
-            early access
-          </a> */}
+          </span>
+
+          <span className="lg:hidden">
+            <Popover>
+              <PopoverTrigger> 
+                <HelpCircle size={24} className="ml-1 align-end text-white" />
+              </PopoverTrigger>
+              <PopoverContent side="top" align="center">
+                <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                  Joining the whitelist allows you to buy tickets before others when the game
+                  begins. Follow us on Twitter to get updates.
+                </p>
+              </PopoverContent>
+            </Popover>
+            </span>
+          
         </p>
       </div>
       <div className="flex place-content-center">
