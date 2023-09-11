@@ -37,7 +37,6 @@ function CountdownScreen() {
     timeFlag = Number(data[0]?.result)
     countdownTime = Number(data[1]?.result) || 0
 
-    console.log('timeFlag', timeFlag)
     console.log('countdownTime', countdownTime)
   }
 
@@ -63,10 +62,9 @@ function CountdownScreen() {
           </div>
         </div>
 
-          <div className="grow">
-            <TicketList stage="beginning" />
-          </div>
-        
+        <div className="grow">
+          <TicketList stage="beginning" />
+        </div>
       </div>
     </div>
   )

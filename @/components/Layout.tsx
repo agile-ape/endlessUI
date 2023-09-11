@@ -71,7 +71,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         backgroundImage: `url(/background/${background})`,
       }}
     >
-      <Metadata {...metadata} />
       <div className="container mx-auto min-w-[360px]">
         <Header />
         {children}

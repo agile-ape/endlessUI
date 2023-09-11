@@ -36,7 +36,7 @@ export interface MetaProps {
 const Metadata = ({
   title,
   description,
-  ogDescription = '',
+  ogDescription = 'Last Man Standing',
   ogTitle = '',
   ogType = '',
   ogUrl = '',
@@ -60,7 +60,7 @@ const Metadata = ({
       <link rel="shortcut icon" href={`/logo/game-logo.png`} type="image/png" />
 
       <meta property="og:site_name" content="Last Man Standing" />
-      <meta property="og:locale" content={locale} />
+      <meta property="og:locale" content={'en'} />
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={`${ogTitle || title} - Last Man Standing`} />
       <meta property="og:description" content={ogDescription || description} />
