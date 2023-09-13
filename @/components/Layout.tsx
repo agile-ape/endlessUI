@@ -30,10 +30,10 @@ const typeStage: Record<IApp['phase'], string> = {
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
+  phase: IApp['phase']
 }
 
-const Layout = ({ children, metadata }: LayoutProps) => {
-  const phase = useStoreState((state) => state.phase)
+const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateStage = useStoreActions((actions) => actions.updateStage)
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const router = useRouter()
@@ -54,13 +54,13 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     enabled: isConnected,
   })
 
-  // if (data && data?.length > 0) {
-  //   const round = data[0]?.result
-  //   const stage = data[1]?.result || 0
+  if (data && data?.length > 0) {
+    const round = data[0]?.result
+    const stage = data[1]?.result || 0
 
-  //   updateStage(Number(stage))
-  //   updateRound(Number(round))
-  // }
+    updateStage(Number(stage))
+    updateRound(Number(round))
+  }
 
   const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[phase]
 

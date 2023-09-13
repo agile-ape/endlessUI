@@ -1,8 +1,4 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import type { GetServerSideProps, NextPage } from 'next'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import { Button } from '../@/components/ui/button'
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import BeginningsScreen from '@/components/screen/BeginningsScreen'
 import { useStoreState } from '../store'
 import type { IApp } from '../types/app'
@@ -11,10 +7,15 @@ import DuskScreen from '@/components/screen/DuskScreen'
 import NightScreen from '@/components/screen/NightScreen'
 import CountdownScreen from '@/components/screen/CountdownScreen'
 import LastManScreen from '@/components/screen/LastManScreen'
+import type { MetaProps } from '@/components/Metadata'
 
-const Home: NextPage = () => {
-  const stage = useStoreState((state) => state.phase)
+type Props = {
+  metadata: MetaProps
+  phase: IApp['phase']
+  theme: 'light' | 'dark'
+}
 
+const Home = ({ phase, theme }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const screen: Record<IApp['phase'], JSX.Element> = {
     beginnings: <BeginningsScreen />,
     countdown: <CountdownScreen />,
@@ -24,13 +25,33 @@ const Home: NextPage = () => {
     lastmanfound: <LastManScreen />,
   }
 
-  return screen[stage]
+  return screen[phase]
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query, req, res, locale }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  query,
+  req,
+  res,
+  locale,
+}) => {
+  const currentPhase = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/phase`)
+  const result = await currentPhase.json()
+  const phase: IApp['phase'] = result?.message || 'beginnings'
+
+  const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
+    beginnings: 'dark',
+    countdown: 'light',
+    day: 'light',
+    night: 'dark',
+    dusk: 'dark',
+    lastmanfound: 'dark',
+  }
+
   return {
     props: {
       metadata: {},
+      phase,
+      theme: phaseTheme[phase],
     },
   }
 }

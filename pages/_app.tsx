@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             forcedTheme={pageProps.theme ? pageProps.theme : null}
           >
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={...pageProps.metadata}>
+            <Layout metadata={...pageProps.metadata} phase={pageProps?.phase}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>
