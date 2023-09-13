@@ -5,16 +5,17 @@ import type { IApp } from 'types/app'
 import Image from 'next/image'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import { formatUnits } from 'viem'
 
 type TicketUIType = {
-  ticketType: IApp['id']
+  ticketId: IApp['id']
 }
 
-const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
+const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
   const { data: playerAddress } = useContractRead({
     ...defaultContractObj,
     functionName: 'idToPlayer',
-    args: [ticketType as bigint],
+    args: [ticketId],
   })
 
   const { data: playerTicket } = useContractRead({
@@ -23,19 +24,18 @@ const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
     args: [playerAddress as `0x${string}`],
   })
 
-  console.log(playerTicket)
-  let ticketId = playerTicket[0]?.toString()
-  let ticketAddress = playerTicket[1]?.toString()
-  let ticketSignature = playerTicket[2]?.toString()
-  let ticketStatus = playerTicket[3]?.toString()
-  let ticketLastSeen = playerTicket[4]?.toString()
-  let ticketIsInPlay = playerTicket[5]?.toString()
-  let ticketValue = (playerTicket[6] / BigInt(100000000000000000))?.toString()
-  let ticketPurchasePrice = playerTicket[7]?.toString()
-  let ticketRedeemValue = playerTicket[8]?.toString()
-  let ticketBullets = playerTicket[9]?.toString()
-  let ticketKillCount = playerTicket[10]?.toString()
-  let ticketRank = playerTicket[11]?.toString()
+  let id = playerTicket?.[0] || 0
+  let ticketAddress = playerTicket?.[1] || 0
+  let ticketSignature = playerTicket?.[2] || 0
+  let ticketStatus = playerTicket?.[3] || 0
+  let ticketLastSeen = playerTicket?.[4] || 0
+  let ticketIsInPlay = playerTicket?.[5] || 0
+  let ticketValue = playerTicket?.[6] || 0
+  let ticketPurchasePrice = playerTicket?.[7] || 0
+  let ticketRedeemValue = playerTicket?.[8] || 0
+  let ticketBullets = playerTicket?.[9] || 0
+  let ticketKillCount = playerTicket?.[10] || 0
+  let ticketRank = playerTicket?.[11] || 0
 
   //  0 uint id;
   //  1 address player;
@@ -76,7 +76,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
               backgroundSize: 'cover',
             }}
           >
-            <p className="text-center text-3xl py-2">Ticket #{ticketId}</p>
+            <p className="text-center text-3xl py-2">Ticket #{Number(id)}</p>
 
             <div
               // checked bg-blue-950/50
@@ -94,7 +94,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
                 className="mr-1 mb-1"
               />
               <h2 className="text-5xl">
-                {ticketValue}
+                {formatUnits(ticketValue, 18)}
                 <span className="text-2xl">ETH</span>
               </h2>
             </div>
@@ -102,7 +102,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
             <div className="flex justify-between px-3 text-white text-xl">
               <div className="flex gap-2">
                 <Image priority src="/icon/sword.svg" height={24} width={24} alt="sword" />
-                <p className="">{ticketBullets}</p>
+                <p className="">{Number(ticketBullets)}</p>
               </div>
               {/* <div className="relative w-16 h-8 bg-blue-500 overflow-hidden">
                 <div className="absolute inset-0 h-full w-full bg-blue-500 rounded-full"
@@ -111,12 +111,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketType }) => {
               </div> */}
               <div className="flex gap-2">
                 <Image priority src="/pepe/pepeDead.svg" height={24} width={24} alt="crosshair" />
-                <p className="">{ticketKillCount}</p>
+                <p className="">{Number(ticketKillCount)}</p>
               </div>
             </div>
 
             <div>
-              <p className="text-sm text-center mt-2 mb-0 pb-0">last seen: {ticketLastSeen}</p>
+              <p className="text-sm text-center mt-2 mb-0 pb-0">
+                last seen: {Number(ticketLastSeen)}
+              </p>
             </div>
           </div>
         </div>

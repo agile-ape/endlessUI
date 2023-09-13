@@ -9,7 +9,7 @@ import GameFeed from './GameFeed'
 import GameTextVariant from './GameTextVariant'
 import CheckIn from '../ui/CheckIn'
 import { HelpCircle } from 'lucide-react'
-import { useContractWrite, useSignMessage } from 'wagmi'
+import { useAccount, useContractRead, useContractWrite, useSignMessage } from 'wagmi'
 import { encodePacked, keccak256 } from 'viem'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from './use-toast'
@@ -20,11 +20,21 @@ type GameTabType = {
 }
 
 const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
+  const { address } = useAccount()
+
   const { signMessageAsync } = useSignMessage({})
   const { writeAsync } = useContractWrite({
     ...defaultContractObj,
     functionName: 'checkIn',
   })
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  const ticketId = playerTicket?.[0] || BigInt(0)
 
   const onSubmit = async (input: string) => {
     try {
@@ -96,7 +106,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <TicketUI ticketType={BigInt(1)} />
+              <TicketUI ticketId={ticketId} />
               <Button
                 // disabled={!write || isAddressBoughtTickets}
                 size="lg"
