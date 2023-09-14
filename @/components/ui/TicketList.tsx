@@ -102,21 +102,159 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             sm:grid-cols-2
             md:grid-cols-2
             xl:grid-cols-4
-            2xl:grid-cols-6
-            3xl:grid-cols-7
-            4xl:grid-cols-8
-            5xl:grid-cols-9
-            6xl:grid-cols-10
-            7xl:grid-cols-11
-            8xl:grid-cols-12
-            9xl:grid-cols-13
+            2xl:grid-cols-5
+            3xl:grid-cols-5
+            4xl:grid-cols-6
+            5xl:grid-cols-7
+            6xl:grid-cols-8
+            7xl:grid-cols-8
+            8xl:grid-cols-9
+            9xl:grid-cols-10
 
             max-h-[800px]
-            gap-x-1 gap-y-1
+            gap-x-2 gap-y-1
             items-center place-items-center
             overflow-y-scroll
           "
       >
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#0B2D03B2]'
+            bgColorSubtract="#0B2D03B2"
+            bgValue="bg-[#0C2D1DE5]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#8100D0]'
+            bgColorSubtract="#0B012B"
+            bgValue="bg-[#360057CC]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" disabled className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#4C69FF]'
+            bgColorSubtract="rgba(13, 3, 45, 0.80)"
+            bgValue="bg-[#0D0C2D]"
+            isFinished
+            ticketLastSeen={4}
+            ticketNumber={5}
+            ticketValue={23}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#0B2D03B2]'
+            bgColorSubtract="#0B2D03B2"
+            bgValue="bg-[#0C2D1DE5]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#8100D0]'
+            bgColorSubtract="#0B012B"
+            bgValue="bg-[#360057CC]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" disabled className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#4C69FF]'
+            bgColorSubtract="rgba(13, 3, 45, 0.80)"
+            bgValue="bg-[#0D0C2D]"
+            isFinished
+            ticketLastSeen={4}
+            ticketNumber={5}
+            ticketValue={23}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#0B2D03B2]'
+            bgColorSubtract="#0B2D03B2"
+            bgValue="bg-[#0C2D1DE5]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#8100D0]'
+            bgColorSubtract="#0B012B"
+            bgValue="bg-[#360057CC]"
+            isFinished={false}
+            ticketLastSeen={4}
+            ticketNumber={3}
+            ticketValue={0.057}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button variant="check" size="md" disabled className="w-full mt-3">
+            Check
+          </Button>
+        </div>
+        <div className="mt-[27px]">
+          <TicketCard
+            bgCard='bg-[#4C69FF]'
+            bgColorSubtract="rgba(13, 3, 45, 0.80)"
+            bgValue="bg-[#0D0C2D]"
+            isFinished
+            ticketLastSeen={4}
+            ticketNumber={5}
+            ticketValue={23}
+            ticketBullets={10}
+            ticketKillCount={10}
+          />
+          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
+        </div>
         <div className="mt-[27px]">
           <TicketCard
             bgCard='bg-[#0B2D03B2]'
