@@ -4,7 +4,7 @@ import type { IApp } from 'types/app'
 import { useStoreActions, useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
-import { useAccount, useContractReads } from 'wagmi'
+import { useAccount, useContractEvent, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -40,6 +40,18 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const { isConnected } = useAccount()
 
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'PhaseChange',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { newPhase } = args
+
+      updateStage(Number(newPhase))
+      refreshData()
+    },
+  })
+
   const { data } = useContractReads({
     contracts: [
       {
@@ -60,6 +72,10 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
     updateStage(Number(stage))
     updateRound(Number(round))
+  }
+
+  const refreshData = () => {
+    router.replace(router.asPath)
   }
 
   const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[phase]

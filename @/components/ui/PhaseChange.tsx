@@ -5,21 +5,21 @@ import { toast } from '@/components/ui/use-toast'
 import React from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
+import { useStoreState } from '../../../store'
 
 type PhaseChangeType = {
   phaseType: IApp['phase']
 }
 
-const PhaseChange: FC<PhaseChangeType> = ({ phaseType }) => {
-  let phaseChangeFunction = ''
-  if (phaseType == 'countdown') {
-    phaseChangeFunction = 'changeCountdownToDay'
-  } else if (phaseType == 'day') {
-    phaseChangeFunction = 'changeDayToDusk'
-  } else if (phaseType == 'night') {
-    phaseChangeFunction = 'changeNightToDay'
-  }
+const mappedFunction: Record<string, string> = {
+  day: 'changeDayToDusk',
+  dusk: 'changeDuskToNight',
+  night: 'changeNightToDay',
+  countdown: 'changeCountdownToDay',
+}
 
+const PhaseChange = () => {
+  const phase = useStoreState((state) => state.phase)
   const { address, isConnected } = useAccount()
 
   const { data: playerTicket } = useContractRead({
@@ -29,12 +29,12 @@ const PhaseChange: FC<PhaseChangeType> = ({ phaseType }) => {
     enabled: isConnected,
   })
 
-  console.log(playerTicket)
-  // const playerGotTicket = playerTicket[0] > 0 ? true : false;
+  const ticketSignature = (playerTicket?.[2] || 0) as `0x${string}`
 
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
-    // functionName: phaseChangeFunction,
+    functionName: 'changeDuskToNight',
+    args: phase !== 'dusk' ? undefined : ['1111'],
     onError(error) {
       // @ts-ignore
       const errorMsg = error?.cause?.shortMessage || error?.message
@@ -59,7 +59,7 @@ const PhaseChange: FC<PhaseChangeType> = ({ phaseType }) => {
       size="sm"
       variant="default"
       onClick={() => write()}
-      isLoading={isLoading && !playerTicket}
+      isLoading={isLoading}
     >
       {playerTicket ? 'Change phase' : 'Hold on'}
     </Button>

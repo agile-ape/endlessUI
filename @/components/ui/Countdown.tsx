@@ -1,6 +1,5 @@
 import Image from 'next/image'
 
-
 import { HelpCircle } from 'lucide-react'
 import { Timer } from 'lucide-react'
 
@@ -37,10 +36,9 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 }
 
 export default function Countdown({ timeFlag, countdownTime }: Props) {
-   
   const endTime = new Date(timeFlag * 1000 + countdownTime * 1000)
   const [timeLeft, setTimeLeft] = useState<number>()
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       // Calculate the time left in each tick
@@ -59,22 +57,19 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   }, [endTime])
 
   return (
-    <div
-      className="flex justify-center"
-    >
+    <div className="flex justify-center">
       <div className="flex flex-row rounded-xl bg-neutral-300 dark:bg-neutral-800 p-1 items-center gap-2">
-        
         <div className="text-2xl flex flex-row">
-            {/* {timeLeft && !isNaN(timeLeft) ? (
+          {/* {timeLeft && !isNaN(timeLeft) ? (
               <>
                 <Timer size={28} className="mr-1 stroke-slate-900 dark:stroke-slate-100" />
                 {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:{formatTime(timeLeft).seconds} 
               </>
             ) : ( */}
-              <PhaseChange phaseType={'night'} />
-            {/* )} */}
+          <PhaseChange />
+          {/* )} */}
         </div>
-        
+
         <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
 
         <TooltipProvider delayDuration={50}>

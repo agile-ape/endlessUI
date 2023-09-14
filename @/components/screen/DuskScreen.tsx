@@ -7,6 +7,7 @@ import Title from '../ui/Title'
 import CheckIn from '../ui/CheckIn'
 import GameTab from '../ui/GameTab'
 import PrizeInfo from '../ui/PrizeInfo'
+import Countdown from '../ui/Countdown'
 
 function DuskScreen() {
   return (
@@ -19,6 +20,8 @@ function DuskScreen() {
 
       <GameTab isCouldBuyTicket={true} />
       {/* <AllPrice /> */}
+      <Countdown countdownTime={0} timeFlag={0} />
+
       <PrizeInfo display="total" />
       <TicketList stage="dusk" />
     </div>
