@@ -21,6 +21,7 @@ type Props = {
 function CheckInBox({ onSubmit }: Props) {
   // const [open, setOpen] = React.useState(true);
   const [otpInput, setOtpInput] = useState<string>()
+  const excludeSpecialChar = /^[a-zA-Z0-9]+$/;
   // const [isOpen, setIsOpen] = useState(!disabled)
   // const { theme } = useTheme();
   // outer box - #209902]
@@ -84,7 +85,9 @@ function CheckInBox({ onSubmit }: Props) {
 
         <OtpInput
           value={otpInput}
-          onChange={setOtpInput}
+          onChange={(e: string) => {
+            if (excludeSpecialChar.test(e)) setOtpInput(e)
+          }}
           numInputs={4}
           inputStyle={{
             width: '90%',

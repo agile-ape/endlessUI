@@ -97,27 +97,19 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
       </summary>
 
       <div
-        className="grid
-            grid-cols-1
-            sm:grid-cols-2
-            md:grid-cols-2
-            xl:grid-cols-4
-            2xl:grid-cols-5
-            3xl:grid-cols-5
-            4xl:grid-cols-6
-            5xl:grid-cols-7
-            6xl:grid-cols-8
-            7xl:grid-cols-8
-            8xl:grid-cols-9
-            9xl:grid-cols-10
-
+        className="
+            flex
+            w-[100%]
+            lg:justify-start
+            justify-evenly
+            gap-x-5
+            flex-wrap
             max-h-[800px]
-            gap-x-2 gap-y-1
-            items-center place-items-center
+            px-3 gap-y-1
             overflow-y-scroll
           "
       >
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#0B2D03B2]'
             bgColorSubtract="#0B2D03B2"
@@ -133,7 +125,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#8100D0]'
             bgColorSubtract="#0B012B"
@@ -149,7 +141,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#4C69FF]'
             bgColorSubtract="rgba(13, 3, 45, 0.80)"
@@ -163,7 +155,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           />
           <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#0B2D03B2]'
             bgColorSubtract="#0B2D03B2"
@@ -179,7 +171,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#8100D0]'
             bgColorSubtract="#0B012B"
@@ -195,7 +187,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#4C69FF]'
             bgColorSubtract="rgba(13, 3, 45, 0.80)"
@@ -209,7 +201,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           />
           <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#0B2D03B2]'
             bgColorSubtract="#0B2D03B2"
@@ -225,7 +217,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#8100D0]'
             bgColorSubtract="#0B012B"
@@ -241,7 +233,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#4C69FF]'
             bgColorSubtract="rgba(13, 3, 45, 0.80)"
@@ -255,7 +247,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           />
           <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#0B2D03B2]'
             bgColorSubtract="#0B2D03B2"
@@ -271,7 +263,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#8100D0]'
             bgColorSubtract="#0B012B"
@@ -287,7 +279,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Check
           </Button>
         </div>
-        <div className="mt-[27px]">
+        <div className="mt-[27px] w-[236px]">
           <TicketCard
             bgCard='bg-[#4C69FF]'
             bgColorSubtract="rgba(13, 3, 45, 0.80)"
