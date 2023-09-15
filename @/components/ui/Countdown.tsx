@@ -60,14 +60,14 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
     <div className="flex justify-center">
       <div className="flex flex-row rounded-xl bg-neutral-300 dark:bg-neutral-800 p-1 items-center gap-2">
         <div className="text-2xl flex flex-row">
-          {/* {timeLeft && !isNaN(timeLeft) ? (
-              <>
-                <Timer size={28} className="mr-1 stroke-slate-900 dark:stroke-slate-100" />
-                {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:{formatTime(timeLeft).seconds} 
-              </>
-            ) : ( */}
-          <PhaseChange />
-          {/* )} */}
+          {timeLeft && !isNaN(timeLeft) ? (
+            <>
+              {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:
+              {formatTime(timeLeft).seconds}
+            </>
+          ) : (
+            <PhaseChange />
+          )}
         </div>
 
         <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />

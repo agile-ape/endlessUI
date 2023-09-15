@@ -6,8 +6,36 @@ import Round from '../ui/Round'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/CheckIn'
+import { useAccount, useContractReads } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 
 export default function DayScreen() {
+  const { isConnected } = useAccount()
+
+  const { data } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'timeFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'dayTime',
+      },
+    ],
+    enabled: isConnected,
+  })
+
+  let timeFlag = 0
+  let countdownTime = 0
+
+  if (data && data?.length > 0) {
+    timeFlag = Number(data[0]?.result)
+    countdownTime = Number(data[1]?.result) || 0
+
+    console.log('countdownTime', countdownTime)
+  }
+
   return (
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
@@ -16,7 +44,7 @@ export default function DayScreen() {
         <Title stageType={'day'} />
       </div>
       <GameTab isCouldBuyTicket={true} />
-      <Countdown countdownTime={0} timeFlag={0} />
+      <Countdown countdownTime={countdownTime} timeFlag={timeFlag} />
       {/* <CheckIn /> */}
       <NextClaim />
       <TicketList stage="beginning" />
