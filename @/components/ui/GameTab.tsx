@@ -111,7 +111,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
                 // disabled={!write || isAddressBoughtTickets}
                 size="lg"
                 variant="enter"
-                className="mx-2 mb-4"
+                className="mx-2 mb-4 mt-3"
                 onClick={onBuy}
               >
                 Buy Ticket

@@ -33,8 +33,7 @@ const PhaseChange = () => {
 
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
-    functionName: 'changeDuskToNight',
-    args: phase !== 'dusk' ? undefined : ['1111'],
+    functionName: mappedFunction[phase] as any,
     onError(error) {
       // @ts-ignore
       const errorMsg = error?.cause?.shortMessage || error?.message

@@ -6,6 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { HelpCircle } from 'lucide-react'
 import Link from 'next/link'
+import TicketUI from './TicketUI'
 
 type TicketListType = {
   stage: string
@@ -109,193 +110,15 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             overflow-y-scroll
           "
       >
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#0B2D03B2]'
-            bgColorSubtract="#0B2D03B2"
-            bgValue="bg-[#0C2D1DE5]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#8100D0]'
-            bgColorSubtract="#0B012B"
-            bgValue="bg-[#360057CC]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" disabled className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#4C69FF]'
-            bgColorSubtract="rgba(13, 3, 45, 0.80)"
-            bgValue="bg-[#0D0C2D]"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={5}
-            ticketValue={23}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#0B2D03B2]'
-            bgColorSubtract="#0B2D03B2"
-            bgValue="bg-[#0C2D1DE5]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#8100D0]'
-            bgColorSubtract="#0B012B"
-            bgValue="bg-[#360057CC]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" disabled className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#4C69FF]'
-            bgColorSubtract="rgba(13, 3, 45, 0.80)"
-            bgValue="bg-[#0D0C2D]"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={5}
-            ticketValue={23}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#0B2D03B2]'
-            bgColorSubtract="#0B2D03B2"
-            bgValue="bg-[#0C2D1DE5]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#8100D0]'
-            bgColorSubtract="#0B012B"
-            bgValue="bg-[#360057CC]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" disabled className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#4C69FF]'
-            bgColorSubtract="rgba(13, 3, 45, 0.80)"
-            bgValue="bg-[#0D0C2D]"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={5}
-            ticketValue={23}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#0B2D03B2]'
-            bgColorSubtract="#0B2D03B2"
-            bgValue="bg-[#0C2D1DE5]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#8100D0]'
-            bgColorSubtract="#0B012B"
-            bgValue="bg-[#360057CC]"
-            isFinished={false}
-            ticketLastSeen={4}
-            ticketNumber={3}
-            ticketValue={0.057}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button variant="check" size="md" disabled className="w-full mt-3">
-            Check
-          </Button>
-        </div>
-        <div className="mt-[27px] w-[236px]">
-          <TicketCard
-            bgCard='bg-[#4C69FF]'
-            bgColorSubtract="rgba(13, 3, 45, 0.80)"
-            bgValue="bg-[#0D0C2D]"
-            isFinished
-            ticketLastSeen={4}
-            ticketNumber={5}
-            ticketValue={23}
-            ticketBullets={10}
-            ticketKillCount={10}
-          />
-          <Button className="w-full mt-3 bg-[#3C3C3C] text-[#777777] ">Check</Button>
-        </div>
+        {Array.from({ length: 10 }).map((_, i) => (
+          <div key={i} className="mt-[27px]">
+            <TicketUI ticketId={BigInt(1)} />
+            <Button variant="check" size="md" className="w-full mt-3">
+              Check
+            </Button>
+          </div>
+        ))}
       </div>
-      {/* </div> */}
-      {/* </details> */}
     </div>
   )
 }

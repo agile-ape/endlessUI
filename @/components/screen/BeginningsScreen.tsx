@@ -21,6 +21,16 @@ function BeginningsScreen() {
   const onBuy = async () => {
     try {
       write()
+      // const addTicket = await fetch('/api/ticket', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     ticket_id: 1,
+      //     ticket_value: '0.002',
+      //   }),
+      // })
+
+      // const data = await addTicket.json()
+      // console.log({ data })
     } catch (error) {
       console.log({ error })
     }

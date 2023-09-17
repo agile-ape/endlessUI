@@ -6,9 +6,17 @@ import Image from 'next/image'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits } from 'viem'
+import { cn } from '@/lib/utils'
 
 type TicketUIType = {
   ticketId: IApp['id']
+}
+
+const statusMapping: Record<number, string> = {
+  1: 'new',
+  2: 'killed',
+  3: 'redeem',
+  4: 'checkedIn',
 }
 
 const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
@@ -50,16 +58,26 @@ const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
   //  10 uint killCount;
   //  11 uint rank;
 
+  const statusTemp = 1
+  const status = statusMapping[statusTemp] || 'unknown'
+
   return (
     <>
-      <div className="flex flex-col gap-3 m-3 w-[240px]">
+      <div className="flex flex-col gap-3 w-[240px]">
         <div
           // checked bg-blue-800
           // new bg-purple-800
           // checkedIn bg-lime-700
           // killed bg-stone-700
           // redeem
-          className="p-2 rounded-2xl bg-gray-100/10"
+          className={cn(
+            'p-2 rounded-2xl bg-gray-100/10',
+            status === 'checked' && 'bg-blue-800',
+            status === 'new' && 'bg-purple-800',
+            status === 'checkedIn' && 'bg-lime-700',
+            status === 'killed' && 'bg-stone-700',
+            status === 'redeem' && 'bg-gray-100/10',
+          )}
           style={{
             backgroundImage: `url('/pepe/motif.svg')`,
             backgroundRepeat: 'no-repeat',
@@ -83,7 +101,12 @@ const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
               // new bg-purple-950/50
               // checkin bg-lime-950/50
               // checkin bg-stone-950/50
-              className="text-center bg-gray-300/50 flex justify-center leading-8 px-3 py-2 rounded-xl"
+              className={cn(
+                'text-center bg-gray-300/50 flex justify-center leading-8 px-3 py-2 rounded-xl',
+                status === 'checked' && 'bg-blue-950/50',
+                status === 'new' && 'bg-purple-950/50',
+                status === 'checkedIn' && 'bg-lime-950/50',
+              )}
             >
               <Image
                 priority
