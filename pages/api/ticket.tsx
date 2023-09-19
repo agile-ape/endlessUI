@@ -7,29 +7,53 @@ import { supabase } from '../../services/supabase'
 
 type ResponseData = {
   message: string
+  data?: any
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   if (req.method === 'POST') {
     try {
       const body = JSON.parse(req.body)
+
       await supabase
         .from('ticket_list')
         .insert({
-          ticket_id: body.ticket_id,
+          ticket_id: body.id,
           ticket_value: body.ticket_value,
+          purchase_time: body.purchase_time,
+          user_address: body.user_address,
+          contract_address: LAST_MAN_STANDING_ADDRESS,
         })
         .throwOnError()
 
       return res.status(200).json({
-        message: 'hello world',
+        message: 'success insert ticket',
       })
     } catch (error) {
       console.log({ error })
+
+      return res.status(500).json({
+        message: 'error insert ticket',
+      })
     }
   }
 
-  res.status(200).json({
-    message: 'hello world',
-  })
+  try {
+    const ticketList = await supabase
+      .from('ticket_list')
+      .select('*')
+      .eq('contract_address', LAST_MAN_STANDING_ADDRESS)
+      .throwOnError()
+
+    res.status(200).json({
+      message: 'success get ticket',
+      data: ticketList.data || [],
+    })
+  } catch (error) {
+    console.log({ error })
+
+    res.status(500).json({
+      message: 'error get ticket',
+    })
+  }
 }

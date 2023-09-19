@@ -27,7 +27,6 @@ type GameTabType = {
 
 const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
   const { address } = useAccount()
-
   const { data: walletClient } = useWalletClient()
 
   const { signMessageAsync } = useSignMessage({})

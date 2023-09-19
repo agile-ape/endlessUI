@@ -7,43 +7,91 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import {
+  useContractEvent,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
-import { parseUnits } from 'viem'
-import { useStoreState } from '../../../store'
+import { etherUnits, parseUnits, formatEther } from 'viem'
+import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
 import type { GetServerSideProps } from 'next'
 import { toast } from '../ui/use-toast'
+import { createTicket, getTickets } from '../../../services/api'
+import { useRouter } from 'next/router'
+import { transformToTicket } from '@/lib/utils'
 
 function BeginningsScreen() {
   const round = useStoreState((state) => state.round)
+  const router = useRouter()
+
+  const updateTickets = useStoreActions((actions) => actions.updateTickets)
+
+  const refreshData = async () => {
+    const data = await getTickets()
+    if (data?.data?.length > 0) {
+      const tickets = transformToTicket(data.data)
+      updateTickets(tickets)
+    }
+
+    router.replace(router.asPath)
+  }
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketPurchased',
+    listener: async (event) => {
+      const args = event[0]?.args
+      const { currentPrizePool, player, ticketId, ticketValue, purchaseTime } = args
+
+      await createTicket({
+        id: Number(ticketId),
+        user_address: player as string,
+        purchase_time: new Date(Number(purchaseTime)).getTime(),
+        ticket_value: Number(ticketValue),
+      })
+
+      refreshData()
+    },
+  })
+
+  const { data: currentPrize } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'nextTicketPrize',
+  })
+
+  const ticketValue = currentPrize
+    ? parseUnits(formatEther(currentPrize), 18)
+    : parseUnits('0.002', 18)
 
   const onBuy = async () => {
     try {
       write()
-      // const addTicket = await fetch('/api/ticket', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     ticket_id: 1,
-      //     ticket_value: '0.002',
-      //   }),
-      // })
-
-      // const data = await addTicket.json()
-      // console.log({ data })
     } catch (error) {
       console.log({ error })
     }
   }
 
-  const { data, writeAsync, error, write } = useContractWrite({
+  const {
+    data,
+    writeAsync,
+    error,
+    write,
+    isLoading: isBuyingTicket,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
-    value: parseUnits('0.002', 18),
+    value: ticketValue,
+    onSuccess(data, variables, context) {
+      console.log({ data, variables, context })
+    },
     onError: (error) => {
       console.log({ error: error?.cause })
       // @ts-ignore
-      const errorMsg = error?.cause?.shortMessage || error?.message
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
       toast({
         variant: 'destructive',
         title: 'Buy ticket failed',

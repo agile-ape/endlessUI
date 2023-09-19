@@ -9,6 +9,9 @@ import { defaultContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { getTickets } from '../../services/api'
+import { transformToTicket } from '@/lib/utils'
 
 const font = VT323({
   weight: ['400'],
@@ -36,6 +39,8 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateStage = useStoreActions((actions) => actions.updateStage)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updateTickets = useStoreActions((actions) => actions.updateTickets)
+
   const router = useRouter()
 
   const { isConnected } = useAccount()
@@ -79,6 +84,16 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   }
 
   const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[phase]
+
+  useEffect(() => {
+    ;(async () => {
+      const data = await getTickets()
+      if (data?.data?.length > 0) {
+        const tickets = transformToTicket(data.data)
+        updateTickets(tickets)
+      }
+    })()
+  }, [])
 
   return (
     <main

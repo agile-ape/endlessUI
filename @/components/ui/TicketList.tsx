@@ -9,6 +9,7 @@ import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { HelpCircle } from 'lucide-react'
 import Link from 'next/link'
 import TicketUI from './TicketUI'
+import { useStoreState } from '../../../store'
 
 type TicketListType = {
   stage: string
@@ -17,6 +18,8 @@ type TicketListType = {
 const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const fixedPurpleBg = ['dusk']
+
+  const ticketList = useStoreState((state) => state.tickets)
 
   return (
     <>
@@ -98,6 +101,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         className="
             flex
             w-[100%]
+            lg:justify-start
             justify-evenly
             gap-x-5
             flex-wrap
@@ -106,9 +110,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             overflow-y-scroll
           "
       >
-        {Array.from({ length: 10 }).map((_, i) => (
+        {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
-            <TicketUI ticketId={BigInt(1)} />
+            <TicketUI ticketId={BigInt(item.id)} />
             <Button variant="check" size="md" className="w-full mt-3">
               Check
             </Button>

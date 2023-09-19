@@ -8,6 +8,8 @@ interface StoreModel {
   insertKeyword: Action<StoreModel, string>
   updateStage: Action<StoreModel, number>
   updateRound: Action<StoreModel, number>
+  tickets: IApp['tickets']
+  updateTickets: Action<StoreModel, IApp['tickets']>
 }
 
 export type { StoreModel }

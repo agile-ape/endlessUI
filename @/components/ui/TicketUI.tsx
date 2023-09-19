@@ -58,8 +58,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
   //  10 uint killCount;
   //  11 uint rank;
 
-  const statusTemp = 1
-  const status = statusMapping[statusTemp] || 'unknown'
+  const status = statusMapping[ticketStatus] || 'unknown'
 
   return (
     <>

@@ -24,6 +24,10 @@ export const appStore = createStore<StoreModel>({
   updateRound: action((state, payload) => {
     state.round = payload
   }),
+  tickets: [],
+  updateTickets: action((state, payload) => {
+    state.tickets = payload
+  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()
