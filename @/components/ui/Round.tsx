@@ -12,13 +12,14 @@ const Round: FC<RoundType> = ({ round, phaseType }) => {
   return (
     <p
       className={cn(
-        'text-xl',
+        'text-2xl',
         (phaseType === 'dusk' || phaseType === 'beginnings' || phaseType === 'night') &&
           'text-white',
         phaseType === 'day' && 'text-black',
       )}
     >
-      Round {round}
+      Round{' '} 
+      <span className="underline">{round}</span>
     </p>
   )
 }

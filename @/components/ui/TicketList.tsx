@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import TicketCardOld from './_TicketCard'
 import TicketCard from './TicketCard'
+import AllPrize from './AllPrize'
+import PrizeInfo from './PrizeInfo'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
@@ -17,80 +19,75 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const fixedPurpleBg = ['dusk']
 
   return (
-    <div
-      className="rounded-2xl py-2
-      bg-slate-300 bg-opacity-50
-      dark:lg:bg-slate-500 dark:lg:bg-opacity-50
-    "
-    >
+    <>
       <summary
-        className="list-none flex flex-col md:flex-row items-center
-        border-b-2 border-slate-400 dark:border-slate-100
-        rounded relative px-3
-        "
+        className="list-none border-b-2 border-slate-400 dark:border-slate-100
+        rounded relative px-3 flex flex-col md:flex-row items-center"
       >
-        <div className="flex items-center grow text-sm">
-          <h3 className="flex items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
-            Tickets(233/1212){' '}
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle
-                    size={24}
-                    className="align-end stroke-slate-900 dark:stroke-slate-100"
-                  />
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center">
-                  <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                    (Tickets left/ Total tickets)
-                    <br />
-                    Shows every ticket info and their status (
-                    <span className="bg-purple-800 text-white rounded-xs">New</span>
-                    {', '}
-                    <span className="bg-green-800 text-white rounded-xs">Check-in</span>
-                    {', '}
-                    <span className="bg-blue-800 text-white rounded-xs">Checked</span>
-                    {', '}
-                    <span className="bg-gray-800 text-white rounded-xs">Left</span>).
-                    <br />
-                    Check others tickets here.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </h3>
+        <div className="flex items-center text-[2rem] pb-4 pt-2  grow leading-7 capitalize">
+          Tickets(233/1212){' '}
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircle
+                  size={24}
+                  className="align-end stroke-slate-900 dark:stroke-slate-100"
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                  (Tickets left/ Total tickets)
+                  <br />
+                  Shows every ticket info and their status (
+                  <span className="bg-purple-800 text-white rounded-xs">New</span>
+                  {', '}
+                  <span className="bg-green-800 text-white rounded-xs">Check-in</span>
+                  {', '}
+                  <span className="bg-blue-800 text-white rounded-xs">Checked</span>
+                  {', '}
+                  <span className="bg-gray-800 text-white rounded-xs">Left</span>).
+                  <br />
+                  Check others tickets here.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
-        {/* detail collapsible */}
-        {/* <div className="px-4 pb-4 pt-2"> */}
-        <div className="flex gap-3 px-4 pb-4 pt-2">
+        <div className="flex gap-2 px-2 pb-4 pt-2">
           <Button
             onClick={() => setTicketState('aroundMe')}
-            className={`${
-              ticketState === 'aroundMe'
-                ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-                : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            } `}
+            variant="filter"
+            disabled={ticketState === 'aroundMe'}
+            // className={`${
+            //   ticketState === 'aroundMe'
+            //     ? disabled
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // } `}
           >
             Around Me
           </Button>
           <Button
             onClick={() => setTicketState('mostValue')}
-            className={`${
-              ticketState === 'mostValue'
-                ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-                : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            }`}
+            variant="filter"
+            disabled={ticketState === 'mostValue'}
+            // className={`${
+            //   ticketState === 'mostValue'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
           >
             Most Value
           </Button>
           <Button
             onClick={() => setTicketState('inPlay')}
-            className={`${
-              ticketState === 'inPlay'
-                ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-                : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            }`}
+            variant="filter"
+            disabled={ticketState === 'inPlay'}
+            // className={`${
+            //   ticketState === 'inPlay'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
           >
             In Play
           </Button>
@@ -101,7 +98,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         className="
             flex
             w-[100%]
-            lg:justify-start
             justify-evenly
             gap-x-5
             flex-wrap
@@ -119,7 +115,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   )
 }
 

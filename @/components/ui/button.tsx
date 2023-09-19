@@ -9,32 +9,35 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-black dark:text-white whitespace-nowrap bg-neutral-400 hover:bg-neutral-500 dark:hover:bg-neutral-800 dark:bg-neutral-900 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
-        destructive: 'text-black dark:text-white whitespace-nowrap bg-transparent hover:border hover:border-neutral-500 dark:hover:border dark:hover:bg-neutral-700 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
-        
-        // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        default:
+          'text-black dark:text-white whitespace-nowrap bg-neutral-400 hover:bg-neutral-500 dark:hover:bg-neutral-800 dark:bg-neutral-900 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+        // destructive: 'text-black dark:text-white whitespace-nowrap bg-transparent hover:border hover:border-neutral-500 dark:hover:border dark:hover:bg-neutral-700 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        
+
         play: 'text-lime-800 dark:text-lime-300 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-300 focus:outline-none focus:ring focus:ring-lime-500 disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-300',
-        
-        // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
-        
         link: 'text-black dark:text-white whitespace-nowrap bg-transparent focus: outline-none focus:ring disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
-        
+
+        change:
+          'text-white hover:text-black bg-purple-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+        // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
+
         whitelist:
           'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-        
-        whitelist2:
-          'text-white pink-900 hover:bg-pink-700 active:bg-pink-500 focus: outline-none focus:ring focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-80',
+
+        enter:
+          'text-white bg-purple-900 hover:bg-purple-700 hover:border-2 hover:border-purple-300 active:bg-purple-500 focus: outline-none focus:ring focus:ring-purple-300 disabled:pointer-events-none disabled:opacity-50',
+        submit:
+          'text-white bg-green-900 hover:bg-green-950 hover:border-2 hover:border-green-300 active:bg-green-800 focus: outline-none focus:ring focus:ring-green-300 disabled:pointer-events-none disabled:opacity-50',
+
+        filter:
+          'text-white whitespace-nowrap bg-slate-700 hover:bg-slate-800 hover:border-2 hover:border-slate-300 focus:outline-none focus:ring disabled:cursor-default disabled:bg-slate-900 disabled:opacity-100',
 
         check:
-          'text-white bg-blue-950 border border-slate-500 hover:bg-blue-700 active:bg-blue-500 focus: outline-none focus:ring focus:ring-blue-300 disabled:pointer-events-none disabled:opacity-50',
-        enter:
-          'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 focus: outline-none focus:ring focus:ring-purple-300 disabled:pointer-events-none disabled:opacity-50',
-        submit:
-          'text-white bg-green-900 hover:bg-green-950 active:bg-green-800 focus: outline-none focus:ring focus:ring-green-300 disabled:pointer-events-none disabled:opacity-50',
+          'text-white bg-blue-950 border border-slate-500 hover:bg-blue-700 hover:border-2 hover:border-blue-300 active:bg-blue-500 focus: outline-none focus:ring focus:ring-blue-300 disabled:pointer-events-none disabled:opacity-50',
       },
       size: {
         default: 'h-10 px-4 py-2',

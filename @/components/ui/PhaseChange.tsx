@@ -53,15 +53,17 @@ const PhaseChange = () => {
   })
 
   return (
-    <Button
-      disabled={!write || !playerTicket}
-      size="sm"
-      variant="default"
-      onClick={() => write()}
-      isLoading={isLoading}
-    >
-      {playerTicket ? 'Change phase' : 'Hold on'}
-    </Button>
+    <div className="bg-gradient-to-br from-orange-600 to-yellow-400 rounded-lg p-0.5 shadow-md shadow-orange-400/70">
+      <Button
+        disabled={!write || !playerTicket}
+        size="md"
+        variant="change"
+        onClick={() => write()}
+        isLoading={isLoading}
+      >
+        {playerTicket ? 'Change phase' : 'Hold on'}
+      </Button>
+    </div>
   )
 }
 

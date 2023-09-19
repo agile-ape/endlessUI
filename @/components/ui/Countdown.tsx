@@ -55,38 +55,50 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
 
     return () => clearInterval(interval) // Cleanup on unmount
   }, [endTime])
-
+  
+  // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
+  
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-row rounded-xl bg-neutral-300 dark:bg-neutral-800 p-1 items-center gap-2">
-        <div className="text-2xl flex flex-row">
+      <div className="flex justify-center items-center text-lime-800 dark:text-lime-300 gap-1 mb-2">
+        <div className="flex justify-center pl-5">
           {timeLeft && !isNaN(timeLeft) ? (
-            <>
-              {formatTime(timeLeft).hours}:{formatTime(timeLeft).minutes}:
-              {formatTime(timeLeft).seconds}
-            </>
+            <div className="text-3xl rounded-xl flex flex-row gap-0.5">
+              <div className="flex flex-col">
+                {formatTime(timeLeft).hours}
+                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">hrs</div>
+              </div>
+              :
+              <div className="flex flex-col">
+                {formatTime(timeLeft).minutes}
+                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">mins</div>
+              </div>
+              :
+              <div className="flex flex-col">
+                {formatTime(timeLeft).seconds}
+                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">secs</div>
+              </div>
+            </div>
           ) : (
             <PhaseChange />
-          )}
+            )}
         </div>
-
-        <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
-
         <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
               {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
-              <HelpCircle size={24} className="stroke-slate-900 dark:stroke-slate-100" />
+              <HelpCircle size={24} className="stroke-lime-800 dark:stroke-lime-300" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                <strong>Time left for this phase (HH:MM:SS) </strong> Once timer hits zero, anyone
-                can trigger the phase change.
+                <strong>Time left for this phase </strong> 
+                <p>
+                Once timer hits zero, any player can
+                trigger the phase change.
+                </p>
               </p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
-    </div>
   )
 }

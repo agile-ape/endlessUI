@@ -11,25 +11,6 @@ module.exports = {
     './@/components/**/*.{ts,tsx}',
   ],
   theme: {
-    screens: {
-      sm: '550px',
-      md: '750px',
-      lg: '1000px',
-      xl: '1200px',
-      '2xl': '1500px',
-      '3xl': '1600px',
-      '4xl': '1800px',
-      '5xl': '2000px',
-      '6xl': '2200px',
-      '7xl': '2400px',
-      '8xl': '2600px',
-      '9xl': '2800px',
-      // sm: '640px',
-      //  md: '768px',
-      // lg: '1024px',
-      // xl: '1280px',
-      // '2xl': '1400px',
-    },
     container: {
       center: true,
       padding: '2rem',
@@ -40,7 +21,7 @@ module.exports = {
       // },
       fontFamily: {
         sans: ['VT323', ...defaultTheme.fontFamily.sans],
-        headline:["headline"],
+        headline: ['headline'],
       },
       colors: {
         border: 'hsl(var(--border))',

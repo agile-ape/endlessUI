@@ -112,7 +112,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
 
   return (
     <Tabs defaultValue="ticket" className="mx-auto">
-      <TabsList className="flex justify-center rounded-xl w-[220px] mx-auto px-2 py-2">
+      <TabsList className="flex justify-center rounded-xl w-[240px] mx-auto px-2 py-2">
         <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-xl">
           Ticket
         </TabsTrigger>
@@ -123,7 +123,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
       </TabsList>
 
       <div className="mt-2 flex justify-center">
-        <TabsContent value="ticket" className="flex flex-col justify-center ">
+        <TabsContent value="ticket" className="flex flex-col items-center justify-center">
           {isCouldBuyTicket && (
             <>
               <div className="flex justify-center items-center text-xl">
@@ -150,7 +150,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
                 // disabled={!write || isAddressBoughtTickets}
                 size="lg"
                 variant="enter"
-                className="mx-2 mb-4 mt-3"
+                className="w-[240px] mt-4 mb-4"
                 onClick={onBuy}
               >
                 Buy Ticket

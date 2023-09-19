@@ -30,7 +30,7 @@ type TitleWordingVariants = {
 const PrizeInfo: FC<PrizeInfoType> = ({ display }) => {
   return (
     <div
-      className="text-center bg-slate-900 dark:bg-slate-800 text-white
+      className="text-center bg-neutral-400 dark:bg-neutral-900 text-white opacity-90
     flex flex-col items-center w-[220px] mx-auto rounded-lg p-2"
     >
       <div className="flex justify-center items-center gap-2">

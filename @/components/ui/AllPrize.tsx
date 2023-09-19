@@ -1,107 +1,118 @@
 import PrizeAmount from './PrizeAmount'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { HelpCircle } from 'lucide-react'
+
+// grid grid-cols-2 gap-3 opacity-90
+//     justify-items-start text-sm
 
 export default function AllPrize() {
   return (
     <div
-      className="mx-4 my-2
-      grid grid-cols-2 gap-3 opacity-90
-    justify-items-start text-sm
-    "
+      className="grid grid-cols-2
+      md:flex md:justify-around opacity-90 gap-2 pt-2"
     >
-      <a
-        href="https://github.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col rounded-xl
-          bg-neutral-400 dark:bg-neutral-900
-          p-2 text-center max-w-[150px]
+        
+      <div
+        className="flex flex-col rounded-full
+          bg-blue-950/80 px-4 py-2 text-center min-w-[150px]
       "
       >
-        <p className="font-semibold mr-1 mb-1">What everyone pooled in total</p>
-        <div className="flex justify-center text-2xl bg-neutral-600 rounded-lg">
-          <PrizeAmount amount="0.0822ETH" category="total" logoHeight={14} logoWidth={14} />
-          <Image
-            priority
-            src={`/icon/ether.svg`}
-            style={{ margin: '2px' }}
-            height={8}
-            width={8}
-            alt="ether"
-          />
-        </div>
-      </a>
+        <TooltipProvider delayDuration={50}>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="text-2xl">
+                <PrizeAmount amount="0.0822" category="total" logoHeight={24} logoWidth={24} />
+              </div>            
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+              <strong>Total Prize Pool</strong> 
+                <p>
+                What everyone pooled in total
+                </p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
 
-      <a
-        href="https://github.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col rounded-xl
-          bg-neutral-400 dark:bg-neutral-900
-          p-2 text-center max-w-[150px]
-      "
+
+      <div
+        className="flex flex-col rounded-full
+        bg-rose-950/80 px-4 py-2 text-center min-w-[150px]
+    "
       >
-        <p className="font-semibold mr-1 mb-1">What the next leaver gets</p>
-        <div className="flex justify-center text-2xl bg-neutral-600 rounded-lg">
-          <PrizeAmount amount="0.0822ETH" category="redeem" logoHeight={14} logoWidth={14} />
-          <Image
-            priority
-            src={`/icon/ether.svg`}
-            style={{ margin: '2px' }}
-            height={8}
-            width={8}
-            alt="ether"
-          />
-        </div>
-      </a>
+        <TooltipProvider delayDuration={50}>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="text-2xl">
+                <PrizeAmount amount="0.0822ETH" category="redeem" logoHeight={24} logoWidth={24} />
+              </div>  
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                <strong>Next ETH Claim</strong>
+                <p>
+                What the next leaver gets
+                </p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
 
-      <a
-        href="https://github.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col rounded-xl
-          bg-neutral-400 dark:bg-neutral-900
-          p-2 text-center max-w-[150px]
-      "
+
+      <div
+        className="flex flex-col rounded-full
+        bg-green-950/80 px-4 py-2 text-center min-w-[150px]
+    "
       >
-        <p className="font-semibold mr-1 mb-1">What the last man takes home</p>
-        <div className="flex justify-center text-2xl bg-neutral-600 rounded-lg">
-          <PrizeAmount amount="0.0822ETH" category="win" logoHeight={14} logoWidth={14} />
-          <Image
-            priority
-            src={`/icon/ether.svg`}
-            style={{ margin: '2px' }}
-            height={8}
-            width={8}
-            alt="ether"
-          />
-        </div>
-      </a>
+        <TooltipProvider delayDuration={50}>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="text-2xl">
+                <PrizeAmount amount="0.0822ETH" category="win" logoHeight={24} logoWidth={24} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                <strong>Top Prize</strong>
+                <p>
+                What the last man takes home
+                </p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
 
-      <a
-        href="https://github.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col rounded-xl
-          bg-neutral-400 dark:bg-neutral-900
-          p-2 text-center max-w-[150px]
-      "
+      <div
+        className="flex flex-col rounded-full
+        bg-purple-950/80
+        px-4 py-2 text-center min-w-[150px]
+    "
       >
-        <p className="font-semibold mr-1 mb-1">What the assasin collects</p>
-        <div className="flex justify-center text-2xl bg-neutral-600 rounded-lg">
-          <PrizeAmount amount="0.0822ETH" category="bounty" logoHeight={14} logoWidth={14} />
-          <Image
-            priority
-            src={`/icon/ether.svg`}
-            style={{ margin: '2px' }}
-            height={8}
-            width={8}
-            alt="ether"
-          />
-        </div>
-      </a>
-
+        <TooltipProvider delayDuration={50}>
+          <Tooltip>
+            <TooltipTrigger>
+              {/* <HelpCircle size={16} className="ml-1 stroke-slate-100" /> */}
+              <div className="text-2xl">
+                <PrizeAmount amount="0.0822ETH" category="bounty" logoHeight={24} logoWidth={24} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                <strong>Bounty</strong>
+                <p>
+                What the assasin collects
+                </p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     </div>
   )
 }

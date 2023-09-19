@@ -30,7 +30,7 @@ const PrizeAmount: FC<PrizeAmountType> = ({
   logoWidth = 24,
 }) => {
   return (
-    <div className="flex">
+    <div className="flex whitespace-nowrap px-1">
       <Image
         priority
         src={`/logo/${categoryLogo[category as keyof CategoryWordingVariants]}`}
@@ -38,7 +38,9 @@ const PrizeAmount: FC<PrizeAmountType> = ({
         width={logoWidth}
         alt={category}
       />
-      <p className="ml-1 text-white">0.0822</p>
+      <p className="ml-1 text-white">0.0822
+      </p>
+      <span className="ml-1 inline text-lg flex items-end">ETH</span>
     </div>
   )
 }

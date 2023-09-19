@@ -43,34 +43,38 @@ function CountdownScreen() {
   return (
     <div className="flex flex-col gap-5">
       <div className="text-center">
-        <p className="text-3xl font-headline uppercase beginnings-last"> Countdown </p>
         <Round round={0} phaseType={'countdown'} />
+        <p className="text-3xl font-headline uppercase beginnings-last mt-2"> Countdown </p>
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-        {/* <br></br> */}
+        
         <Title stageType={'countdown'} />
+        <div className="flex justify-center items-center text-sm">
+          <AllPrize />
+        </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-3 mx-8 mb-8">
+      <div className="flex flex-col lg:flex-row gap-8 xl:mx-[150px] mb-8">
         <div>
           <div
-            className="flex flex-col gap-3 rounded-xl px-3 py-4
+            className="flex flex-col gap-3 rounded-xl px-4 py-4
             lg:bg-slate-300 lg:bg-opacity-50
             dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
           >
             <GameTab isCouldBuyTicket={true} />
-            <PrizeInfo display="total" />
           </div>
         </div>
 
-        <div className="grow">
+        <div 
+          className="grow rounded-xl py-2
+          bg-slate-300 bg-opacity-50
+          dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
+        >
           <TicketList stage="beginning" />
         </div>
       </div>
     </div>
   )
 }
-
-CountdownScreen.theme = 'light'
 
 export default dynamic(() => Promise.resolve(CountdownScreen), {
   ssr: false,

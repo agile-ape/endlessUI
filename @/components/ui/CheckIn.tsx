@@ -29,7 +29,7 @@ function CheckInBox({ onSubmit }: Props) {
   return (
     <details
       className="
-      group w-[220px] rounded-xl
+      group w-[240px] rounded-xl
       cursor-pointer
       bg-green-700 flex flex-col mx-auto"
       open
