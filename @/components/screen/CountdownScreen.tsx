@@ -10,11 +10,120 @@ import AllPrize from '../ui/AllPrize'
 import PrizeInfo from '../ui/PrizeInfo'
 import dynamic from 'next/dynamic'
 import GameTab from '../ui/GameTab'
-import { useAccount, useContractReads } from 'wagmi'
+import {
+  useAccount,
+  useContractEvent,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import { useStoreActions, useStoreState } from '../../../store'
+import { useRouter } from 'next/router'
+import { createTicket, getTickets } from '../../../services/api'
+import { transformToTicket } from '@/lib/utils'
+import { formatEther, parseUnits } from 'viem'
+import { toast } from '../ui/use-toast'
 
 function CountdownScreen() {
   const { isConnected } = useAccount()
+  const round = useStoreState((state) => state.round)
+  const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  const router = useRouter()
+
+  const refreshData = async () => {
+    const data = await getTickets()
+    if (data?.data?.length > 0) {
+      const tickets = transformToTicket(data.data)
+      updateTickets(tickets)
+    }
+
+    router.replace(router.asPath)
+  }
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketPurchased',
+    listener: async (event) => {
+      const args = event[0]?.args
+      const { currentPrizePool, player, ticketId, ticketValue, purchaseTime } = args
+
+      await createTicket({
+        id: Number(ticketId),
+        user_address: player as string,
+        purchase_time: new Date(Number(purchaseTime)).getTime(),
+        ticket_value: Number(ticketValue),
+      })
+
+      refreshData()
+    },
+  })
+
+  const { data: currentPrize } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'nextTicketPrize',
+  })
+
+  const ticketValue = currentPrize
+    ? parseUnits(formatEther(currentPrize), 18)
+    : parseUnits('0.002', 18)
+
+  const onBuy = async () => {
+    try {
+      write()
+    } catch (error) {
+      console.log({ error })
+    }
+  }
+
+  const {
+    data: buyTicketData,
+    writeAsync,
+    error,
+    write,
+    isLoading: isBuyingTicket,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'buyTicket',
+    value: ticketValue,
+    onSuccess(data, variables, context) {
+      console.log({ data, variables, context })
+    },
+    onError: (error) => {
+      console.log({ error: error?.cause })
+      // @ts-ignore
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
+      toast({
+        variant: 'destructive',
+        title: 'Buy ticket failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    },
+  })
+
+  const { data: txData } = useWaitForTransaction({
+    hash: buyTicketData?.hash,
+  })
+
+  if (txData?.transactionHash) {
+    toast({
+      title: 'Buy ticket success',
+      description: (
+        <p className="text-base">
+          Transaction Details:
+          <a
+            href={`https://goerli.arbiscan.io/tx/${txData?.transactionHash}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500"
+          >
+            View on Block Explorer
+          </a>
+        </p>
+      ),
+    })
+  }
 
   const { data } = useContractReads({
     contracts: [
@@ -46,7 +155,7 @@ function CountdownScreen() {
         <Round round={0} phaseType={'countdown'} />
         <p className="text-3xl font-headline uppercase beginnings-last mt-2"> Countdown </p>
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-        
+
         <Title stageType={'countdown'} />
         <div className="flex justify-center items-center text-sm">
           <AllPrize />
@@ -60,11 +169,11 @@ function CountdownScreen() {
             lg:bg-slate-300 lg:bg-opacity-50
             dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
           >
-            <GameTab isCouldBuyTicket={true} />
+            <GameTab isCouldBuyTicket={true} onBuy={onBuy} />
           </div>
         </div>
 
-        <div 
+        <div
           className="grow rounded-xl py-2
           bg-slate-300 bg-opacity-50
           dark:lg:bg-slate-500 dark:lg:bg-opacity-50"

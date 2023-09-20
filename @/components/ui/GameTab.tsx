@@ -100,7 +100,7 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
     } catch (error: any) {
       console.log({ error: error?.cause })
       // @ts-ignore
-      const errorMsg = error?.cause?.shortMessage || error?.message
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
       toast({
         variant: 'destructive',
         title: 'Buy ticket failed',

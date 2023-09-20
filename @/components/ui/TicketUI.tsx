@@ -29,7 +29,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketId }) => {
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
-    args: [playerAddress as `0x${string}`],
+    args: [(playerAddress || '') as `0x${string}`],
   })
 
   let id = playerTicket?.[0] || 0

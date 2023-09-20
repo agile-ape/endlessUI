@@ -10,6 +10,7 @@ interface StoreModel {
   updateRound: Action<StoreModel, number>
   tickets: IApp['tickets']
   updateTickets: Action<StoreModel, IApp['tickets']>
+  addTicket: Action<StoreModel, IApp['tickets'][0]>
 }
 
 export type { StoreModel }

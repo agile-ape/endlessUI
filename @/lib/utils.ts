@@ -37,3 +37,12 @@ export const transformToTicket = (ticket: any[]): IApp['tickets'] => {
     user_address: t.user_address,
   }))
 }
+
+export const isJson = (str: string) => {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}

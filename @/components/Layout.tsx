@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { getTickets } from '../../services/api'
-import { transformToTicket } from '@/lib/utils'
+import { isJson, transformToTicket } from '@/lib/utils'
 
 const font = VT323({
   weight: ['400'],
@@ -40,6 +40,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateStage = useStoreActions((actions) => actions.updateStage)
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  const addTicket = useStoreActions((actions) => actions.addTicket)
 
   const router = useRouter()
 
@@ -56,6 +57,31 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       refreshData()
     },
   })
+
+  // useEffect(() => {
+  //   const socket = new WebSocket('ws://localhost:8090')
+  //   socket.addEventListener('open', function (event) {
+  //     socket.send('Hello Server!')
+  //   })
+
+  //   socket.addEventListener('message', function (event) {
+  //     const jsonData = isJson(event.data)
+  //     if (jsonData) {
+  //       const result = JSON.parse(event.data)
+  //       console.log('Message from server ', result)
+  //       const tickets = transformToTicket(result?.ticketData)
+  //       tickets.forEach((ticket) => {
+  //         addTicket(ticket)
+  //       })
+  //     } else {
+  //       console.log('Message from server ', event.data)
+  //     }
+  //   })
+
+  //   return () => {
+  //     socket.close()
+  //   }
+  // }, [])
 
   const { data } = useContractReads({
     contracts: [
