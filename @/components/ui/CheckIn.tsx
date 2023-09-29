@@ -9,6 +9,7 @@ import type { FC } from 'react'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
+import { useStoreActions, useStoreState } from '../../../store'
 
 import React, { useState } from 'react'
 import OtpInput from 'react-otp-input'
@@ -21,7 +22,9 @@ type Props = {
 function CheckInBox({ onSubmit }: Props) {
   // const [open, setOpen] = React.useState(true);
   const [otpInput, setOtpInput] = useState<string>()
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/;
+  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  const phase = useStoreState((state) => state.phase)
+
   // const [isOpen, setIsOpen] = useState(!disabled)
   // const { theme } = useTheme();
   // outer box - #209902]
@@ -31,7 +34,7 @@ function CheckInBox({ onSubmit }: Props) {
       className="
       group w-[240px] rounded-xl
       cursor-pointer
-      bg-green-700 flex flex-col mx-auto"
+      bg-green-700 flex flex-col mx-auto mb-4"
       open
     >
       <summary
@@ -41,7 +44,7 @@ function CheckInBox({ onSubmit }: Props) {
         px-3 py-1"
       >
         <div className="flex gap-2">
-          <div className="text-2xl capitalize text-white">Check in</div>
+          <div className="text-2xl capitalize pl-1 text-white">Check in</div>
 
           <TooltipProvider delayDuration={10}>
             <Tooltip>
@@ -60,6 +63,7 @@ function CheckInBox({ onSubmit }: Props) {
                     {' '}
                     <a className="text-blue-500 underline">Telegram</a>{' '}
                   </Link>{' '}
+                  Keyword can only be submitted during the day.
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -104,6 +108,7 @@ function CheckInBox({ onSubmit }: Props) {
         <Button
           variant="submit"
           size="lg"
+          disabled={phase !== 'day'}
           onClick={async () => {
             if (otpInput) {
               await onSubmit(otpInput)

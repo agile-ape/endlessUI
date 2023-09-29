@@ -5,6 +5,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
+import SplitPot from './SplitPot'
+import { useStoreActions, useStoreState } from '../../../store'
+import { formatUnits } from 'viem'
+
 import GameFeed from './GameFeed'
 import GameTextVariant from './GameTextVariant'
 import CheckIn from '../ui/CheckIn'
@@ -19,29 +23,55 @@ import {
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage } from 'viem'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from './use-toast'
+import next from 'next'
 
 type GameTabType = {
   onBuy?: () => Promise<void>
-  isCouldBuyTicket: boolean
+  // isCouldBuyTicket: boolean
 }
 
-const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
+const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
   const { address } = useAccount()
+
+    // const { playerAddress, isConnected } = useAccount()
+  // const { data: playerAddress } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'idToPlayer',
+  //   args: [ticketId],
+  // })
+
+  // const { data: playerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [playerAddress as `0x${string}`],
+  // })
+
   const { data: walletClient } = useWalletClient()
 
   const { signMessageAsync } = useSignMessage({})
-  const { writeAsync } = useContractWrite({
-    ...defaultContractObj,
-    functionName: 'checkIn',
-  })
-
+  
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
     args: [address as `0x${string}`],
   })
-
+  
   const ticketId = playerTicket?.[0] || BigInt(0)
+  // console.log(Number(ticketId));
+  
+  const phase = useStoreState((state) => state.phase);
+  // const phase = 'day';
+  
+  const nextPrizeAmount = useStoreState((state) => state.nextPrizeAmount);
+  const totalPrizePool = useStoreState((state) => state.totalPrizePool);
+  
+  //  add buyTicket logic
+  
+  
+  const { writeAsync } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkIn',
+  })
 
   const onSubmit = async (input: string) => {
     console.log({ input })
@@ -123,14 +153,14 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
 
       <div className="mt-2 flex justify-center">
         <TabsContent value="ticket" className="flex flex-col items-center justify-center">
-          {isCouldBuyTicket && (
-            <>
+          {/* if no ticket, beginnings/countdown = buy */}
+          {((Number(ticketId) === 0) && (phase === 'beginnings' || 'countdown')) &&
+            <div className="mb-4">
               <div className="flex justify-center items-center text-xl">
                 Next Ticket
                 <TooltipProvider delayDuration={50}>
                   <Tooltip>
                     <TooltipTrigger>
-                      {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
                       <HelpCircle
                         size={16}
                         className="ml-1 stroke-slate-900 dark:stroke-slate-100"
@@ -138,27 +168,87 @@ const GameTab: React.FC<GameTabType> = ({ isCouldBuyTicket, onBuy }) => {
                     </TooltipTrigger>
                     <TooltipContent side="top" align="center">
                       <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                        Every next ticket price increase by 0.001ETH.
+                        Ticket price increases over time
                       </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <TicketUI ticketId={ticketId} />
+              {/* to adjust how ticket is shown*/}
+              <TicketUI ticketId={ticketId} ticketWidthPx={240}/>
+              
               <Button
-                // disabled={!write || isAddressBoughtTickets}
-                size="lg"
-                variant="enter"
-                className="w-[240px] mt-4 mb-4"
-                onClick={onBuy}
+              // disabled={!write || isAddressBoughtTickets}
+              size="lg"
+              variant="enter"
+              className="w-[240px] mt-4"
+              onClick={onBuy}
               >
                 Buy Ticket
               </Button>
-            </>
-          )}
+            </div>
+          }
+          
+          {/* if no ticket for rest of phase */}
+          {((Number(ticketId) === 0) && (phase !== 'beginnings' || 'countdown')) &&
+            <div className="flex flex-col justify-center mb-4">
+              <div className="flex justify-center items-center text-xl">
+                Feeling FOMO?
+              </div>
+              <Image
+                priority
+                src="/pepe/pepe-lost.svg"
+                className="place-self-center"
+                height={200}
+                width={200}
+                alt="pepe-in-thoughts"
+                />
+                <div className='text-center text-xl'>
+                  Follow us to track when the next game begins
+                </div>
+            </div>
+          }
 
-          {!isCouldBuyTicket && <div className="flex justify-center mb-4">Your Ticket</div>}
+          {/* if you have a ticket and not day */}
+          {((Number(ticketId) > 0) && (phase !== 'day')) &&
+            <div className="mb-4">
+              <div className="flex justify-center items-center text-xl">
+                Your Ticket
+              </div>
+              <TicketUI ticketId={ticketId} ticketWidthPx={240}/>
+            </div>
+          }
+
+          {/* if you have a ticket and day */}
+          {((Number(ticketId) > 0) && (phase === 'day')) &&
+            <div className="mb-4">
+              <div className="flex justify-center items-center text-xl">
+                Your Ticket
+              </div>
+            
+              <TicketUI ticketId={ticketId} ticketWidthPx={240}/>
+
+              <div className="text-xl text-center leading-tight">
+                +{formatUnits(BigInt(totalPrizePool),18)} ETH if you exit now.
+              </div>
+
+              <Button
+              // disabled={!write || isAddressBoughtTickets}
+              size="lg"
+              variant="exit"
+              className="w-[240px] mt-1"
+              onClick={onBuy}
+              >
+                Exit Game
+              </Button>
+            </div>
+          }
+          
+          
           <CheckIn onSubmit={onSubmit} />
+          
+          <SplitPot />
+
         </TabsContent>
         <TabsContent value="game">
           <GameFeed />

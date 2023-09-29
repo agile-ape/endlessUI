@@ -10,6 +10,13 @@ interface IApp {
   round: number
   ticketState: 'default' | 'checked' | 'checkin' | 'dead' | 'redeemed' | 'beforeBuy'
   id: bigint
+  totalPrizePool: number
+  nextPrizeAmount: number
+  topPrize: number
+  bounty: number
+  currentTicketCount: number
+  totalTicketCount: number
+  suddenDeathRound: number
   tickets: Ticket[]
   // disabled: boolean
 }

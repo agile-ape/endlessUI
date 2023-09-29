@@ -86,6 +86,7 @@
     shadow-md
     transition-colors
     hover:bg-gradient-to-l from-sky-300 to-indigo-500
+    hover:border-4 hover:border-indigo-900
     hover:text-indigo-900
     focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
     h-10 w-max py-[2px] px-[16px] rounded-xl;

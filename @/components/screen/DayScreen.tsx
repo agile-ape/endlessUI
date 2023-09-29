@@ -8,6 +8,7 @@ import Title from '../ui/Title'
 import CheckIn from '../ui/CheckIn'
 import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import AllPrize from '../ui/AllPrize'
 
 export default function DayScreen() {
   const { isConnected } = useAccount()
@@ -40,10 +41,11 @@ export default function DayScreen() {
     <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-black"> Day </p>
-        <Round round={0} phaseType={'day'} />
+        <Round />
         <Title stageType={'day'} />
+        <AllPrize />
       </div>
-      <GameTab isCouldBuyTicket={true} />
+      <GameTab />
       <Countdown countdownTime={countdownTime} timeFlag={timeFlag} />
       {/* <CheckIn /> */}
       <NextClaim />

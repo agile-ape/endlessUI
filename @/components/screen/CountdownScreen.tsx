@@ -152,10 +152,10 @@ function CountdownScreen() {
   return (
     <div className="flex flex-col gap-5">
       <div className="text-center">
-        <Round round={0} phaseType={'countdown'} />
-        <p className="text-3xl font-headline uppercase beginnings-last mt-2"> Countdown </p>
+        <Round />
+        <p className="text-3xl font-headline uppercase beginnings-last my-2"> Countdown </p>
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-
+        
         <Title stageType={'countdown'} />
         <div className="flex justify-center items-center text-sm">
           <AllPrize />
@@ -166,16 +166,16 @@ function CountdownScreen() {
         <div>
           <div
             className="flex flex-col gap-3 rounded-xl px-4 py-4
-            lg:bg-slate-300 lg:bg-opacity-50
+            lg:bg-slate-300 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
             dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
           >
-            <GameTab isCouldBuyTicket={true} onBuy={onBuy} />
+            <GameTab />
           </div>
         </div>
 
-        <div
+        <div 
           className="grow rounded-xl py-2
-          bg-slate-300 bg-opacity-50
+          bg-slate-300 bg-opacity-50 border-2 border-slate-400/50
           dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
         >
           <TicketList stage="beginning" />

@@ -56,7 +56,7 @@ const PhaseChange = () => {
     <div className="bg-gradient-to-br from-orange-600 to-yellow-400 rounded-lg p-0.5 shadow-md shadow-orange-400/70">
       <Button
         disabled={!write || !playerTicket}
-        size="md"
+        size="sm"
         variant="change"
         onClick={() => write()}
         isLoading={isLoading}

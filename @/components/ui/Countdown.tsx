@@ -86,7 +86,7 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
           <Tooltip>
             <TooltipTrigger>
               {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
-              <HelpCircle size={24} className="stroke-lime-800 dark:stroke-lime-300" />
+              <HelpCircle size={24} className="ml-1 stroke-slate-900 dark:stroke-slate-100" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">

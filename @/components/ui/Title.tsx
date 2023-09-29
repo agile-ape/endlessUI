@@ -33,12 +33,7 @@ const title = {
 const Title: FC<TitleType> = ({ stageType }) => {
   return (
     <p
-      className={cn(
-        'text-3xl mt-5 capitalize',
-        (stageType === 'dusk' || stageType === 'beginnings' || stageType === 'night') &&
-          'text-white',
-        stageType === 'day' && 'text-black',
-      )}
+      className="text-3xl mt-5 capitalize"
     >
       {title[stageType]}
     </p>

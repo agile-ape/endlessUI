@@ -129,11 +129,11 @@ function BeginningsScreen() {
     <div className="container mx-auto py-1 flex flex-col gap-7 mt-7">
       <div className="text-center">
         <p className="text-xl text-white"> Beginnings </p>
-        <Round round={round} phaseType={'beginnings'} />
+        <Round />
         <Title stageType={'beginnings'} />
       </div>
 
-      <GameTab isCouldBuyTicket={true} onBuy={onBuy} />
+      <GameTab onBuy={onBuy} />
 
       {/* <Ticket isCouldBuyTicket={true} onBuy={write} /> */}
 

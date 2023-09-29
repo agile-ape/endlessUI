@@ -22,8 +22,6 @@ const font = VT323({
 const typeStage: Record<IApp['phase'], string> = {
   beginnings: 'City.svg',
   countdown: 'City.svg',
-  // countdown: 'DayPepe.svg',
-  // countdown: 'DayPepe.svg',
   day: 'Desert.svg',
   dusk: 'Dusk.svg',
   night: 'Night.avif',
@@ -37,10 +35,17 @@ type LayoutProps = {
 }
 
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
-  const updateStage = useStoreActions((actions) => actions.updateStage)
+  const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updateTotalPrizePool = useStoreActions((actions) => actions.updateTotalPrizePool)
+  const updateNextPrizeAmount = useStoreActions((actions) => actions.updateNextPrizeAmount)
+  const updateTopPrize = useStoreActions((actions) => actions.updateTopPrize)
+  const updateBounty = useStoreActions((actions) => actions.updateBounty)
+  const updateCurrentTicketCount = useStoreActions((actions) => actions.updateCurrentTicketCount)
+  const updateTotalTicketCount = useStoreActions((actions) => actions.updateTotalTicketCount)
+  const updateSuddenDeathRound = useStoreActions((actions) => actions.updateSuddenDeathRound)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
-  const addTicket = useStoreActions((actions) => actions.addTicket)
+  // const addTicket = useStoreActions((actions) => actions.addTicket)
 
   const router = useRouter()
 
@@ -53,7 +58,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       const args = event[0]?.args
       const { newPhase } = args
 
-      updateStage(Number(newPhase))
+      updatePhase(Number(newPhase))
       refreshData()
     },
   })
@@ -93,16 +98,60 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'phase',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'totalPrizePool',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'nextPrizeAmount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'prizeFactor',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'bounty',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketCount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketId',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'suddenDeath',
+      },
     ],
     enabled: isConnected,
   })
 
   if (data && data?.length > 0) {
+    // kept
     const round = data[0]?.result
-    const stage = data[1]?.result || 0
+    const phase = data[1]?.result || 0
+    const totalPrizePool = data[2]?.result || 0
+    const nextPrizeAmount = data[3]?.result || 0
+    const prizeFactor = data[4]?.result || 0
+    const bounty = data[5]?.result || 0
+    const ticketCount = data[6]?.result || 0
+    const ticketId = data[7]?.result || 0
+    const suddenDeath = data[8]?.result || 0
 
-    updateStage(Number(stage))
+    // make all names consistent from this point out
     updateRound(Number(round))
+    updatePhase(Number(phase))
+    updateTotalPrizePool(Number(totalPrizePool))
+    updateNextPrizeAmount(Number(nextPrizeAmount))
+    updateTopPrize(Number(prizeFactor))
+    updateBounty(Number(bounty))
+    updateCurrentTicketCount(Number(ticketCount))
+    updateTotalTicketCount(Number(ticketId) - 1)
+    updateSuddenDeathRound(Number(suddenDeath))
   }
 
   const refreshData = () => {

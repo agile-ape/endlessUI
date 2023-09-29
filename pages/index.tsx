@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     day: 'light',
     night: 'dark',
     dusk: 'dark',
-    lastmanfound: 'dark',
+    lastmanfound: 'light',
   }
 
   return {

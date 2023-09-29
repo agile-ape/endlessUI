@@ -9,7 +9,9 @@ import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { HelpCircle } from 'lucide-react'
 import Link from 'next/link'
 import TicketUI from './TicketUI'
-import { useStoreState } from '../../../store'
+import { useStoreActions, useStoreState } from '../../../store'
+import { useContractWrite } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 
 type TicketListType = {
   stage: string
@@ -17,30 +19,39 @@ type TicketListType = {
 
 const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const [ticketState, setTicketState] = useState<string>('aroundMe')
-  const fixedPurpleBg = ['dusk']
+  const phase = useStoreState((state) => state.phase)
 
   const ticketList = useStoreState((state) => state.tickets)
+
+  const { data, write } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkTicket',
+    onSuccess(data, variables, context) {
+      console.log({ data })
+    },
+    onError(error, variables, context) {
+      console.log({ error })
+    },
+  })
 
   return (
     <>
       <summary
-        className="list-none border-b-2 border-slate-400 dark:border-slate-100
+        className="list-none
         rounded relative px-3 flex flex-col md:flex-row items-center"
       >
         <div className="flex items-center text-[2rem] pb-4 pt-2  grow leading-7 capitalize">
-          Tickets(233/1212){' '}
+          Ticket list
           <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger>
                 <HelpCircle
                   size={24}
-                  className="align-end stroke-slate-900 dark:stroke-slate-100"
+                  className="align-end ml-1 stroke-slate-900 dark:stroke-slate-100"
                 />
               </TooltipTrigger>
               <TooltipContent side="top" align="center">
                 <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                  (Tickets left/ Total tickets)
-                  <br />
                   Shows every ticket info and their status (
                   <span className="bg-purple-800 text-white rounded-xs">New</span>
                   {', '}
@@ -50,7 +61,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                   {', '}
                   <span className="bg-gray-800 text-white rounded-xs">Left</span>).
                   <br />
-                  Check others tickets here.
+                  Check others tickets here. Checks can only be done during the Night.
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -101,19 +112,30 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         className="
             flex
             w-[100%]
-            lg:justify-start
             justify-evenly
-            gap-x-5
+            sm:justify-start
+            gap-x-6
+            gap-y-6
             flex-wrap
             max-h-[800px]
-            px-3 gap-y-1
+            px-3
             overflow-y-scroll
           "
       >
         {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
-            <TicketUI ticketId={BigInt(item.id)} />
-            <Button variant="check" size="md" className="w-full mt-3">
+            <TicketUI ticketId={BigInt(item.id)} ticketWidthPx={220} />
+            <Button
+              onClick={() =>
+                write({
+                  args: [BigInt(item.id)],
+                })
+              }
+              variant="check"
+              size="md"
+              disabled={phase != 'night'}
+              className="w-full mt-3"
+            >
               Check
             </Button>
           </div>
