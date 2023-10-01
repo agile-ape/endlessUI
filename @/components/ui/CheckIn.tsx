@@ -4,26 +4,59 @@ import { TriangleDownIcon } from '@radix-ui/react-icons'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
 import { HelpCircle } from 'lucide-react'
 import type { IApp } from 'types/app'
-
+import { toBytes } from 'viem'
 import type { FC } from 'react'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import { useStoreActions, useStoreState } from '../../../store'
-
+import { defaultContractObj } from '../../../services/constant'
+import { toast } from './use-toast'
 import React, { useState } from 'react'
 import OtpInput from 'react-otp-input'
+import { useWalletClient, useContractWrite } from 'wagmi'
 // import { useTheme } from 'next-themes';
 
-type Props = {
-  onSubmit: (input: string) => Promise<void>
-}
-
-function CheckInBox({ onSubmit }: Props) {
+function CheckInBox() {
   // const [open, setOpen] = React.useState(true);
   const [otpInput, setOtpInput] = useState<string>()
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const { data: walletClient } = useWalletClient()
+
+  const { writeAsync } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkIn',
+  })
+
+  const onSubmit = async (input: string) => {
+    console.log({ input })
+    try {
+      const hashedMessage = toBytes(input)
+      const signature = await walletClient?.signMessage({
+        message:{ raw: hashedMessage }
+      })
+      const result = await writeAsync({
+        args: [signature as `0x${string}`]
+      })
+      console.log({hashedMessage, signature, result})
+      toast({
+        title: 'Check in success!',
+        description: <p className="text-base">You have successfully checked in.</p>,
+      })
+
+      // console.log(result)
+    } catch (error: any) {
+      console.log({ error: error?.cause })
+      // @ts-ignore
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
+      toast({
+        variant: 'destructive',
+        title: 'Buy ticket failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
 
   // const [isOpen, setIsOpen] = useState(!disabled)
   // const { theme } = useTheme();

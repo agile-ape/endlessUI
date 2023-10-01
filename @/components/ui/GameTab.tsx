@@ -20,7 +20,7 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { encodePacked, keccak256, recoverMessageAddress, verifyMessage } from 'viem'
+import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from './use-toast'
 import next from 'next'
@@ -76,57 +76,20 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
   const onSubmit = async (input: string) => {
     console.log({ input })
     try {
-      const hashedInput = keccak256(encodePacked(['string'], [input]))
-
+      const hashedMessage = toBytes(input)
       const signature = await walletClient?.signMessage({
-        message: hashedInput,
+        message:{ raw: hashedMessage }
       })
-
-      /*verifyfirst signature */
-      const valid = await verifyMessage({
-        message: hashedInput,
-        signature: signature as `0x${string}`,
-        address: address as `0x${string}`,
-      })
-
-      const msgAddress = await recoverMessageAddress({
-        message: hashedInput,
-        signature: signature as `0x${string}`,
-      })
-
-      // sign again
-      const signature2 = await walletClient?.signMessage({
-        message: signature as `0x${string}`,
-      })
-
-      /*verify second signature */
-      const valid2 = await verifyMessage({
-        message: signature as `0x${string}`,
-        signature: signature2 as `0x${string}`,
-        address: address as `0x${string}`,
-      })
-
-      const msgAddress2 = await recoverMessageAddress({
-        message: signature as `0x${string}`,
-        signature: signature2 as `0x${string}`,
-      })
-
-      const r = signature2?.slice(0, 66) as `0x${string}`
-      const s = ('0x' + signature2?.slice(66, 130)) as `0x${string}`
-      const v = '0x' + signature2?.slice(130, 132)
-
-      const packedSignature = encodePacked(['bytes32', 'bytes32', 'uint8'], [r, s, Number(v)])
-
       const result = await writeAsync({
-        args: [packedSignature],
+        args: [signature as `0x${string}`]
       })
-
+      console.log({hashedMessage, signature, result})
       toast({
         title: 'Check in success!',
         description: <p className="text-base">You have successfully checked in.</p>,
       })
 
-      console.log(result)
+      // console.log(result)
     } catch (error: any) {
       console.log({ error: error?.cause })
       // @ts-ignore
@@ -245,7 +208,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           }
           
           
-          <CheckIn onSubmit={onSubmit} />
+          <CheckIn />
           
           <SplitPot />
 
