@@ -24,7 +24,7 @@ interface StoreModel {
   updateSuddenDeathRound: Action<StoreModel, number>
   tickets: IApp['tickets']
   updateTickets: Action<StoreModel, IApp['tickets']>
-  // addTicket: Action<StoreModel, IApp['tickets'][0]>
+  addTicket: Action<StoreModel, IApp['tickets'][0]>
 }
 
 export type { StoreModel }
