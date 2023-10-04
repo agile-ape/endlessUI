@@ -12,6 +12,7 @@ import { formatUnits } from 'viem'
 import GameFeed from './GameFeed'
 import GameTextVariant from './GameTextVariant'
 import CheckIn from '../ui/CheckIn'
+import UserActions from './UserActions'
 import { HelpCircle } from 'lucide-react'
 import {
   useAccount,
@@ -208,9 +209,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           }
           
           
-          <CheckIn />
-          
-          <SplitPot />
+          {/* <CheckIn /> */}
+          <UserActions />
 
         </TabsContent>
         <TabsContent value="game">

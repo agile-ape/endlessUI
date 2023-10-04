@@ -13,7 +13,7 @@ export default function SplitPot() {
 
     return(
         <div
-            className="w-[240px] rounded-xl
+            className="w-[100%] rounded-xl
             bg-pink-600 flex flex-col mx-auto"
         >
             <summary
