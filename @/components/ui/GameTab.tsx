@@ -24,7 +24,6 @@ import {
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from './use-toast'
-import next from 'next'
 
 type GameTabType = {
   onBuy?: () => Promise<void>
