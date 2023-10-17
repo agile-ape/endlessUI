@@ -10,6 +10,7 @@ import AllPrize from '../ui/AllPrize'
 import PrizeInfo from '../ui/PrizeInfo'
 import dynamic from 'next/dynamic'
 import GameTab from '../ui/GameTab'
+import UserActions from '../ui/UserActions'
 import {
   useAccount,
   useContractEvent,
@@ -156,8 +157,8 @@ function CountdownScreen() {
         <p className="text-3xl font-headline uppercase beginnings-last my-2"> Countdown </p>
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
         
-        <Title stageType={'countdown'} />
-        <div className="flex justify-center items-center text-sm">
+        {/* <Title stageType={'countdown'} /> */}
+        <div className="flex justify-center items-center text-sm container-last">
           <AllPrize />
         </div>
       </div>
@@ -165,18 +166,17 @@ function CountdownScreen() {
       <div className="flex flex-col lg:flex-row gap-8 xl:mx-[150px] mb-8">
         <div>
           <div
-            className="flex flex-col gap-3 rounded-xl px-4 py-4
-            lg:bg-slate-300 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
-            dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
+            className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
+            container-last"
           >
             <GameTab />
+            <UserActions />
           </div>
         </div>
 
         <div 
           className="grow rounded-xl py-2
-          bg-slate-300 bg-opacity-50 border-2 border-slate-400/50
-          dark:lg:bg-slate-500 dark:lg:bg-opacity-50"
+          container-last"
         >
           <TicketList stage="beginning" />
         </div>

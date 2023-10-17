@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const currentPhase = stagePayload[phase] || 'unknown'
 
   res.status(200).json({
-    message: currentPhase,
-    // message: 'countdown',
+    // message: currentPhase,
+    message: 'day',
   })
 }

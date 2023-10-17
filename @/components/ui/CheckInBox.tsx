@@ -1,0 +1,159 @@
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { TriangleRightIcon } from '@radix-ui/react-icons'
+import { TriangleDownIcon } from '@radix-ui/react-icons'
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { HelpCircle } from 'lucide-react'
+import type { IApp } from 'types/app'
+import { toBytes } from 'viem'
+import type { FC } from 'react'
+import { Button } from './button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
+import { useStoreActions, useStoreState } from '../../../store'
+import { defaultContractObj } from '../../../services/constant'
+import { toast } from './use-toast'
+import React, { useState } from 'react'
+import OtpInput from 'react-otp-input'
+import { useWalletClient, useContractWrite } from 'wagmi'
+// import { useTheme } from 'next-themes';
+
+function CheckInBox() {
+  // const [open, setOpen] = React.useState(true);
+  const [otpInput, setOtpInput] = useState<string>()
+  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  const phase = useStoreState((state) => state.phase)
+  const { data: walletClient } = useWalletClient()
+
+  const { writeAsync } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkIn',
+  })
+
+  const onSubmit = async (input: string) => {
+    console.log({ input })
+    try {
+      const hashedMessage = toBytes(input)
+      const signature = await walletClient?.signMessage({
+        message:{ raw: hashedMessage }
+      })
+      const result = await writeAsync({
+        args: [signature as `0x${string}`]
+      })
+      console.log({hashedMessage, signature, result})
+      toast({
+        title: 'Check in success!',
+        description: <p className="text-base">You have successfully checked in.</p>,
+      })
+
+      // console.log(result)
+    } catch (error: any) {
+      console.log({ error: error?.cause })
+      // @ts-ignore
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
+      toast({
+        variant: 'destructive',
+        title: 'Buy ticket failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
+
+  // const [isOpen, setIsOpen] = useState(!disabled)
+  // const { theme } = useTheme();
+  // outer box - #209902]
+  // innter box - [#54B060]
+  return (
+    <details
+      className="
+      group w-[240px] rounded-xl
+      cursor-pointer
+      bg-green-700 flex flex-col mx-auto mb-4"
+      open
+    >
+      <summary
+        className="mb-1 flex justify-between flex-wrap items-center
+        focus-visible:outline-none focus-visible:ring
+        rounded group-open:rounded-b-none group-open:z-[1] relative
+        px-3 py-1"
+      >
+        <div className="flex gap-2">
+          <div className="text-2xl capitalize pl-1 text-white">Check in</div>
+
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px] text-white" /> */}
+                <HelpCircle size={24} className="stroke-slate-100" />
+              </TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                  Enter the 4-letter keyword of the day to stay in the game. Keyword can be found on{' '}
+                  <Link href="https://twitter.com/home">
+                    <a className="text-blue-500 underline"> Twitter/X</a>{' '}
+                  </Link>
+                  or on{' '}
+                  <Link href="https://twitter.com/home">
+                    {' '}
+                    <a className="text-blue-500 underline">Telegram</a>{' '}
+                  </Link>{' '}
+                  Keyword can only be submitted during the day.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        <div
+          className="border-8 border-transparent border-l-white ml-2 group-open:ml-5 group-open:mb-1
+            group-open:rotate-90 transition-transform origin-left
+            "
+        ></div>
+      </summary>
+
+      <div
+        className="
+          m-4 mt-0
+          rounded-xl py-3 px-3
+          bg-green-600
+          capitalize text-center text-white
+          flex flex-col gap-5"
+      >
+        <p className="text-xl">Enter keyword</p>
+
+        <OtpInput
+          value={otpInput}
+          onChange={(e: string) => {
+            if (excludeSpecialChar.test(e)) setOtpInput(e)
+          }}
+          numInputs={4}
+          inputStyle={{
+            width: '90%',
+            height: '50px',
+            // color: theme === 'light' ? 'black' : 'white',
+            borderRadius: '12px',
+            margin: '0 auto',
+            fontSize: '36px',
+          }}
+          placeholder="****"
+          className="dark:text-white text-black"
+        />
+
+        <Button
+          variant="submit"
+          size="lg"
+          disabled={phase !== 'day'}
+          onClick={async () => {
+            if (otpInput) {
+              await onSubmit(otpInput)
+              setOtpInput('')
+            }
+          }}
+        >
+          Submit
+        </Button>
+      </div>
+    </details>
+  )
+}
+
+export default CheckInBox

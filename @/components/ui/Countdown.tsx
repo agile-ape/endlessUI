@@ -60,7 +60,7 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   
   return (
       <div className="flex justify-center items-center text-lime-800 dark:text-lime-300 gap-1 mb-2">
-        <div className="flex justify-center pl-5">
+        <div className="flex justify-center">
           {timeLeft && !isNaN(timeLeft) ? (
             <div className="text-3xl rounded-xl flex flex-row gap-0.5">
               <div className="flex flex-col">
@@ -82,10 +82,9 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
             <PhaseChange />
             )}
         </div>
-        <TooltipProvider delayDuration={50}>
+        {/* <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
-              {/* <QuestionMarkCircledIcon className="w-[20px] h-[20px]" /> */}
               <HelpCircle size={24} className="ml-1 stroke-slate-900 dark:stroke-slate-100" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
@@ -98,7 +97,7 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
               </p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
+        </TooltipProvider> */}
       </div>
   )
 }

@@ -118,12 +118,17 @@
     disabled:opacity-50;
   }
 
+  /* .border-rainbow {
+    @apply background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
+  } */
+
   .beginnings-last {
     @apply text-blue-100;
   }
 
   .day-last {
-    @apply text-lime-500;
+    /* @apply text-lime-500; */
+    @apply text-green-600;
   }
 
   .dusk-last {
@@ -136,6 +141,11 @@
 
   .snow-last {
     @apply text-slate-300;
+  }
+
+  .container-last {
+    @apply lg:bg-slate-200 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
+    dark:lg:bg-slate-500 dark:lg:bg-opacity-50;
   }
 }
 /* hover:bg-accent hover:text-accent-foreground */

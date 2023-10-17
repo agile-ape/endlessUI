@@ -17,34 +17,33 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogIn } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
 
-function CheckIn() {
+function Inspect() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
-
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkIn" className="w-full text-xl">
-          Check In <LogIn size={16} className="text-sm ml-1"></LogIn>
+        <Button variant="inspect" size="lg" className="w-full mt-4 text-xl">
+          Inspect
         </Button>
       </DialogTrigger>
       
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Check into the Safehouse
-                <div className="day-last">
-                  <span className="font-headline">Day
+            <DialogTitle className="text-3xl text-center font-normal">Inspect the ticket for their keyword
+                  <div className="night-last">
+                  <span className="font-headline">Night
                   </span> Action
-                </div>
+                  </div>
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               
@@ -62,69 +61,66 @@ function CheckIn() {
                   
                 {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
-                    <AccordionTrigger>Notes
+                    <AccordionTrigger>
+                        Notes
                     </AccordionTrigger>
                     <AccordionContent>
-                      <p>Payment in $LAST. Pay before you stay.</p>
-                      <p>You can check out anytime once you are checked in.</p>
-                      <p>Ticket cannot be forfeited in the Safehouse.</p>
-                      <p>But if you overstay, you can be kicked out. Your ticket is forfeited when you are kicked out.</p>
+                      <p>If keyword is wrong, his ticket is forfeited.</p>
+                      <p>Ticket value goes to player before him - if Ticket #4 is forfeited, ticket #4's value goes to Player #3</p>
+                      <p>Each check earns you some $LAST during Normal rounds.</p>
+                      <p>Ticket can only be checked once per night.</p>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
+
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Payment in $LAST. Pay before you stay.</p>
-                  <p className="mb-2">You can check out anytime once you are checked in.</p>
-                  <p className="mb-2">Ticket cannot be forfeited in the Safehouse.</p>
-                  <p className="mb-2">But if you overstay, you can be kicked out. Your ticket is forfeited when you are kicked out.</p>
+                  <p className="mb-2">Ticket is forfeited if keyword is wrong.</p>
+                  <p className="mb-2">Ticket value goes to player before him - if Ticket #4 is forfeited, ticket #4's value goes to Player #3</p>
+                  <p className="mb-2">Each check earns you some $LAST <span className="font-semibold">during Normal rounds</span>.</p>
+                  <p className="mb-2">Ticket can only be checked once per  <span className="font-headline night-last">Night
+                  </span>.</p>
                 </div>
+
                 {/* Pay for stay */}
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">How long would you be staying?</div>
+                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">Check this ticket?</div>
                 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  
 
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      
-                      <p className="text-left">$LAST in wallet</p>
-                      <p className="text-right"> 33 </p>
-                      
+                <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                    
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">$LAST per check</p>
+                      <p className="text-right"> 3</p>
+                    </div>
+                    
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Ticket value</p>
+                      <p className="text-right"> 30 ETH</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Price per night {'('}in $LAST{')'}</p>
-                      <p className="text-right"> 2 </p>
+                      <p className="text-left">Last seen at</p>
+                      <p className="text-right underline"> 4 </p>
                     </div>
-                  </div>
 
-                  <div>
-                    {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Last action </p>
+                      <p className="text-right"> Entered game </p>
+                    </div>
+
+
+
                   </div>
 
                   <Button
-                    variant="checkIn"
+                    variant="inspect"
                     size="lg"
                     className="w-[100%]"
                   >
-                    Check In
+                    Check ticket
                   </Button>
 
                 </div>
-
-
-                  {/* <div
-                    className="
-                      m-4 mt-0
-                      rounded-xl py-3 px-3
-                  
-                      capitalize text-center text-white
-                      flex flex-col gap-5
-                      "
-                  >
-                  </div> */}
-
-
               </DialogDescription>
             </ScrollArea>
           </DialogHeader>
@@ -134,4 +130,4 @@ function CheckIn() {
   )
 }
 
-export default CheckIn
+export default Inspect

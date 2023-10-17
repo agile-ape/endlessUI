@@ -5,13 +5,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
+import ExitTicketUI from './ExitTicketUI'
 import SplitPot from './SplitPot'
 import { useStoreActions, useStoreState } from '../../../store'
 import { formatUnits } from 'viem'
 
 import GameFeed from './GameFeed'
 import GameTextVariant from './GameTextVariant'
-import CheckIn from '../ui/CheckIn'
+import CheckIn from './CheckInBox'
 import UserActions from './UserActions'
 import { HelpCircle } from 'lucide-react'
 import {
@@ -24,6 +25,8 @@ import {
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from './use-toast'
+import BuyTicket from './BuyTicket'
+import ExitGame from './ExitGame'
 
 type GameTabType = {
   onBuy?: () => Promise<void>
@@ -103,25 +106,14 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
   }
 
   return (
-    <Tabs defaultValue="ticket" className="mx-auto">
-      <TabsList className="flex justify-center rounded-xl w-[240px] mx-auto px-2 py-2">
-        <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-xl">
-          Ticket
-        </TabsTrigger>
-
-        <TabsTrigger value="game" className="rounded-xl w-[50%] p-1 text-xl">
-          Game
-        </TabsTrigger>
-      </TabsList>
-
-      <div className="mt-2 flex justify-center">
-        <TabsContent value="ticket" className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        {/* <TabsContent value="ticket" className="flex flex-col items-center justify-center"> */}
           {/* if no ticket, beginnings/countdown = buy */}
           {((Number(ticketId) === 0) && (phase === 'beginnings' || 'countdown')) &&
-            <div className="mb-4">
-              <div className="flex justify-center items-center text-xl">
+            <div className="mb-2">
+              <div className="flex justify-center items-center text-[2rem] py-2 mb-4 leading-7 capitalize">
                 Next Ticket
-                <TooltipProvider delayDuration={50}>
+                {/* <TooltipProvider delayDuration={50}>
                   <Tooltip>
                     <TooltipTrigger>
                       <HelpCircle
@@ -135,12 +127,13 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
                       </p>
                     </TooltipContent>
                   </Tooltip>
-                </TooltipProvider>
+                </TooltipProvider> */}
               </div>
               {/* to adjust how ticket is shown*/}
               <TicketUI ticketId={ticketId} ticketWidthPx={240}/>
+              <ExitTicketUI ticketId={ticketId} ticketWidthPx={240}/>
               
-              <Button
+              {/* <Button
               // disabled={!write || isAddressBoughtTickets}
               size="lg"
               variant="enter"
@@ -148,14 +141,20 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
               onClick={onBuy}
               >
                 Buy Ticket
-              </Button>
+              </Button> */}
+
+              <BuyTicket />
+              
+
+
+
             </div>
           }
           
           {/* if no ticket for rest of phase */}
-          {((Number(ticketId) === 0) && (phase !== 'beginnings' || 'countdown')) &&
+          {/* {((Number(ticketId) === 0) && (phase !== 'beginnings' || 'countdown')) &&
             <div className="flex flex-col justify-center mb-4">
-              <div className="flex justify-center items-center text-xl">
+              <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
                 Feeling FOMO?
               </div>
               <Image
@@ -167,15 +166,15 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
                 alt="pepe-in-thoughts"
                 />
                 <div className='text-center text-xl'>
-                  Follow us to track when the next game begins
+                  Follow us when game begins
                 </div>
             </div>
-          }
+          } */}
 
           {/* if you have a ticket and not day */}
           {((Number(ticketId) > 0) && (phase !== 'day')) &&
             <div className="mb-4">
-              <div className="flex justify-center items-center text-xl">
+              <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
                 Your Ticket
               </div>
               <TicketUI ticketId={ticketId} ticketWidthPx={240}/>
@@ -185,7 +184,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           {/* if you have a ticket and day */}
           {((Number(ticketId) > 0) && (phase === 'day')) &&
             <div className="mb-4">
-              <div className="flex justify-center items-center text-xl">
+              <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize"> 
                 Your Ticket
               </div>
             
@@ -195,7 +194,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
                 +{formatUnits(BigInt(totalPrizePool),18)} ETH if you exit now.
               </div>
 
-              <Button
+              {/* <Button
               // disabled={!write || isAddressBoughtTickets}
               size="lg"
               variant="exit"
@@ -203,20 +202,23 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
               onClick={onBuy}
               >
                 Exit Game
-              </Button>
+              </Button> */}
+
+              <ExitGame />
+
             </div>
           }
           
           
           {/* <CheckIn /> */}
-          <UserActions />
+          {/* <UserActions /> */}
 
-        </TabsContent>
-        <TabsContent value="game">
-          <GameFeed />
-        </TabsContent>
+        {/* </TabsContent> */}
+        {/* <TabsContent value="game"> */}
+          {/* <GameFeed /> */}
+        {/* </TabsContent> */}
       </div>
-    </Tabs>
+   
   )
 }
 

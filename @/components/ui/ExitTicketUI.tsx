@@ -13,7 +13,7 @@ import { Sword, Skull } from 'lucide-react'
 
 
 
-type TicketUIType = {
+type ExitTicketUIType = {
   ticketId: IApp['id']
   ticketWidthPx: number
 }
@@ -25,7 +25,7 @@ const statusMapping: Record<number, string> = {
   4: 'checkedIn',
 }
 
-const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
+const ExitTicketUI: FC<ExitTicketUIType> = ({ ticketId, ticketWidthPx }) => {
   const { data: playerAddress } = useContractRead({
     ...defaultContractObj,
     functionName: 'idToPlayer',
@@ -86,10 +86,9 @@ const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
     // Fresh - border-fuchsia-500 bg-purple-700 bg-fuchsia-900/75 is fresh on Round 
     // Submitted - border-green-500 bg-lime-700 bg-green-950/75 submitted a keyword on Round 
     // Checked - border-blue-500 bg-indigo-700 bg-blue-950/75 was checked on Round 
-    // Killed - opacity-80 border-zinc-500 bg-neutral-700 bg-zinc-900/75 was killed on Round 
-    // Safe - opacity-80 border-zinc-500 bg-neutral-700 bg-zinc-900/75 was killed on Round 
+    // Killed - border-zinc-500 bg-neutral-700 bg-zinc-900/75 was killed on Round 
       <div
-        className={`w-[${ticketWidthPx}px] flex flex-col justify-center border-4 border-zinc-500 bg-neutral-700 rounded-xl`}
+        className={`w-[${ticketWidthPx}px] flex flex-col justify-center border-4 border-zinc-300 bg-gray-200 rounded-xl`}
         style={{
           backgroundImage: `url('/pepe/motif2.svg')`,
           backgroundRepeat: 'no-repeat',
@@ -108,17 +107,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
             backgroundSize: 'cover',
           }}
         > */}
-          <div className="bg-zinc-900/75 shadow-xl text-center m-2 rounded-lg text-white py-1">
+          <div className="bg-zinc-300/75 shadow-xl text-center m-2 rounded-lg text-black py-1">
               <p className="uppercase text-xl leading-tight">
                 Player #{Number(id)}
-              </p>
-              <p className="text-sm text-center leading-tight">
-              was killed on Round <span className='underline'>{Number(ticketLastSeen)}</span>
               </p>
           </div>
 
           {/* Image */}
-          <div className="mx-2 mb-2 rounded-lg flex justify-center py-1">
+          <div className="mx-2 mt-3 mb-2 rounded-lg flex flex-row py-1">
               
             <Image 
               priority src="/faces/1.png" 
@@ -126,48 +122,72 @@ const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
               width={120} 
               className="mt-5"
               alt="pepe" />
+            
+            <div className="w-[90px] bg-zinc-300/75 shadow-xl flex flex-col my-7 mx-2 justify-center px-3 py-1 text-center rounded-lg text-black">
+              <p className="uppercase text-sm leading-tight">
+                Rank
+              </p>
+              <p className="uppercase text-3xl text-center">
+              {/* {formatUnits(ticketValue, 18)}  */} 102
+              
+              </p>
+          </div>
 
           </div>
 
           {/* Wallet */}
-          <div className="bg-zinc-900/75 shadow-xl text-center mx-2 mb-2 rounded-lg text-white py-1">
-              <p className="uppercase text-sm leading-tight">
-                Wallet
-              </p>
-              <p className="uppercase text-3xl text-center">
-              {formatUnits(ticketValue, 18)} 
-              <span className="text-lg">ETH</span>
-              </p>
-          </div>
-
-          {/* kills */}
-          <div className="bg-zinc-900/75 flex justify-center shadow-xl text-center mx-2 mb-2 rounded-lg text-white py-1">
-              <div className="w-[60%] flex justify-between">
-                <div className='flex gap-1'>
-                  <Sword size={28} className=""></Sword>
-                  <span className="text-2xl">
-                    {Number(ticketBullets)}
-                  </span>
-                </div>
-
-                <div className='flex gap-1'>
-                  <Skull size={28} className=""></Skull>
-                  <span className="text-2xl">
-                    {Number(ticketKillCount)}
-                  </span>
-                </div>
+          <div className="bg-zinc-300/75 flex flex-col justify-center shadow-xl text-center mx-2 mb-2 rounded-lg text-black py-1">
+              <div className="uppercase text-base leading-tight">
+                Game stats
               </div>
-              {/* <p className="uppercase leading-tight">
-                Player #{Number(id)}
-              </p>
-              <p className="uppercase text-sm text-center leading-tight">
-                last seen: <span className='underline'>{Number(ticketLastSeen)}</span>
-              </p> */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 px-2 text-xs flex-col justify-center">
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left"> Owner</p>
+                      <p className="text-right"> 0x12..32 </p>
+                    </div>
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Lasted till</p>
+                      <p className="text-right underline"> 7 </p>
+                    </div>
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Bought for</p>
+                      <p className="text-right"> 7 <span className="text-[0.5rem]">ETH</span></p>
+                    </div>
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Exited with</p>
+                      <p className="text-right"> 7 <span className="text-[0.5rem]">ETH</span></p>
+                    </div>
+                    
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Total kills</p>
+                      <p className="text-right">  10 </p>
+                    </div>
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Killed by </p>
+                      <p className="text-right">  - </p>
+                    </div>
+
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Safe nights </p>
+                      <p className="text-right"> 20 </p>
+                    </div>
+                    
+                    <div className="flex justify-between gap-2">
+                      <p className="text-left">Split pot? </p>
+                      <p className="text-right"> Yes </p>
+                    </div>
+
+              </div>
           </div>
-      </div>
+        </div>
       // </div>
     // </div>
   )
 }
 
-export default TicketUI
+export default ExitTicketUI

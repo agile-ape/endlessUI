@@ -26,6 +26,7 @@ export default function AllPrize() {
       {/* Players Info */}
       <div className="flex flex-col items-center min-w-[150px]">
         <Collapsible>
+          
           <CollapsibleTrigger className="text-xl flex justify-between gap-1 items-center pl-3 pr-8 whitespace-nowrap">
             <div className="text-left">Tickets Info</div>
             <ChevronsUpDown
@@ -33,6 +34,7 @@ export default function AllPrize() {
               className="ml-1 border text-right rounded-full hover:bg-white hover:text-black"
             />
           </CollapsibleTrigger>
+
           <div className="flex leading-tight justify-between text-base bg-neutral-400 dark:bg-neutral-800 border-2 border-slate-400 gap-4 py-1 px-3 rounded-lg mb-1">
             <TooltipProvider delayDuration={50}>
               <Tooltip>

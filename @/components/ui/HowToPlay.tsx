@@ -41,7 +41,7 @@ function HowToPlay() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="play" size="md">
+        <Button variant="howToPlay" size="md">
           How To Play
         </Button>
       </DialogTrigger>

@@ -5,7 +5,7 @@ import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/CheckIn'
+import CheckIn from '../ui/CheckInBox'
 
 export default function LastManScreen() {
   return (

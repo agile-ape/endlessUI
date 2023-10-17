@@ -12,6 +12,7 @@ import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 import { useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import GameFeed from './GameFeed'
 
 type TicketListType = {
   stage: string
@@ -38,71 +39,79 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
     <>
       <summary
         className="list-none
-        rounded relative px-3 flex flex-col md:flex-row items-center"
+        relative px-3 py-0 flex flex-col"
       >
-        <div className="flex items-center text-[2rem] pb-4 pt-2  grow leading-7 capitalize">
-          Ticket list
-          <TooltipProvider delayDuration={10}>
-            <Tooltip>
-              <TooltipTrigger>
+        <div className="flex">
+          <div className="flex text-[2rem] items-center grow leading-7 capitalize py-2">
+            Ticket list
+            {/* <TooltipProvider delayDuration={10}>
+              <Tooltip>
+                <TooltipTrigger>
                 <HelpCircle
-                  size={24}
-                  className="align-end ml-1 stroke-slate-900 dark:stroke-slate-100"
-                />
-              </TooltipTrigger>
-              <TooltipContent side="top" align="center">
-                <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                  Shows every ticket info and their status (
-                  <span className="bg-purple-800 text-white rounded-xs">New</span>
-                  {', '}
-                  <span className="bg-green-800 text-white rounded-xs">Check-in</span>
-                  {', '}
-                  <span className="bg-blue-800 text-white rounded-xs">Checked</span>
-                  {', '}
-                  <span className="bg-gray-800 text-white rounded-xs">Left</span>).
-                  <br />
-                  Check others tickets here. Checks can only be done during the Night.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                    size={24}
+                    className="align-end ml-1 stroke-slate-900 dark:stroke-slate-100"
+                    />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="center">
+                    <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
+                    Shows every ticket info and their status (
+                      <span className="bg-purple-800 text-white rounded-xs">New</span>
+                      {', '}
+                    <span className="bg-green-800 text-white rounded-xs">Check-in</span>
+                    {', '}
+                    <span className="bg-blue-800 text-white rounded-xs">Checked</span>
+                    {', '}
+                    <span className="bg-gray-800 text-white rounded-xs">Left</span>).
+                    <br />
+                    Check others tickets here. Checks can only be done during the Night.
+                    </p>
+                    </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider> */}
+          </div>
+          <div className="flex px-2">
+            <GameFeed/>
+          </div>
         </div>
-
-        <div className="flex gap-2 px-2 pb-4 pt-2">
+          
+        <div className="flex gap-3 justify-center">
           <Button
             onClick={() => setTicketState('aroundMe')}
             variant="filter"
+            className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'aroundMe'}
             // className={`${
-            //   ticketState === 'aroundMe'
-            //     ? disabled
-            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            // } `}
-          >
+              //   ticketState === 'aroundMe'
+              //     ? disabled
+              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+              // } `}
+              >
             Around Me
           </Button>
           <Button
             onClick={() => setTicketState('mostValue')}
             variant="filter"
+            className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'mostValue'}
             // className={`${
-            //   ticketState === 'mostValue'
-            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            // }`}
-          >
+              //   ticketState === 'mostValue'
+              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+              // }`}
+              >
             Most Value
           </Button>
           <Button
             onClick={() => setTicketState('inPlay')}
             variant="filter"
+            className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'inPlay'}
             // className={`${
-            //   ticketState === 'inPlay'
-            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            // }`}
-          >
+              //   ticketState === 'inPlay'
+              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+              // }`}
+              >
             In Play
           </Button>
         </div>
@@ -131,12 +140,12 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                   args: [BigInt(item.id)],
                 })
               }
-              variant="check"
-              size="md"
+              variant="inspect"
+              // size="md"
               disabled={phase != 'night'}
-              className="w-full mt-3"
+              className="w-full h-10 rounded-xl px-3 leading-6 text-xl mt-3"
             >
-              Check
+              Inspect
             </Button>
           </div>
         ))}
