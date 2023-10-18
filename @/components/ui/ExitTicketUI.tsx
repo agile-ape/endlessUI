@@ -122,16 +122,20 @@ const ExitTicketUI: FC<ExitTicketUIType> = ({ ticketId, ticketWidthPx }) => {
               width={120} 
               className="mt-5"
               alt="pepe" />
-            
-            <div className="w-[90px] bg-zinc-300/75 shadow-xl flex flex-col my-7 mx-2 justify-center px-3 py-1 text-center rounded-lg text-black">
-              <p className="uppercase text-sm leading-tight">
-                Rank
-              </p>
-              <p className="uppercase text-3xl text-center">
-              {/* {formatUnits(ticketValue, 18)}  */} 102
-              
-              </p>
-          </div>
+
+              <div className="w-[90px] relative my-6 mx-2 ">
+                <div className="absolute inset-px bg-gradient-to-br from-orange-600 to-yellow-400 rounded-lg"></div>
+                
+                <div className="absolute inset-1 bg-zinc-300/90 shadow-xl flex flex-col justify-center text-center rounded-lg text-black">
+                  <p className="uppercase text-sm mt-2 leading-tight">
+                    Rank
+                  </p>
+                  <p className="uppercase text-2xl text-center">
+                  {/* {formatUnits(ticketValue, 18)}  */} 102  
+                  </p>
+                </div>
+
+              </div>
 
           </div>
 
