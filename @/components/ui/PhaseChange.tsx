@@ -18,10 +18,19 @@ const mappedFunction: Record<string, string> = {
   countdown: 'changeCountdownToDay',
 }
 
+const bgColorPhase: Record<string, string> = {
+  day: 'bg-green-600',
+  dusk: 'bg-purple-200',
+  night: 'bg-amber-500',
+  // countdown: 'changeCountdownToDay',
+  beginnings: 'bg-blue-100',
+  lastmanfound: 'bg-slate-300'
+}
+
 const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
   const { address, isConnected } = useAccount()
-
+  console.log({phase: bgColorPhase[phase], phaseNow: phase})
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
@@ -60,6 +69,7 @@ const PhaseChange = () => {
         variant="change"
         onClick={() => write()}
         isLoading={isLoading}
+        className={bgColorPhase[phase]}
       >
         {playerTicket ? 'Change phase' : 'Hold on'}
       </Button>

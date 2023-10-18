@@ -56,7 +56,7 @@ const UserActions = () => {
         <KickOut />
         <ChangePhase />
         
-        {/* <SafehouseAction /> */}
+        <SafehouseAction />
 
 
 

@@ -4,6 +4,7 @@ import Menu from './Menu'
 import Logo from './ui/Logo'
 import SideMenu from './SideMenu'
 import DarkModeSwitcher from './ui/DarkModeSwitcher'
+import { Button } from './ui/button'
 
 function Header() {
   return (
@@ -22,6 +23,7 @@ function Header() {
 
       <div className="hidden lg:flex justify-self-end gap-2 order-3">
         {/* <DarkModeSwitcher /> */}
+        <Button variant="destructive">$LAST</Button>
         <CustomConnectButton />
       </div>
     </div>

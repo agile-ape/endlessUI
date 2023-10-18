@@ -15,6 +15,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import HowToPlay from './ui/HowToPlay'
+import GameHeader from "./ui/GameHeader"
 import { Button } from './ui/button'
 
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
@@ -26,7 +27,9 @@ export default function SideMenu() {
         <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-blue-950 flex flex-col justify-center">
-        
+        <DropdownMenuSub>
+          <GameHeader />
+        </DropdownMenuSub>
         <DropdownMenuSub>
           <HowToPlay />
         </DropdownMenuSub>
@@ -54,7 +57,15 @@ export default function SideMenu() {
           <Button variant="link" size="md">Follow Us <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
           </a> 
         </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <a href="https://twitter.com/fachryadhitya" target="_blank">
+          <Button variant="link" size="md">Docs <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
+          </a> 
+        </DropdownMenuItem>
         
+        <DropdownMenuItem>
+          <Button variant="destructive">$LAST</Button>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <CustomConnectButton />
         </DropdownMenuItem>
