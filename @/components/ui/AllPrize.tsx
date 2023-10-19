@@ -6,6 +6,7 @@ import { ChevronsUpDown, HelpCircle } from 'lucide-react'
 import { useStoreActions, useStoreState } from '../../../store'
 import { formatUnits } from 'viem'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { formatNumber } from '@/lib/utils'
 
 export default function AllPrize() {
   const currentTicketCount = useStoreState((state) => state.currentTicketCount)
@@ -26,7 +27,6 @@ export default function AllPrize() {
       {/* Players Info */}
       <div className="flex flex-col items-center min-w-[150px]">
         <Collapsible>
-          
           <CollapsibleTrigger className="text-xl flex justify-between gap-1 items-center pl-3 pr-8 whitespace-nowrap">
             <div className="text-left">Tickets Info</div>
             <ChevronsUpDown
@@ -114,7 +114,11 @@ export default function AllPrize() {
               </Tooltip>
             </TooltipProvider>
             <p className="text-right">
-              {formatUnits(BigInt(nextPrizeAmount), 18)} <span className="text-sm">ETH</span>
+              {formatNumber(formatUnits(BigInt(nextPrizeAmount), 18), {
+                maximumFractionDigits: 3,
+                minimumFractionDigits: 3,
+              })}
+              <span className="text-sm">ETH</span>
             </p>
           </div>
           <CollapsibleContent>
@@ -130,7 +134,11 @@ export default function AllPrize() {
                 </Tooltip>
               </TooltipProvider>
               <p className="text-right">
-                {formatUnits(BigInt(totalPrizePool), 18)} <span className="text-sm">ETH</span>
+                {formatNumber(formatUnits(BigInt(totalPrizePool), 18), {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })}
+                <span className="text-sm">ETH</span>
               </p>
             </div>
             <div className="flex leading-tight justify-between text-base bg-neutral-400 dark:bg-neutral-800 border-2 border-slate-400 gap-4 py-1 px-3 rounded-lg mb-1">
@@ -145,7 +153,11 @@ export default function AllPrize() {
                 </Tooltip>
               </TooltipProvider>
               <p className="text-right">
-                {formatUnits(BigInt(totalPrizePool), 18)} <span className="text-sm">ETH</span>
+                {formatNumber(formatUnits(BigInt(totalPrizePool), 18), {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })}
+                <span className="text-sm">ETH</span>
               </p>
             </div>
             <div className="flex leading-tight justify-between text-base bg-neutral-400 dark:bg-neutral-800 border-2 border-slate-400 gap-4 py-1 px-3 rounded-lg mb-1">
@@ -160,7 +172,11 @@ export default function AllPrize() {
                 </Tooltip>
               </TooltipProvider>
               <p className="text-right">
-                {formatUnits(BigInt(topPrize), 18)} <span className="ml-0 text-sm">ETH</span>
+                {formatNumber(formatUnits(BigInt(topPrize), 18), {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })}
+                <span className="ml-0 text-sm">ETH</span>
               </p>
             </div>
           </CollapsibleContent>

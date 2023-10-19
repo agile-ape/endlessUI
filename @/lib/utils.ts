@@ -46,3 +46,10 @@ export const isJson = (str: string) => {
   }
   return true
 }
+
+export function formatNumber(value: any, options?: Intl.NumberFormatOptions) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    ...options,
+  }).format(Number(value))
+}
