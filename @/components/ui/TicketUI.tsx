@@ -40,6 +40,9 @@ const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
     args: [(playerAddress || '') as `0x${string}`],
   })
 
+  const isInSafeHouse = Math.random() * 200 > 100
+  console.log({isInSafeHouse})
+
   //  0 uint id;
   //  1 address player;
   //  2 bytes sign;
@@ -89,15 +92,32 @@ const TicketUI: FC<TicketUIType> = ({ ticketId, ticketWidthPx }) => {
     // Killed - opacity-80 border-zinc-500 bg-neutral-700 bg-zinc-900/75 was killed on Round 
     // Safe - opacity-80 border-zinc-500 bg-neutral-700 bg-zinc-900/75 was killed on Round 
       <div
-        className={`w-[${ticketWidthPx}px] flex flex-col justify-center border-4 border-zinc-500 bg-neutral-700 rounded-xl`}
+        className={`w-[${ticketWidthPx}px] flex flex-col relative justify-center border-4 border-zinc-500 bg-neutral-700 rounded-xl`}
         style={{
           backgroundImage: `url('/pepe/motif2.svg')`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
         }}
       >
+        {isInSafeHouse && (
+          <div className={`bg-[#F9F7FA] absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 opacity-90 flex justify-center items-center`}>
+            <div className="bg-[#7DD3FC] w-[90%] mx-auto rounded-xl flex flex-col items-center justify-center gap-4 p-2">
+              <h2 className="text-[1rem] text-center underline">IN SAFEHOUSE</h2>
+              <div className="w-[80%] mx-auto">
+                <div className="text-[1rem] flex justify-between">
+                  <p>Check Out Round</p>
+                  <p>7</p>
+                </div>
+                <div className="text-[1rem] flex justify-between">
+                  <p>Current Round</p>
+                  <p>7</p>
+                </div>
+              </div>
+              <button className="p-1 border-2 border-[#991B1B] rounded-xl w-[60%] mx-auto">Kick Out</button>
+            </div>
+          </div>
+        )}
 
-       
         {/* <div
           className="rounded-2xl flex flex-col gap-1 py-[0.9rem] px-[0.5rem]"
           style={{
