@@ -70,10 +70,10 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                   </TooltipProvider> */}
           </div>
           <div className="flex px-2">
-            <GameFeed/>
+            <GameFeed />
           </div>
         </div>
-          
+
         <div className="flex gap-3 justify-center">
           <Button
             onClick={() => setTicketState('aroundMe')}
@@ -81,11 +81,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'aroundMe'}
             // className={`${
-              //   ticketState === 'aroundMe'
-              //     ? disabled
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // } `}
-              >
+            //   ticketState === 'aroundMe'
+            //     ? disabled
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // } `}
+          >
             Around Me
           </Button>
           <Button
@@ -94,11 +94,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'mostValue'}
             // className={`${
-              //   ticketState === 'mostValue'
-              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // }`}
-              >
+            //   ticketState === 'mostValue'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
+          >
             Most Value
           </Button>
           <Button
@@ -107,11 +107,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             className="text-sm rounded-full h-8 px-4 py-2"
             disabled={ticketState === 'inPlay'}
             // className={`${
-              //   ticketState === 'inPlay'
-              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // }`}
-              >
+            //   ticketState === 'inPlay'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
+          >
             In Play
           </Button>
         </div>
@@ -126,7 +126,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             gap-x-6
             gap-y-6
             flex-wrap
-            max-h-[800px]
             px-3
             overflow-y-scroll
           "
