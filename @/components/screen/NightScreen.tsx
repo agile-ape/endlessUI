@@ -8,6 +8,7 @@ import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/CheckInBox'
 import GameTab from '../ui/GameTab'
+import GameStats from '../ui/GameStats'
 
 function NightScreen() {
   return (
@@ -20,6 +21,7 @@ function NightScreen() {
       <GameTab />
       <Countdown countdownTime={0} timeFlag={0} />
       <NextClaim />
+      <GameStats />
       <TicketList stage="beginning" />
     </div>
   )

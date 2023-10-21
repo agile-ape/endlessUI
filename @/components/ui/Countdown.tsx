@@ -55,41 +55,41 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
 
     return () => clearInterval(interval) // Cleanup on unmount
   }, [endTime])
-  
+
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
-  
+
   return (
-      <div className="flex justify-center items-center text-lime-800 dark:text-lime-300 gap-1 mb-2">
-        <div className="flex justify-center">
-          {timeLeft && !isNaN(timeLeft) ? (
-            <div className="text-3xl rounded-xl flex flex-row gap-0.5">
-              <div className="flex flex-col">
-                {formatTime(timeLeft).hours}
-                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">hrs</div>
-              </div>
-              :
-              <div className="flex flex-col">
-                {formatTime(timeLeft).minutes}
-                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">mins</div>
-              </div>
-              :
-              <div className="flex flex-col">
-                {formatTime(timeLeft).seconds}
-                <div className="uppercase text-xs text-lime-800 dark:text-lime-300">secs</div>
-              </div>
+    <div className="flex justify-center items-center text-lime-800 dark:text-lime-300 gap-1 mb-4">
+      <div className="flex justify-center">
+        {timeLeft && !isNaN(timeLeft) ? (
+          <div className="text-3xl rounded-xl flex flex-row gap-0.5">
+            <div className="flex flex-col">
+              {formatTime(timeLeft).hours}
+              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">hrs</div>
             </div>
-          ) : (
-            <PhaseChange />
-            )}
-        </div>
-        {/* <TooltipProvider delayDuration={50}>
+            :
+            <div className="flex flex-col">
+              {formatTime(timeLeft).minutes}
+              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">mins</div>
+            </div>
+            :
+            <div className="flex flex-col">
+              {formatTime(timeLeft).seconds}
+              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">secs</div>
+            </div>
+          </div>
+        ) : (
+          <PhaseChange />
+        )}
+      </div>
+      {/* <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger>
               <HelpCircle size={24} className="ml-1 stroke-slate-900 dark:stroke-slate-100" />
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                <strong>Time left for this phase </strong> 
+                <strong>Time left for this phase </strong>
                 <p>
                 Once timer hits zero, any player can
                 trigger the phase change.
@@ -98,6 +98,6 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider> */}
-      </div>
+    </div>
   )
 }

@@ -9,6 +9,7 @@ import CheckIn from '../ui/CheckInBox'
 import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import AllPrize from '../ui/AllPrize'
+import GameStats from '../ui/GameStats'
 import UserActions from '../ui/UserActions'
 
 export default function DayScreen() {
@@ -55,35 +56,38 @@ export default function DayScreen() {
     // </div>
 
     <div className="flex flex-col gap-5">
-    <div className="text-center">
-      <Round />
-      <p className="text-3xl font-headline uppercase day-last my-2"> Day </p>
-      <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-      
-      {/* <Title stageType={'countdown'} /> */}
-      <div className="flex justify-center items-center text-sm container-last">
-        <AllPrize />
-      </div>
-    </div>
+      <div className="text-center">
+        <Round />
+        <p className="text-3xl font-headline uppercase day-last my-2"> Day </p>
+        <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
 
-    <div className="flex flex-col lg:flex-row gap-8 xl:mx-[150px] mb-8">
-      <div>
-        <div
-          className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
-          container-last"
-        >
-          <GameTab />
-          <UserActions />
+        {/* <Title stageType={'countdown'} /> */}
+        {/* <div className="flex justify-center items-center text-sm container-last">
+          <AllPrize />
+        </div> */}
+        <div className="">
+          <GameStats />
         </div>
       </div>
 
-      <div 
-        className="grow rounded-xl py-2
+      <div className="flex flex-col lg:flex-row gap-8 xl:mx-[70px] mb-8">
+        <div>
+          <div
+            className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
+          container-last"
+          >
+            <GameTab />
+            <UserActions />
+          </div>
+        </div>
+
+        <div
+          className="grow rounded-xl py-2
         container-last"
-      >
-        <TicketList stage="beginning" />
+        >
+          <TicketList stage="beginning" />
+        </div>
       </div>
-    </div>
     </div>
   )
 }

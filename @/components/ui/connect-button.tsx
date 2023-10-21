@@ -64,7 +64,7 @@ export default function CustomConnectButton() {
                   h-10 w-max flex gap-x-2 items-center text-sm
                   "
                 >
-                  <div className="flex gap-x-2">
+                  {/* <div className="flex gap-x-2">
                     {chain.hasIcon && (
                       <div
                         onClick={openChainModal}
@@ -88,14 +88,10 @@ export default function CustomConnectButton() {
                       </div>
                     )}
 
-                    {/* {chain.name} */}
-                  </div>
+                    {chain.name}
+                  </div> */}
 
-                  <button
-                    onClick={openAccountModal}
-                    type="button"
-                    className="connect-last"
-                  >
+                  <button onClick={openAccountModal} type="button" className="connect-last">
                     {account.displayName}
                     {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </button>

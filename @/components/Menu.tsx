@@ -14,33 +14,24 @@ import HowToPlay from './ui/HowToPlay'
 import GameHeader from './ui/GameHeader'
 import Link from 'next/link'
 import { Button } from './ui/button'
+import CustomConnectButton from '@/components/ui/connect-button'
 
 import DarkModeSwitcher from './ui/DarkModeSwitcher'
 
 export default function Menu() {
   return (
-    
-    <div className="flex flex-row gap-3 items-center">
-      <GameHeader />
-      <HowToPlay />
-
-      {/* <Link href="/whitelist">
-        <Button variant="link" size="md">Whitelist</Button>
-      </Link>       */}
-      
-      {/* <Link href="/learn-more">
-        <Button variant="link" size="md">Learn More</Button>
+    <div className="flex flex-row text-xl items-center">
+      <Link className="text-xl hover:text-neutral-500 mx-4" href="/">
+        Game
+      </Link>
+      <Link className="text-xl hover:text-neutral-500 mx-4" href="/howtoplay">
+        Guide
+      </Link>
+      {/* <Link className="text-xl hover:text-neutral-500 mx-4" href="/whitelist">
+        Whitelist
       </Link> */}
-
-      <a href="https://twitter.com/lastman0x" target="_blank">
-        <Button variant="link" size="md">Follow Us <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
-      </a>      
-      <a href="https://twitter.com/fachryadhitya" target="_blank">
-        <Button variant="link" size="md">Docs <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
-      </a>
-      {/* <a href="">
-        <Button variant="link" disabled size="md">Huddle Up <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
-      </a> */}
+      {/* <GameHeader /> */}
+      {/* <HowToPlay /> */}
     </div>
 
     // <NavigationMenu data-orientation="vertical">

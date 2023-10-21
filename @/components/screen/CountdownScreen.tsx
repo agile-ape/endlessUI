@@ -26,6 +26,7 @@ import { createTicket, getTickets } from '../../../services/api'
 import { transformToTicket } from '@/lib/utils'
 import { formatEther, parseUnits } from 'viem'
 import { toast } from '../ui/use-toast'
+import GameStats from '../ui/GameStats'
 
 function CountdownScreen() {
   const { isConnected } = useAccount()
@@ -151,16 +152,17 @@ function CountdownScreen() {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <div className="text-center">
         <Round />
-        <p className="text-3xl font-headline uppercase beginnings-last my-2"> Countdown </p>
+        <p className="text-4xl font-headline uppercase beginnings-last my-2"> Countdown </p>
         <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-        
+
         {/* <Title stageType={'countdown'} /> */}
-        <div className="flex justify-center items-center text-sm container-last">
+        {/* <div className="flex justify-center items-center text-sm container-last">
           <AllPrize />
-        </div>
+        </div> */}
+        <GameStats />
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 xl:mx-[150px] mb-8">
@@ -174,7 +176,7 @@ function CountdownScreen() {
           </div>
         </div>
 
-        <div 
+        <div
           className="grow rounded-xl py-2
           container-last"
         >
