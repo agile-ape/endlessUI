@@ -33,6 +33,8 @@ module.exports = {
         headline: ['headline'],
         typewriter: ['typewriter'],
         kindergarten: ['kindergarten'],
+        whiterabbit: ['whiterabbit'],
+        whitrabt: ['whitrabt'],
       },
 
       colors: {

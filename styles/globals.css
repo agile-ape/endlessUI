@@ -15,6 +15,17 @@
   src: url('/fonts/kindergarten.ttf');
 }
 
+@font-face {
+  font-family: 'whitrabt';
+  src: url('/fonts/whitrabt.ttf');
+}
+
+@font-face {
+  font-family: 'whiterabbit';
+  src: url('/fonts/whiterabbit.ttf');
+}
+
+
 
 @tailwind base;
 @tailwind components;

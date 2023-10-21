@@ -19,7 +19,7 @@ const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const toggle = () => setShowModal((prevState) => !prevState)
   return (
-    <div className="w-[240px] rounded-xl p-2 pb-5 border-[2px] border-black dark:border-white flex flex-col gap-2 my-5">
+    <div className="w-[240px] rounded-xl p-2 pb-5 border-[2px] border-black dark:border-white flex flex-col gap-2 mb-5">
       <div className="flex gap-2">
         <p className="text-2xl capitalize pl-1 ml-2">User Actions</p>
         <TooltipProvider delayDuration={10}>
