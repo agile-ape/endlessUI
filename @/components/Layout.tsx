@@ -177,6 +177,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         backgroundImage: `url(/background/${background})`,
       }}
     >
+      {/* width of header */}
       <div className="container mx-auto min-w-[360px]">
         <Header />
         {children}

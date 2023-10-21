@@ -79,7 +79,9 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
             </div>
           </div>
         ) : (
-          <PhaseChange />
+          <div className="flex justify-center">
+            <PhaseChange />
+          </div>
         )}
       </div>
       {/* <TooltipProvider delayDuration={50}>

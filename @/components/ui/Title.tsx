@@ -23,7 +23,7 @@ const nightPhrase = [
 const title = {
   whitelist: 'Join the whitelist to buy your ticket early',
   beginnings: 'Come on up to get your ticket',
-  countdown: 'On your marks gentlemen',
+  countdown: 'Its morphing time power rangers',
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   dusk: 'I smell blood in the air',
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
@@ -31,13 +31,7 @@ const title = {
 }
 
 const Title: FC<TitleType> = ({ stageType }) => {
-  return (
-    <p
-      className="text-3xl mt-5 capitalize"
-    >
-      {title[stageType]}
-    </p>
-  )
+  return <p className="text-[2rem] leading-10 capitalize">{title[stageType]}</p>
 }
 
 export default dynamic(() => Promise.resolve(Title), {

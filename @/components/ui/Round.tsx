@@ -21,25 +21,25 @@ const Round = () => {
     setIsActive(!isActive)
   }
 
-  const stageOn = 'bg-zinc-900 text-white dark:bg-zinc-50 dark:text-black'
+  const stageOn = 'bg-zinc-900 text-white dark:bg-zinc-50 dark:text-black border border-transparent'
 
   return (
-    <div className="flex flex-col items-center mb-4">
+    <div className="flex items-center gap-4">
       <div>
-        <p className="text-2xl">
-          Round <span className="text-3xl underline">{round}</span>
+        <p className="text-4xl">
+          Round <span className="text-4xl underline">{round}</span>
         </p>
       </div>
 
-      <div className="flex flex-row gap-4 text-2xl">
+      <div className="flex flex-row gap-2 text-sm">
         <button
           onClick={handleClick}
           className={`
-          border-transparent
+          border border-zinc-700 dark:border-zinc-100
           bg-transparent
           inline-flex items-center rounded-full
-          px-2.5 py-0.5
-          text-xs transition-colors
+          px-3 py-0.5
+          transition-colors
           focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
 
           ${isActive ? stageOn : ''}`}
@@ -50,11 +50,11 @@ const Round = () => {
         <button
           onClick={handleClick}
           className={`
-          border-transparent
+          border border-zinc-700 dark:border-zinc-100
           bg-transparent
           inline-flex items-center rounded-full
-          px-2.5 py-0.5
-          text-xs transition-colors
+          px-3 py-0.5
+          transition-colors
           focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
 
           ${isActive ? stageOn : ''}`}
@@ -74,11 +74,11 @@ const Round = () => {
         <button
           onClick={handleClick}
           className={`
-          border-transparent
+          border border-zinc-700 dark:border-zinc-100
           bg-transparent
           inline-flex items-center rounded-full
-          px-2.5 py-0.5
-          text-xs transition-colors
+          px-3 py-0.5
+          transition-colors
           focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
 
           ${isActive ? stageOn : ''}`}

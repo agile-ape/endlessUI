@@ -152,38 +152,40 @@ function CountdownScreen() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="text-center">
-        <Round />
-        <p className="text-4xl font-headline uppercase beginnings-last my-2"> Countdown </p>
-        <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
+    // <div className="flex flex-col gap-2">
 
-        {/* <Title stageType={'countdown'} /> */}
-        {/* <div className="flex justify-center items-center text-sm container-last">
-          <AllPrize />
-        </div> */}
-        <GameStats />
+    <div className="flex flex-col xl:mx-[150px] pb-8">
+      <div className="text-center mb-1">
+        <p className="text-xl">Game: Pilot</p>
+        <Title stageType={'countdown'} />
       </div>
-
-      <div className="flex flex-col lg:flex-row gap-8 xl:mx-[150px] mb-8">
-        <div>
-          <div
-            className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
-            container-last"
-          >
-            <GameTab />
-            <UserActions />
+      {/* top container */}
+      <div className="flex flex-col mb-2">
+        <div className="flex justify-between px-5 py-2">
+          <Round />
+          <div className="flex items-center gap-4">
+            <p className="text-4xl font-headline uppercase beginnings-last my-2"> Countdown </p>
+            <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
           </div>
         </div>
+        <div>
+          <GameStats />
+        </div>
+      </div>
 
-        <div
-          className="grow rounded-xl py-2
-          container-last"
-        >
+      {/* bottom container */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-2 container-last">
+          <GameTab />
+          <UserActions />
+        </div>
+
+        <div className="grow rounded-xl py-2 container-last">
           <TicketList stage="beginning" />
         </div>
       </div>
     </div>
+    // </div>
   )
 }
 

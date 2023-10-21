@@ -24,13 +24,13 @@ const bgColorPhase: Record<string, string> = {
   night: 'bg-amber-500',
   // countdown: 'changeCountdownToDay',
   beginnings: 'bg-blue-100',
-  lastmanfound: 'bg-slate-300'
+  lastmanfound: 'bg-slate-300',
 }
 
 const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
   const { address, isConnected } = useAccount()
-  console.log({phase: bgColorPhase[phase], phaseNow: phase})
+  console.log({ phase: bgColorPhase[phase], phaseNow: phase })
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
@@ -62,18 +62,16 @@ const PhaseChange = () => {
   })
 
   return (
-    <div className="">
-      <Button
-        disabled={!write || !playerTicket}
-        size="lg"
-        variant="change"
-        onClick={() => write()}
-        isLoading={isLoading}
-        className={bgColorPhase[phase]}
-      >
-        {playerTicket ? 'Change phase' : 'Hold on'}
-      </Button>
-    </div>
+    <Button
+      disabled={!write || !playerTicket}
+      size="md"
+      variant="change"
+      onClick={() => write()}
+      isLoading={isLoading}
+      className={bgColorPhase[phase]}
+    >
+      {playerTicket ? 'Change phase' : 'Hold on'}
+    </Button>
   )
 }
 
