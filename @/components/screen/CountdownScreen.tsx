@@ -155,8 +155,8 @@ function CountdownScreen() {
     // <div className="flex flex-col gap-2">
 
     <div className="flex flex-col xl:mx-[150px] pb-8">
-      <div className="text-center mb-1">
-        <p className="text-xl">Game: Pilot</p>
+      <div className="text-center mb-3">
+        {/* <p className="text-xl">Game: Pilot</p> */}
         <Title stageType={'countdown'} />
       </div>
       {/* top container */}

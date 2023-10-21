@@ -1,5 +1,5 @@
-import { Menu } from "lucide-react"
-import { ExternalLink } from "lucide-react"
+import { Menu } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import CustomConnectButton from '@/components/ui/connect-button'
 
 import {
@@ -15,8 +15,9 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import HowToPlay from './ui/HowToPlay'
-import GameHeader from "./ui/GameHeader"
+import GameHeader from './ui/GameHeader'
 import { Button } from './ui/button'
+import Link from 'next/link'
 
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 
@@ -26,17 +27,20 @@ export default function SideMenu() {
       <DropdownMenuTrigger className="connect-last px-2 py-2">
         <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-blue-950 flex flex-col justify-center">
-        <DropdownMenuSub>
-          <GameHeader />
-        </DropdownMenuSub>
-        <DropdownMenuSub>
-          <HowToPlay />
-        </DropdownMenuSub>
-
-        
-          {/* <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger> */}
-          {/* <DropdownMenuPortal>
+      <DropdownMenuContent align="end" className="container-last flex flex-col justify-center">
+        <DropdownMenuItem className="cursor-pointer">
+          <Link className="text-xl hover:text-neutral-500 mx-4" href="/">
+            Game
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link className="text-xl hover:text-neutral-500 mx-4" href="/howtoplay">
+            Guide
+          </Link>
+        </DropdownMenuItem>
+        <br />
+        {/* <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger> */}
+        {/* <DropdownMenuPortal>
             <DropdownMenuSubContent
               hideWhenDetached={false}
               sideOffset={5}
@@ -52,20 +56,39 @@ export default function SideMenu() {
             </ol>
             </DropdownMenuSubContent>
           </DropdownMenuPortal> */}
+
         <DropdownMenuItem className="cursor-pointer">
           <a href="https://twitter.com/lastman0x" target="_blank">
-          <Button variant="link" size="md">Follow Us <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
-          </a> 
+            <Button variant="link" size="md">
+              Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            </Button>
+          </a>
         </DropdownMenuItem>
+
         <DropdownMenuItem className="cursor-pointer">
           <a href="https://twitter.com/fachryadhitya" target="_blank">
-          <Button variant="link" size="md">Docs <ExternalLink size={16} className="text-sm ml-1"></ExternalLink></Button>
-          </a> 
+            <Button variant="link" size="md">
+              Chat <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            </Button>
+          </a>
         </DropdownMenuItem>
-        
+
+        <DropdownMenuItem className="cursor-pointer">
+          <a href="https://twitter.com/fachryadhitya" target="_blank">
+            <Button variant="link" size="md">
+              Learn <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            </Button>
+          </a>
+        </DropdownMenuItem>
+
         <DropdownMenuItem>
-          <Button variant="destructive">$LAST</Button>
+          {/* <Button variant="destructive">$LAST</Button> */}
+          <div className="flex text-xl items-center">
+            <p className="mr-1">$LAST:</p>
+            <p className="mr-1">123</p>
+          </div>
         </DropdownMenuItem>
+
         <DropdownMenuItem>
           <CustomConnectButton />
         </DropdownMenuItem>

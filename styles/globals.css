@@ -5,6 +5,17 @@
   src: url('/fonts/headline.ttf');
 }
 
+@font-face {
+  font-family: 'typewriter';
+  src: url('/fonts/typewriter.ttf');
+}
+
+@font-face {
+  font-family: 'kindergarten';
+  src: url('/fonts/kindergarten.ttf');
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

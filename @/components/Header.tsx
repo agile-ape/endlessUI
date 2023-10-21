@@ -41,7 +41,7 @@ function Header() {
           </a>
         </div>
 
-        <div className="flex text-xl items-center">
+        <div className="flex mx-2 text-xl items-center">
           <p className="mr-1">$LAST:</p>
           <p className="mr-1">123</p>
           {/* <Image

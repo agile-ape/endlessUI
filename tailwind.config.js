@@ -31,7 +31,10 @@ module.exports = {
       fontFamily: {
         sans: ['VT323', ...defaultTheme.fontFamily.sans],
         headline: ['headline'],
+        typewriter: ['typewriter'],
+        kindergarten: ['kindergarten'],
       },
+
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

@@ -38,7 +38,7 @@ export default function GameStats() {
   return (
     <div
       className="mx-auto flex flex-row justify-around items-center
-    rounded-xl px-4 py-2 container-last"
+    rounded-xl container-last"
     >
       {/* bg-zinc-100/50 dark:bg-zinc-700/50 border-2 border-zinc-200 dark:border-zinc-800  */}
       {/* <div className=""> */}
