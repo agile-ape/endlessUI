@@ -21,13 +21,12 @@ import Image from 'next/image'
 import { Send } from 'lucide-react'
 
 import { useStoreActions, useStoreState } from '../../../store'
-
+import dynamic from 'next/dynamic'
 
 function SubmitKeyword() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
-
 
   return (
     <Dialog>
@@ -37,30 +36,29 @@ function SubmitKeyword() {
           Submit <Send size={16} className="text-sm ml-1"></Send>
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Submit the keyword of the day  
+            <DialogTitle className="text-3xl text-center font-normal">
+              Submit the keyword of the day
               <div className="day-last">
-                <span className="font-headline">Day
-                </span> Action
+                <span className="font-headline">Day</span> Action
               </div>
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
-                priority
-                src="/lore/EnterGame.png"
-                // layout="fill"
-                // objectFit='cover'
-                className="place-self-center rounded-xl"
-                height={400}
-                width={650}
-                alt="enter-into-the-pepe"
+                  priority
+                  src="/lore/EnterGame.png"
+                  // layout="fill"
+                  // objectFit='cover'
+                  className="place-self-center rounded-xl"
+                  height={400}
+                  width={650}
+                  alt="enter-into-the-pepe"
                 />
-                  
+
                 {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>Notes</AccordionTrigger>
@@ -75,18 +73,19 @@ function SubmitKeyword() {
                 </Accordion> */}
 
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-
                   <p className="mb-2">Solve the captcha and reveal the word of the day.</p>
-                  <p className="mb-2">Submit the word to stay safe during the {' '} 
+                  <p className="mb-2">
+                    Submit the word to stay safe during the{' '}
                     <span className="font-headline night-last">Night</span>.
                   </p>
                 </div>
 
                 {/* Captcha */}
                 <div className="w-[240px] mx-auto flex flex-col justify-center items-center">
-                  
-                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">Solve Captcha</div>
-                  
+                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">
+                    Solve Captcha
+                  </div>
+
                   <HCaptcha
                     sitekey="38e2ff83-f255-4b90-88ff-c65a443e82db"
                     onVerify={(token, ekey) => console.log(token, ekey)}
@@ -97,11 +96,14 @@ function SubmitKeyword() {
                   />
                 </div>
 
-                <div className="w-[240px] rounded-xl
+                <div
+                  className="w-[240px] rounded-xl
                    flex flex-col items-center mx-auto mb-4
                     py-2"
                 >
-                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">Submit</div>
+                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">
+                    Submit
+                  </div>
                   <div
                     className="
                       m-4 mt-0
@@ -146,7 +148,6 @@ function SubmitKeyword() {
                     </Button>
                   </div>
                 </div>
-
               </DialogDescription>
             </ScrollArea>
           </DialogHeader>
@@ -156,4 +157,6 @@ function SubmitKeyword() {
   )
 }
 
-export default SubmitKeyword
+export default dynamic(() => Promise.resolve(SubmitKeyword), {
+  ssr: false,
+})
