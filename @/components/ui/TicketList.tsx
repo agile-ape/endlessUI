@@ -132,7 +132,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
       >
         {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
-            <TicketUI ticketId={BigInt(item.id)} ticketWidthPx={220} />
+            <TicketUI ownTicket={false} ticketId={BigInt(item.id)} ticketWidthPx={220} />
             <Button
               onClick={() =>
                 write({

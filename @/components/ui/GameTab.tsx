@@ -129,8 +129,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
                 </TooltipProvider> */}
           </div>
           {/* to adjust how ticket is shown*/}
-          <TicketUI ticketId={ticketId} ticketWidthPx={240} />
-          {/* <ExitTicketUI ticketId={ticketId} ticketWidthPx={240}/> */}
+          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
+          <ExitTicketUI ticketId={ticketId} ticketWidthPx={240} />
 
           {/* <Button
               // disabled={!write || isAddressBoughtTickets}
