@@ -172,7 +172,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
             Your Ticket
           </div>
-          <TicketUI ticketId={ticketId} ticketWidthPx={240} />
+          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
         </div>
       )}
 
@@ -183,9 +183,9 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
             Your Ticket
           </div>
 
-          <TicketUI ticketId={ticketId} ticketWidthPx={240} />
+          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
 
-          <div className="text-xl text-center leading-tight">
+          <div className="text-xl text- center leading-tight">
             +{formatUnits(BigInt(totalPrizePool), 18)} ETH if you exit now.
           </div>
 
