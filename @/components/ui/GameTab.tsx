@@ -110,8 +110,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
       {/* if no ticket, beginnings/countdown = buy */}
       {Number(ticketId) === 0 && (phase === 'beginnings' || 'countdown') && (
         <div className="mb-2">
-          <div className="flex justify-center items-center text-[2rem] py-2 mb-4 leading-7 capitalize">
-            Next Ticket
+          <div className="flex justify-center items-center text-3xl py-2 mb-4 leading-7 capitalize">
+            Next Card
             {/* <TooltipProvider delayDuration={50}>
                   <Tooltip>
                     <TooltipTrigger>
@@ -130,7 +130,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           </div>
           {/* to adjust how ticket is shown*/}
           <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
-          <ExitTicketUI ticketId={ticketId} ticketWidthPx={240} />
+          {/* <ExitTicketUI ticketId={ticketId} ticketWidthPx={240} /> */}
 
           {/* <Button
               // disabled={!write || isAddressBoughtTickets}
@@ -149,7 +149,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
       {/* if no ticket for rest of phase */}
       {/* {((Number(ticketId) === 0) && (phase !== 'beginnings' || 'countdown')) &&
             <div className="flex flex-col justify-center mb-4">
-              <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
+              <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
                 Feeling FOMO?
               </div>
               <Image
@@ -169,8 +169,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
       {/* if you have a ticket and not day */}
       {Number(ticketId) > 0 && phase !== 'day' && (
         <div className="mb-4">
-          <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
-            Your Ticket
+          <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
+            Your Card
           </div>
           <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
         </div>
@@ -179,8 +179,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
       {/* if you have a ticket and day */}
       {Number(ticketId) > 0 && phase === 'day' && (
         <div className="mb-4">
-          <div className="mt-1 flex justify-center items-center text-[2rem] pb-4 pt-2 leading-7 capitalize">
-            Your Ticket
+          <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
+            Your Card
           </div>
 
           <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />

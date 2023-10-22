@@ -18,10 +18,9 @@ import {
 import { Button } from './button'
 import Image from 'next/image'
 import { Split } from 'lucide-react'
-import { Switch } from "@/components/ui/switch"
+import { Switch } from '@/components/ui/switch'
 
 import { useStoreActions, useStoreState } from '../../../store'
-
 
 function SplitIt() {
   const [otpInput, setOtpInput] = React.useState<string>('')
@@ -36,30 +35,29 @@ function SplitIt() {
           Split Pot <Split size={16} className="text-sm ml-1"></Split>
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Vote to split the remaining pot
-                  <div className="day-last">
-                  <span className="font-headline">Day
-                  </span> Action (only during Sudden Death)
-                  </div>
+            <DialogTitle className="text-3xl text-center font-normal">
+              Vote to split the remaining pot
+              <div className="day-last">
+                <span className="font-headline">Day</span> Action (Stage 2 and 3)
+              </div>
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
-                priority
-                src="/lore/EnterGame.png"
-                // layout="fill"
-                // objectFit='cover'
-                className="place-self-center rounded-xl"
-                height={400}
-                width={650}
-                alt="enter-into-the-pepe"
+                  priority
+                  src="/lore/EnterGame.png"
+                  // layout="fill"
+                  // objectFit='cover'
+                  className="place-self-center rounded-xl"
+                  height={400}
+                  width={650}
+                  alt="enter-into-the-pepe"
                 />
-                  
+
                 {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>
@@ -72,16 +70,18 @@ function SplitIt() {
                   </AccordionItem>
                 </Accordion> */}
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">The pot is split among remaining players once the votes crosses the threshold.</p>
+                  <p className="mb-2">
+                    The pot is split among remaining players once the votes crosses the threshold.
+                  </p>
                   <p className="mb-2">You can change your mind and vote No later too.</p>
                 </div>
                 {/* Voting information */}
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">Do you want to split pot?</div>
-                
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  
+                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  Do you want to split pot?
+                </div>
 
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">  
+                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
                       <p className="text-left">Current pot</p>
                       <p className="text-right"> 5 ETH </p>
@@ -102,26 +102,18 @@ function SplitIt() {
                       <p className="text-right"> 7 </p>
                     </div>
 
-                    
-                    <div className="text-xl md:text-2xl lg:text-3xl m-1 mt-4 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">Your Vote</div>
-                    
-                    
-                    <div className="flex justify-center text-2xl gap-4">
-                      <span>
-                      No
-                      </span>
-                      <Switch 
-                          // disabled={round < suddenDeathRound}
-                      />
-                      <span>
-                      Yes
-                      </span>
+                    <div className="text-xl md:text-2xl lg:text-3xl m-1 mt-4 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                      Your Vote
                     </div>
-                  
-                  </div>
-                
-                
 
+                    <div className="flex justify-center text-2xl gap-4">
+                      <span>No</span>
+                      <Switch
+                      // disabled={round < suddenDeathRound}
+                      />
+                      <span>Yes</span>
+                    </div>
+                  </div>
                 </div>
               </DialogDescription>
             </ScrollArea>

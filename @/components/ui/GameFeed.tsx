@@ -17,23 +17,19 @@ import {
 const GameFeed = () => {
   // i guess the logic is pull out an array of statements and .map them here?
   return (
-    
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button 
-          variant="dropdown"
-          className="text-lg rounded-xl h-10 px-4 py-2"
-        >
+        <Button variant="dropdown" className="text-lg rounded-xl h-10 px-4 py-2">
           Recent Plays
         </Button>
-      </DropdownMenuTrigger>  
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
         <div
           className="md:w-[400px] w-[100%]
           mx-auto px-4 py-2 grid grid-cols-1 text-lg
           overflow-auto max-h-[680px] rounded-xl
-          lg:bg-slate-200 dark:lg:bg-slate-500
+          container-last bg-opacity-100 dark:bg-opacity-100
         "
           // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
         >

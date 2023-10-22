@@ -118,7 +118,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
 
   // hardcode this if necessary
   // const status = statusMapping[ticketStatus] || 'unknown'
-  const status = 'exited'
+  const status = 'new'
 
   // const isInSafeHouse = false
   // const isInSafeHouse = Math.random() * 200 > 100
@@ -323,7 +323,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
         >
           {status === 'safehouse' && (
             <div
-              className={`bg-slate-100/70 dark:bg-slate-600/70 text-white
+              className={`bg-slate-100/70 dark:bg-slate-600/70
               absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 z-10
               flex justify-center items-center`}
             >
@@ -347,12 +347,12 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
 
           {status === 'dead' && (
             <div
-              className={`bg-slate-100/70 dark:bg-slate-600/70 text-white
+              className={`bg-slate-100/70 dark:bg-slate-600/70
             absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 z-10
             flex justify-center items-center`}
             >
               {ownTicket === true && (
-                <div className="absolute text-center mx-2 mb-2 rounded-lg text-white">
+                <div className="absolute text-center mx-2 mb-2 rounded-lg">
                   <p className="text-md px-2">
                     Your ticket is forfeited. However, you can still claim your pot reward when you
                     exit game.
@@ -379,7 +379,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
           <div className="mx-2 mb-2 rounded-lg flex gap-1 justify-center py-1">
             <Image priority src="/faces/1.png" height={90} width={90} className="mt-6" alt="pepe" />
 
-            <div className="flex flex-col justify-end">
+            <div className="flex flex-col justify-end text-white">
               <div className="flex items-center gap-1">
                 <Sword size={18} className=""></Sword>
                 <span className="text-2xl">{Number(ticketBullets)}</span>

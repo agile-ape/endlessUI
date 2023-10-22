@@ -55,36 +55,68 @@ export default function DayScreen() {
     //   <TicketList stage="beginning" />
     // </div>
 
-    <div className="flex flex-col gap-5">
-      <div className="text-center">
-        <Round />
-        <p className="text-3xl font-headline uppercase day-last my-2"> Day </p>
-        <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
+    // <div className="flex flex-col h">
+    //   <div className="text-center">
+    //     <Round />
+    //     <p className="text-3xl font-headline uppercase day-last my-2"> Day </p>
+    //     <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
 
-        {/* <Title stageType={'countdown'} /> */}
-        {/* <div className="flex justify-center items-center text-sm container-last">
-          <AllPrize />
-        </div> */}
-        <div className="">
+    //     {/* <Title stageType={'countdown'} /> */}
+    //     {/* <div className="flex justify-center items-center text-sm container-last">
+    //       <AllPrize />
+    //     </div> */}
+    //     <div className="">
+    //       <GameStats />
+    //     </div>
+    //   </div>
+
+    //   <div className="flex flex-col lg:flex-row gap-8 xl:mx-[70px] mb-8">
+    //     <div>
+    //       <div
+    //         className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
+    //       container-last"
+    //       >
+    //         <GameTab />
+    //         <UserActions />
+    //       </div>
+    //     </div>
+
+    //     <div
+    //       className="grow rounded-xl py-2
+    //     container-last"
+    //     >
+    //       <TicketList stage="beginning" />
+    //     </div>
+    //   </div>
+    // </div>
+
+    <div className="flex flex-col xl:mx-[150px] pb-8">
+      <div className="text-center">
+        {/* <p className="text-xl">Game: Pilot</p> */}
+        <Title stageType={'day'} />
+      </div>
+      {/* top container */}
+      <div className="flex flex-col mb-2">
+        <div className="flex justify-between px-5 py-2">
+          <Round />
+          <div className="flex items-center gap-4">
+            <p className="text-4xl font-headline uppercase day-last my-2"> Day </p>
+            <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
+          </div>
+        </div>
+        <div>
           <GameStats />
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 xl:mx-[70px] mb-8">
-        <div>
-          <div
-            className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
-          container-last"
-          >
-            <GameTab />
-            <UserActions />
-          </div>
+      {/* bottom container */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-2 lg:container-last">
+          <GameTab />
+          <UserActions />
         </div>
 
-        <div
-          className="grow rounded-xl py-2
-        container-last"
-        >
+        <div className="grow rounded-xl py-2 container-last">
           <TicketList stage="beginning" />
         </div>
       </div>

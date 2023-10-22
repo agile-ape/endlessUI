@@ -31,10 +31,8 @@ module.exports = {
       fontFamily: {
         sans: ['VT323', ...defaultTheme.fontFamily.sans],
         headline: ['headline'],
-        typewriter: ['typewriter'],
-        kindergarten: ['kindergarten'],
-        whiterabbit: ['whiterabbit'],
         whitrabt: ['whitrabt'],
+        oloron: ['oloron'],
       },
 
       colors: {

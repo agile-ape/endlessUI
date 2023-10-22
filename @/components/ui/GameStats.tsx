@@ -52,18 +52,10 @@ export default function GameStats() {
 
       <div className="flex flex-col text-left p-1">
         <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-          Total joined
-          {/* <Users size={16} className="ml-1" /> */}
+          Total pot
+          {/* <PiggyBank size={16} className="ml-1" /> */}
         </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} players</div>
-      </div>
-
-      <div className="flex flex-col text-left p-1">
-        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-          In play
-          {/* <User size={16} className="ml-1" /> */}
-        </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} players</div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
       </div>
 
       <div className="flex flex-col text-left p-1">
@@ -71,31 +63,7 @@ export default function GameStats() {
           Top prize
           {/* <Trophy size={16} className="ml-1" /> */}
         </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} ETH</div>
-      </div>
-
-      <div className="flex flex-col text-left p-1">
-        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-          Total pot
-          {/* <PiggyBank size={16} className="ml-1" /> */}
-        </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} ETH</div>
-      </div>
-
-      <div className="flex flex-col text-left p-1">
-        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-          Forfeited
-          {/* <Skull size={16} className="ml-1" /> */}
-        </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} tickets</div>
-      </div>
-
-      <div className="flex flex-col text-left p-1">
-        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-          Give ups
-          {/* <Flag size={16} className="ml-1" /> */}
-        </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} tickets</div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
       </div>
 
       <div className="flex flex-col text-left p-1">
@@ -103,14 +71,46 @@ export default function GameStats() {
           Next claim
           {/* <Gem size={16} className="ml-1" /> */}
         </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} ETH</div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+      </div>
+
+      <div className="flex flex-col text-left p-1">
+        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
+          Total joined
+          {/* <Users size={16} className="ml-1" /> */}
+        </div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+      </div>
+
+      <div className="flex flex-col text-left p-1">
+        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
+          In play
+          {/* <User size={16} className="ml-1" /> */}
+        </div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+      </div>
+
+      <div className="flex flex-col text-left p-1">
+        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
+          Forfeited
+          {/* <Skull size={16} className="ml-1" /> */}
+        </div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+      </div>
+
+      <div className="flex flex-col text-left p-1">
+        <div className="flex text-base text-zinc-800 dark:text-zinc-100">
+          Give ups
+          {/* <Flag size={16} className="ml-1" /> */}
+        </div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
       </div>
 
       <div className="flex flex-col text-left p-1">
         <div className="flex text-base text-zinc-800 dark:text-zinc-100">
           Vote %{/* <Vote size={16} className="ml-1" /> */}
         </div>
-        <div className="text-xl text-amber-300">{totalTicketCount} ETH</div>
+        <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
       </div>
 
       {/* <div className="flex flex-col w-32 border border-black dark:border-white  rounded-xl p-1 items-center">

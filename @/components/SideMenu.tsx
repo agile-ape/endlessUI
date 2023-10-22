@@ -27,14 +27,17 @@ export default function SideMenu() {
       <DropdownMenuTrigger className="connect-last px-2 py-2">
         <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="container-last flex flex-col justify-center">
+      <DropdownMenuContent
+        align="end"
+        className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
+      >
         <DropdownMenuItem className="cursor-pointer">
-          <Link className="text-xl hover:text-neutral-500 mx-4" href="/">
+          <Link className="text-xl hover:text-neutral-700 mx-4" href="/">
             Game
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">
-          <Link className="text-xl hover:text-neutral-500 mx-4" href="/howtoplay">
+          <Link className="text-xl hover:text-neutral-700 mx-4" href="/howtoplay">
             Guide
           </Link>
         </DropdownMenuItem>

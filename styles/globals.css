@@ -5,7 +5,7 @@
   src: url('/fonts/headline.ttf');
 }
 
-@font-face {
+/* @font-face {
   font-family: 'typewriter';
   src: url('/fonts/typewriter.ttf');
 }
@@ -13,16 +13,21 @@
 @font-face {
   font-family: 'kindergarten';
   src: url('/fonts/kindergarten.ttf');
-}
+} */
 
 @font-face {
   font-family: 'whitrabt';
-  src: url('/fonts/whitrabt.ttf');
+  src: url('/fonts/whitrabt.woff');
 }
 
-@font-face {
+/* @font-face {
   font-family: 'whiterabbit';
   src: url('/fonts/whiterabbit.ttf');
+} */
+
+@font-face {
+  font-family: 'oloron';
+  src: url('/fonts/oloron.ttf');
 }
 
 
@@ -166,10 +171,13 @@
   }
 
   .container-last {
-    @apply lg:bg-slate-200 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
-    dark:lg:bg-slate-500 dark:lg:bg-opacity-50;
+    @apply bg-slate-200 bg-opacity-50 border-2 border-slate-400/50
+    dark:bg-slate-500 dark:bg-opacity-50;
   }
 }
+/* @apply lg:bg-slate-200 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
+    dark:lg:bg-slate-500 dark:lg:bg-opacity-50; */
+
 /* hover:bg-accent hover:text-accent-foreground */
 /* focus:bg-accent focus:text-accent-foreground focus:outline-none */
 /* disabled:pointer-events-none disabled:opacity-50 */

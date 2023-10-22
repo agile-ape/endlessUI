@@ -42,8 +42,8 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         relative px-3 py-0 flex flex-col"
       >
         <div className="flex">
-          <div className="flex text-[2rem] items-center grow leading-7 capitalize py-2">
-            Ticket list
+          <div className="flex text-3xl items-center grow leading-7 capitalize py-2">
+            Card list
             {/* <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
