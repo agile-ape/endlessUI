@@ -11,31 +11,21 @@ import { Badge } from './badge'
 // }
 
 const Round = () => {
-
-  const round = useStoreState((state) => state.round);
+  const round = useStoreState((state) => state.round)
 
   return (
     <div className="flex flex-col items-center mb-2">
       <div>
-        <p className='text-2xl'>
-          Round{' '} 
-          <span className="text-3xl underline">{round}</span>
+        <p className="text-2xl">
+          Round <span className="text-3xl underline">{round}</span>
         </p>
       </div>
 
       <div className="flex flex-row gap-4 text-2xl">
-        <Badge>
-          Normal
-        </Badge>
-        <Badge>
-          Sudden Death
-        </Badge>
-        <Badge>
-          Drain
-        </Badge>
-      </div> 
-
-
+        <Badge>Normal</Badge>
+        <Badge>Sudden Death</Badge>
+        <Badge>Drain</Badge>
+      </div>
     </div>
   )
 }

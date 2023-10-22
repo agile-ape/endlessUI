@@ -10,32 +10,32 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import { Cross1Icon } from '@radix-ui/react-icons'
+import dynamic from 'next/dynamic'
 
 interface SubmitKeywordModalType {
-  toggle: () => void;
+  toggle: () => void
 }
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
-
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
 
-  const modalRef = useRef(null);
+  const modalRef = useRef(null)
   const captchaRef = useRef<HCaptcha>(null)
   const handleCloseModal = (e: MouseEvent) => {
     if (e.target === e.currentTarget) {
-      toggle();
+      toggle()
     }
-  };
+  }
 
   useEffect(() => {
     // Add a click event listener to the overlay to close the modal when clicking outside
-    document.addEventListener('click', handleCloseModal);
+    document.addEventListener('click', handleCloseModal)
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('click', handleCloseModal);
-    };
-  }, [toggle]);
+      document.removeEventListener('click', handleCloseModal)
+    }
+  }, [toggle])
 
   const onCaptchaClick = () => {
     if (captchaRef.current) {
@@ -45,19 +45,21 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
 
   return (
     <>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none text-black"
+      <div
+        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none text-black"
         ref={modalRef}
       >
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-[90%] mx-auto bg-zinc-800 outline-none focus:outline-none overflow-auto text-white">
             <div className="flex items-start justify-between p-5 rounded-t">
               <h3 className="text-2xl text-center font-semibold ">Submit Keyword</h3>
-              <button
-                className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-              >
-                <span className="text-white h-6 w-6 text-2xl block outline-none focus:outline-none"
+              <button className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none">
+                <span
+                  className="text-white h-6 w-6 text-2xl block outline-none focus:outline-none"
                   onClick={toggle}
-                ><Cross1Icon /></span>
+                >
+                  <Cross1Icon />
+                </span>
               </button>
             </div>
             <ScrollArea className="h-[350px] md:h-[600px] rounded-md p-4">
@@ -80,8 +82,9 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
-                <div className="w-[100%] border-slate-400 mx-auto flex justify-center items-center"
-                  style={{ zIndex: "99999" }}
+                <div
+                  className="w-[100%] border-slate-400 mx-auto flex justify-center items-center"
+                  style={{ zIndex: '99999' }}
                 >
                   <Button onClick={onCaptchaClick}>Verify Captcha</Button>
                   <HCaptcha
@@ -89,7 +92,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                     onVerify={(token, ekey) => console.log(token, ekey)}
                     loadAsync={true}
                     tabIndex={0}
-                    size='invisible'
+                    size="invisible"
                     ref={captchaRef}
                     // onError={onError}
                     // onExpire={onExpire}
@@ -142,9 +145,11 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
           </div>
         </div>
       </div>
-      <div className="opacity-50 fixed inset-0 z-4" ></div>
+      <div className="opacity-50 fixed inset-0 z-4"></div>
     </>
   )
 }
 
-export default SubmitKeywordModal
+export default dynamic(() => Promise.resolve(SubmitKeywordModal), {
+  ssr: false,
+})
