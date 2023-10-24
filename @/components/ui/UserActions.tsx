@@ -14,6 +14,7 @@ import ExitGame from './ExitGame'
 import Inspect from './Inspect'
 import KickOut from './KickOut'
 import ChangePhase from './ChangePhase'
+import { Send } from 'lucide-react'
 
 const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
@@ -39,7 +40,10 @@ const UserActions = () => {
       
       <div className="w-[90%] mx-auto flex flex-col gap-3">
 
-        <SubmitKeyword />
+        {/* <SubmitKeyword /> */}
+        <Button variant="submit" className="w-full text-2xl" onClick={toggle}>
+          Submit <Send size={16} className="text-sm ml-1"></Send>
+        </Button>
         <div className="mt-4 flex flex-col gap-2">
           <CheckIn />
           <CheckOut />  
