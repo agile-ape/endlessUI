@@ -59,8 +59,8 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
 
   return (
-    <div className="flex justify-center items-center text-lime-800 dark:text-lime-300 gap-1 mb-4">
-      <div className="flex justify-center">
+    <div className=" text-lime-800 dark:text-lime-300 gap-1">
+      <div className="flex justify-center items-center">
         {timeLeft && !isNaN(timeLeft) ? (
           <div className="text-3xl rounded-xl flex flex-row gap-0.5">
             <div className="flex flex-col">
@@ -79,7 +79,7 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
             </div>
           </div>
         ) : (
-          <div className="flex justify-center">
+          <div className="">
             <PhaseChange />
           </div>
         )}

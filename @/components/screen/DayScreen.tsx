@@ -99,7 +99,7 @@ export default function DayScreen() {
       <div className="flex flex-col mb-2">
         <div className="flex justify-between px-5 py-2">
           <Round />
-          <div className="flex items-center gap-4">
+          <div className="flex justify-between items-center gap-4">
             <p className="text-4xl font-headline uppercase day-last my-2"> Day </p>
             <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
           </div>
