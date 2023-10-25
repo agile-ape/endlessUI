@@ -41,9 +41,9 @@ export default function GameStats() {
         className="mx-auto hidden md:flex flex-row justify-around items-center
         rounded-xl container-last"
       >
-      {/* bg-zinc-100/50 dark:bg-zinc-700/50 border-2 border-zinc-200 dark:border-zinc-800  */}
-      {/* <div className=""> */}
-      {/* <CollapsibleTrigger className="min-w-[220px] sm:max-w-none mx-auto flex justify-center text-xl items-center">
+        {/* bg-zinc-100/50 dark:bg-zinc-700/50 border-2 border-zinc-200 dark:border-zinc-800  */}
+        {/* <div className=""> */}
+        {/* <CollapsibleTrigger className="min-w-[220px] sm:max-w-none mx-auto flex justify-center text-xl items-center">
           Game Stats
           <ChevronsUpDown
             size={20}
@@ -80,7 +80,9 @@ export default function GameStats() {
             Total joined
             {/* <Users size={16} className="ml-1" /> */}
           </div>
-          <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+          <div className="text-xl text-amber-600 dark:text-amber-300">
+            {totalTicketCount} players
+          </div>
         </div>
 
         <div className="flex flex-col text-left p-1">
@@ -88,7 +90,9 @@ export default function GameStats() {
             In play
             {/* <User size={16} className="ml-1" /> */}
           </div>
-          <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+          <div className="text-xl text-amber-600 dark:text-amber-300">
+            {totalTicketCount} players
+          </div>
         </div>
 
         <div className="flex flex-col text-left p-1">
@@ -96,7 +100,9 @@ export default function GameStats() {
             Forfeited
             {/* <Skull size={16} className="ml-1" /> */}
           </div>
-          <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+          <div className="text-xl text-amber-600 dark:text-amber-300">
+            {totalTicketCount} players
+          </div>
         </div>
 
         <div className="flex flex-col text-left p-1">
@@ -104,7 +110,9 @@ export default function GameStats() {
             Give ups
             {/* <Flag size={16} className="ml-1" /> */}
           </div>
-          <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+          <div className="text-xl text-amber-600 dark:text-amber-300">
+            {totalTicketCount} players
+          </div>
         </div>
 
         <div className="flex flex-col text-left p-1">
@@ -135,10 +143,7 @@ export default function GameStats() {
       <Collapsible className="w-[8rem] mx-auto mt-5 md:hidden block">
         <CollapsibleTrigger className="container-last rounded-xl p-3 w-[8rem] mx-auto mb-2 flex justify-center items-center pl-5">
           Game Stats
-          <ChevronsUpDown
-            size={20}
-            className="ml-1 border rounded-full hover:text-black"
-          />
+          <ChevronsUpDown size={20} className="ml-1 border rounded-full hover:text-black" />
         </CollapsibleTrigger>
         <CollapsibleContent>
           {/* <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -150,73 +155,88 @@ export default function GameStats() {
             className="mx-auto flex flex-col md:flex-row justify-around items-center
             rounded-xl container-last w-[8rem] md:w-auto"
           >
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Total pot
                 {/* <PiggyBank size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} ETH
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Top prize
                 {/* <Trophy size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} ETH
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Next claim
                 {/* <Gem size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} ETH
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Total joined
                 {/* <Users size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} players
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 In play
                 {/* <User size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} players
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Forfeited
                 {/* <Skull size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} players
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Give ups
                 {/* <Flag size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} players</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} players
+              </div>
             </div>
 
-            <div className="flex flex-col text-left p-1">
+            <div className="flex flex-col text-left p-1 items-center">
               <div className="flex text-base text-zinc-800 dark:text-zinc-100">
                 Vote %{/* <Vote size={16} className="ml-1" /> */}
               </div>
-              <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+              <div className="text-xl text-amber-600 dark:text-amber-300">
+                {totalTicketCount} ETH
+              </div>
             </div>
           </div>
           {/* </DropdownMenuItem> */}
         </CollapsibleContent>
       </Collapsible>
     </>
-    
   )
 }
