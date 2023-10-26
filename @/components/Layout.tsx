@@ -9,10 +9,10 @@ import { defaultContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
 import { isJson, transformToTicket } from '@/lib/utils'
-
+import WelcomeModal from './ui/WelcomeModal'
 const font = VT323({
   weight: ['400'],
   subsets: ['latin-ext'],
@@ -46,6 +46,19 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateSuddenDeathRound = useStoreActions((actions) => actions.updateSuddenDeathRound)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   // const addTicket = useStoreActions((actions) => actions.addTicket)
+
+  /* init modal welcome */
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(
+    !localStorage.getItem('closeWelcomeModal') ||
+      localStorage.getItem('closeWelcomeModal') !== 'true',
+  )
+  const toggleModal = () => {
+    setShowWelcomeModal((prevState) => !prevState)
+    const currentFlag = localStorage.getItem('closeWelcomeModal')
+    if (currentFlag) localStorage.removeItem('closeWelcomeModal')
+
+    localStorage.setItem('closeWelcomeModal', 'true')
+  }
 
   const router = useRouter()
 
@@ -179,6 +192,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     >
       {/* width of header */}
       <div className="container mx-auto min-w-[360px]">
+        {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />
         {children}
       </div>
