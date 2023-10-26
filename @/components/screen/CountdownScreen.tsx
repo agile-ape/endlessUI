@@ -161,9 +161,9 @@ function CountdownScreen() {
       </div>
       {/* top container */}
       <div className="flex flex-col mb-2">
-        <div className="flex justify-between px-5 py-2">
+        <div className="flex justify-between px-5 py-2 sm:flex-row flex-col">
           <Round />
-          <div className="flex items-center gap-4">
+          <div className="flex items-center sm:justify-between justify-center gap-4 sm:mt-0 mt-3 sm:flex-row flex-col">
             <p className="text-4xl font-headline uppercase beginnings-last my-2"> Countdown </p>
             <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
           </div>
