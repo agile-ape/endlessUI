@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
@@ -19,7 +19,7 @@ const dayPhrase = [
   'easy peasy lemon squeezy',
   'remember. submit keyword to stay in the game',
   'check in to the safehouse to take a break',
-  'hold on. it gets better over time. maybe',
+  'hold on. it gets better over time. maybe?',
 ]
 
 const nightPhrase = [
@@ -39,10 +39,49 @@ const title = {
   lastmanfound: 'A hero stands, triumphant',
 }
 
+const CursorSVG = () => (
+  <svg
+    style={{
+      display: 'inline-block',
+      width: '1ch',
+      animation: 'flicker 0.5s infinite',
+    }}
+    viewBox="8 4 8 16"
+    xmlns="http://www.w3.org/2000/svg"
+    className="cursor"
+  >
+    <rect x="10" y="6" width="1" height="12" fill="#fff" />
+  </svg>
+)
+
 const Title: FC<TitleType> = ({ stageType }) => {
+  const [completedTyping, setCompletedTyping] = useState(false)
+  const [displayResponse, setDisplayResponse] = useState('')
+
+  useEffect(() => {
+    setCompletedTyping(false)
+
+    let i = 0
+    const stringResponse = title[stageType]
+
+    const intervalId = setInterval(() => {
+      setDisplayResponse(stringResponse.slice(0, i))
+
+      i++
+
+      if (i > stringResponse.length) {
+        clearInterval(intervalId)
+        setCompletedTyping(true)
+      }
+    }, 40)
+
+    return () => clearInterval(intervalId)
+  }, [stageType])
+
   return (
     <p className="text-md leading-tight sm:text-[2rem] sm:leading-10 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
-      {title[stageType]}
+      {displayResponse}
+      {!completedTyping && <CursorSVG />}
     </p>
   )
 }

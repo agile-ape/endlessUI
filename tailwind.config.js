@@ -104,6 +104,23 @@ module.exports = {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
+        typing: {
+          '0%': {
+            width: '0%',
+            visibility: 'hidden',
+          },
+          '100%': {
+            width: '100%',
+          },
+        },
+        blink: {
+          '50%': {
+            borderColor: 'transparent',
+          },
+          '100%': {
+            borderColor: 'white',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -112,6 +129,8 @@ module.exports = {
         slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         slideDownAndFade: 'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         slideLeftAndFade: 'slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+        typing: 'typing 2s steps(20) infinite alternate, blink .7s infinite',
+
         // spinSlow: 'spin 3s linear infinite',
       },
     },
