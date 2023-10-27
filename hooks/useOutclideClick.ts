@@ -17,7 +17,6 @@ export const useOutsideClick = (
   callback: (event: MouseEvent | TouchEvent) => void,
   excludeClassName?: string,
 ) => {
-  console.log('useOutsideClick')
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!ref) return
