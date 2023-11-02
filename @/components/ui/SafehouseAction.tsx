@@ -23,8 +23,8 @@ function SafehouseAction() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive" className="w-full">
-          Tavern
+        <Button variant="destructive" className="w-full text-2xl">
+          Safehouse
         </Button>
       </DialogTrigger>
       <DialogContent>

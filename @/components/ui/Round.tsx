@@ -24,7 +24,7 @@ const Round = () => {
   const stageOn = 'bg-zinc-900 text-white dark:bg-zinc-50 dark:text-black border border-transparent'
 
   return (
-    <div className="flex items-center gap-4 sm:flex-row flex-col">
+    <div className="flex items-center gap-4 sm:flex-row flex-col w-[21rem]">
       <div>
         <p className="text-4xl">
           Round <span className="text-4xl underline">{round}</span>
@@ -35,9 +35,9 @@ const Round = () => {
         <button
           onClick={handleClick}
           className={`
-          sm:border border-zinc-700 dark:border-zinc-100
+          dark:bg-slate-700
+          bg-slate-400
           border-0
-          bg-transparent
           inline-flex items-center rounded-full
           px-3 py-0.5
           transition-colors
@@ -51,9 +51,9 @@ const Round = () => {
         <button
           onClick={handleClick}
           className={`
-          sm:border border-zinc-700 dark:border-zinc-100
+          dark:bg-slate-400
+          bg-slate-300
           border-0
-          bg-transparent
           inline-flex items-center rounded-full
           px-3 py-0.5
           transition-colors
@@ -76,9 +76,9 @@ const Round = () => {
         <button
           onClick={handleClick}
           className={`
-          sm:border border-zinc-700 dark:border-zinc-100
+          dark:bg-slate-400
+          bg-slate-300
           border-0
-          bg-transparent
           inline-flex items-center rounded-full
           px-3 py-0.5
           transition-colors

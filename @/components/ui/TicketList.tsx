@@ -74,7 +74,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-center mt-5">
           <Button
             onClick={() => setTicketState('aroundMe')}
             variant="filter"
@@ -89,19 +89,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Around Me
           </Button>
           <Button
-            onClick={() => setTicketState('mostValue')}
-            variant="filter"
-            className="text-sm rounded-full h-8 px-4 py-2"
-            disabled={ticketState === 'mostValue'}
-            // className={`${
-            //   ticketState === 'mostValue'
-            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-            // }`}
-          >
-            Most Value
-          </Button>
-          <Button
             onClick={() => setTicketState('inPlay')}
             variant="filter"
             className="text-sm rounded-full h-8 px-4 py-2"
@@ -113,6 +100,34 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             // }`}
           >
             In Play
+          </Button>
+
+          {/* exit or dead */}
+          <Button
+            onClick={() => setTicketState('mostValue')}
+            variant="filter"
+            className="text-sm rounded-full h-8 px-4 py-2"
+            disabled={ticketState === 'mostValue'}
+            // className={`${
+            //   ticketState === 'mostValue'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
+          >
+            Not In Play
+          </Button>
+          <Button
+            onClick={() => setTicketState('mostValue')}
+            variant="filter"
+            className="text-sm rounded-full h-8 px-4 py-2"
+            disabled={ticketState === 'mostValue'}
+            // className={`${
+            //   ticketState === 'mostValue'
+            //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
+            //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
+            // }`}
+          >
+            In Safehouse
           </Button>
         </div>
       </summary>
@@ -133,7 +148,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
             <TicketUI ownTicket={false} ticketId={BigInt(item.id)} ticketWidthPx={220} />
-            <Button
+            {/* <Button
               onClick={() =>
                 write({
                   args: [BigInt(item.id)],
@@ -145,7 +160,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               className="w-full h-10 rounded-xl px-3 leading-6 text-xl mt-3"
             >
               Inspect
-            </Button>
+            </Button> */}
           </div>
         ))}
       </div>

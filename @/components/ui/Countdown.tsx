@@ -10,6 +10,8 @@ import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import PhaseChange from './PhaseChange'
+import { useStoreState } from '../../../store'
+import { cn } from '@/lib/utils'
 
 type TimeLeftType = {
   // days: number;
@@ -38,6 +40,7 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 export default function Countdown({ timeFlag, countdownTime }: Props) {
   const endTime = new Date(timeFlag * 1000 + countdownTime * 1000)
   const [timeLeft, setTimeLeft] = useState<number>()
+  const phase = useStoreState((state) => state.phase)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,10 +60,12 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   }, [endTime])
 
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
-
+  console.log({ phase })
   return (
-    <div className=" text-lime-800 dark:text-lime-300 gap-1">
-      <div className="flex justify-center items-center">
+    <div
+      className={cn(`text-lime-800 dark:text-lime-300 gap-1`, phase === 'countdown' && 'w-[21rem]')}
+    >
+      <div className="flex justify-end items-center">
         {timeLeft && !isNaN(timeLeft) ? (
           <div className="text-3xl rounded-xl flex flex-row gap-0.5">
             <div className="flex flex-col">

@@ -70,7 +70,8 @@ const PhaseChange = () => {
       isLoading={isLoading}
       className={bgColorPhase[phase]}
     >
-      {playerTicket ? 'Change phase' : 'Hold on'}
+      {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+      Change phase
     </Button>
   )
 }

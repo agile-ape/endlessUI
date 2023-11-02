@@ -61,8 +61,18 @@ export default function GameStats() {
 
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-            Top prize
+            Players Left
             {/* <Trophy size={16} className="ml-1" /> */}
+          </div>
+          <div className="text-xl text-amber-600 dark:text-amber-300">
+            {totalTicketCount} Players
+          </div>
+        </div>
+
+        {/* <div className="flex flex-col text-left p-1">
+          <div className="flex text-base text-zinc-800 dark:text-zinc-100">
+            Top prize
+            <Trophy size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
         </div>
@@ -70,10 +80,10 @@ export default function GameStats() {
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Next claim
-            {/* <Gem size={16} className="ml-1" /> */}
+            <Gem size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
@@ -85,10 +95,10 @@ export default function GameStats() {
           </div>
         </div>
 
-        <div className="flex flex-col text-left p-1">
+        {/* <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             In play
-            {/* <User size={16} className="ml-1" /> */}
+            <User size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">
             {totalTicketCount} players
@@ -98,7 +108,7 @@ export default function GameStats() {
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Forfeited
-            {/* <Skull size={16} className="ml-1" /> */}
+            <Skull size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">
             {totalTicketCount} players
@@ -108,7 +118,7 @@ export default function GameStats() {
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Give ups
-            {/* <Flag size={16} className="ml-1" /> */}
+            <Flag size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">
             {totalTicketCount} players
@@ -117,10 +127,10 @@ export default function GameStats() {
 
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-            Vote %{/* <Vote size={16} className="ml-1" /> */}
+            Vote %
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
-        </div>
+        </div> */}
 
         {/* <div className="flex flex-col w-32 border border-black dark:border-white  rounded-xl p-1 items-center">
               <div className="flex capitalize items-center">

@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog-unblur'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import OtpInput from 'react-otp-input'
 import {
@@ -27,6 +28,32 @@ function CheckIn() {
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
+
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
+  if (isDisabled)
+    return (
+      <TooltipProvider delayDuration={10}>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant="checkIn" className="w-full text-xl bg-slate-400" disabled>
+              Check In <LogIn size={16} className="text-sm ml-1"></LogIn>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" align="center">
+            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+              This is an instruction lalalalala
+            </p>
+            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+              This is an instruction lalalalala
+            </p>
+            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+              This is an instruction lalalalala
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
 
   return (
     <Dialog>

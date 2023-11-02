@@ -6,6 +6,10 @@ const headlineFont = localFont({
   // fallback: ['sans-serif'],
 })
 export default function Logo() {
-  return <div className={`logo-last ${headlineFont.className}`}>last</div>
+  return (
+    <button onClick={() => console.log('last')} className={`logo-last ${headlineFont.className}`}>
+      last
+    </button>
+  )
   // return <div className="logo-last font-headline">last</div>
 }

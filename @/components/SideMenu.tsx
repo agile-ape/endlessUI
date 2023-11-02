@@ -31,7 +31,7 @@ export default function SideMenu() {
         align="end"
         className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
       >
-        <DropdownMenuItem className="cursor-pointer">
+        {/* <DropdownMenuItem className="cursor-pointer">
           <Link className="text-xl hover:text-neutral-700 mx-4" href="/">
             Game
           </Link>
@@ -40,8 +40,8 @@ export default function SideMenu() {
           <Link className="text-xl hover:text-neutral-700 mx-4" href="/howtoplay">
             Guide
           </Link>
-        </DropdownMenuItem>
-        <br />
+        </DropdownMenuItem> */}
+        {/* <br /> */}
         {/* <DropdownMenuSubTrigger>How to play</DropdownMenuSubTrigger> */}
         {/* <DropdownMenuPortal>
             <DropdownMenuSubContent
@@ -59,6 +59,15 @@ export default function SideMenu() {
             </ol>
             </DropdownMenuSubContent>
           </DropdownMenuPortal> */}
+
+        <DropdownMenuItem className="cursor-pointer">
+          <Link
+            className="hover:text-neutral-700 px-2 text-[#52525B] text-base flex items-center"
+            href="/howtoplay"
+          >
+            Quickstart <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+          </Link>
+        </DropdownMenuItem>
 
         <DropdownMenuItem className="cursor-pointer">
           <a href="https://twitter.com/lastman0x" target="_blank">
@@ -86,10 +95,10 @@ export default function SideMenu() {
 
         <DropdownMenuItem>
           {/* <Button variant="destructive">$LAST</Button> */}
-          <div className="flex text-xl items-center">
+          <a href="https://app.uniswap.org/" className="flex text-xl items-center">
             <p className="mr-1">$LAST:</p>
             <p className="mr-1">123</p>
-          </div>
+          </a>
         </DropdownMenuItem>
 
         <DropdownMenuItem>

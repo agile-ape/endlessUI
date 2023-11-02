@@ -90,6 +90,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
     args: [(playerAddress || '') as `0x${string}`],
   })
 
+  const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
+
   let id = playerTicket?.[0] || 0
   let ticketAddress = playerTicket?.[1] || 0
   let ticketSignature = playerTicket?.[2] || 0
@@ -128,6 +130,14 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
   const { borderColor, bgColor, boxColor, statusUpdate } = getStatusStyle(status)
 
   console.log(borderColor, bgColor, boxColor, statusUpdate)
+
+  const handleOnMouseEnter: MouseEventHandler = () => {
+    setIsOverlayInspect(true)
+  }
+
+  const handleOnMouseLeave: MouseEventHandler = () => {
+    setIsOverlayInspect(false)
+  }
 
   return (
     <>
@@ -320,7 +330,26 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
           }}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
         >
+          {isOverlayInspect && (
+            <div
+              className={`bg-[#6a6464] absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-[2px] opacity-80 flex justify-center items-center`}
+            >
+              <div className="w-[90%] mx-auto rounded-xl flex flex-col items-center justify-center gap-4 p-2">
+                <button onClick={() => console.log('CLICKED')}>
+                  <Image
+                    priority
+                    src="/icon/attackIcon.svg"
+                    height={60}
+                    width={60}
+                    alt="attack icon"
+                  />
+                </button>
+              </div>
+            </div>
+          )}
           {status === 'safehouse' && (
             <div
               className={`bg-slate-100/70 dark:bg-slate-600/70
@@ -394,12 +423,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
 
           {/* Wallet */}
 
-          <div
-            className={cn(
-              'shadow-xl text-center mx-2 mb-2 relative rounded-lg text-white',
-              boxColor,
-            )}
-          >
+          <div className={cn('shadow-xl text-center mx-2 mb-2 rounded-lg text-white', boxColor)}>
             <p className="uppercase text-sm leading-tight">Wallet</p>
             <p className="uppercase text-3xl text-center">
               {formatUnits(ticketValue, 18)}
