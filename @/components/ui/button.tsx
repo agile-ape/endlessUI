@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-75',
+  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-75',
   {
     variants: {
       variant: {
@@ -53,7 +53,7 @@ const buttonVariants = cva(
 
         // uses size
         change:
-          'text-white hover:text-black bg-fuchsia-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400 active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus:outline-none focus:ring-1 focus:ring-pink-300 disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+          'text-white hover:text-black bg-fuchsia-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400 active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus:outline-none focus:ring-1 focus:ring-pink-300 disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
 
         // does not uses size
         inspect:
