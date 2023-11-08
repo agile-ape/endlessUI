@@ -14,13 +14,17 @@ import ExitGame from './ExitGame'
 import Inspect from './Inspect'
 import KickOut from './KickOut'
 import ChangePhase from './ChangePhase'
-import { Send } from 'lucide-react'
+import { Send, Home } from 'lucide-react'
 
 const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const toggle = () => setShowModal((prevState) => !prevState)
   return (
-    <div className="w-[240px] rounded-xl p-3 pb-5 border-[2px] border-black border-opacity-50 dark:border-[#e0e0e0] flex flex-col gap-2 mb-5">
+    <div
+      className="w-[240px] rounded-xl p-3 pt-5 pb-5
+    container-last
+    flex flex-col gap-2 mb-5"
+    >
       {/* <div className="flex gap-2">
         <p className="text-2xl capitalize pl-1 ml-2">User Actions</p>
         <TooltipProvider delayDuration={10}>
@@ -39,16 +43,18 @@ const UserActions = () => {
       <Button variant="submit" className="w-full text-2xl" onClick={toggle}>
         Submit Keyword
       </Button>
-      <SafehouseAction />
 
-      <div className="mt-4 flex flex-col gap-2">
+      <div className="flex flex-col mt-3">
+        <div className="text-center text-xl text-zinc-600 dark:text-zinc-800 font-thin">
+          Safehouse
+        </div>
         <CheckIn />
         <CheckOut />
       </div>
 
-      <div className="font-thin">Stage 2/3</div>
-
-      <SplitIt />
+      <div className="flex flex-col mt-3">
+        <SplitIt />
+      </div>
 
       {/* <ExitGame />
         <Inspect />

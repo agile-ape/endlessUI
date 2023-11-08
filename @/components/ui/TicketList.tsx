@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import TicketCardOld from './_TicketCard'
 import TicketCard from './TicketCard'
 import AllPrize from './AllPrize'
-import PrizeInfo from './PrizeInfo'
+import PrizeInfo from './_PrizeInfo'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
@@ -43,7 +43,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
       >
         <div className="flex">
           <div className="flex text-3xl items-center grow leading-7 capitalize py-2">
-            Card list
+            Players
             {/* <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
@@ -74,7 +74,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 justify-center mt-5">
+        <div className="flex gap-3 justify-center">
           <Button
             onClick={() => setTicketState('aroundMe')}
             variant="filter"
@@ -117,10 +117,10 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             Not In Play
           </Button>
           <Button
-            onClick={() => setTicketState('mostValue')}
+            onClick={() => setTicketState('safehouse')}
             variant="filter"
             className="text-sm rounded-full h-8 px-4 py-2"
-            disabled={ticketState === 'mostValue'}
+            disabled={ticketState === 'safehouse'}
             // className={`${
             //   ticketState === 'mostValue'
             //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'

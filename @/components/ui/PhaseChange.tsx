@@ -65,7 +65,7 @@ const PhaseChange = () => {
     <Button
       disabled={!write || !playerTicket}
       size="md"
-      variant="change"
+      // variant="change"
       onClick={() => write()}
       isLoading={isLoading}
       className={bgColorPhase[phase]}

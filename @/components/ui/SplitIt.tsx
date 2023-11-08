@@ -17,8 +17,9 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { Split } from 'lucide-react'
+import { Split, AlertTriangle } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -26,13 +27,36 @@ function SplitIt() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+
+  if (isDisabled)
+    return (
+      <TooltipProvider delayDuration={10}>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant="splitPot" className="w-full text-xl" disabled>
+              Split Pot
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" align="center">
+            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+              <span>
+                Players can only vote to split pot during the Day, and only after Stage 1.
+              </span>
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
         <Button variant="splitPot" className="w-full text-xl">
-          Split Pot <Split size={16} className="text-sm ml-1"></Split>
+          Split Pot
+          {/* <Split size={16} className="text-sm ml-1"></Split> */}
         </Button>
       </DialogTrigger>
 

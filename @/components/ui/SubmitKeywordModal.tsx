@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import OtpInput from 'react-otp-input'
@@ -12,7 +12,9 @@ import { Button } from './button'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { AlertTriangle } from 'lucide-react'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface SubmitKeywordModalType {
   toggle: () => void
@@ -76,7 +78,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                       <AccordionTrigger>Notes</AccordionTrigger>
                       <AccordionContent>
                         <p>Solve the captcha and the word will be revealed.</p>
-                        <p>Key in and submit the word to stay safe during the {' '} 
+                        <p>Key in and submit the word to stay safe during the {' '}
                           <span className="font-headline night-last">Night</span>.
                         </p>
                         <p></p>

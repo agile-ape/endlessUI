@@ -65,7 +65,7 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
     <div
       className={cn(`text-lime-800 dark:text-lime-300 gap-1`, phase === 'countdown' && 'w-[21rem]')}
     >
-      <div className="flex justify-end items-center">
+      <div className="flex justify-center items-center">
         {timeLeft && !isNaN(timeLeft) ? (
           <div className="text-3xl rounded-xl flex flex-row gap-0.5">
             <div className="flex flex-col">

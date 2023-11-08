@@ -14,6 +14,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 // Adjust later to pull from blockchain
 const Round = () => {
   const round = useStoreState((state) => state.round)
+  // const levelUp = useStoreState((state) => state.levelUp)
+
+  /*---
+  Replace 4 wth levelUp variable
+
+  Stage 1: default when game starts
+  Stage 2: round >= suddenDeath
+  Stage 3: round >= drainStart && drainStart != 0
+
+  ---*/
 
   const [isActive, setIsActive] = useState(false)
 
@@ -21,82 +31,52 @@ const Round = () => {
     setIsActive(!isActive)
   }
 
-  const stageOn = 'bg-zinc-900 text-white dark:bg-zinc-50 dark:text-black border border-transparent'
+  const On = 'text-black dark:text-white text-2xl font-medium tracking-wider'
+  const Off = 'text-zinc-600 dark:text-zinc-800 text-xl tracking-tight'
 
   return (
-    <div className="flex items-center gap-4 sm:flex-row flex-col w-[21rem]">
+    <div className="flex items-end gap-8 sm:flex-row flex-col">
       <div>
-        <p className="text-4xl">
-          Round <span className="text-4xl underline">{round}</span>
+        <p className="text-3xl">
+          Round <span className="text-3xl underline">{round}</span>
         </p>
       </div>
 
-      <div className="flex flex-row gap-2 text-sm">
-        <button
-          onClick={handleClick}
-          className={`
-          dark:bg-slate-700
-          bg-slate-400
-          border-0
-          inline-flex items-center rounded-full
-          px-3 py-0.5
-          transition-colors
-          focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
+      <div className="flex flex-row gap-4 text-xl">
+        <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger className={On}>Stage 1</TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                Time is halved after every 4 rounds.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
-          ${isActive ? stageOn : ''}`}
-        >
-          Stage 1
-        </button>
+        <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger className={isActive ? On : Off}>Stage 2</TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                <p>Time stops halving.</p>
+                <p>Tokens emission stops.</p>
+                <p>Split pot option activated.</p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
-        <button
-          onClick={handleClick}
-          className={`
-          dark:bg-slate-400
-          bg-slate-300
-          border-0
-          inline-flex items-center rounded-full
-          px-3 py-0.5
-          transition-colors
-          focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
-
-          ${isActive ? stageOn : ''}`}
-        >
-          <TooltipProvider delayDuration={10}>
-            <Tooltip>
-              <TooltipTrigger>Stage 2</TooltipTrigger>
-              <TooltipContent side="top" align="center">
-                <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                  Stage 2 will be triggered on Round 25
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </button>
-
-        <button
-          onClick={handleClick}
-          className={`
-          dark:bg-slate-400
-          bg-slate-300
-          border-0
-          inline-flex items-center rounded-full
-          px-3 py-0.5
-          transition-colors
-          focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:focus:ring-zinc-300
-
-          ${isActive ? stageOn : ''}`}
-        >
-          <TooltipProvider delayDuration={10}>
-            <Tooltip>
-              <TooltipTrigger>Stage 3</TooltipTrigger>
-              <TooltipContent side="top" align="center">
-                <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                  Join us on Telegram to find out when Stage 3 will be triggered
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </button>
+        <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger className={isActive ? On : Off}>Stage 3</TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                <p>Pot begins to get drained at 10% per round.count</p>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   )

@@ -44,13 +44,13 @@ const CursorSVG = () => (
     style={{
       display: 'inline-block',
       width: '1ch',
-      animation: 'flicker 0.5s infinite',
+      animation: 'flicker 0.1s infinite',
     }}
     viewBox="8 4 8 16"
     xmlns="http://www.w3.org/2000/svg"
     className="cursor"
   >
-    <rect x="10" y="6" width="1" height="12" fill="#fff" />
+    <rect x="10" y="6" width="4" height="12" fill="#6b7280" />
   </svg>
 )
 
@@ -73,13 +73,13 @@ const Title: FC<TitleType> = ({ stageType }) => {
         clearInterval(intervalId)
         setCompletedTyping(true)
       }
-    }, 40)
+    }, 60)
 
     return () => clearInterval(intervalId)
   }, [stageType])
 
   return (
-    <p className="text-md leading-tight sm:text-[2rem] sm:leading-10 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
+    <p className="text-sm leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
       {displayResponse}
       {!completedTyping && <CursorSVG />}
     </p>

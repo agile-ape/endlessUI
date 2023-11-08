@@ -4,9 +4,9 @@ import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/CheckInBox'
+import CheckIn from '../ui/_CheckInBox'
 import GameTab from '../ui/GameTab'
-import PrizeInfo from '../ui/PrizeInfo'
+import PrizeInfo from '../ui/_PrizeInfo'
 import Countdown from '../ui/Countdown'
 
 function DuskScreen() {

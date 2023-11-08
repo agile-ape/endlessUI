@@ -10,7 +10,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { ExternalLink } from 'lucide-react'
-import HowToPlay from './ui/HowToPlay'
+import HowToPlay from './ui/_HowToPlay'
 import GameHeader from './ui/GameHeader'
 import Link from 'next/link'
 import { Button } from './ui/button'

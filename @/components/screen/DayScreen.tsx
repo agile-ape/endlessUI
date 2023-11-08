@@ -5,7 +5,7 @@ import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/CheckInBox'
+import CheckIn from '../ui/_CheckInBox'
 import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import AllPrize from '../ui/AllPrize'
@@ -97,12 +97,12 @@ export default function DayScreen() {
       </div>
       {/* top container */}
       <div className="flex flex-col mb-2">
-        <div className="flex justify-between px-5 py-2 sm:flex-row flex-col">
+        <div className="grid grid-cols-3 px-5 pb-2">
           <Round />
-          <div className="flex sm:justify-between justify-center items-center gap-4 sm:mt-0 mt-3 sm:flex-row flex-col">
-            <p className="text-4xl font-headline uppercase day-last my-2"> Day </p>
-            <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-          </div>
+          {/* <div className="flex sm:justify-between align-center justify-center items-end gap-4 sm:mt-0 mt-3 sm:flex-row flex-col"> */}
+          <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
+          {/* </div> */}
+          <div className="text-4xl flex justify-end font-headline uppercase day-last"> Day </div>
         </div>
         <div>
           <GameStats />

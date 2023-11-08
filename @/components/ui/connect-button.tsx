@@ -1,5 +1,7 @@
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { Button } from './button'
+
 import Image from 'next/image'
 
 export default function CustomConnectButton() {
@@ -34,24 +36,37 @@ export default function CustomConnectButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button" className="connect-last">
+                  // <button onClick={openConnectModal} type="button" className="connect-last">
+                  //   Connect Wallet
+                  // </button>
+                  <Button
+                    onClick={openConnectModal}
+                    variant="connect"
+                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
+                  >
                     Connect Wallet
-                  </button>
+                  </Button>
                 )
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button" className="connect-last">
-                    <Image
+                  // <button onClick={openChainModal} type="button" className="connect-last">
+                  // </button>
+                  <Button
+                    onClick={openConnectModal}
+                    variant="connect"
+                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
+                  >
+                    {/* <Image
                       priority
                       src="/logo/game-logo.png"
                       height={25}
                       width={25}
                       alt="ethereum logo"
                       className="shrink-0 inline mr-1"
-                    />
+                    /> */}
                     Wrong network
-                  </button>
+                  </Button>
                 )
               }
 
@@ -59,11 +74,7 @@ export default function CustomConnectButton() {
               /* conditional rendering block */
 
               return (
-                <div
-                  className="
-                  h-10 w-max flex gap-x-2 items-center text-sm
-                  "
-                >
+                <div>
                   {/* <div className="flex gap-x-2">
                     {chain.hasIcon && (
                       <div
@@ -91,10 +102,16 @@ export default function CustomConnectButton() {
                     {chain.name}
                   </div> */}
 
-                  <button onClick={openAccountModal} type="button" className="connect-last">
+                  {/* <button onClick={openAccountModal} type="button" className="connect-last">
+                    </button> */}
+                  <Button
+                    onClick={openConnectModal}
+                    variant="connect"
+                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
+                  >
                     {account.displayName}
                     {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
-                  </button>
+                  </Button>
                 </div>
               )
             })()}

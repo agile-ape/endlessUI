@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogIn, ChevronUp, ChevronDown } from 'lucide-react'
+import { LogIn, ChevronUp, ChevronDown, AlertTriangle } from 'lucide-react'
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { useStoreActions, useStoreState } from '../../../store'
@@ -29,27 +29,28 @@ function CheckIn() {
   const phase = useStoreState((state) => state.phase)
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
 
   if (isDisabled)
     return (
       <TooltipProvider delayDuration={10}>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant="checkIn" className="w-full text-xl bg-slate-400" disabled>
-              Check In <LogIn size={16} className="text-sm ml-1"></LogIn>
+            <Button variant="checkIn" className="w-full text-xl mb-3" disabled>
+              Check In
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" align="center">
-            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+              <span>Players can only check in during the Day</span>
+            </div>
+            {/* <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
               This is an instruction lalalalala
             </p>
             <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
               This is an instruction lalalalala
-            </p>
-            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-              This is an instruction lalalalala
-            </p>
+            </p> */}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -59,8 +60,9 @@ function CheckIn() {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkIn" className="w-full text-xl">
-          Check In <LogIn size={16} className="text-sm ml-1"></LogIn>
+        <Button variant="checkIn" className="w-full text-xl mb-3">
+          Check In
+          {/* <LogIn size={16} className="text-sm ml-1"></LogIn> */}
         </Button>
       </DialogTrigger>
 
