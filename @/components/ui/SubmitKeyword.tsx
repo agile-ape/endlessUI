@@ -139,7 +139,7 @@ function SubmitKeyword() {
                       // disabled={phase !== 'day'}
                       onClick={async () => {
                         if (otpInput) {
-                          await onSubmit(otpInput)
+                          // await onSubmit(otpInput)
                           setOtpInput('')
                         }
                       }}
