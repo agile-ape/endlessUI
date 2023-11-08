@@ -7,8 +7,10 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+import { useAccount } from 'wagmi'
 
 function Header() {
+  const { isConnected } = useAccount()
   return (
     <div className="grid grid-cols-2 xl:grid-cols-2 gap-2 items-center py-3 px-5">
       <div className="flex justify-start order-1">
@@ -48,24 +50,17 @@ function Header() {
           </a>
         </div>
 
-        <a
-          href="https://app.uniswap.org/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex mx-2 text-xl items-center"
-        >
-          <p className="mr-1">$LAST:</p>
-          <p className="mr-1">123</p>
-          {/* <Image
-            priority
-            src="/logo/game-logo.png"
-            height={32}
-            width={32}
-            alt="game logo"
-            className="shrink-0 inline mr-2"
-          /> */}
-        </a>
-        {/* <Button variant="destructive">$LAST</Button> */}
+        {isConnected ? (
+          <a
+            href="https://app.uniswap.org/"
+            target="_blank"
+            rel="noreferrer"
+            className="flex mx-2 text-xl items-center"
+          >
+            <p className="mr-1">$LAST:</p>
+            <p className="mr-1">123</p>
+          </a>
+        ) : null}
 
         <CustomConnectButton />
       </div>
