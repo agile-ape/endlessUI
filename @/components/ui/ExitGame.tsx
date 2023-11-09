@@ -17,48 +17,70 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogOut } from 'lucide-react'
+import { LogOut, AlertTriangle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
-
 
 function ExitGame() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+
+  if (isDisabled)
+    return (
+      <TooltipProvider delayDuration={10}>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant="checkIn" className="w-full text-xl mb-3" disabled>
+              Exit Game for 1.0 ETH
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" align="center">
+            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+              <span>You can only exit duing the DAY</span>
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="exit" className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl">
-          Exit Game
+        <Button
+          variant="exit"
+          className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+        >
+          Exit Game for 1.0 ETH
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Claim your pot reward and exit
-                  <div className="day-last">
-                  <span className="font-headline">Day
-                  </span> Action, or when Game Ends
-                  </div>
+            <DialogTitle className="text-3xl text-center font-normal">
+              Claim your pot reward and exit
+              <div className="day-last">
+                <span className="font-headline">Day</span> Action, or when Game Ends
+              </div>
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
-                priority
-                src="/lore/EnterGame.png"
-                // layout="fill"
-                // objectFit='cover'
-                className="place-self-center rounded-xl"
-                height={400}
-                width={650}
-                alt="enter-into-the-pepe"
+                  priority
+                  src="/lore/EnterGame.png"
+                  // layout="fill"
+                  // objectFit='cover'
+                  className="place-self-center rounded-xl"
+                  height={400}
+                  width={650}
+                  alt="enter-into-the-pepe"
                 />
-                  
+
                 {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>
@@ -71,24 +93,21 @@ function ExitGame() {
                   </AccordionItem>
                 </Accordion> */}
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Players can claim a pot reward and exit even if their ticket has been forfeited.</p>
+                  <p className="mb-2">
+                    Players can claim a pot reward and exit even if their ticket has been forfeited.
+                  </p>
                   <p className="mb-2">Psst. Your ticket changes when you exit.</p>
                 </div>
 
                 {/* Pay for stay */}
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">Saying Goodbye?</div>
-                
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  
+                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  Saying Goodbye?
+                </div>
 
-                  <Button
-                    variant="exit"
-                    size="lg"
-                    className="w-[100%]"
-                  >
+                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <Button variant="exit" size="lg" className="w-[100%]">
                     Exit Game
                   </Button>
-
                 </div>
               </DialogDescription>
             </ScrollArea>

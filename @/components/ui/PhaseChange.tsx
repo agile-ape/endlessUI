@@ -6,6 +6,7 @@ import React from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import { useStoreState } from '../../../store'
+import { cn } from '@/lib/utils'
 
 type PhaseChangeType = {
   phaseType: IApp['phase']
@@ -19,7 +20,7 @@ const mappedFunction: Record<string, string> = {
 }
 
 const bgColorPhase: Record<string, string> = {
-  day: 'bg-green-600',
+  day: 'bg-green-600 hover:bg-green-800',
   dusk: 'bg-purple-200',
   night: 'bg-amber-500',
   // countdown: 'changeCountdownToDay',
@@ -28,7 +29,8 @@ const bgColorPhase: Record<string, string> = {
 }
 
 const PhaseChange = () => {
-  const phase = useStoreState((state) => state.phase)
+  // const phase = useStoreState((state) => state.phase)
+  const phase = 'day'
   const { address, isConnected } = useAccount()
   console.log({ phase: bgColorPhase[phase], phaseNow: phase })
   const { data: playerTicket } = useContractRead({
@@ -64,11 +66,12 @@ const PhaseChange = () => {
   return (
     <Button
       disabled={!write || !playerTicket}
-      size="md"
+      // size="md"
       // variant="change"
       onClick={() => write()}
       isLoading={isLoading}
-      className={bgColorPhase[phase]}
+      // variant="change"
+      className={cn('text-white', bgColorPhase[phase])}
     >
       {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
       Change phase

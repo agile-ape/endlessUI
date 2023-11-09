@@ -39,7 +39,7 @@ export default function GameStats() {
     <>
       <div
         className="mx-auto hidden md:flex flex-row justify-around items-center
-        rounded-xl container-last"
+        rounded-xl"
       >
         {/* bg-zinc-100/50 dark:bg-zinc-700/50 border-2 border-zinc-200 dark:border-zinc-800  */}
         {/* <div className=""> */}
@@ -48,28 +48,40 @@ export default function GameStats() {
           <ChevronsUpDown
             size={20}
             className="ml-1 border rounded-full hover:bg-white hover:text-black"
-          />
-        </CollapsibleTrigger> */}
-
-        <div className="flex flex-col text-left p-1">
-          <div className="flex text-base text-zinc-800 dark:text-zinc-100">
-            Total pot
-            {/* <PiggyBank size={16} className="ml-1" /> */}
+            />
+          </CollapsibleTrigger> */}
+        <div className="flex flex-row gap-5">
+          {/* <PiggyBank size={16} className="ml-1" /> */}
+          <div className="flex flex-row text-zinc-600 dark:text-zinc-800 items-end text-lg tracking-wide">
+            <Users className="text-xl mr-1" />
+            <div className="text-2xl text-amber-600 dark:text-amber-300 tracking-wide">
+              {currentTicketCount}
+            </div>
+            /{totalTicketCount} players left
           </div>
-          <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
+
+          <div className="flex flex-row text-zinc-600 dark:text-zinc-800 items-end text-lg tracking-wide">
+            <Gem className="text-xl mr-1" />
+            <div className="text-2xl text-amber-600 dark:text-amber-300 tracking-wide">
+              {currentTicketCount}
+            </div>
+            /{totalTicketCount} ETH in pot
+          </div>
         </div>
 
+        {/*
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Players Left
-            {/* <Trophy size={16} className="ml-1" /> */}
+            <Gem size={16} className="ml-1" />
+            <Trophy size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">
             {totalTicketCount} Players
           </div>
         </div>
 
-        {/* <div className="flex flex-col text-left p-1">
+         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Top prize
             <Trophy size={16} className="ml-1" />
@@ -83,17 +95,17 @@ export default function GameStats() {
             <Gem size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">{totalTicketCount} ETH</div>
-        </div> */}
+        </div> 
 
         <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
             Total joined
-            {/* <Users size={16} className="ml-1" /> */}
+            <Users size={16} className="ml-1" />
           </div>
           <div className="text-xl text-amber-600 dark:text-amber-300">
             {totalTicketCount} players
           </div>
-        </div>
+        </div>*/}
 
         {/* <div className="flex flex-col text-left p-1">
           <div className="flex text-base text-zinc-800 dark:text-zinc-100">
@@ -150,6 +162,7 @@ export default function GameStats() {
         {/* </div> */}
       </div>
 
+      {/* For smaller screens */}
       <Collapsible className="w-[8rem] mx-auto mt-5 md:hidden block">
         <CollapsibleTrigger className="container-last rounded-xl p-3 w-[8rem] mx-auto mb-2 flex justify-center items-center pl-5">
           Game Stats

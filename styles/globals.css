@@ -106,41 +106,28 @@
     @apply font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-indigo-500;
   }
 
-  .connect-last {
+  /* .connect-last {
     @apply bg-gradient-to-r from-sky-300 to-indigo-500
     text-base text-white uppercase font-semibold
     shadow-md
     transition-colors
     hover:bg-gradient-to-l from-sky-300 to-indigo-500
-    /* hover:border-4 hover:border-indigo-900 */
     hover:text-indigo-900
     focus:bg-accent focus:text-indigo-900 focus:outline-blue-500
     h-10 w-max py-[2px] px-[16px] rounded-xl;
-  }
+  } */
 
-  .logo-last {
-    @apply h-12 rounded-md
-    bg-red-800
-    py-0 px-2
-    items-center justify-center align-middle
-    text-[34px]
-    text-white
-    transition-colors
-    /* hover:bg-zinc-200 hover:text-indigo-900 */
-    hover:bg-zinc-200 hover:text-blue-950;
-  }
-
+  /*--
   .menu-last {
-    @apply /* bg-transparent */
+
     text-white
     shadow-md
-    /* hover:bg-slate-500 */
-    /* focus:bg-slate-500 */
-    /* data-[active]:bg-slate-700 */
+
     data-[state=open]:bg-blue-950
     disabled:pointer-events-none
     disabled:opacity-50;
   }
+  --*/
 
   /* .border-rainbow {
     @apply background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);

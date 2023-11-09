@@ -21,7 +21,6 @@ import { LogOut } from 'lucide-react'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
-
 function BuyTicket() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
@@ -31,34 +30,36 @@ function BuyTicket() {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="enter" className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl">
-          Buy Ticket
+        <Button
+          variant="enter"
+          className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+        >
+          Buy for 0.05 ETH
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Buy ticket to enter game
-                  <div className="beginnings-last">
-                  <span className="font-headline">Start Game
-                  </span> Action
-                  </div>
+            <DialogTitle className="text-3xl text-center font-normal">
+              Buy ticket to enter game
+              <div className="beginnings-last">
+                <span className="font-headline">Start Game</span> Action
+              </div>
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
-                priority
-                src="/lore/EnterGame.png"
-                // layout="fill"
-                // objectFit='cover'
-                className="place-self-center rounded-xl"
-                height={400}
-                width={650}
-                alt="enter-into-the-pepe"
+                  priority
+                  src="/lore/EnterGame.png"
+                  // layout="fill"
+                  // objectFit='cover'
+                  className="place-self-center rounded-xl"
+                  height={400}
+                  width={650}
+                  alt="enter-into-the-pepe"
                 />
-                  
+
                 {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>
@@ -78,13 +79,12 @@ function BuyTicket() {
                 </div>
 
                 {/* Pay for stay */}
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">Join us?</div>
-                
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  
+                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  Join us?
+                </div>
 
+                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Next ticket price</p>
                       <p className="text-right"> 0.5ETH </p>
@@ -96,14 +96,9 @@ function BuyTicket() {
                     </div>
                   </div>
 
-                  <Button
-                    variant="enter"
-                    size="lg"
-                    className="rounded-full w-[100%]"
-                  >
+                  <Button variant="enter" size="lg" className="rounded-full w-[100%]">
                     Buy Ticket
                   </Button>
-
                 </div>
               </DialogDescription>
             </ScrollArea>

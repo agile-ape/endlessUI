@@ -43,7 +43,7 @@ function CheckIn() {
           <TooltipContent side="top" align="center">
             <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
               <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-              <span>Players can only check in during the Day</span>
+              <span>You can only check in during the Day</span>
             </div>
             {/* <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
               This is an instruction lalalalala

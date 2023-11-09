@@ -17,9 +17,10 @@ const countdownPhrase = [
 
 const dayPhrase = [
   'easy peasy lemon squeezy',
-  'remember. submit keyword to stay in the game',
+  'Again. submit keyword to stay in the game',
   'check in to the safehouse to take a break',
-  'hold on. it gets better over time. maybe?',
+  'hold on. it gets better over time',
+  'smells of napalm in the morning.',
 ]
 
 const nightPhrase = [

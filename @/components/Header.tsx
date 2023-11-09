@@ -7,7 +7,18 @@ import DarkModeSwitcher from './ui/DarkModeSwitcher'
 import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSubTrigger,
+  DropdownMenuSub,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+} from '@/components/ui/dropdown-menu'
 function Header() {
   return (
     <div className="grid grid-cols-2 xl:grid-cols-2 gap-2 items-center py-3 px-5">
@@ -31,9 +42,8 @@ function Header() {
           <Link
             className="px-2
             text-xl text-zinc-700 dark:text-zinc-200
-            border-1 border-transparent
-            hover:text-neutral-900 hover:border-1 hover:border-neutral-900
-            dark:hover:text-neutral-200 dark:hover:border-1 dark:hover:text-neutral-200 flex items-center"
+            hover:text-neutral-900 
+            dark:hover:text-neutral-200 dark:hover:text-neutral-200 flex items-center"
             href="/howtoplay"
           >
             Quickstart
@@ -55,24 +65,36 @@ function Header() {
           </a>
         </div>
 
-        <a
-          href="https://app.uniswap.org/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex mx-2 text-xl items-center"
-        >
-          <p className="mr-1">$LAST:</p>
-          <p className="mr-1">123</p>
-          {/* <Image
-            priority
-            src="/logo/game-logo.png"
-            height={32}
-            width={32}
-            alt="game logo"
-            className="shrink-0 inline mr-2"
-          /> */}
-        </a>
-        {/* <Button variant="destructive">$LAST</Button> */}
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="token" className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt">
+              LAST 200
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
+          >
+            <a
+              href="https://app.uniswap.org/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex mx-2 text-xl items-center"
+            >
+              <p className="mr-1">$LAST:</p>
+              <p className="mr-1">123</p>
+              <Image
+                priority
+                src="/logo/token.svg"
+                height={32}
+                width={32}
+                alt="game logo"
+                className="shrink-0 inline mr-2"
+              />
+            </a>
+            {/* <Button variant="destructive">$LAST</Button> */}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <CustomConnectButton />
       </div>

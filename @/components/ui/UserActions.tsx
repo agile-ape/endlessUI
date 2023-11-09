@@ -1,9 +1,6 @@
 import React from 'react'
 import { Button } from './button'
 import { HelpCircle } from 'lucide-react'
-
-import SubmitKeyword from './SubmitKeyword'
-import SplitPotAction from './SplitPotAction'
 import SafehouseAction from './SafehouseAction'
 import SubmitKeywordModal from './SubmitKeywordModal'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -11,7 +8,7 @@ import CheckIn from './CheckIn'
 import CheckOut from './CheckOut'
 import SplitIt from './SplitIt'
 import ExitGame from './ExitGame'
-import Inspect from './Inspect'
+import Inspect from './Attack'
 import KickOut from './KickOut'
 import ChangePhase from './ChangePhase'
 import { Send, Home } from 'lucide-react'
@@ -45,15 +42,15 @@ const UserActions = () => {
       </Button>
 
       <div className="flex flex-col mt-3">
+        <SplitIt />
+      </div>
+
+      <div className="flex flex-col mt-3">
         <div className="text-center text-xl text-zinc-600 dark:text-zinc-800 font-thin">
           Safehouse
         </div>
         <CheckIn />
         <CheckOut />
-      </div>
-
-      <div className="flex flex-col mt-3">
-        <SplitIt />
       </div>
 
       {/* <ExitGame />

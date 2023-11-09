@@ -31,18 +31,18 @@ const Round = () => {
     setIsActive(!isActive)
   }
 
-  const On = 'text-black dark:text-white text-2xl font-medium tracking-wider'
-  const Off = 'text-zinc-600 dark:text-zinc-800 text-xl tracking-tight'
+  const On = 'text-black dark:text-white text-xl whitespace-nowrap font-medium tracking-wider'
+  const Off = 'text-zinc-600 dark:text-zinc-800 text-lg whitespace-nowrap tracking-tight'
 
   return (
     <div className="flex items-end gap-8 sm:flex-row flex-col">
       <div>
-        <p className="text-3xl">
-          Round <span className="text-3xl underline">{round}</span>
+        <p className="text-2xl whitespace-nowrap">
+          Round <span className="text-2xl underline">{round}</span>
         </p>
       </div>
 
-      <div className="flex flex-row gap-4 text-xl">
+      <div className="flex flex-row gap-4">
         <TooltipProvider delayDuration={10}>
           <Tooltip>
             <TooltipTrigger className={On}>Stage 1</TooltipTrigger>

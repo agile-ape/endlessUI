@@ -1,7 +1,6 @@
-import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
@@ -34,7 +33,7 @@ type GameTabType = {
 }
 
 const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
 
   // const { playerAddress, isConnected } = useAccount()
   // const { data: playerAddress } = useContractRead({
@@ -59,7 +58,9 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
     args: [address as `0x${string}`],
   })
 
-  const ticketId = playerTicket?.[0] || BigInt(0)
+  const id = playerTicket?.[0] || BigInt(0)
+  const nextTicketPrice = BigInt(2)
+
   // console.log(Number(ticketId));
 
   const phase = useStoreState((state) => state.phase)
@@ -104,113 +105,91 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
     }
   }
 
+  const [defaultView, setdefaultView] = useState<string>('ticket')
+
+  const handleVelueChange = useEffect(() => {
+    setdefaultView(isConnected ? 'ticket' : 'game')
+    ;[isConnected]
+  })
+
+  console.log(defaultView)
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      {/* <TabsContent value="ticket" className="flex flex-col items-center justify-center"> */}
-      {/* if no ticket, beginnings/countdown = buy */}
-      {Number(ticketId) === 0 && (phase === 'beginnings' || 'countdown') && (
-        <div className="mb-2">
-          <div className="flex justify-center items-center text-3xl py-2 mb-4 leading-7 capitalize">
-            Next Card
-            {/* <TooltipProvider delayDuration={50}>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <HelpCircle
-                        size={16}
-                        className="ml-1 stroke-slate-900 dark:stroke-slate-100"
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent side="top" align="center">
-                      <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                        Ticket price increases over time
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider> */}
-          </div>
-          {/* to adjust how ticket is shown*/}
-          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
-          {/* <ExitTicketUI ticketId={ticketId} ticketWidthPx={240} /> */}
+    // <div className="flex flex-col items-center justify-center">
+    <Tabs defaultValue="game" className="w-[240px] mx-auto">
+      <div className="flex justify-center">
+        <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
+          <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
+            Ticket
+          </TabsTrigger>
 
-          {/* <Button
-              // disabled={!write || isAddressBoughtTickets}
-              size="lg"
-              variant="enter"
-              className="w-[240px] mt-4"
-              onClick={onBuy}
-              >
-                Buy Ticket
-              </Button> */}
+          <TabsTrigger value="game" className="rounded-xl w-[50%] p-1 text-[1rem]">
+            Game
+          </TabsTrigger>
+        </TabsList>
+      </div>
 
-          <BuyTicket />
-        </div>
-      )}
-
-      {/* if no ticket for rest of phase */}
-      {/* {((Number(ticketId) === 0) && (phase !== 'beginnings' || 'countdown')) &&
-            <div className="flex flex-col justify-center mb-4">
-              <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
-                Feeling FOMO?
-              </div>
-              <Image
-                priority
-                src="/pepe/pepe-lost.svg"
-                className="place-self-center"
-                height={200}
-                width={200}
-                alt="pepe-in-thoughts"
-                />
-                <div className='text-center text-xl'>
-                  Follow us when game begins
+      <div className="flex justify-center">
+        <TabsContent value="ticket" className="flex flex-col gap-3">
+          <>
+            {Number(id) === 0 && phase === 'countdown' && (
+              <div className="mb-2">
+                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
+                  Enter Game
                 </div>
-            </div>
-          } */}
+                <TicketUI
+                  ownTicket={true}
+                  ticketId={nextTicketPrice}
+                  ticketWidthPx={200}
+                  ticketLookInput={'beforePurchase'}
+                />
+                <BuyTicket />
+              </div>
+            )}
 
-      {/* if you have a ticket and not day */}
-      {Number(ticketId) > 0 && phase !== 'day' && (
-        <div className="mb-4">
-          <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
-            Your Card
-          </div>
-          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
-        </div>
-      )}
+            {/* if you have a ticket and not day */}
+            {Number(id) > 0 && (
+              <div className="mb-2">
+                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
+                  Your Card
+                </div>
+                <TicketUI
+                  ownTicket={true}
+                  ticketId={id}
+                  ticketWidthPx={240}
+                  ticketLookInput={'beforePurchase'}
+                />
+                <ExitGame />
+              </div>
+            )}
 
-      {/* if you have a ticket and day */}
-      {Number(ticketId) > 0 && phase === 'day' && (
-        <div className="mb-4">
-          <div className="mt-1 flex justify-center items-center text-3xl pb-4 pt-2 leading-7 capitalize">
-            Your Card
-          </div>
+            {/* if no ticket for rest of phase */}
+            {Number(id) === 0 && phase !== 'countdown' && (
+              <div className="mb-2">
+                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
+                  FOMO-ing?
+                </div>
+                <Image
+                  priority
+                  src="/pepe/pepe-lost.svg"
+                  className="place-self-center"
+                  height={240}
+                  width={240}
+                  alt="pepe-in-thoughts"
+                />
+                <div className="text-center text-lg mb-3">Follow us for updates</div>
+              </div>
+            )}
 
-          <TicketUI ownTicket={true} ticketId={ticketId} ticketWidthPx={240} />
-
-          <div className="text-xl text- center leading-tight">
-            +{formatUnits(BigInt(totalPrizePool), 18)} ETH if you exit now.
-          </div>
-
-          {/* <Button
-              // disabled={!write || isAddressBoughtTickets}
-              size="lg"
-              variant="exit"
-              className="w-[240px] mt-1"
-              onClick={onBuy}
-              >
-                Exit Game
-              </Button> */}
-
-          <ExitGame />
-        </div>
-      )}
-
-      {/* <CheckIn /> */}
-      {/* <UserActions /> */}
-
-      {/* </TabsContent> */}
-      {/* <TabsContent value="game"> */}
-      {/* <GameFeed /> */}
-      {/* </TabsContent> */}
-    </div>
+            <UserActions />
+          </>
+        </TabsContent>
+        <TabsContent value="game">
+          <GameFeed />
+        </TabsContent>
+      </div>
+    </Tabs>
+    // </div>
   )
 }
 

@@ -1,6 +1,8 @@
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Button } from './button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { LogIn, ChevronUp, ChevronDown, AlertTriangle } from 'lucide-react'
 
 import Image from 'next/image'
 
@@ -39,10 +41,11 @@ export default function CustomConnectButton() {
                   // <button onClick={openConnectModal} type="button" className="connect-last">
                   //   Connect Wallet
                   // </button>
+                  // similar styling as logo
                   <Button
                     onClick={openConnectModal}
                     variant="connect"
-                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
+                    className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
                   >
                     Connect Wallet
                   </Button>
@@ -52,11 +55,7 @@ export default function CustomConnectButton() {
                 return (
                   // <button onClick={openChainModal} type="button" className="connect-last">
                   // </button>
-                  <Button
-                    onClick={openConnectModal}
-                    variant="connect"
-                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
-                  >
+                  <div>
                     {/* <Image
                       priority
                       src="/logo/game-logo.png"
@@ -65,8 +64,26 @@ export default function CustomConnectButton() {
                       alt="ethereum logo"
                       className="shrink-0 inline mr-1"
                     /> */}
-                    Wrong network
-                  </Button>
+
+                    <Button
+                      onClick={openChainModal}
+                      variant="wrong"
+                      className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+                    >
+                      Wrong network
+                      {/* <TooltipProvider delayDuration={10}>
+                        <Tooltip>
+                          <TooltipTrigger>Wrong network</TooltipTrigger>
+                          <TooltipContent side="top" align="center">
+                            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+                              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+                              <span>Change to Arbitrum chain </span>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider> */}
+                    </Button>
+                  </div>
                 )
               }
 
@@ -104,14 +121,23 @@ export default function CustomConnectButton() {
 
                   {/* <button onClick={openAccountModal} type="button" className="connect-last">
                     </button> */}
+                  {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
+
                   <Button
-                    onClick={openConnectModal}
-                    variant="connect"
-                    className="h-10 rounded-xl px-4 py-2 text-md leading-10 font-whitrabt"
+                    onClick={openAccountModal}
+                    variant="connected"
+                    className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
                   >
                     {account.displayName}
-                    {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
                   </Button>
+
+                  {/* <button
+                    onClick={openAccountModal}
+                    type="button"
+                    className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+                  >
+                    Connected
+                  </button> */}
                 </div>
               )
             })()}

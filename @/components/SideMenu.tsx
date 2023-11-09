@@ -24,7 +24,7 @@ import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 export default function SideMenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="connect-last px-2 py-2">
+      <DropdownMenuTrigger className="px-2 py-2 rounded-xl border border-blue-950">
         <Menu size={20} strokeWidth={3}></Menu>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -62,10 +62,13 @@ export default function SideMenu() {
 
         <DropdownMenuItem className="cursor-pointer">
           <Link
-            className="hover:text-neutral-700 px-2 text-[#52525B] text-base flex items-center"
+            className="px-2
+            text-xl text-zinc-700 dark:text-zinc-200
+            hover:text-neutral-900 
+            dark:hover:text-neutral-200 dark:hover:text-neutral-200 flex items-center"
             href="/howtoplay"
           >
-            Quickstart <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            Quickstart
           </Link>
         </DropdownMenuItem>
 
@@ -90,14 +93,6 @@ export default function SideMenu() {
             <Button variant="link" size="md">
               Learn <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
-          </a>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem>
-          {/* <Button variant="destructive">$LAST</Button> */}
-          <a href="https://app.uniswap.org/" className="flex text-xl items-center">
-            <p className="mr-1">$LAST:</p>
-            <p className="mr-1">123</p>
           </a>
         </DropdownMenuItem>
 

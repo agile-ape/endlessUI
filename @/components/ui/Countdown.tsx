@@ -47,6 +47,8 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
       // Calculate the time left in each tick
       const now = new Date()
       const timeLeftInMS = endTime.getTime() - now.getTime()
+      console.log(now.getTime())
+      console.log(endTime.getTime())
 
       if (timeLeftInMS > 0) {
         setTimeLeft(timeLeftInMS / 1000)
@@ -62,25 +64,30 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
   console.log({ phase })
   return (
-    <div
-      className={cn(`text-lime-800 dark:text-lime-300 gap-1`, phase === 'countdown' && 'w-[21rem]')}
-    >
-      <div className="flex justify-center items-center">
+    <div className="text-lime-800 dark:text-lime-200 gap-1">
+      {/* need to fix the height to avoid layout shifts */}
+      <div className="flex justify-center h-[50px] items-end">
         {timeLeft && !isNaN(timeLeft) ? (
-          <div className="text-3xl rounded-xl flex flex-row gap-0.5">
-            <div className="flex flex-col">
+          <div className="text-2xl border border-lime-800 rounded-md px-2 py-0 flex flex-row gap-0.5">
+            <div className="flex flex-col text-center">
               {formatTime(timeLeft).hours}
-              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">hrs</div>
+              <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                hrs
+              </div>
             </div>
             :
-            <div className="flex flex-col">
+            <div className="flex flex-col text-center">
               {formatTime(timeLeft).minutes}
-              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">mins</div>
+              <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                mins
+              </div>
             </div>
             :
-            <div className="flex flex-col">
+            <div className="flex flex-col text-center">
               {formatTime(timeLeft).seconds}
-              <div className="uppercase text-xs text-lime-800 dark:text-lime-300">secs</div>
+              <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                secs
+              </div>
             </div>
           </div>
         ) : (

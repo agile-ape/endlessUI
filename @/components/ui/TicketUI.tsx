@@ -11,126 +11,43 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen } from 'lucide-react'
 import { Button } from './button'
+import Inspect from './Attack'
 import { ExitTicketUI } from './ExitTicketUI'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 type TicketUIType = {
   ownTicket: boolean
   ticketId: IApp['id']
   ticketWidthPx: number
+  ticketLookInput: string
 }
 
-const statusMapping: Record<number, string> = {
-  1: 'new',
-  2: 'submitted',
-  3: 'checked',
-  4: 'safehouse',
-  5: 'dead',
-  6: 'exited',
-}
+// const statusMapping: Record<number, string> = {
+//   1: 'new',
+//   2: 'submitted',
+//   3: 'checked',
+//   4: 'safehouse',
+//   5: 'dead',
+//   6: 'exited',
+// }
 
-// Fresh - border-fuchsia-500 bg-purple-700 bg-fuchsia-900/75 Fresh on Round
-// Submitted - border-green-500 bg-lime-700 bg-green-950/75 Submitted keyword on Round
-// Checked - border-blue-500 bg-indigo-700 bg-blue-950/75 Checked on Round
-// Killed - opacity-80 border-zinc-500 bg-neutral-700 bg-zinc-900/75 Killed on Round
-const getStatusStyle = (status) => {
-  switch (status) {
-    case 'new':
-    case 'safehouse':
-      return {
-        borderColor: 'border-fuchsia-500',
-        bgColor: 'bg-purple-700',
-        boxColor: 'bg-fuchsia-950/75',
-        statusUpdate: 'Fresh on Round ',
-      }
-    case 'submitted':
-      return {
-        borderColor: 'border-green-500',
-        bgColor: 'bg-green-700',
-        boxColor: 'bg-green-950/75',
-        statusUpdate: 'Submitted keyword on Round ',
-      }
-    case 'checked':
-      return {
-        borderColor: 'border-blue-500',
-        bgColor: 'bg-indigo-700',
-        boxColor: 'bg-blue-950/75',
-        statusUpdate: 'Checked on Round ',
-      }
-    case 'dead':
-      return {
-        borderColor: 'border-zinc-500',
-        bgColor: 'bg-neutral-700',
-        boxColor: 'bg-zinc-950/75',
-        statusUpdate: 'Forfeited on Round ',
-      }
-    case 'exited':
-      return {
-        borderColor: 'border-zinc-300',
-        bgColor: 'bg-gray-200',
-        boxColor: 'bg-zinc-300/75',
-        statusUpdate: '',
-      }
-  }
-}
-
-const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
-  const { data: playerAddress } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'idToPlayer',
-    args: [ticketId],
-  })
-
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    // functionName: 'idToTicket',
-    // args: [ticketId],
-    functionName: 'playerTicket',
-    args: [(playerAddress || '') as `0x${string}`],
-  })
-
+const TicketUI: FC<TicketUIType> = ({
+  ownTicket,
+  ticketNumber,
+  ticketWidthPx,
+  ticketLookInput,
+}) => {
+  // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
-
-  let id = playerTicket?.[0] || 0
-  let ticketAddress = playerTicket?.[1] || 0
-  let ticketSignature = playerTicket?.[2] || 0
-  let ticketStatus = playerTicket?.[3] || 0
-  let ticketLastSeen = playerTicket?.[4] || 0
-  let ticketIsInPlay = playerTicket?.[5] || 0
-  let ticketValue = playerTicket?.[6] || 0
-  let ticketPurchasePrice = playerTicket?.[7] || 0
-  let ticketRedeemValue = playerTicket?.[8] || 0
-  let ticketBullets = playerTicket?.[9] || 0
-  let ticketKillCount = playerTicket?.[10] || 0
-  let ticketRank = playerTicket?.[11] || 0
-
-  //  0 uint id;
-  //  1 address player;
-  //  2 bytes sign;
-  //  3 Status status;
-  //  4 uint lastSeen;
-  //  5 bool isInPlay;
-  //  6 uint value;
-  //  7 uint purchasePrice;
-  //  8 uint redeemValue;
-  //  9 uint bullets;
-  //  10 uint killCount;
-  //  11 uint rank;
-
-  // hardcode this if necessary
-  // const status = statusMapping[ticketStatus] || 'unknown'
-  const status = 'new'
-
-  // const isInSafeHouse = false
-  // const isInSafeHouse = Math.random() * 200 > 100
-
-  // console.log({ isInSafeHouse })
-
-  const { borderColor, bgColor, boxColor, statusUpdate } = getStatusStyle(status)
-
-  console.log(borderColor, bgColor, boxColor, statusUpdate)
-
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
   }
@@ -139,300 +56,413 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketId, ticketWidthPx }) => {
     setIsOverlayInspect(false)
   }
 
+  // hooks
+  const { data: playerAddress } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'idToPlayer',
+    args: [ticketNumber],
+  })
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [(playerAddress || '') as `0x${string}`],
+  })
+
+  let ticketId = playerTicket?.[0] || 0
+  let ticketAddress = playerTicket?.[1] || 0
+  let ticketSignature = playerTicket?.[2] || 0
+  let ticketStatus = playerTicket?.[3] || 0
+  let ticketLastSeen = playerTicket?.[4] || 0
+  let ticketIsInPlay = playerTicket?.[5] || 0
+  let ticketVote = playerTicket?.[6] || 0
+  let ticketValue = playerTicket?.[7] || 0
+  let ticketPurchasePrice = playerTicket?.[8] || 0
+  let ticketPotClaim = playerTicket?.[9] || 0
+  let ticketRedeemValue = playerTicket?.[10] || 0
+  let ticketAttacks = playerTicket?.[11] || 0
+  let ticketAttackCount = playerTicket?.[12] || 0
+  let ticketKillCount = playerTicket?.[13] || 0
+  let ticketKilledBy = playerTicket?.[14] || 0
+  let ticketSafehouseNights = playerTicket?.[15] || 0
+  let ticketcheckOutRound = playerTicket?.[16] || 0
+  let ticketBuddy = playerTicket?.[17] || 0
+  let ticketBuddyCount = playerTicket?.[18] || 0
+  let ticketRank = playerTicket?.[19] || 0
+
+  // const phase = useStoreState((state) => state.phase)
+  const phase = 'countdown'
+
+  // const round = useStoreState((state) => state.round)
+  const round = 0
+
+  // const round = useStoreState((state) => state.nextTicketPrice)
+  const nextTicketPrice = 2
+
+  // const nextTicketId = useStoreState((state) => state.ticketId)
+  const nextTicketId = 2
+
+  let ticketLook: string
+
+  // case of phase !="countdown" && ticketId == 0 is covered in GameTab
+  if (phase == 'countdown') {
+    if (ticketId == 0) {
+      ticketLook = 'beforePurchase'
+    } else if (ticketId != 0) {
+      ticketLook = 'afterPurchase'
+    }
+  }
+
+  if (ticketIsInPlay == true) {
+    if (phase == 'day') {
+      if (ticketStatus == 'submit' && ticketLastSeen == round) {
+        ticketLook = 'submittedDay'
+      } else {
+        if (round < suddenDeath) {
+          ticketLook = 'stage1New'
+        } else if (round >= suddenDeath && round < drainStart) {
+          ticketLook = 'stage2New'
+        } else if (round >= suddenDeath && round >= drainStart) {
+          ticketLook = 'stage3New'
+        }
+      }
+    }
+
+    if (phase == 'night') {
+      if (ticketStatus == 'submit' && ticketLastSeen == round) {
+        ticketLook = 'submittedNight'
+      } else if (ticketStatus == 'checked') {
+        ticketLook = 'attackedButSafu'
+      } else {
+        ticketLook = 'neverSubmit'
+      }
+    }
+
+    if (ticketStatus == 'safe') {
+      ticketLook = 'inSafehouse'
+    }
+
+    if (phase == 'lastManFound') {
+      ticketLook = 'lastManStanding'
+    }
+
+    if (phase == 'peaceFound') {
+      ticketLook = 'agreedToSplitPot'
+    }
+
+    if (phase == 'drain') {
+      ticketLook = 'noMorePot'
+    }
+  }
+
+  if (ticketIsInPlay == false) {
+    if (ticketStatus == 'dead') {
+      ticketLook = 'killed'
+    }
+
+    if (ticketStatus == 'exited') {
+      ticketLook = 'exitGame'
+    }
+  }
+
+  /*--
+
+  'anxious'
+  'attack'
+  'beers'
+  'confident'
+  'enter'
+  'exit'
+  'handsup'
+  'happy'
+  'killed'
+  'king'
+  'pray'
+  'warm'
+  'watchitburn'
+  'worried'
+
+  --*/
+  const ticketLookTest = ticketLookInput
+
+  const getTicketLook = (ticketLookTest) => {
+    switch (ticketLookTest) {
+      case 'beforePurchase':
+        return {
+          bgImage: 'burst',
+          face: 'enter',
+          id: nextTicketId,
+          status: 'next ticket',
+          label: 'price',
+          value: nextTicketPrice + 'ETH',
+        }
+      case 'afterPurchase':
+        return {
+          bgImage: 'rainbow',
+          face: 'happy',
+          id: ticketId,
+          status: 'ticket claimed',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'submittedDay':
+        return {
+          bgImage: 'motif',
+          face: 'handsup',
+          id: ticketId,
+          status: 'submitted',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'stage1New':
+        return {
+          bgImage: 'rainbow',
+          face: 'confident',
+          id: ticketId,
+          status: 'ready to submit word',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'stage2New':
+        return {
+          bgImage: 'rainbow',
+          face: 'worried',
+          id: ticketId,
+          status: 'ready to submit word',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'stage3New':
+        return {
+          bgImage: 'rainbow',
+          face: 'anxious',
+          id: ticketId,
+          status: 'ready to submit word',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'submittedNight':
+        return {
+          bgImage: 'motif',
+          face: 'attack',
+          id: ticketId,
+          status: 'time to attack',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'attackedButSafu':
+        return {
+          bgImage: 'combine',
+          face: 'pray',
+          id: ticketId,
+          status: 'SAFU',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'neverSubmit':
+        return {
+          bgImage: 'rainbow',
+          face: 'attack',
+          id: ticketId,
+          status: 'time to attack',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'inSafehouse':
+        return {
+          bgImage: 'rainbow',
+          face: 'warm',
+          id: ticketId,
+          status: 'taking a break',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'lastManStanding':
+        return {
+          bgImage: 'burst',
+          face: 'king',
+          id: ticketId,
+          status: 'last man standing',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'agreedToSplitPot':
+        return {
+          bgImage: 'burst',
+          face: 'beers',
+          id: ticketId,
+          status: 'WAGMI',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'noMorePot':
+        return {
+          bgImage: 'burst',
+          face: 'watchitburn',
+          id: ticketId,
+          status: 'let it burn',
+          label: 'bounty',
+          value: ticketValue + 'ETH',
+        }
+      case 'killed':
+        return {
+          bgImage: 'greybox',
+          face: 'killed',
+          id: ticketId,
+          status: 'killed',
+          label: 'rank',
+          value: ticketRank,
+        }
+      case 'exitGame':
+        return {
+          bgImage: 'burst',
+          face: 'exit',
+          id: ticketId,
+          status: 'exited',
+          label: 'rank',
+          value: ticketRank,
+        }
+    }
+  }
+
+  const { bgImage, face, id, status, label, value } = getTicketLook(ticketLookTest)
+
   return (
-    <>
-      {status === 'exited' && (
-        <div
-          className={cn(
-            `w-[${ticketWidthPx}px] flex flex-col relative justify-center border-4 rounded-xl`,
-            borderColor,
-            bgColor,
-          )}
-          style={{
-            backgroundImage: `url('/pepe/motif3.svg')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          }}
-        >
-          {ownTicket === false && (
+    <div
+      className={`w-[${ticketWidthPx}px] h-[240px] flex flex-col relative justify-center border-2 border-blue-950 rounded-xl`}
+      style={{
+        backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+      }}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+    >
+      {/* overlay */}
+      {isOverlayInspect && (
+        /*--
             <div
-              className={`bg-slate-100/70 dark:bg-slate-600/70 text-white
-              absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 z-10
-              flex justify-center items-center`}
+              className={` w-[${ticketWidthPx}px] h-[100%] rounded-xl -ml-[2px] opacity-80 mx-auto flex justify-center items-center`}
             >
-              <div className="absolute text-center mx-2 mb-2 rounded-lg text-white">
-                <TooltipProvider delayDuration={10}>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <DoorOpen size={72} className="text-gray-400/75"></DoorOpen>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" align="center">
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 px-2 text-sm flex-col justify-center">
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left"> Owner</p>
-                          <p className="text-right"> 0x12..32 </p>
-                        </div>
+              {/* <div className="mx-auto rounded-xl grid items-center justify-center gap-6 p-2">
+              <div className="capitalized text-base leeading-tight">Status: Submitted</div> 
+            */
+        <div className="flex flex-col mx-auto gap-x-2 px-4 text-md justify-center">
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left"> Status</p>
+                <p className="text-right"> Submitted</p>
+              </div> */}
 
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Lasted till</p>
-                          <p className="text-right underline"> 7 </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Bought for</p>
-                          <p className="text-right">
-                            {' '}
-                            7<span className="text-[0.5rem]">ETH</span>
-                          </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Exited with</p>
-                          <p className="text-right">
-                            {' '}
-                            7<span className="text-[0.5rem]">ETH</span>
-                          </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Total kills</p>
-                          <p className="text-right"> 10 </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Killed by </p>
-                          <p className="text-right"> - </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Safe nights </p>
-                          <p className="text-right"> 20 </p>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                          <p className="text-left">Split pot? </p>
-                          <p className="text-right"> Yes </p>
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </div>
-          )}
-
-          <div className={cn('shadow-xl text-center m-2 rounded-lg text-black py-1', boxColor)}>
-            <p className="uppercase text-xl leading-tight">Player #{Number(id)}</p>
+          <div className="flex justify-between gap-6">
+            <p className="text-left"> Wallet</p>
+            <p className="text-right"> 0x12..32 </p>
           </div>
 
-          {/* Image */}
-          <div className="mx-2 mt-3 mb-2 rounded-lg flex flex-row py-1">
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left">Last Seen</p>
+                <p className="text-right underline"> 7 </p>
+              </div> */}
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Attacks/Kills</p>
+            <p className="text-right"> 10/3 </p>
+          </div>
+
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left">Bought for</p>
+                <p className="text-right">
+                {' '}
+                7<span className="text-[0.5rem]">ETH</span>
+                </p>
+              </div> */}
+
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left">Total kills</p>
+                <p className="text-right"> 10 </p>
+              </div> */}
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Vote</p>
+            <p className="text-right"> No </p>
+          </div>
+
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left">Killed by </p>
+                <p className="text-right"> - </p>
+              </div> */}
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Safe nights </p>
+            <p className="text-right"> 20 </p>
+          </div>
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Buddy/Count </p>
+            <p className="text-right"> -/3</p>
+          </div>
+
+          {/* <div className="flex justify-between gap-6">
+                <p className="text-left">Buddy Count</p>
+                <p className="text-right"> 1 </p>
+              </div> */}
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Exited with</p>
+            <p className="text-right">
+              {' '}
+              7<span className="text-[0.5rem]">ETH</span>
+            </p>
+          </div>
+
+          {ownTicket == false && <Inspect />}
+        </div>
+      )}
+
+      {/* default */}
+      {!isOverlayInspect && (
+        <>
+          {/* top header */}
+          <div className="bg-zinc-300/60 shadow-xl text-center m-2 rounded-lg text-black">
+            <p className="uppercase text-xl leading-tight">Player #{id}</p>
+            <p className="lowercase text-sm italic text-zinc-600 dark:text-zinc-800">{status}</p>
+          </div>
+
+          {/* image */}
+          <div className="flex justify-center">
             <Image
               priority
-              src="/faces/1.png"
-              height={120}
-              width={120}
+              src={`/faces/${face}.png`}
+              height={100}
+              width={100}
               className="mt-5"
               alt="pepe"
             />
+          </div>
 
-            <div className="w-[90px] relative my-6 mx-2 ">
-              <div className="absolute inset-px bg-gradient-to-br from-orange-600 to-yellow-400 rounded-lg"></div>
+          {/* need a mapping to list ticketAttacks */}
+          {ownTicket && (
+            <div className="flex flex-row-reverse mx-3 ">
+              <Sword size={12} className=""></Sword>
+              <Sword size={12} className=""></Sword>
+              <Sword size={12} className=""></Sword>
+            </div>
+          )}
+          {/* box */}
+          <div className="bg-zinc-300/60 shadow-xl text-center m-2 mt-0 rounded-lg text-black">
+            <div className="uppercase text-sm text-zinc-600 dark:text-zinc-800 leading-tight">
+              {label}
+            </div>
 
-              <div
-                className={cn(
-                  'absolute inset-1 shadow-xl flex flex-col justify-center text-center rounded-lg text-black',
-                  boxColor,
-                )}
-              >
-                <p className="uppercase text-sm mt-2 leading-tight">Rank</p>
-                <p className="uppercase text-2xl text-center">
-                  {/* {formatUnits(ticketValue, 18)}  */} 102
-                </p>
-              </div>
+            <div className="uppercase text-2xl">
+              {value}
+              <span className="text-lg "></span>
+              {/* {round === 0 ? "claimed" : ticketLastSeen < round ? "last seen at Round "+Number(id) : "online"} */}
+              {/* to continue iterating */}
             </div>
           </div>
-
-          {/* Stats */}
-          <div
-            className={cn(
-              'flex flex-col justify-center shadow-xl text-center mx-2 mb-2 rounded-lg text-black py-1',
-              boxColor,
-            )}
-          >
-            {ownTicket === true && (
-              <>
-                <div className="uppercase text-base leading-tight">Game stats</div>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 px-2 text-xs flex-col justify-center">
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left"> Owner</p>
-                    <p className="text-right"> 0x12..32 </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Lasted till</p>
-                    <p className="text-right underline"> 7 </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Bought for</p>
-                    <p className="text-right">
-                      {' '}
-                      7<span className="text-[0.5rem]">ETH</span>
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Exited with</p>
-                    <p className="text-right">
-                      {' '}
-                      7<span className="text-[0.5rem]">ETH</span>
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Total kills</p>
-                    <p className="text-right"> 10 </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Killed by </p>
-                    <p className="text-right"> - </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Safe nights </p>
-                    <p className="text-right"> 20 </p>
-                  </div>
-
-                  <div className="flex justify-between gap-2">
-                    <p className="text-left">Split pot? </p>
-                    <p className="text-right"> Yes </p>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* {ownTicket === false && <p className="uppercase text-3xl text-center">Help</p>} */}
-          </div>
-        </div>
+        </>
       )}
-
-      {status != 'exited' && (
-        <div
-          className={cn(
-            `w-[${ticketWidthPx}px] flex flex-col relative justify-center border-2 rounded-xl`,
-            borderColor,
-            bgColor,
-          )}
-          style={{
-            backgroundImage: `url('/pepe/motif3.svg')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          }}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        >
-          {isOverlayInspect && (
-            <div
-              className={`bg-[#6a6464] absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-[2px] opacity-80 flex justify-center items-center`}
-            >
-              <div className="w-[90%] mx-auto rounded-xl flex flex-col items-center justify-center gap-4 p-2">
-                <button onClick={() => console.log('CLICKED')}>
-                  <Image
-                    priority
-                    src="/icon/attackIcon.svg"
-                    height={60}
-                    width={60}
-                    alt="attack icon"
-                  />
-                </button>
-              </div>
-            </div>
-          )}
-          {status === 'safehouse' && (
-            <div
-              className={`bg-slate-100/70 dark:bg-slate-600/70
-              absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 z-10
-              flex justify-center items-center`}
-            >
-              <div className="bg-sky-600/50 shadow-md border border-white absolute w-[90%] mx-auto rounded-xl flex flex-col gap-1 items-center justify-center py-1">
-                <h2 className="text-sm text-center uppercase">Safehouse</h2>
-                <div className="w-[80%] mx-auto">
-                  <div className="text-sm flex justify-between">
-                    <p>Check Out Round</p>
-                    <p>7</p>
-                  </div>
-                  <div className="text-sm flex justify-between">
-                    <p>Current Round</p>
-                    <p>7</p>
-                  </div>
-                </div>
-
-                <div className="px-3 text-xs py-0">{ownTicket ? <CheckOut /> : <KickOut />}</div>
-              </div>
-            </div>
-          )}
-
-          {status === 'dead' && (
-            <div
-              className={`bg-slate-100/70 dark:bg-slate-600/70
-            absolute w-[${ticketWidthPx}px] h-[103%] rounded-xl -ml-1 z-10
-            flex justify-center items-center`}
-            >
-              {ownTicket === true && (
-                <div className="absolute text-center mx-2 mb-2 rounded-lg">
-                  <p className="text-md px-2">
-                    Your ticket is forfeited. However, you can still claim your pot reward when you
-                    exit game.
-                  </p>
-                </div>
-              )}
-
-              {ownTicket === false && (
-                <div className="absolute text-center mx-2 mb-2 rounded-lg text-white">
-                  <Skull size={72} className="text-gray-400/75"></Skull>
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className={cn('shadow-xl text-center m-2 rounded-lg text-white py-1', boxColor)}>
-            <p className="uppercase text-xl leading-tight">Player #{Number(id)}</p>
-            <p className="text-sm text-center leading-tight">
-              {statusUpdate} <span className="underline">{Number(ticketLastSeen)}</span>
-            </p>
-          </div>
-
-          {/* Image */}
-          <div className="mx-2 mb-2 rounded-lg flex gap-1 justify-center py-1">
-            <Image priority src="/faces/1.png" height={90} width={90} className="mt-6" alt="pepe" />
-
-            <div className="flex flex-col justify-end text-white">
-              <div className="flex items-center gap-1">
-                <Sword size={18} className=""></Sword>
-                <span className="text-2xl">{Number(ticketBullets)}</span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Skull size={18} className=""></Skull>
-                <span className="text-2xl">{Number(ticketKillCount)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Wallet */}
-
-          <div className={cn('shadow-xl text-center mx-2 mb-2 rounded-lg text-white', boxColor)}>
-            <p className="uppercase text-sm leading-tight">Wallet</p>
-            <p className="uppercase text-3xl text-center">
-              {formatUnits(ticketValue, 18)}
-              <span className="text-lg">ETH</span>
-            </p>
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   )
 }
 
