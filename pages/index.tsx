@@ -16,16 +16,16 @@ type Props = {
 }
 
 const Home = ({ phase, theme }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const screen: Record<IApp['phase'], JSX.Element> = {
-    beginnings: <BeginningsScreen />,
-    countdown: <CountdownScreen />,
-    day: <DayScreen />,
-    dusk: <DuskScreen />,
-    night: <NightScreen />,
-    lastmanfound: <LastManScreen />,
-  }
+  // const screen: Record<IApp['phase'], JSX.Element> = {
+  //   beginnings: <BeginningsScreen />,
+  //   countdown: <CountdownScreen />,
+  //   day: <DayScreen />,
+  //   dusk: <DuskScreen />,
+  //   night: <NightScreen />,
+  //   lastmanfound: <LastManScreen />,
+  // }
 
-  return screen[phase]
+  return <DayScreen />
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
