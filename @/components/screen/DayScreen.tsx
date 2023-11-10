@@ -10,6 +10,7 @@ import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import AllPrize from '../ui/AllPrize'
 import GameStats from '../ui/GameStats'
+import Indicator from '../ui/Indicator'
 import UserActions from '../ui/UserActions'
 
 export default function DayScreen() {
@@ -77,7 +78,7 @@ export default function DayScreen() {
     //       container-last"
     //       >
     //         <GameTab />
-    //         <UserActions />
+    //         <UserActions />Day
     //       </div>
     //     </div>
 
@@ -90,7 +91,7 @@ export default function DayScreen() {
     //   </div>
     // </div>
 
-    <div className="flex flex-col xl:mx-[150px] pb-8">
+    <div className="flex flex-col xl:mx-[50px] pb-8">
       <div className="text-center">
         {/* <p className="text-xl">Game: Pilot</p> */}
         <Title stageType={'day'} />
@@ -103,7 +104,8 @@ export default function DayScreen() {
           <Countdown timeFlag={100000000} countdownTime={700000000} />
           {/* </div> */}
           {/* change to a separate component */}
-          <div className="text-4xl flex justify-end font-headline uppercase day-last"> Day </div>
+          <Indicator />
+          {/* <div className="text-4xl flex justify-end font-headline uppercase day-last"> Day </div> */}
         </div>
         <div>
           <GameStats />
@@ -111,7 +113,7 @@ export default function DayScreen() {
       </div>
       {/* bottom container */}
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex flex-col items-center h-[750px] gap-3 rounded-xl px-4 py-2 lg:container-last">
+        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 lg:container-last">
           <GameTab />
         </div>
 

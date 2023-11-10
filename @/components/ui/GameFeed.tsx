@@ -19,7 +19,7 @@ const GameFeed = () => {
   // i guess the logic is pull out an array of statements and .map them here?
   return (
     <div
-      className="overflow-auto h-[650px]"
+      className="overflow-auto"
       // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
     >
       <p className="py-2 border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300">

@@ -73,7 +73,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             <GameFeedButton />
           </div> */}
 
-          <div className="flex gap-3 justify-center mt-2">
+          <div className="flex gap-3 justify-center mt-2 mb-4">
             <Button
               onClick={() => setTicketState('aroundMe')}
               variant="filter"
@@ -141,10 +141,151 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             gap-x-6
             gap-y-6
             flex-wrap
-            px-3
-            overflow-y-scroll
+            px-6 py-6
+            overflow-y-scroll max-h-[750px]
           "
       >
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        <TicketUI
+          ownTicket={false}
+          ticketId={BigInt(2)}
+          ticketWidthPx={220}
+          ticketLookInput={'beforePurchase'}
+        />
+
+        {/*
         {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
             <TicketUI
@@ -153,7 +294,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               ticketWidthPx={220}
               ticketLookInput={'beforePurchase'}
             />
-            {/* <Button
+            <Button
               onClick={() =>
                 write({
                   args: [BigInt(item.id)],
@@ -165,9 +306,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               className="w-full h-10 rounded-xl px-3 leading-6 text-xl mt-3"
             >
               Inspect
-            </Button> */}
+            </Button>
           </div>
-        ))}
+        ))}*/}
       </div>
     </>
   )

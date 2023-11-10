@@ -129,7 +129,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
         </TabsList>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center h-[400px]">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
             {Number(id) === 0 && phase === 'countdown' && (
@@ -166,18 +166,18 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
             {/* if no ticket for rest of phase */}
             {Number(id) === 0 && phase !== 'countdown' && (
               <div className="mb-2">
-                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
+                <div className="flex flex-col gap-2 justify-center items-center text-2xl leading-7 capitalize">
                   FOMO-ing?
+                  <Image
+                    priority
+                    src="/pepe/pepe-lost.svg"
+                    className="place-self-center"
+                    height={180}
+                    width={200}
+                    alt="pepe-in-thoughts"
+                  />
+                  <div className="text-center text-lg">Follow us for updates</div>
                 </div>
-                <Image
-                  priority
-                  src="/pepe/pepe-lost.svg"
-                  className="place-self-center"
-                  height={240}
-                  width={240}
-                  alt="pepe-in-thoughts"
-                />
-                <div className="text-center text-lg mb-3">Follow us for updates</div>
               </div>
             )}
 

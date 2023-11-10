@@ -165,24 +165,31 @@ const TicketUI: FC<TicketUIType> = ({
     }
   }
 
-  /*--
+  const getTicketSize = (ownTicket) => {
+    switch (ownTicket) {
+      case true:
+        return {
+          card: 'w-[220px] h-[200px] rounded-xl',
+          h1: 'text-xl',
+          h2: 'text-md',
+          h3: 'text-sm',
+          img: '100',
+          mt: 'mt-5',
+        }
+      case false:
+        return {
+          card: 'w-[160px] h-[180px] rounded-md',
+          h1: 'text-md',
+          h2: 'text-sm',
+          h3: 'text-xs',
+          img: '60',
+          mt: 'mt-2 mb-2',
+        }
+    }
+  }
 
-  'anxious'
-  'attack'
-  'beers'
-  'confident'
-  'enter'
-  'exit'
-  'handsup'
-  'happy'
-  'killed'
-  'king'
-  'pray'
-  'warm'
-  'watchitburn'
-  'worried'
+  const { card, h1, h2, h3, img, mt } = getTicketSize(ownTicket)
 
-  --*/
   const ticketLookTest = ticketLookInput
 
   const getTicketLook = (ticketLookTest) => {
@@ -194,7 +201,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: nextTicketId,
           status: 'next ticket',
           label: 'price',
-          value: nextTicketPrice + 'ETH',
+          value: nextTicketPrice + ' ETH',
         }
       case 'afterPurchase':
         return {
@@ -203,7 +210,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ticket claimed',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'submittedDay':
         return {
@@ -212,7 +219,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'submitted',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'stage1New':
         return {
@@ -221,7 +228,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'stage2New':
         return {
@@ -230,7 +237,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'stage3New':
         return {
@@ -239,7 +246,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'submittedNight':
         return {
@@ -248,7 +255,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'time to attack',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'attackedButSafu':
         return {
@@ -257,7 +264,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'SAFU',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'neverSubmit':
         return {
@@ -266,7 +273,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'time to attack',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'inSafehouse':
         return {
@@ -275,7 +282,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'taking a break',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'lastManStanding':
         return {
@@ -284,7 +291,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'last man standing',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'agreedToSplitPot':
         return {
@@ -293,7 +300,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'WAGMI',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'noMorePot':
         return {
@@ -302,7 +309,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'let it burn',
           label: 'bounty',
-          value: ticketValue + 'ETH',
+          value: ticketValue + ' ETH',
         }
       case 'killed':
         return {
@@ -329,7 +336,7 @@ const TicketUI: FC<TicketUIType> = ({
 
   return (
     <div
-      className={`w-[${ticketWidthPx}px] h-[240px] flex flex-col relative justify-center border-2 border-blue-950 rounded-xl`}
+      className={`flex flex-col relative justify-center border border-blue-950 ${card}`}
       style={{
         backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
         backgroundRepeat: 'no-repeat',
@@ -345,9 +352,9 @@ const TicketUI: FC<TicketUIType> = ({
               className={` w-[${ticketWidthPx}px] h-[100%] rounded-xl -ml-[2px] opacity-80 mx-auto flex justify-center items-center`}
             >
               {/* <div className="mx-auto rounded-xl grid items-center justify-center gap-6 p-2">
-              <div className="capitalized text-base leeading-tight">Status: Submitted</div> 
+              <div className="capitalized text-base leeading-tight">Status: Submitted</div>
             */
-        <div className="flex flex-col mx-auto gap-x-2 px-4 text-md justify-center">
+        <div className={`flex flex-col mx-auto gap-x-2 px-4 ${h2} justify-center`}>
           {/* <div className="flex justify-between gap-6">
                 <p className="text-left"> Status</p>
                 <p className="text-right"> Submitted</p>
@@ -423,8 +430,8 @@ const TicketUI: FC<TicketUIType> = ({
         <>
           {/* top header */}
           <div className="bg-zinc-300/60 shadow-xl text-center m-2 rounded-lg text-black">
-            <p className="uppercase text-xl leading-tight">Player #{id}</p>
-            <p className="lowercase text-sm italic text-zinc-600 dark:text-zinc-800">{status}</p>
+            <p className={`uppercase ${h1} leading-tight`}>Player #{id}</p>
+            <p className={`lowercase ${h3} italic text-zinc-600 dark:text-zinc-800`}>{status}</p>
           </div>
 
           {/* image */}
@@ -432,9 +439,9 @@ const TicketUI: FC<TicketUIType> = ({
             <Image
               priority
               src={`/faces/${face}.png`}
-              height={100}
-              width={100}
-              className="mt-5"
+              height={img}
+              width={img}
+              className={mt}
               alt="pepe"
             />
           </div>
@@ -449,16 +456,11 @@ const TicketUI: FC<TicketUIType> = ({
           )}
           {/* box */}
           <div className="bg-zinc-300/60 shadow-xl text-center m-2 mt-0 rounded-lg text-black">
-            <div className="uppercase text-sm text-zinc-600 dark:text-zinc-800 leading-tight">
+            <div className={`capitalize ${h3} text-zinc-600 dark:text-zinc-800 leading-tight`}>
               {label}
             </div>
 
-            <div className="uppercase text-2xl">
-              {value}
-              <span className="text-lg "></span>
-              {/* {round === 0 ? "claimed" : ticketLastSeen < round ? "last seen at Round "+Number(id) : "online"} */}
-              {/* to continue iterating */}
-            </div>
+            <div className={`uppercase ${h1}`}>{value}</div>
           </div>
         </>
       )}
