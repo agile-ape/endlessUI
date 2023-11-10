@@ -64,7 +64,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                   <div className="w-[85%] mx-auto flex flex-col gap-3">
                     <Image
                       priority
-                      src="/lore/EnterGame.png"
+                      src="/lore/SubmitKeyword.png"
                       // layout="fill"
                       // objectFit='cover'
                       className="place-self-center rounded-xl"
@@ -127,6 +127,11 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                         capitalize text-center text-white
                         flex flex-col gap-5
                         "
+                        // style={{
+                        //   backgroundImage: `url('/ticket/motif.svg')`, // different for true
+                        //   backgroundRepeat: 'no-repeat',
+                        //   backgroundSize: 'cover',
+                        // }}
                       >
                         <p className="text-xl">keyword of the day</p>
 

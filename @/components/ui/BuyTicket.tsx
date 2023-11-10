@@ -32,7 +32,7 @@ function BuyTicket() {
         {/* Button to click on */}
         <Button
           variant="enter"
-          className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+          className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
         >
           Buy for 0.05 ETH
         </Button>

@@ -24,7 +24,7 @@ import { useAccount } from 'wagmi'
 function Header() {
   const { isConnected } = useAccount()
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-2 gap-2 items-center py-3 px-5">
+    <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
       <div className="flex justify-start order-1">
         <Link className="cursor-pointer" href="/">
           <Logo />

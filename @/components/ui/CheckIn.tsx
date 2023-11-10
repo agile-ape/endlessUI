@@ -29,14 +29,14 @@ function CheckIn() {
   const phase = useStoreState((state) => state.phase)
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   if (isDisabled)
     return (
       <TooltipProvider delayDuration={10}>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant="checkIn" className="w-full text-xl mb-3" disabled>
+            <Button variant="checkIn" className="w-full text-xl" disabled>
               Check In
             </Button>
           </TooltipTrigger>
@@ -60,7 +60,7 @@ function CheckIn() {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkIn" className="w-full text-xl mb-3">
+        <Button variant="checkIn" className="w-full text-xl">
           Check In
           {/* <LogIn size={16} className="text-sm ml-1"></LogIn> */}
         </Button>
@@ -79,7 +79,7 @@ function CheckIn() {
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/EnterGame.png"
+                  src="/lore/CheckIntoSafehouse.png"
                   // layout="fill"
                   // objectFit='cover'
                   className="place-self-center rounded-xl"

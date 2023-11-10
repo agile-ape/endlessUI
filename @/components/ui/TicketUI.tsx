@@ -11,7 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen } from 'lucide-react'
 import { Button } from './button'
-import Inspect from './Attack'
+import Attack from './Attack'
 import { ExitTicketUI } from './ExitTicketUI'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
@@ -26,26 +26,11 @@ import {
 
 type TicketUIType = {
   ownTicket: boolean
-  ticketId: IApp['id']
-  ticketWidthPx: number
+  ticketNumber: IApp['id']
   ticketLookInput: string
 }
 
-// const statusMapping: Record<number, string> = {
-//   1: 'new',
-//   2: 'submitted',
-//   3: 'checked',
-//   4: 'safehouse',
-//   5: 'dead',
-//   6: 'exited',
-// }
-
-const TicketUI: FC<TicketUIType> = ({
-  ownTicket,
-  ticketNumber,
-  ticketWidthPx,
-  ticketLookInput,
-}) => {
+const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const handleOnMouseEnter: MouseEventHandler = () => {
@@ -169,28 +154,34 @@ const TicketUI: FC<TicketUIType> = ({
     switch (ownTicket) {
       case true:
         return {
-          card: 'w-[220px] h-[200px] rounded-xl',
+          size: 'w-[220px] h-[240px]',
+          edge: 'rounded-xl',
           h1: 'text-xl',
           h2: 'text-md',
           h3: 'text-sm',
-          img: '100',
-          mt: 'mt-5',
+          img: '90',
+          mt: 'mt-3 mb-0',
+          gap: 'gap-y-1',
         }
       case false:
         return {
-          card: 'w-[160px] h-[180px] rounded-md',
+          size: 'w-[160px] h-[180px]',
+          edge: 'rounded-md',
           h1: 'text-md',
           h2: 'text-sm',
           h3: 'text-xs',
           img: '60',
           mt: 'mt-2 mb-2',
+          gap: '',
         }
     }
   }
 
-  const { card, h1, h2, h3, img, mt } = getTicketSize(ownTicket)
+  const { size, edge, h1, h2, h3, img, mt, gap } = getTicketSize(ownTicket)
 
   const ticketLookTest = ticketLookInput
+
+  const conversion = BigInt(10 ** 15)
 
   const getTicketLook = (ticketLookTest) => {
     switch (ticketLookTest) {
@@ -210,7 +201,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ticket claimed',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'submittedDay':
         return {
@@ -219,7 +210,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'submitted',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'stage1New':
         return {
@@ -228,7 +219,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'stage2New':
         return {
@@ -237,7 +228,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'stage3New':
         return {
@@ -246,7 +237,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'ready to submit word',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'submittedNight':
         return {
@@ -255,7 +246,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'time to attack',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'attackedButSafu':
         return {
@@ -264,7 +255,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'SAFU',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'neverSubmit':
         return {
@@ -273,16 +264,16 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'time to attack',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'inSafehouse':
         return {
-          bgImage: 'rainbow',
+          bgImage: 'safeOverlay',
           face: 'warm',
           id: ticketId,
           status: 'taking a break',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'lastManStanding':
         return {
@@ -291,7 +282,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'last man standing',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'agreedToSplitPot':
         return {
@@ -300,7 +291,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'WAGMI',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'noMorePot':
         return {
@@ -309,7 +300,7 @@ const TicketUI: FC<TicketUIType> = ({
           id: ticketId,
           status: 'let it burn',
           label: 'bounty',
-          value: ticketValue + ' ETH',
+          value: ticketValue / conversion + ' ETH',
         }
       case 'killed':
         return {
@@ -336,7 +327,7 @@ const TicketUI: FC<TicketUIType> = ({
 
   return (
     <div
-      className={`flex flex-col relative justify-center border border-blue-950 ${card}`}
+      className={`flex flex-col mx-auto relative justify-center border border-blue-950 ${size} ${edge}`}
       style={{
         backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
         backgroundRepeat: 'no-repeat',
@@ -354,7 +345,9 @@ const TicketUI: FC<TicketUIType> = ({
               {/* <div className="mx-auto rounded-xl grid items-center justify-center gap-6 p-2">
               <div className="capitalized text-base leeading-tight">Status: Submitted</div>
             */
-        <div className={`flex flex-col mx-auto gap-x-2 px-4 ${h2} justify-center`}>
+        <div
+          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] bg-zinc-300/60 shadow-xl text-center ${edge} text-black`}
+        >
           {/* <div className="flex justify-between gap-6">
                 <p className="text-left"> Status</p>
                 <p className="text-right"> Submitted</p>
@@ -404,7 +397,7 @@ const TicketUI: FC<TicketUIType> = ({
           </div>
 
           <div className="flex justify-between gap-6">
-            <p className="text-left">Buddy/Count </p>
+            <p className="text-left">Buddy/Bud Count </p>
             <p className="text-right"> -/3</p>
           </div>
 
@@ -413,21 +406,67 @@ const TicketUI: FC<TicketUIType> = ({
                 <p className="text-right"> 1 </p>
               </div> */}
 
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Exited with</p>
-            <p className="text-right">
-              {' '}
-              7<span className="text-[0.5rem]">ETH</span>
-            </p>
-          </div>
+          {ticketLookTest == 'inSafehouse' && (
+            <div className="flex justify-between text-lg text-amber-600  gap-6">
+              <p className="text-left">Check out by</p>
+              <p className="text-right underline"> 10</p>
+            </div>
+          )}
 
-          {ownTicket == false && <Inspect />}
+          {(ticketLookTest == 'exitGame' || ticketLookTest == 'killed') && (
+            <div className="flex justify-between gap-6">
+              <p className="text-left">Killed By</p>
+              <p className="text-right"> #7</p>
+            </div>
+          )}
+
+          {ticketLookTest == 'exitGame' && (
+            <div className="flex justify-between gap-6">
+              <p className="text-left">Exited with</p>
+              <p className="text-right">
+                {' '}
+                7<span className="text-[0.5rem]">ETH</span>
+              </p>
+            </div>
+          )}
+
+          {!(
+            ownTicket == true ||
+            ticketLookTest == 'inSafehouse' ||
+            ticketLookTest == 'killed' ||
+            ticketLookTest == 'exitGame'
+          ) && <Attack />}
+
+          {ownTicket == false && ticketLookTest == 'inSafehouse' && <KickOut />}
+          {ownTicket == true && ticketLookTest == 'inSafehouse' && <CheckOut />}
         </div>
       )}
 
       {/* default */}
       {!isOverlayInspect && (
         <>
+          {!ownTicket && ticketLookTest == 'killed' && (
+            <div
+              className="absolute top-0 left-0 h-full w-full"
+              style={{
+                backgroundImage: `url('/ticket/deadOverlay.svg')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+              }}
+            ></div>
+          )}
+
+          {!ownTicket && ticketLookTest == 'exitGame' && (
+            <div
+              className="absolute top-0 left-0 h-full w-full"
+              style={{
+                backgroundImage: `url('/ticket/exitOverlay.svg')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+              }}
+            ></div>
+          )}
+
           {/* top header */}
           <div className="bg-zinc-300/60 shadow-xl text-center m-2 rounded-lg text-black">
             <p className={`uppercase ${h1} leading-tight`}>Player #{id}</p>
@@ -449,9 +488,9 @@ const TicketUI: FC<TicketUIType> = ({
           {/* need a mapping to list ticketAttacks */}
           {ownTicket && (
             <div className="flex flex-row-reverse mx-3 ">
-              <Sword size={12} className=""></Sword>
-              <Sword size={12} className=""></Sword>
-              <Sword size={12} className=""></Sword>
+              <Sword size={16} className=""></Sword>
+              <Sword size={16} className=""></Sword>
+              <Sword size={16} className=""></Sword>
             </div>
           )}
           {/* box */}

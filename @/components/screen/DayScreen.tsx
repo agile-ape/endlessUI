@@ -91,17 +91,17 @@ export default function DayScreen() {
     //   </div>
     // </div>
 
-    <div className="flex flex-col xl:mx-[50px] pb-8">
+    <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
         {/* <p className="text-xl">Game: Pilot</p> */}
         <Title stageType={'day'} />
       </div>
       {/* top container */}
       <div className="flex flex-col mb-2">
-        <div className=" sm:grid sm:grid-cols-3 items-end px-5 pb-2">
+        <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2">
           <Round />
           {/* <div className="flex sm:justify-between align-center justify-center items-end gap-4 sm:mt-0 mt-3 sm:flex-row flex-col"> */}
-          <Countdown timeFlag={100000000} countdownTime={700000000} />
+          <Countdown timeFlag={410000000} countdownTime={900000000} />
           {/* </div> */}
           {/* change to a separate component */}
           <Indicator />

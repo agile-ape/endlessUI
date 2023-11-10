@@ -191,7 +191,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       }}
     >
       {/* width of header */}
-      <div className="container mx-auto min-w-[360px]">
+      <div className="container mx-auto">
         {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />
         {children}

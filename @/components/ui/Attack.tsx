@@ -48,7 +48,7 @@ function Attack() {
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/EnterGame.png"
+                  src="/lore/AttackPlayer.png"
                   // layout="fill"
                   // objectFit='cover'
                   className="place-self-center rounded-xl"
@@ -115,7 +115,7 @@ function Attack() {
                     </div>
                   </div>
 
-                  <Button variant="inspect" size="lg" className="w-[100%]">
+                  <Button variant="attack" size="lg" className="w-[100%]">
                     Check ticket
                   </Button>
                 </div>

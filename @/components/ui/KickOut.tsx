@@ -48,7 +48,7 @@ function KickOut() {
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/EnterGame.png"
+                  src="/lore/KickOut.png"
                   // layout="fill"
                   // objectFit='cover'
                   className="place-self-center rounded-xl"

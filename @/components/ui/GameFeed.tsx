@@ -17,9 +17,10 @@ import {
 // Limit to 15 events. Avoid scrolling if possible
 const GameFeed = () => {
   // i guess the logic is pull out an array of statements and .map them here?
+  /* < 1 min == just */
   return (
     <div
-      className="overflow-auto"
+      className="overflow-auto container-last rounded-xl px-2"
       // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
     >
       <p className="py-2 border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300">
@@ -44,7 +45,6 @@ const GameFeed = () => {
         timestamp="just"
         isLastIndex={false}
       />
-      {/* < 1 min == just */}
       <GameTextVariant
         number={1}
         keyword="voted yes"
