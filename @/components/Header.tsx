@@ -19,7 +19,10 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
+import { useAccount } from 'wagmi'
+
 function Header() {
+  const { isConnected } = useAccount()
   return (
     <div className="grid grid-cols-2 xl:grid-cols-2 gap-2 items-center py-3 px-5">
       <div className="flex justify-start order-1">
@@ -65,36 +68,38 @@ function Header() {
           </a>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="token" className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt">
-              LAST 200
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
-          >
-            <a
-              href="https://app.uniswap.org/"
-              target="_blank"
-              rel="noreferrer"
-              className="flex mx-2 text-xl items-center"
+        {isConnected ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="token" className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt">
+                LAST 200
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
             >
-              <p className="mr-1">$LAST:</p>
-              <p className="mr-1">123</p>
-              <Image
-                priority
-                src="/logo/token.svg"
-                height={32}
-                width={32}
-                alt="game logo"
-                className="shrink-0 inline mr-2"
-              />
-            </a>
-            {/* <Button variant="destructive">$LAST</Button> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <a
+                href="https://app.uniswap.org/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex mx-2 text-xl items-center"
+              >
+                <p className="mr-1">$LAST:</p>
+                <p className="mr-1">123</p>
+                <Image
+                  priority
+                  src="/logo/token.svg"
+                  height={32}
+                  width={32}
+                  alt="game logo"
+                  className="shrink-0 inline mr-2"
+                />
+              </a>
+              {/* <Button variant="destructive">$LAST</Button> */}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : null}
 
         <CustomConnectButton />
       </div>
