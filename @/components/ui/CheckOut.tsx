@@ -26,7 +26,7 @@ function CheckOut() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   if (isDisabled)
     return (
@@ -70,7 +70,7 @@ function CheckOut() {
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/EnterGame.png"
+                  src="/lore/CheckOutOfSafehouse.png"
                   // layout="fill"
                   // objectFit='cover'
                   className="place-self-center rounded-xl"

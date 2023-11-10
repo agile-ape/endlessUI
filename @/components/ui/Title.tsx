@@ -80,7 +80,7 @@ const Title: FC<TitleType> = ({ stageType }) => {
   }, [stageType])
 
   return (
-    <p className="text-sm leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
+    <p className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
       {displayResponse}
       {!completedTyping && <CursorSVG />}
     </p>

@@ -31,14 +31,15 @@ const Round = () => {
     setIsActive(!isActive)
   }
 
-  const On = 'text-black dark:text-white text-xl whitespace-nowrap font-medium tracking-wider'
-  const Off = 'text-zinc-600 dark:text-zinc-800 text-lg whitespace-nowrap tracking-tight'
+  const On =
+    'text-black dark:text-white text-md sm:text-xl whitespace-nowrap font-medium tracking-wider'
+  const Off = 'text-zinc-600 dark:text-zinc-800 text-sm sm:text-lg whitespace-nowrap tracking-tight'
 
   return (
-    <div className="flex items-end gap-8 sm:flex-row flex-col">
+    <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
       <div>
-        <p className="text-2xl whitespace-nowrap">
-          Round <span className="text-2xl underline">{round}</span>
+        <p className="text-lg sm:text-2xl whitespace-nowrap">
+          Round <span className="underline">{round}</span>
         </p>
       </div>
 

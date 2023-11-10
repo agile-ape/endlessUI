@@ -129,19 +129,18 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
         </TabsList>
       </div>
 
-      <div className="flex justify-center h-[400px]">
+      <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
             {Number(id) === 0 && phase === 'countdown' && (
               <div className="mb-2">
-                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
+                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">
                   Enter Game
                 </div>
                 <TicketUI
                   ownTicket={true}
-                  ticketId={nextTicketPrice}
-                  ticketWidthPx={200}
-                  ticketLookInput={'beforePurchase'}
+                  ticketNumber={nextTicketPrice}
+                  ticketLookInput={'inSafehouse'}
                 />
                 <BuyTicket />
               </div>
@@ -150,15 +149,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
             {/* if you have a ticket and not day */}
             {Number(id) > 0 && (
               <div className="mb-2">
-                <div className="flex justify-center items-center text-2xl py-2 mb-2 leading-7 capitalize">
-                  Your Card
-                </div>
-                <TicketUI
-                  ownTicket={true}
-                  ticketId={id}
-                  ticketWidthPx={240}
-                  ticketLookInput={'beforePurchase'}
-                />
+                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">Your Card</div>
+                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'beforePurchase'} />
                 <ExitGame />
               </div>
             )}
@@ -166,7 +158,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
             {/* if no ticket for rest of phase */}
             {Number(id) === 0 && phase !== 'countdown' && (
               <div className="mb-2">
-                <div className="flex flex-col gap-2 justify-center items-center text-2xl leading-7 capitalize">
+                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">
                   FOMO-ing?
                   <Image
                     priority

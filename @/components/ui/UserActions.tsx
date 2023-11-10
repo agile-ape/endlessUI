@@ -20,7 +20,7 @@ const UserActions = () => {
     <div
       className="w-[240px] rounded-xl p-3 pt-5 pb-5
     container-last
-    flex flex-col gap-2 mb-5"
+    flex flex-col gap-3 mb-5"
     >
       {/* <div className="flex gap-2">
         <p className="text-2xl capitalize pl-1 ml-2">User Actions</p>
@@ -41,18 +41,19 @@ const UserActions = () => {
         Submit Keyword
       </Button>
 
-      <div className="flex flex-col mt-3">
-        <SplitIt />
-      </div>
+      <CheckIn />
+      <SplitIt />
 
-      <div className="flex flex-col mt-3">
-        <div className="text-center text-xl text-zinc-600 dark:text-zinc-800 font-thin">
+      {/*
+      <div className="flex flex-col">
+       <div className="text-center text-xl text-zinc-600 dark:text-zinc-800 font-thin">
           Safehouse
-        </div>
-        <CheckIn />
-        <CheckOut />
+        </div> 
+        {/* <CheckOut />
       </div>
 
+      <div className="flex flex-col">
+      </div>
       {/* <ExitGame />
         <Inspect />
         <KickOut />

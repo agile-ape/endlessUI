@@ -66,9 +66,9 @@ export default function Countdown({ timeFlag, countdownTime }: Props) {
   return (
     <div className="text-lime-800 dark:text-lime-200 gap-1">
       {/* need to fix the height to avoid layout shifts */}
-      <div className="flex justify-center h-[50px] items-end">
+      <div className="flex justify-center items-end">
         {timeLeft && !isNaN(timeLeft) ? (
-          <div className="text-2xl border border-lime-800 rounded-md px-2 py-0 flex flex-row gap-0.5">
+          <div className="h-[50px] text-2xl border border-lime-800 rounded-md px-2 py-0 flex flex-row gap-0.5">
             <div className="flex flex-col text-center">
               {formatTime(timeLeft).hours}
               <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
