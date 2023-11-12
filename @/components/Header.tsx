@@ -75,7 +75,7 @@ function Header() {
                 LAST 200
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
+            {/* <DropdownMenuContent
               align="end"
               className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center"
             >
@@ -96,7 +96,41 @@ function Header() {
                   className="shrink-0 inline mr-2"
                 />
               </a>
-              {/* <Button variant="destructive">$LAST</Button> */}
+              <Button variant="destructive">$LAST</Button>
+            </DropdownMenuContent> */}
+            <DropdownMenuContent
+              align="end"
+              className="bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col justify-center w-[10rem] p-5 bg-white"
+            >
+              <Button variant="submit">Buy</Button>
+              <hr />
+              <div className="my-4">
+                <p className="text-center">Transfer</p>
+                <div className="flex justify-between my-1">
+                  <p>Player</p>
+                  <div className="flex gap-1 items-center">
+                    <p>#</p>
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="w-[2rem] rounded-md border-[1px] border-gray-300 px-1 text-center"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <p>Tokens</p>
+                  <input
+                    type="text"
+                    name=""
+                    id=""
+                    className="w-[2rem] rounded-md border-[1px] border-gray-300 px-1 text-center"
+                  />
+                </div>
+              </div>
+              <Button variant="outline" className="border border-green-500 text-green-500">
+                Transfer
+              </Button>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
