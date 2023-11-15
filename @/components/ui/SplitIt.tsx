@@ -63,11 +63,25 @@ function SplitIt() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Vote to split the remaining pot
-              <div className="day-last">
-                <span className="font-headline">Day</span> Action (Stage 2 and 3)
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              <div>
+                <span>Vote to split pot</span>{' '}
+                <span className="text-md sm:text-lg md:text-xl ">(Stage 2 and 3)</span>
               </div>
+              <Image
+                priority
+                src={`/indicator/dayIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`dayIndicator`}
+              />
+              {/* <div className="day-last">
+                <span className="font-headline">Day</span> Action (Stage 2 and 3)
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -93,11 +107,12 @@ function SplitIt() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                   <p className="mb-2">
-                    The pot is split among remaining players once the votes crosses the threshold.
+                    Once vote threshold is crossed, the game ends with pot split among remaining
+                    players.
                   </p>
-                  <p className="mb-2">You can change your mind and vote No later too.</p>
+                  <p className="mb-2">You can change your mind and vote back No too.</p>
                 </div>
                 {/* Voting information */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
@@ -106,7 +121,7 @@ function SplitIt() {
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4 text-xl">
+                    <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Current pot</p>
                       <p className="text-right"> 5 ETH </p>
                     </div>

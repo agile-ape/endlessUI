@@ -60,11 +60,22 @@ function CheckOut() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Check out of the Safehouse
-              <div className="day-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Check out of Safehouse
+              <Image
+                priority
+                src={`/indicator/dayIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`dayIndicator`}
+              />
+              {/* <div className="day-last">
                 <span className="font-headline">Day</span> Action
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -90,8 +101,8 @@ function CheckOut() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Be sure to check out on or before the check out round.</p>
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2">Make sure to check out on or before the check out round.</p>
                   <p className="mb-2">You can check in again after you have checked out.</p>
                   <p className="mb-2">
                     Remember to Submit keyword once checked out. You are back in the game!
@@ -104,9 +115,9 @@ function CheckOut() {
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4 text-xl">
+                    <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Checked in on</p>
-                      <p className="text-right"> 5 </p>
+                      <p className="text-right underline"> 5 </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
@@ -114,14 +125,16 @@ function CheckOut() {
                       <p className="text-right"> 3 </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left"> Check out day (Checked in + Nights Bought) </p>
-                      <p className="text-right"> 8 </p>
-                    </div>
+                    <hr />
 
                     <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left"> Check out round </p>
+                      <p className="text-right underline"> 8 </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between mt-2 gap-4">
                       <p className="text-left">Current round</p>
-                      <p className="text-right"> 7 </p>
+                      <p className="text-right underline"> 7 </p>
                     </div>
                   </div>
 

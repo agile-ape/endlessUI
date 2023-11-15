@@ -9,32 +9,46 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'text-black dark:text-white whitespace-nowrap bg-neutral-400 hover:bg-neutral-500 dark:hover:bg-neutral-800 dark:bg-neutral-900 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
         // destructive: 'text-black dark:text-white whitespace-nowrap bg-transparent hover:border hover:border-neutral-500 dark:hover:border dark:hover:bg-neutral-700 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
 
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        // outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        // secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        // ghost: 'hover:bg-accent hover:text-accent-foreground',
 
         // uses size
-        page: 'text-zinc-600 dark:text-zinc-400 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
+        // page: 'text-zinc-600 dark:text-zinc-400 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
+
+        // uses size. used to be for PhaseChange
+        // change:
+        //   'text-white hover:text-black bg-fuchsia-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400 active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus:outline-none focus:ring-1 focus:ring-white disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+
+        // uses size
+        // howToPlay:
+        //   'text-lime-800 dark:text-lime-300 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-300 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-300',
+
+        default:
+          'whitespace-nowrap focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+
+        /*-------------------- HEADER ---------------------*/
 
         link: 'text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
 
-        // uses size
-        howToPlay:
-          'text-lime-800 dark:text-lime-300 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-300 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-300',
+        buy: 'dark:bg-blue-800 bg-lime-500 whitespace-nowrap hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
 
+        // transfer:
+        //   'text-lime-800 dark:text-lime-200 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
+
+        transfer:
+          'text-blue-200 whitespace-nowrap bg-blue-700 hover:bg-blue-600 active:bg-blue-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+
+        /*-------------------- GAME TAB ---------------------*/
         // does not use size
         enter:
           'text-white whitespace-nowrap bg-purple-900 border-2 border-transparent hover:bg-purple-700 hover:border-2 hover:border-purple-300 active:bg-purple-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-        exit: 'text-purple-900 dark:text-purple-300 dark:hover:text-white whitespace-nowrap border-2 border-purple-900 dark:border-purple-300 bg-transparent hover:text-white hover:bg-purple-600 active:bg-purple-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
-        kickOut:
-          'text-rose-800 dark:text-rose-100 whitespace-nowrap border border-rose-800 dark:border-rose-100 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-        // 'text-red-800 dark:text-red-300 whitespace-nowrap border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+        // does not use size
+        exit: 'text-purple-900 dark:text-purple-100 dark:hover:text-white whitespace-nowrap border-2 border-purple-900 dark:border-purple-100 bg-transparent hover:text-white hover:bg-purple-600 active:bg-purple-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         // does not use size
         submit:
@@ -45,41 +59,44 @@ const buttonVariants = cva(
           'text-white whitespace-nowrap border-2 border-sky-800 bg-sky-600 hover:bg-sky-800 hover:border-2 hover:border-sky-300 active:bg-sky-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
         // does not use size
         checkOut:
-          'text-indigo-800 dark:text-indigo-300 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 dark:border-indigo-300 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         // does not use size
         splitPot:
           'text-white whitespace-nowrap bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
-        // uses size
-        change:
-          'text-white hover:text-black bg-fuchsia-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400 active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus:outline-none focus:ring-1 focus:ring-white disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+        /*-------------------- TICKET LIST ---------------------*/
+        // does not uses size
+        filter:
+          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 whitespace-nowrap hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-1 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800 disabled:opacity-100',
 
         // does not uses size
         attack:
-          'text-black dark:text-white bg-transparent border-2 border-amber-700 hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-black dark:text-amber-700 bg-transparent border-2 border-amber-700 hover:text-white dark:hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         // does not uses size
-        filter:
-          'text-gray-600 bg-gray-300 dark:bg-gray-600 dark:text-gray-300 whitespace-nowrap hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-1 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-700 disabled:opacity-100',
+        kickOut:
+          'text-rose-800 whitespace-nowrap border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+        // 'text-red-800 dark:text-red-300 whitespace-nowrap border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         // does not uses size
-        dropdown:
-          'bg-neutral-400 dark:bg-neutral-600 whitespace-nowrap hover:bg-neutral-500 dark:hover:bg-neutral-700 focus: outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+        // dropdown:
+        //   'bg-neutral-400 dark:bg-neutral-600 whitespace-nowrap hover:bg-neutral-500 dark:hover:bg-neutral-700 focus: outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-90',
 
         // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
+        /*-------------------- CONNECT BUTTON ---------------------*/
         token:
-          'text-white whitespace-nowrap bg-blue-950 dark:border dark:border-white hover:bg-blue-900 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
+          'text-white whitespace-nowrap bg-blue-950 hover:bg-blue-900 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
         // used to be whitelist
         connect:
           // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-          'text-blue-950 dark:text-white whitespace-nowrap border-2 border-blue-950 dark:border-white bg-transparent hover:text-white hover:bg-blue-950 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
+          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white bg-transparent hover:text-white hover:bg-blue-950 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
         connected:
-          'text-blue-950 dark:text-white whitespace-nowrap border-2 border-blue-950 dark:border-white hover:bg-zinc-200/50 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
+          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white hover:bg-zinc-200/50 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
 
         wrong:
           // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-          'text-red-800 whitespace-nowrap border-2 border-red-800 bg-transparent hover:text-white hover:bg-red-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-red-200 disabled:text-black',
+          'text-red-800 whitespace-nowrap border border-red-800 bg-transparent hover:text-white hover:bg-red-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-red-200 disabled:text-black',
       },
       size: {
         default: 'h-10 px-4 py-2',

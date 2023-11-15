@@ -133,7 +133,7 @@
     @apply background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
   } */
 
-  .beginnings-last {
+  .start-last {
     @apply text-blue-100;
   }
 
@@ -142,16 +142,20 @@
     @apply text-green-600;
   }
 
-  .dusk-last {
-    @apply text-purple-200;
-  }
-
   .night-last {
     @apply text-amber-500;
   }
 
   .snow-last {
-    @apply text-slate-300;
+    @apply text-neutral-900;
+  }
+
+  .peace-last {
+    @apply text-blue-800;
+  }
+
+  .drain-last {
+    @apply text-red-400;
   }
 
   .container-last {
@@ -159,6 +163,10 @@
     dark:bg-slate-500 dark:bg-opacity-50;
   }
 }
+
+/* .dusk-last {
+  @apply text-purple-200;
+} */
 /* @apply lg:bg-slate-200 lg:bg-opacity-50 lg:border-2 lg:border-slate-400/50
     dark:lg:bg-slate-500 dark:lg:bg-opacity-50; */
 

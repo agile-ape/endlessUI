@@ -17,7 +17,9 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogOut } from 'lucide-react'
+import { LogOut, AlertCircle, AlertTriangle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -25,12 +27,13 @@ function Attack() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="attack" className="px-2 py-1 h-8 mt-2 text-md">
+        <Button variant="attack" className="w-full py-1 text-lg h-8 mt-2">
           Attack
         </Button>
       </DialogTrigger>
@@ -38,11 +41,22 @@ function Attack() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Inspect the ticket for their keyword
-              <div className="night-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Attack player
+              <Image
+                priority
+                src={`/indicator/nightIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`nightIndicator`}
+              />
+              {/* <div className="night-last">
                 <span className="font-headline">Night</span> Action
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -71,53 +85,95 @@ function Attack() {
                   </AccordionItem>
                 </Accordion> */}
 
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Ticket is forfeited if keyword is wrong.</p>
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2">You kill the player if the submitted keyword is wrong.</p>
+                  <div className="flex mb-2 border rounded-lg py-2 px-3">
+                    <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
+                    Player's value does not go to the killer. It goes to the player before him - if
+                    #4 is killed, all his value goes to #3
+                  </div>
                   <p className="mb-2">
-                    Ticket value goes to player before him - if Ticket #4 is forfeited, ticket #4's
-                    value goes to Player #3
+                    Each check earns you some $LAST during{' '}
+                    <span className="font-semibold">Stage 1</span>.
                   </p>
                   <p className="mb-2">
-                    Each check earns you some $LAST{' '}
-                    <span className="font-semibold">during Normal rounds</span>.
-                  </p>
-                  <p className="mb-2">
-                    Ticket can only be checked once per{' '}
+                    Each player can only be attacked once per{' '}
                     <span className="font-headline night-last">Night</span>.
                   </p>
                 </div>
 
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Check this ticket?
+                  Attack this player?
                 </div>
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">$LAST per check</p>
-                      <p className="text-right"> 3</p>
+                      <p className="text-right"> 6</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Ticket value</p>
+                      <p className="text-left">Player's value</p>
                       <p className="text-right"> 30 ETH</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Last seen at</p>
+                      <p className="text-left">Player last seen at</p>
                       <p className="text-right underline"> 4 </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
+                    {/* <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Last action </p>
                       <p className="text-right"> Entered game </p>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <Button variant="attack" size="lg" className="w-[100%]">
-                    Check ticket
-                  </Button>
+                  {!isDisabled && (
+                    <Button variant="attack" size="lg" className="w-[100%]">
+                      Attack
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      {/* <TooltipProvider delayDuration={10}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Button variant="attack" size="lg" className="w-[100%]" disabled>
+                              Attack
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center">
+                            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+                              <AlertTriangle size={24} className="text-sm mr-1"></AlertTriangle>
+                              <span>
+                                Players can only vote to split pot during the Day, and only after
+                                Stage 1.
+                              </span>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider> */}
+
+                      <Button variant="attack" size="lg" className="w-[100%]" disabled>
+                        Attack
+                      </Button>
+
+                      <div className="w-[100%] flex rounded-lg py-2 px-3 text-xl leading-tight border border-lime-800 dark:border-lime-200 text-lime-800 dark:text-lime-200">
+                        {/* <div className=" mb-2 "> */}
+                        <AlertCircle size={24} className="align-top mr-2"></AlertCircle>
+                        <span>
+                          Learn more at{' '}
+                          <Link className="underline" href="/quickstart">
+                            Quickstart
+                          </Link>
+                        </span>
+                        {/* </div> */}
+                      </div>
+                    </>
+                  )}
                 </div>
               </DialogDescription>
             </ScrollArea>

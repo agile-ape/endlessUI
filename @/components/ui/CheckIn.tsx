@@ -69,11 +69,22 @@ function CheckIn() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Check into the Safehouse
-              <div className="day-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Check into Safehouse
+              <Image
+                priority
+                src={`/indicator/dayIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`dayIndicator`}
+              />
+              {/* <div className="day-last">
                 <span className="font-headline">Day</span> Action
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -100,14 +111,13 @@ function CheckIn() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Payment in $LAST.</p>
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2">Safehouse accepts payment in $LAST.</p>
                   <p className="mb-2">You can check out anytime once you are checked in.</p>
-                  <p className="mb-2">Ticket cannot be forfeited in the Safehouse.</p>
                   <p className="mb-2">
-                    But if you overstay, you can be kicked out. Your ticket is forfeited when you
-                    are kicked out.
+                    You cannot be killed in Safehouse. Some actions are limited as well.
                   </p>
+                  <p className="mb-2">If you overstay, you can be kicked out and killed.</p>
                 </div>
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">

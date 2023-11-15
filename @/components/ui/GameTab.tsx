@@ -33,7 +33,24 @@ type GameTabType = {
 }
 
 const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
-  const { address, isConnected } = useAccount()
+  const [defaultView, setdefaultView] = useState<string>('ticket')
+
+  // const handleViewChange = useEffect(() => {
+  //   setdefaultView(isConnected ? 'ticket' : 'game')
+  //   ;[isConnected]
+  // })
+
+  // console.log(defaultView)
+  const { address, isConnected } = useAccount({
+    // onConnect() {
+    //   setdefaultView('ticket')
+    // },
+    // onDisconnect() {
+    //   setdefaultView('game')
+    // },
+  })
+
+  const tabDefaultValue = isConnected ? 'ticket' : 'game'
 
   // const { playerAddress, isConnected } = useAccount()
   // const { data: playerAddress } = useContractRead({
@@ -105,18 +122,9 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
     }
   }
 
-  const [defaultView, setdefaultView] = useState<string>('ticket')
-
-  const handleVelueChange = useEffect(() => {
-    setdefaultView(isConnected ? 'ticket' : 'game')
-    ;[isConnected]
-  })
-
-  console.log(defaultView)
-
   return (
     // <div className="flex flex-col items-center justify-center">
-    <Tabs defaultValue="game" className="w-[240px] mx-auto">
+    <Tabs defaultValue={tabDefaultValue} className="w-[240px] mx-auto">
       <div className="flex justify-center">
         <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
           <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
@@ -134,43 +142,44 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
           <>
             {Number(id) === 0 && phase === 'countdown' && (
               <div className="mb-2">
-                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">
-                  Enter Game
-                </div>
+                <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
                 <TicketUI
                   ownTicket={true}
                   ticketNumber={nextTicketPrice}
-                  ticketLookInput={'inSafehouse'}
+                  ticketLookInput={'beforePurchase'}
                 />
                 <BuyTicket />
+                {/* <ExitGame /> */}
               </div>
             )}
 
             {/* if you have a ticket and not day */}
-            {Number(id) > 0 && (
+            {Number(id) === 0 && phase !== 'countdown' && (
               <div className="mb-2">
-                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">Your Card</div>
-                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'beforePurchase'} />
+                <div className="text-2xl text-center py-2 leading-7 capitalize">You</div>
+                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'attackedButSafu'} />
                 <ExitGame />
               </div>
             )}
 
             {/* if no ticket for rest of phase */}
-            {Number(id) === 0 && phase !== 'countdown' && (
-              <div className="mb-2">
-                <div className="text-2xl text-center py-2 mb-2 leading-7 capitalize">
-                  FOMO-ing?
-                  <Image
-                    priority
-                    src="/pepe/pepe-lost.svg"
-                    className="place-self-center"
-                    height={180}
-                    width={200}
-                    alt="pepe-in-thoughts"
-                  />
-                  <div className="text-center text-lg">Follow us for updates</div>
+            {Number(id) > 0 && (
+              // <div className="mb-2 flex justify ">
+              <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
+                <div className="">Want to join the fun?</div>
+                <Image
+                  priority
+                  src="/pepe/pepe-lost.svg"
+                  className="place-self-center"
+                  height={150}
+                  width={110}
+                  alt="pepe-in-thoughts"
+                />
+                <div className="text-center text-lg">
+                  Follow us for <a href="https://twitter.com/lastman0x">updates</a>
                 </div>
               </div>
+              // </div>
             )}
 
             <UserActions />

@@ -157,7 +157,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
     // make all names consistent from this point out
     updateRound(Number(round))
-    updatePhase(Number(1))
+    updatePhase(Number(4))
     updateTotalPrizePool(Number(totalPrizePool))
     updateNextPrizeAmount(Number(nextPrizeAmount))
     updateTopPrize(Number(prizeFactor))

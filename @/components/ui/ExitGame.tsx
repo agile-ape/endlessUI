@@ -26,23 +26,27 @@ function ExitGame() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   if (isDisabled)
     return (
       <TooltipProvider delayDuration={10}>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant="checkIn" className="w-full text-xl mb-3" disabled>
-              Exit Game for 1.0 ETH
+            <Button
+              variant="exit"
+              className=" rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+              disabled
+            >
+              Exit Game
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top" align="center">
+          {/* <TooltipContent side="top" align="center">
             <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
               <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
               <span>You can only exit duing the DAY</span>
-            </div>
-          </TooltipContent>
+            </div> 
+          </TooltipContent>*/}
         </Tooltip>
       </TooltipProvider>
     )
@@ -55,18 +59,29 @@ function ExitGame() {
           variant="exit"
           className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
         >
-          Exit Game for 1.0 ETH
+          Exit Game
         </Button>
       </DialogTrigger>
 
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Claim your pot reward and exit
-              <div className="day-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Exit Game
+              <Image
+                priority
+                src={`/indicator/dayIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`dayIndicator`}
+              />
+              {/* <div className="day-last">
                 <span className="font-headline">Day</span> Action, or when Game Ends
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -92,11 +107,13 @@ function ExitGame() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                   <p className="mb-2">
-                    Players can claim a pot reward and exit even if their ticket has been forfeited.
+                    Players can claim their pot reward and exit anytime in the{' '}
+                    <span className="font-headline day-last">DAY</span> (or when game ends).
                   </p>
-                  <p className="mb-2">Psst. Your ticket changes when you exit.</p>
+                  <p>Players can claim even if they are killed.</p>
+                  {/* <p className="mb-2">Psst. Your ticket changes when you exit.</p> */}
                 </div>
 
                 {/* Pay for stay */}
@@ -105,6 +122,17 @@ function ExitGame() {
                 </div>
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Next claim amount</p>
+                      <p className="text-right"> 5 ETH </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Rank if exit now</p>
+                      <p className="text-right"> 3 </p>
+                    </div>
+                  </div>
                   <Button variant="exit" size="lg" className="w-[100%]">
                     Exit Game
                   </Button>

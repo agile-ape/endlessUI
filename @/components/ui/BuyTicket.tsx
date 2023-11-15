@@ -25,6 +25,7 @@ function BuyTicket() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  // const [value, setValue] = useState(0)
 
   return (
     <Dialog>
@@ -41,11 +42,22 @@ function BuyTicket() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Buy ticket to enter game
-              <div className="beginnings-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Enter game
+              <Image
+                priority
+                src={`/indicator/startIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`startIndicator`}
+              />
+              {/* <div className="beginnings-last">
                 <span className="font-headline">Start Game</span> Action
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -72,10 +84,14 @@ function BuyTicket() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Ticket price increases as more tickets are bought.</p>
-                  <p className="mb-2">Price is split to wallet, pot and treasury (30,60,10).</p>
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2">Entry price increases as more players join.</p>
+                  {/* <p className="mb-2">Price is split to wallet, pot and treasury (30,60,10).</p> */}
                   <p className="mb-2">Players can no longer join the game once it begins.</p>
+                  <p className="mb-2">
+                    Enter a buddy # to receive a $LAST farming boost when either of you attack
+                    another player.
+                  </p>
                 </div>
 
                 {/* Pay for stay */}
@@ -93,6 +109,20 @@ function BuyTicket() {
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Tickets left at this price </p>
                       <p className="text-right"> 30 </p>
+                    </div>
+                  </div>
+
+                  <div className="flex mt-4 px-4 items-center w-[100%] text-zinc-800 dark:text-zinc-200 text-lg justify-between">
+                    <p>(Optional) Buddy #</p>
+
+                    <div className="flex gap-1 items-center">
+                      <input
+                        type="text"
+                        defaultValue={0}
+                        name=""
+                        id=""
+                        className="w-[3rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
+                      />
                     </div>
                   </div>
 

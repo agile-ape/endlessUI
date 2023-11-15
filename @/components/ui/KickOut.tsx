@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogOut } from 'lucide-react'
+import { LogOut, AlertCircle } from 'lucide-react'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -30,7 +30,7 @@ function KickOut() {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="kickOut" size="sm" className="w-full py-1">
+        <Button variant="kickOut" className="w-full py-1 text-lg h-8 rounded-md">
           Kick Out
         </Button>
       </DialogTrigger>
@@ -38,11 +38,22 @@ function KickOut() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Kick overstayers out of the safehouse
-              <div className="night-last">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+              Kick overstayers out
+              <Image
+                priority
+                src={`/indicator/nightIndicator.svg`}
+                height={300}
+                width={60}
+                // fill={true}
+                // sizes="max-width:150px"
+                className=""
+                // layout="fixed"
+                alt={`nightIndicator`}
+              />
+              {/* <div className="night-last">
                 <span className="font-headline">Night</span> Action
-              </div>
+              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
@@ -70,10 +81,16 @@ function KickOut() {
                   </AccordionItem>
                 </Accordion> */}
 
-                <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Kick players out when their check out {'<'} current round.</p>
-                  <p className="mb-2">Player ticket is forfeited if they are kicked out.</p>
-                  <p className="mb-2">Ticket value goes to the player before him.</p>
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2">
+                    Player can be kicked out and killed once it is the{' '}
+                    <span className="font-headline night-last">Night</span> of his check out round.
+                  </p>
+                  <div className="flex mb-2 border rounded-lg py-2 px-3">
+                    <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
+                    Player's value does not go to the kicker/killer. It goes to the player before
+                    him - if #4 is killed, all his value goes to #3
+                  </div>
                 </div>
 
                 {/* Pay for stay */}

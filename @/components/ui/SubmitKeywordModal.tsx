@@ -42,7 +42,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
           <div
             ref={modalRef}
-            className="h-[40rem] md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-[90%] mx-auto bg-white outline-none focus:outline-none overflow-auto text-white"
+            className="h-[40rem] md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-[90%] mx-auto bg-white dark:bg-zinc-800 outline-none focus:outline-none overflow-auto text-white"
           >
             <div className="overflow-auto">
               <button className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none">
@@ -54,11 +54,22 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                 </span>
               </button>
               <div className="items-center pt-10">
-                <div className="text-3xl text-center font-normal text-black">
-                  Submit the keyword of the day
-                  <div className="day-last">
+                <div className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+                  <div className="">Submit keyword of the day</div>
+                  <Image
+                    priority
+                    src={`/indicator/dayIndicator.svg`}
+                    height={300}
+                    width={60}
+                    // fill={true}
+                    // sizes="max-width:150px"
+                    className=""
+                    // layout="fixed"
+                    alt={`dayIndicator`}
+                  />
+                  {/* <div className="day-last">
                     <span className="font-headline">Day</span> Action
-                  </div>
+                  </div> */}
                 </div>
                 <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
                   <div className="w-[85%] mx-auto flex flex-col gap-3">
@@ -86,10 +97,10 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                     </AccordionItem>
                   </Accordion> */}
 
-                    <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                      <p className="mb-2">Solve the captcha and reveal the word of the day.</p>
+                    <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                      <p className="mb-2">Solve captcha to reveal keyword of the day.</p>
                       <p className="mb-2">
-                        Submit the word to stay safe during the{' '}
+                        Submit keyword to stay safe during{' '}
                         <span className="font-headline night-last">Night</span>.
                       </p>
                     </div>

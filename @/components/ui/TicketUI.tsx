@@ -9,7 +9,7 @@ import { formatUnits } from 'viem'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStoreActions, useStoreState } from '../../../store'
-import { Sword, Skull, DoorOpen } from 'lucide-react'
+import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
 import { Button } from './button'
 import Attack from './Attack'
 import { ExitTicketUI } from './ExitTicketUI'
@@ -59,13 +59,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   let ticketSignature = playerTicket?.[2] || 0
   let ticketStatus = playerTicket?.[3] || 0
   let ticketLastSeen = playerTicket?.[4] || 0
-  let ticketIsInPlay = playerTicket?.[5] || 0
+  // let ticketIsInPlay = playerTicket?.[5] || 0
+  let ticketIsInPlay = true
   let ticketVote = playerTicket?.[6] || 0
-  let ticketValue = playerTicket?.[7] || 0
+  let ticketValue = Number(playerTicket?.[7]) || 0
   let ticketPurchasePrice = playerTicket?.[8] || 0
   let ticketPotClaim = playerTicket?.[9] || 0
   let ticketRedeemValue = playerTicket?.[10] || 0
-  let ticketAttacks = playerTicket?.[11] || 0
+  // let ticketAttacks = Number(playerTicket?.[11]) || 0
+  let ticketAttacks = Number(3)
   let ticketAttackCount = playerTicket?.[12] || 0
   let ticketKillCount = playerTicket?.[13] || 0
   let ticketKilledBy = playerTicket?.[14] || 0
@@ -73,7 +75,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   let ticketcheckOutRound = playerTicket?.[16] || 0
   let ticketBuddy = playerTicket?.[17] || 0
   let ticketBuddyCount = playerTicket?.[18] || 0
-  let ticketRank = playerTicket?.[19] || 0
+  // let ticketRank = playerTicket?.[19] || 0
+  let ticketRank = 123
 
   // const phase = useStoreState((state) => state.phase)
   const phase = 'countdown'
@@ -159,8 +162,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           h1: 'text-xl',
           h2: 'text-md',
           h3: 'text-sm',
-          img: '90',
-          mt: 'mt-3 mb-0',
+          imgh: '110',
+          imgw: '150',
+          mt: 'mt-0 mb-0',
           gap: 'gap-y-1',
         }
       case false:
@@ -170,24 +174,26 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           h1: 'text-md',
           h2: 'text-sm',
           h3: 'text-xs',
-          img: '60',
-          mt: 'mt-2 mb-2',
+          imgh: '75',
+          imgw: '95',
+          mt: 'mt-0 mb-2',
           gap: '',
         }
     }
   }
 
-  const { size, edge, h1, h2, h3, img, mt, gap } = getTicketSize(ownTicket)
+  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
   const ticketLookTest = ticketLookInput
 
-  const conversion = BigInt(10 ** 15)
+  const conversion = Number(10 ** 15)
 
   const getTicketLook = (ticketLookTest) => {
     switch (ticketLookTest) {
       case 'beforePurchase':
         return {
           bgImage: 'burst',
+          header: 'bg-zinc-300/20',
           face: 'enter',
           id: nextTicketId,
           status: 'next ticket',
@@ -197,6 +203,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'afterPurchase':
         return {
           bgImage: 'rainbow',
+          header: 'bg-zinc-300/20',
           face: 'happy',
           id: ticketId,
           status: 'ticket claimed',
@@ -206,6 +213,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'submittedDay':
         return {
           bgImage: 'motif',
+          header: 'bg-zinc-300/70',
           face: 'handsup',
           id: ticketId,
           status: 'submitted',
@@ -215,6 +223,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'stage1New':
         return {
           bgImage: 'rainbow',
+          header: 'bg-zinc-300/20',
           face: 'confident',
           id: ticketId,
           status: 'ready to submit word',
@@ -224,6 +233,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'stage2New':
         return {
           bgImage: 'rainbow',
+          header: 'bg-zinc-300/20',
           face: 'worried',
           id: ticketId,
           status: 'ready to submit word',
@@ -233,6 +243,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'stage3New':
         return {
           bgImage: 'rainbow',
+          header: 'bg-zinc-300/20',
           face: 'anxious',
           id: ticketId,
           status: 'ready to submit word',
@@ -242,6 +253,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'submittedNight':
         return {
           bgImage: 'motif',
+          header: 'bg-zinc-300/70',
           face: 'attack',
           id: ticketId,
           status: 'time to attack',
@@ -251,6 +263,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'attackedButSafu':
         return {
           bgImage: 'combine',
+          header: 'bg-zinc-300/80',
           face: 'pray',
           id: ticketId,
           status: 'SAFU',
@@ -260,6 +273,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'neverSubmit':
         return {
           bgImage: 'rainbow',
+          header: 'bg-zinc-300/20',
           face: 'attack',
           id: ticketId,
           status: 'time to attack',
@@ -269,6 +283,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'inSafehouse':
         return {
           bgImage: 'safeOverlay',
+          header: 'bg-zinc-100/50',
           face: 'warm',
           id: ticketId,
           status: 'taking a break',
@@ -278,6 +293,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'lastManStanding':
         return {
           bgImage: 'burst',
+          header: 'bg-zinc-300/20',
           face: 'king',
           id: ticketId,
           status: 'last man standing',
@@ -287,6 +303,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'agreedToSplitPot':
         return {
           bgImage: 'burst',
+          header: 'bg-zinc-300/20',
           face: 'beers',
           id: ticketId,
           status: 'WAGMI',
@@ -296,6 +313,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'noMorePot':
         return {
           bgImage: 'burst',
+          header: 'bg-zinc-300/20',
           face: 'watchitburn',
           id: ticketId,
           status: 'let it burn',
@@ -304,8 +322,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
         }
       case 'killed':
         return {
-          bgImage: 'greybox',
-          face: 'killed',
+          bgImage: 'deadOverlay',
+          header: 'bg-zinc-400/90',
+          face: 'angry',
           id: ticketId,
           status: 'killed',
           label: 'rank',
@@ -313,7 +332,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
         }
       case 'exitGame':
         return {
-          bgImage: 'burst',
+          bgImage: '',
+          header: 'bg-zinc-200/20',
           face: 'exit',
           id: ticketId,
           status: 'exited',
@@ -323,7 +343,18 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     }
   }
 
-  const { bgImage, face, id, status, label, value } = getTicketLook(ticketLookTest)
+  const { bgImage, header, face, id, status, label, value } = getTicketLook(ticketLookTest)
+
+  const gradientStyle = {
+    background: 'linear-gradient(to right, #ff00cc, #3333cc)',
+    WebkitBackgroundClip: 'text',
+    color: 'transparent',
+    display: 'inline-block',
+  }
+
+  const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
+    <Sword size={16} className="text-black"></Sword>
+  ))
 
   return (
     <div
@@ -346,7 +377,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               <div className="capitalized text-base leeading-tight">Status: Submitted</div>
             */
         <div
-          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] bg-zinc-300/60 shadow-xl text-center ${edge} text-black`}
+          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge} text-black`}
         >
           {/* <div className="flex justify-between gap-6">
                 <p className="text-left"> Status</p>
@@ -354,7 +385,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               </div> */}
 
           <div className="flex justify-between gap-6">
-            <p className="text-left"> Wallet</p>
+            <p className="text-left"> Player</p>
             <p className="text-right"> 0x12..32 </p>
           </div>
 
@@ -382,8 +413,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               </div> */}
 
           <div className="flex justify-between gap-6">
-            <p className="text-left">Vote</p>
-            <p className="text-right"> No </p>
+            <p className="text-left">Last Seen/Vote</p>
+            <p className="text-right">
+              {' '}
+              <span className="underline">1</span>/No{' '}
+            </p>
           </div>
 
           {/* <div className="flex justify-between gap-6">
@@ -445,7 +479,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       {/* default */}
       {!isOverlayInspect && (
         <>
-          {!ownTicket && ticketLookTest == 'killed' && (
+          {/* {!ownTicket && ticketLookTest == 'killed' && (
             <div
               className="absolute top-0 left-0 h-full w-full"
               style={{
@@ -454,9 +488,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
                 backgroundSize: 'cover',
               }}
             ></div>
-          )}
-
-          {!ownTicket && ticketLookTest == 'exitGame' && (
+          )} */}
+          {/* {!ownTicket && ticketLookTest == 'exitGame' && (
             <div
               className="absolute top-0 left-0 h-full w-full"
               style={{
@@ -465,42 +498,54 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
                 backgroundSize: 'cover',
               }}
             ></div>
-          )}
-
+          )} */}
           {/* top header */}
-          <div className="bg-zinc-300/60 shadow-xl text-center m-2 rounded-lg text-black">
-            <p className={`uppercase ${h1} leading-tight`}>Player #{id}</p>
-            <p className={`lowercase ${h3} italic text-zinc-600 dark:text-zinc-800`}>{status}</p>
+          <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
+            <p className={`uppercase ${h1} leading-tight`}>
+              Player{' '}
+              <span className="font-whitrabt">
+                {' '}
+                <span className={h2}>#{id}</span>
+              </span>
+            </p>
+            <p className={`lowercase ${h3} italic text-zinc-700 dark:text-zinc-800`}>{status}</p>
           </div>
-
           {/* image */}
           <div className="flex justify-center">
             <Image
               priority
               src={`/faces/${face}.png`}
-              height={img}
-              width={img}
+              height={imgh}
+              width={imgw}
+              // fill={true}
+              // sizes="max-width:150px"
               className={mt}
-              alt="pepe"
+              layout="fixed"
+              alt={`${face} pepe`}
             />
           </div>
-
           {/* need a mapping to list ticketAttacks */}
-          {ownTicket && (
-            <div className="flex flex-row-reverse mx-3 ">
-              <Sword size={16} className=""></Sword>
-              <Sword size={16} className=""></Sword>
-              <Sword size={16} className=""></Sword>
+          {ownTicket && ticketIsInPlay == true && (
+            <div className="flex flex-row-reverse mx-3 ">{swords}</div>
+          )}
+          {/* rank */}
+          {(ticketLookTest == 'killed' || ticketLookTest == 'exitGame') && (
+            <div className="flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text">
+              {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
+              <div className={`uppercase font-semibold tracking-wider ${h1}`}>
+                {label} {value}
+              </div>
             </div>
           )}
-          {/* box */}
-          <div className="bg-zinc-300/60 shadow-xl text-center m-2 mt-0 rounded-lg text-black">
-            <div className={`capitalize ${h3} text-zinc-600 dark:text-zinc-800 leading-tight`}>
-              {label}
+          {/* not killed or exitGame */}
+          {!(ticketLookTest == 'killed' || ticketLookTest == 'exitGame') && (
+            <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
+              <div className={`capitalize ${h3} text-zinc-600 dark:text-zinc-800 leading-tight`}>
+                {label}
+              </div>
+              <div className={`uppercase font-whitrabt ${h1}`}>{value}</div>
             </div>
-
-            <div className={`uppercase ${h1}`}>{value}</div>
-          </div>
+          )}
         </>
       )}
     </div>

@@ -6,13 +6,14 @@ import PrizeInfo from './_PrizeInfo'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
-import { HelpCircle } from 'lucide-react'
+import { HelpCircle, Gem, Users } from 'lucide-react'
 import Link from 'next/link'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 import { useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import GameFeedButton from './_GameFeedButton'
+import CompletionModal from './CompletionModal'
 
 type TicketListType = {
   stage: string
@@ -23,6 +24,8 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const phase = useStoreState((state) => state.phase)
 
   const ticketList = useStoreState((state) => state.tickets)
+  const totalTicketCount = useStoreState((state) => state.totalTicketCount)
+  const currentTicketCount = useStoreState((state) => state.currentTicketCount)
 
   const { data, write } = useContractWrite({
     ...defaultContractObj,
@@ -41,10 +44,28 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         className="list-none
         relative px-3 py-0 flex flex-col"
       >
-        <div className="flex flex-col sm:flex-row">
-          <div className="flex text-2xl items-center grow leading-7 capitalize py-2">
-            Players
-            {/* <TooltipProvider delayDuration={10}>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-2">
+            <span className=""> Players</span>
+            <div className="flex flex-row items-center text-md tracking-wide">
+              <Users size={18} className="mr-1" />
+              <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
+                {currentTicketCount}
+              </div>
+              <span className="text-md">/{totalTicketCount}</span>
+            </div>
+            <div className="flex flex-row items-center text-md tracking-wide">
+              <Gem size={18} className="mr-1" />
+              <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
+                {currentTicketCount}
+              </div>
+              <span className="text-md">/{totalTicketCount} </span>
+            </div>
+          </div>
+
+          <CompletionModal emittedEvent={'beforePurchase'} />
+
+          {/* <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
                 <HelpCircle
@@ -68,7 +89,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                     </TooltipContent>
                     </Tooltip>
                   </TooltipProvider> */}
-          </div>
           {/* <div className="flex px-2">
             <GameFeedButton />
           </div> */}

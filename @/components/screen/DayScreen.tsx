@@ -97,23 +97,23 @@ export default function DayScreen() {
         <Title stageType={'day'} />
       </div>
       {/* top container */}
-      <div className="flex flex-col mb-2">
-        <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2">
-          <Round />
-          {/* <div className="flex sm:justify-between align-center justify-center items-end gap-4 sm:mt-0 mt-3 sm:flex-row flex-col"> */}
-          <Countdown timeFlag={410000000} countdownTime={900000000} />
-          {/* </div> */}
-          {/* change to a separate component */}
-          <Indicator />
-          {/* <div className="text-4xl flex justify-end font-headline uppercase day-last"> Day </div> */}
-        </div>
-        <div>
-          <GameStats />
-        </div>
+      {/* <div className="flex flex-col mb-2"> */}
+      <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
+        <Round />
+        {/* <div className="flex sm:justify-between align-center justify-center items-end gap-4 sm:mt-0 mt-3 sm:flex-row flex-col"> */}
+        <Countdown timeFlag={410000000} countdownTime={900000000} />
+        {/* </div> */}
+        {/* change to a separate component */}
+        <Indicator />
+        {/* <div className="text-4xl flex justify-end font-headline uppercase day-last"> Day </div> */}
       </div>
+      {/* <div>
+          <GameStats />
+        </div> */}
+      {/* </div> */}
       {/* bottom container */}
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 lg:container-last">
+        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last">
           <GameTab />
         </div>
 
