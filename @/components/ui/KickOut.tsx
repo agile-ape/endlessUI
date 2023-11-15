@@ -18,6 +18,8 @@ import {
 import { Button } from './button'
 import Image from 'next/image'
 import { LogOut, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
+import Prompt from './Prompt'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -25,6 +27,7 @@ function KickOut() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   return (
     <Dialog>
@@ -86,7 +89,7 @@ function KickOut() {
                     Player can be kicked out and killed once it is the{' '}
                     <span className="font-headline night-last">Night</span> of his check out round.
                   </p>
-                  <div className="flex mb-2 border rounded-lg py-2 px-3">
+                  <div className="flex mb-2 border border-zinc-800 dark:border-zinc-200 rounded-lg py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
                     Player's value does not go to the kicker/killer. It goes to the player before
                     him - if #4 is killed, all his value goes to #3
@@ -111,10 +114,21 @@ function KickOut() {
                     </div>
                   </div>
 
-                  <Button variant="kickOut" size="lg" className="w-[100%]">
-                    {/* {IsCurrentRound>=CheckOutDay ? 'Kick out' : 'Not yet'} */}
-                    Kick Out
-                  </Button>
+                  {!isDisabled && (
+                    <Button variant="kickOut" size="lg" className="w-[100%]">
+                      {/* {IsCurrentRound>=CheckOutDay ? 'Kick out' : 'Not yet'} */}
+                      Kick Out
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      <Button variant="kickOut" size="lg" className="w-[100%]" disabled>
+                        Kick Out
+                      </Button>
+                      <Prompt />
+                    </>
+                  )}
                 </div>
               </DialogDescription>
             </ScrollArea>

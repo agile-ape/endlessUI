@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog-unblur'
+} from '@/components/ui/dialog'
 import { Button } from './button'
 import Image from 'next/image'
 import { Send, CheckCircle2 } from 'lucide-react'
@@ -21,7 +21,7 @@ interface CompletionModalType {
 
 const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
   // const alertLookTest: string = emittedEvent
-  const alertLookTest = 'exitGame'
+  const alertLookTest = 'attackedButSafe'
 
   const getAlertLook = (alertLookTest: string) => {
     switch (alertLookTest) {
@@ -97,6 +97,28 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
           title: 'Thanks for playing!',
           message: 'We hope you have fun.',
         }
+      // sent to another player
+      case 'killed':
+        return {
+          bgImage: 'deadOverlay',
+          face: 'angry',
+          title: 'You got killed!',
+          message: 'Sorry about that. You can still claim your share of the pot when you exit.',
+        }
+      case 'received':
+        return {
+          bgImage: 'motif',
+          face: 'surprised',
+          title: 'You got ETH!',
+          message: 'Good things happen to those that outlast others.',
+        }
+      case 'attackedButSafe':
+        return {
+          bgImage: 'combine',
+          face: 'pray',
+          title: 'You were attacked!',
+          message: 'A player attacked you but you are safe as you submitted the keyword.',
+        }
 
       default:
         return {}
@@ -109,14 +131,14 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="submit" className="w-full text-2xl">
-          Check Completion Modal <Send size={16} className="text-sm ml-1"></Send>
+        <Button variant="transfer" className="w-full text-2xl">
+          Check Modal
         </Button>
       </DialogTrigger>
 
       <DialogContent className="bg-white dark:bg-white p-0 md:w-[20rem] w-[90%] rounded-3xl">
         <div
-          className="rounded-lg"
+          className="rounded-lg h-full w-full"
           style={{
             backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
             backgroundRepeat: 'no-repeat',
@@ -156,7 +178,10 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
           <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
             <div className="text-black text-xl my-4">{message}</div>
             <div className="flex justify-center mb-4">
-              <Button className="w-[100%] px-10 py-2 w-full bg-blue-800 rounded-full mx-auto text-white text-xl">
+              <Button
+                variant="primary"
+                className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
+              >
                 Continue
               </Button>
             </div>

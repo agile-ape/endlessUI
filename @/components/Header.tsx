@@ -3,7 +3,7 @@ import CustomConnectButton from '@/components/ui/connect-button'
 import Menu from './_Menu'
 import Logo from './ui/Logo'
 import SideMenu from './SideMenu'
-import DarkModeSwitcher from './ui/DarkModeSwitcher'
+import DarkModeSwitcher from './ui/_DarkModeSwitcher'
 import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
@@ -21,6 +21,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import { useAccount } from 'wagmi'
+import CompletionModal from './ui/CompletionModal'
 
 function Header() {
   const { isConnected } = useAccount()
@@ -37,6 +38,7 @@ function Header() {
       </div> */}
 
       <div className="flex justify-self-end gap-3 order-3">
+        <CompletionModal emittedEvent={'beforePurchase'} />
         <div className="flex justify-self-end xl:hidden order-4">
           <SideMenu />
         </div>
@@ -47,7 +49,7 @@ function Header() {
             text-xl text-zinc-700 dark:text-zinc-200
             hover:text-neutral-900 
             dark:hover:text-zinc-50 border border-white/40 rounded-md py-1 px-3 mx-2 flex items-center"
-            href="/howtoplay"
+            href="/quickstart"
           >
             Quickstart
           </Link>

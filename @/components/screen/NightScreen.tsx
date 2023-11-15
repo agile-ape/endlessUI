@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic'
-import AllPrice from '../ui/AllPrize'
+import AllPrice from '../ui/_AllPrize'
 import Countdown from '../ui/Countdown'
-import NextClaim from '../ui/NextClaim'
+import NextClaim from '../ui/_NextClaim'
 import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import CheckIn from '../ui/_CheckInBox'
 import GameTab from '../ui/GameTab'
-import GameStats from '../ui/GameStats'
+import GameStats from '../ui/_GameStats'
 
 function NightScreen() {
   return (

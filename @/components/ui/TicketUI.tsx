@@ -12,7 +12,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
 import { Button } from './button'
 import Attack from './Attack'
-import { ExitTicketUI } from './ExitTicketUI'
+import { ExitTicketUI } from './_ExitTicketUI'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
 import {

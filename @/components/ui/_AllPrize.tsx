@@ -1,4 +1,4 @@
-import PrizeAmount from './PrizeAmount'
+import PrizeAmount from './_PrizeAmount'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'

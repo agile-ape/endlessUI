@@ -18,6 +18,7 @@ import {
 import { Button } from './button'
 import Image from 'next/image'
 import { LogOut } from 'lucide-react'
+import Prompt from './Prompt'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -25,6 +26,8 @@ function BuyTicket() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
   // const [value, setValue] = useState(0)
 
   return (
@@ -126,9 +129,20 @@ function BuyTicket() {
                     </div>
                   </div>
 
-                  <Button variant="enter" size="lg" className="rounded-full w-[100%]">
-                    Buy Ticket
-                  </Button>
+                  {!isDisabled && (
+                    <Button variant="enter" size="lg" className="rounded-full w-[100%]">
+                      Buy Ticket
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      <Button variant="enter" size="lg" className="rounded-full w-[100%]" disabled>
+                        Buy Ticket
+                      </Button>
+                      <Prompt />
+                    </>
+                  )}
                 </div>
               </DialogDescription>
             </ScrollArea>

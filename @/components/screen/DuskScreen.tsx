@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import AllPrice from '../ui/AllPrize'
+import AllPrice from '../ui/_AllPrize'
 import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'

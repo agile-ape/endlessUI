@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
-import ExitTicketUI from './ExitTicketUI'
+import ExitTicketUI from './_ExitTicketUI'
 import SplitPot from './_SplitPot'
 import { useStoreActions, useStoreState } from '../../../store'
 import { formatUnits } from 'viem'
@@ -80,8 +80,8 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
 
   // console.log(Number(ticketId));
 
-  const phase = useStoreState((state) => state.phase)
-  // const phase = 'day';
+  // const phase = useStoreState((state) => state.phase)
+  const phase = 'countdown'
 
   const nextPrizeAmount = useStoreState((state) => state.nextPrizeAmount)
   const totalPrizePool = useStoreState((state) => state.totalPrizePool)

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import Image from 'next/image'
+
 import TicketCardOld from './_TicketCard'
 import TicketCard from './TicketCard'
-import AllPrize from './AllPrize'
+import AllPrize from './_AllPrize'
 import PrizeInfo from './_PrizeInfo'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -24,7 +26,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const phase = useStoreState((state) => state.phase)
 
   const ticketList = useStoreState((state) => state.tickets)
-  const totalTicketCount = useStoreState((state) => state.totalTicketCount)
+  // const totalTicketCount = useStoreState((state) => state.totalTicketCount)
+  const totalTicketCount = 1
+
   const currentTicketCount = useStoreState((state) => state.currentTicketCount)
 
   const { data, write } = useContractWrite({
@@ -62,8 +66,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               <span className="text-md">/{totalTicketCount} </span>
             </div>
           </div>
-
-          <CompletionModal emittedEvent={'beforePurchase'} />
 
           {/* <TooltipProvider delayDuration={10}>
               <Tooltip>
@@ -152,8 +154,38 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
       </summary>
 
-      <div
-        className="
+      {totalTicketCount === 0 && (
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center place-content-center">
+            <div className="relative">
+              <Image
+                priority
+                src="/pepe/sun.svg"
+                className="place-self-center animate-pulse"
+                height={300}
+                width={300}
+                alt="sneak-a-peek-pepe"
+              />
+
+              <div className="absolute top-[50px]">
+                <Image
+                  priority
+                  src="/pepe/pepe-robe.svg"
+                  className="place-self-center"
+                  height={300}
+                  width={300}
+                  alt="sneak-a-peek-pepe"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="text-center my-4 text-2xl">We await patiently for our first warrior</div>
+        </div>
+      )}
+
+      {totalTicketCount !== 0 && (
+        <div
+          className="
             flex
             w-[100%]
             justify-evenly
@@ -164,38 +196,50 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             px-6 py-6
             overflow-y-scroll max-h-[750px]
           "
-      >
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'beforePurchase'} />
+        >
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'beforePurchase'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'afterPurchase'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'afterPurchase'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'submittedDay'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'submittedDay'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage1New'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage1New'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage2New'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage2New'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage3New'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'stage3New'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'submittedNight'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'submittedNight'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'attackedButSafu'} />
+          <TicketUI
+            ownTicket={false}
+            ticketNumber={BigInt(2)}
+            ticketLookInput={'attackedButSafu'}
+          />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'neverSubmit'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'neverSubmit'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'inSafehouse'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'inSafehouse'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'lastManStanding'} />
+          <TicketUI
+            ownTicket={false}
+            ticketNumber={BigInt(2)}
+            ticketLookInput={'lastManStanding'}
+          />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'agreedToSplitPot'} />
+          <TicketUI
+            ownTicket={false}
+            ticketNumber={BigInt(2)}
+            ticketLookInput={'agreedToSplitPot'}
+          />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'noMorePot'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'noMorePot'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'killed'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'killed'} />
 
-        <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'exitGame'} />
+          <TicketUI ownTicket={false} ticketNumber={BigInt(2)} ticketLookInput={'exitGame'} />
 
-        {/*
+          {/*
         {ticketList.map((item, i) => (
           <div key={i} className="mt-[27px]">
             <TicketUI
@@ -219,7 +263,8 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             </Button>
           </div>
         ))}*/}
-      </div>
+        </div>
+      )}
     </>
   )
 }

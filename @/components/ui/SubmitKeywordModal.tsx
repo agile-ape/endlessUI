@@ -12,9 +12,11 @@ import { Button } from './button'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, AlertCircle } from 'lucide-react'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
+import Prompt from './Prompt'
 
 interface SubmitKeywordModalType {
   toggle: () => void
@@ -25,6 +27,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
 
   const modalRef = useRef<HTMLDivElement | null>(null)
   const captchaRef = useRef<HCaptcha>(null)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   const onCaptchaClick = () => {
     if (captchaRef.current) {
@@ -42,7 +45,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
           <div
             ref={modalRef}
-            className="h-[40rem] md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-[90%] mx-auto bg-white dark:bg-zinc-800 outline-none focus:outline-none overflow-auto text-white"
+            className="h-[40rem] md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-[90%] mx-auto bg-slate-200 dark:bg-slate-800 outline-none focus:outline-none overflow-auto text-white"
           >
             <div className="overflow-auto">
               <button className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none">
@@ -55,7 +58,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
               </button>
               <div className="items-center pt-10">
                 <div className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
-                  <div className="">Submit keyword of the day</div>
+                  <div className="text-black dark:text-white">Submit keyword of the day</div>
                   <Image
                     priority
                     src={`/indicator/dayIndicator.svg`}
@@ -100,8 +103,9 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                     <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                       <p className="mb-2">Solve captcha to reveal keyword of the day.</p>
                       <p className="mb-2">
-                        Submit keyword to stay safe during{' '}
-                        <span className="font-headline night-last">Night</span>.
+                        Submit keyword in the <span className="font-headline day-last">Day</span> to
+                        stay safe when <span className="font-headline night-last">Night</span>{' '}
+                        comes.
                       </p>
                     </div>
 
@@ -164,20 +168,31 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                           className="dark:text-white text-black"
                         />
 
-                        <Button
-                          variant="submit"
-                          size="lg"
-                          // disabled={phase !== 'day'}
-                          onClick={async () => {
-                            if (otpInput) {
-                              // await onSubmit(otpInput)
-                              setOtpInput('')
-                            }
-                          }}
-                        >
-                          Submit
-                        </Button>
+                        {!isDisabled && (
+                          <Button
+                            variant="submit"
+                            size="lg"
+                            // disabled={phase !== 'day'}
+                            onClick={async () => {
+                              if (otpInput) {
+                                // await onSubmit(otpInput)
+                                setOtpInput('')
+                              }
+                            }}
+                          >
+                            Submit
+                          </Button>
+                        )}
+
+                        {isDisabled && (
+                          <>
+                            <Button variant="submit" size="lg" className="w-[100%]" disabled>
+                              Submit
+                            </Button>
+                          </>
+                        )}
                       </div>
+                      {isDisabled && <Prompt />}
                     </div>
                   </div>
                 </ScrollArea>

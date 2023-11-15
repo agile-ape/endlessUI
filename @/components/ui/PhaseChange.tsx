@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dialog-unblur'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
+import Prompt from './Prompt'
 
 type PhaseChangeType = {
   phaseType: IApp['phase']
@@ -43,6 +44,9 @@ const PhaseChange = () => {
   const phase = 'night'
   const { address, isConnected } = useAccount()
   console.log({ phase: bgColorPhase[phase], phaseNow: phase })
+
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
@@ -78,11 +82,11 @@ const PhaseChange = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          disabled={!write || !playerTicket}
+          // disabled={!write || !playerTicket}
           // size="md"
           variant="default"
-          onClick={() => write()}
-          isLoading={isLoading}
+          // onClick={() => write()}
+          // isLoading={isLoading}
           // variant="change"
           className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
         >
@@ -129,19 +133,40 @@ const PhaseChange = () => {
                   <p className="mb-2">Would you help us usher in the new phase?</p>
                 </div>
 
-                <div className="w-[240px] mx-auto flex justify-center">
-                  <Button
-                    disabled={!write || !playerTicket}
-                    // size="md"
-                    variant="default"
-                    onClick={() => write()}
-                    isLoading={isLoading}
-                    // variant="change"
-                    className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                  >
-                    {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                    Change phase
-                  </Button>
+                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
+                  {!isDisabled && (
+                    <Button
+                      disabled={!write || !playerTicket}
+                      // size="md"
+                      variant="default"
+                      onClick={() => write()}
+                      isLoading={isLoading}
+                      // variant="change"
+                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                    >
+                      {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+                      Change phase
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      <Button
+                        // disabled={!write || !playerTicket}
+                        // size="md"
+                        variant="default"
+                        onClick={() => write()}
+                        isLoading={isLoading}
+                        // variant="change"
+                        className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                        disabled
+                      >
+                        {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+                        Change phase
+                      </Button>
+                      <Prompt />
+                    </>
+                  )}
                 </div>
               </DialogDescription>
             </ScrollArea>

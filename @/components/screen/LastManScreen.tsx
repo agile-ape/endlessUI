@@ -1,6 +1,6 @@
 // import AllPrice from '../ui/AllPrice'
 import Countdown from '../ui/Countdown'
-import NextClaim from '../ui/NextClaim'
+import NextClaim from '../ui/_NextClaim'
 import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'

@@ -20,6 +20,7 @@ import Image from 'next/image'
 import { LogOut, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
+import Prompt from './Prompt'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -87,7 +88,7 @@ function Attack() {
 
                 <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                   <p className="mb-2">You kill the player if the submitted keyword is wrong.</p>
-                  <div className="flex mb-2 border rounded-lg py-2 px-3">
+                  <div className="flex mb-2 border rounded-lg border-zinc-800 dark:border-zinc-200 py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
                     Player's value does not go to the killer. It goes to the player before him - if
                     #4 is killed, all his value goes to #3
@@ -138,40 +139,11 @@ function Attack() {
 
                   {isDisabled && (
                     <>
-                      {/* <TooltipProvider delayDuration={10}>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Button variant="attack" size="lg" className="w-[100%]" disabled>
-                              Attack
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" align="center">
-                            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-                              <AlertTriangle size={24} className="text-sm mr-1"></AlertTriangle>
-                              <span>
-                                Players can only vote to split pot during the Day, and only after
-                                Stage 1.
-                              </span>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider> */}
-
                       <Button variant="attack" size="lg" className="w-[100%]" disabled>
                         Attack
                       </Button>
 
-                      <div className="w-[100%] flex rounded-lg py-2 px-3 text-xl leading-tight border border-lime-800 dark:border-lime-200 text-lime-800 dark:text-lime-200">
-                        {/* <div className=" mb-2 "> */}
-                        <AlertCircle size={24} className="align-top mr-2"></AlertCircle>
-                        <span>
-                          Learn more at{' '}
-                          <Link className="underline" href="/quickstart">
-                            Quickstart
-                          </Link>
-                        </span>
-                        {/* </div> */}
-                      </div>
+                      <Prompt />
                     </>
                   )}
                 </div>

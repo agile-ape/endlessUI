@@ -18,8 +18,10 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogIn, ChevronUp, ChevronDown, AlertTriangle } from 'lucide-react'
+import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucide-react'
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import Prompt from './Prompt'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -29,32 +31,32 @@ function CheckIn() {
   const phase = useStoreState((state) => state.phase)
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
 
-  if (isDisabled)
-    return (
-      <TooltipProvider delayDuration={10}>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="checkIn" className="w-full text-xl" disabled>
-              Check In
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="top" align="center">
-            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-              <span>You can only check in during the Day</span>
-            </div>
-            {/* <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-              This is an instruction lalalalala
-            </p>
-            <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-              This is an instruction lalalalala
-            </p> */}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    )
+  // if (isDisabled)
+  //   return (
+  //     <TooltipProvider delayDuration={10}>
+  //       <Tooltip>
+  //         <TooltipTrigger>
+  //           <Button variant="checkIn" className="w-full text-xl" disabled>
+  //             Check In
+  //           </Button>
+  //         </TooltipTrigger>
+  //         <TooltipContent side="top" align="center">
+  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+  //             <span>You can only check in during the Day</span>
+  //           </div>
+  //           {/* <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+  //             This is an instruction lalalalala
+  //           </p>
+  //           <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+  //             This is an instruction lalalalala
+  //           </p> */}
+  //         </TooltipContent>
+  //       </Tooltip>
+  //     </TooltipProvider>
+  //   )
 
   return (
     <Dialog>
@@ -112,7 +114,11 @@ function CheckIn() {
                   </AccordionItem>
                 </Accordion> */}
                 <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">Safehouse accepts payment in $LAST.</p>
+                  <p className="mb-2">
+                    You can only check in during the{' '}
+                    <span className="font-headline day-last">Day</span>. Safehouse accepts payment
+                    in $LAST.
+                  </p>
                   <p className="mb-2">You can check out anytime once you are checked in.</p>
                   <p className="mb-2">
                     You cannot be killed in Safehouse. Some actions are limited as well.
@@ -163,9 +169,21 @@ function CheckIn() {
                     </div>
                   </div>
 
-                  <Button variant="checkIn" size="lg" className="w-[100%]">
-                    Check In
-                  </Button>
+                  {!isDisabled && (
+                    <Button variant="checkIn" size="lg" className="w-[100%]">
+                      Check In
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                        Check In
+                      </Button>
+
+                      <Prompt />
+                    </>
+                  )}
                 </div>
 
                 {/* <div

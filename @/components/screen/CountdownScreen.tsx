@@ -6,7 +6,7 @@ import Countdown from '../ui/Countdown'
 // import CheckIn from '../ui/CheckIn'
 // import NextClaim from '../ui/NextClaim'
 import TicketList from '../ui/TicketList'
-import AllPrize from '../ui/AllPrize'
+import AllPrize from '../ui/_AllPrize'
 import PrizeInfo from '../ui/_PrizeInfo'
 import dynamic from 'next/dynamic'
 import GameTab from '../ui/GameTab'
@@ -26,7 +26,7 @@ import { createTicket, getTickets } from '../../../services/api'
 import { transformToTicket } from '@/lib/utils'
 import { formatEther, parseUnits } from 'viem'
 import { toast } from '../ui/use-toast'
-import GameStats from '../ui/GameStats'
+import GameStats from '../ui/_GameStats'
 
 function CountdownScreen() {
   const { isConnected } = useAccount()

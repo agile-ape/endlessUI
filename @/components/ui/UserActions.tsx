@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from './button'
 import { HelpCircle } from 'lucide-react'
-import SafehouseAction from './SafehouseAction'
+import SafehouseAction from './_SafehouseAction'
 import SubmitKeywordModal from './SubmitKeywordModal'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import CheckIn from './CheckIn'
@@ -10,7 +10,7 @@ import SplitIt from './SplitIt'
 import ExitGame from './ExitGame'
 import Inspect from './Attack'
 import KickOut from './KickOut'
-import ChangePhase from './ChangePhase'
+import ChangePhase from './_ChangePhase'
 import { Send, Home } from 'lucide-react'
 
 const UserActions = () => {

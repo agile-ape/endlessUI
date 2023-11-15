@@ -11,12 +11,12 @@ import {
 } from '@/components/ui/navigation-menu'
 import { ExternalLink } from 'lucide-react'
 import HowToPlay from './ui/_HowToPlay'
-import GameHeader from './ui/GameHeader'
+import GameHeader from './ui/_GameHeader'
 import Link from 'next/link'
 import { Button } from './ui/button'
 import CustomConnectButton from '@/components/ui/connect-button'
 
-import DarkModeSwitcher from './ui/DarkModeSwitcher'
+import DarkModeSwitcher from './ui/_DarkModeSwitcher'
 
 export default function Menu() {
   return (

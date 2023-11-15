@@ -17,9 +17,11 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
-import { Split, AlertTriangle } from 'lucide-react'
+import { Split, AlertTriangle, AlertCircle } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
+import Prompt from './Prompt'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -29,26 +31,26 @@ function SplitIt() {
   const phase = useStoreState((state) => state.phase)
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
-  if (isDisabled)
-    return (
-      <TooltipProvider delayDuration={10}>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="splitPot" className="w-full text-xl" disabled>
-              Split Pot
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="top" align="center">
-            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-              <span>
-                Players can only vote to split pot during the Day, and only after Stage 1.
-              </span>
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    )
+  // if (isDisabled)
+  //   return (
+  //     <TooltipProvider delayDuration={10}>
+  //       <Tooltip>
+  //         <TooltipTrigger>
+  //           <Button variant="splitPot" className="w-full text-xl" disabled>
+  //             Split Pot
+  //           </Button>
+  //         </TooltipTrigger>
+  //         <TooltipContent side="top" align="center">
+  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+  //             <span>
+  //               Players can only vote to split pot during the Day, and only after Stage 1.
+  //             </span>
+  //           </div>
+  //         </TooltipContent>
+  //       </Tooltip>
+  //     </TooltipProvider>
+  //   )
 
   return (
     <Dialog>
@@ -65,8 +67,8 @@ function SplitIt() {
           <DialogHeader className="items-center">
             <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
               <div>
-                <span>Vote to split pot</span>{' '}
-                <span className="text-md sm:text-lg md:text-xl ">(Stage 2 and 3)</span>
+                <span>Vote to split pot</span>
+                {/* <span className="text-md sm:text-lg md:text-xl ">(Stage 2 and 3)</span> */}
               </div>
               <Image
                 priority
@@ -109,6 +111,10 @@ function SplitIt() {
                 </Accordion> */}
                 <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                   <p className="mb-2">
+                    Players can only vote to split pot during the{' '}
+                    <span className="font-headline day-last">Day</span>, and only after Stage 1.
+                  </p>
+                  <p className="mb-2">
                     Once vote threshold is crossed, the game ends with pot split among remaining
                     players.
                   </p>
@@ -147,11 +153,12 @@ function SplitIt() {
 
                     <div className="flex justify-center text-2xl gap-4">
                       <span>No</span>
-                      <Switch
-                      // disabled={round < suddenDeathRound}
-                      />
+                      {isDisabled && <Switch disabled />}
+                      {!isDisabled && <Switch />}
+
                       <span>Yes</span>
                     </div>
+                    {isDisabled && <Prompt />}
                   </div>
                 </div>
               </DialogDescription>

@@ -21,35 +21,36 @@ import { LogOut, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
+import Prompt from './Prompt'
 
 function ExitGame() {
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
 
-  if (isDisabled)
-    return (
-      <TooltipProvider delayDuration={10}>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              variant="exit"
-              className=" rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-              disabled
-            >
-              Exit Game
-            </Button>
-          </TooltipTrigger>
-          {/* <TooltipContent side="top" align="center">
-            <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-              <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-              <span>You can only exit duing the DAY</span>
-            </div> 
-          </TooltipContent>*/}
-        </Tooltip>
-      </TooltipProvider>
-    )
+  // if (isDisabled)
+  //   return (
+  //     <TooltipProvider delayDuration={10}>
+  //       <Tooltip>
+  //         <TooltipTrigger>
+  //           <Button
+  //             variant="exit"
+  //             className=" rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+  //             disabled
+  //           >
+  //             Exit Game
+  //           </Button>
+  //         </TooltipTrigger>
+  //         {/* <TooltipContent side="top" align="center">
+  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
+  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
+  //             <span>You can only exit duing the DAY</span>
+  //           </div>
+  //         </TooltipContent>*/}
+  //       </Tooltip>
+  //     </TooltipProvider>
+  //   )
 
   return (
     <Dialog>
@@ -133,9 +134,20 @@ function ExitGame() {
                       <p className="text-right"> 3 </p>
                     </div>
                   </div>
-                  <Button variant="exit" size="lg" className="w-[100%]">
-                    Exit Game
-                  </Button>
+                  {!isDisabled && (
+                    <Button variant="exit" size="lg" className="w-[100%]">
+                      Exit Game
+                    </Button>
+                  )}
+
+                  {isDisabled && (
+                    <>
+                      <Button variant="exit" size="lg" className="w-[100%]" disabled>
+                        Exit Game
+                      </Button>
+                      <Prompt />
+                    </>
+                  )}
                 </div>
               </DialogDescription>
             </ScrollArea>

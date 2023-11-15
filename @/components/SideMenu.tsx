@@ -15,7 +15,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import HowToPlay from './ui/_HowToPlay'
-import GameHeader from './ui/GameHeader'
+import GameHeader from './ui/_GameHeader'
 import { Button } from './ui/button'
 import Link from 'next/link'
 

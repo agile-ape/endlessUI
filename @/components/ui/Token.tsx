@@ -110,10 +110,14 @@ function Token() {
                   </p>
                 </div>
 
+                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  $LAST price info
+                </div>
+
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">$LAST tokens held</p>
+                      <p className="text-left">$LAST tokens in wallet</p>
                       <p className="text-right"> 200 </p>
                     </div>
 
@@ -135,7 +139,7 @@ function Token() {
                       rel="noreferrer"
                       className=""
                     >
-                      <Button variant="buy" className="w-full bg-blue-950">
+                      <Button variant="primary" className="w-full text-xl">
                         Buy on Uniswap{' '}
                         <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
                       </Button>
@@ -145,7 +149,7 @@ function Token() {
                     <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 capitalize flex justify-start text-zinc-500 dark:text-zinc-400">
                       Transfer
                     </div>
-                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border">
+                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
                       <div className="flex md:flex-row flex-col justify-center items-center md:justify-between my-2">
                         <p>Player #</p>
 
@@ -154,7 +158,7 @@ function Token() {
                             type="text"
                             name=""
                             id=""
-                            className="w-[3rem] rounded-md border px-1 text-center"
+                            className="w-[3rem] rounded-md border px-1 text-center border border-zinc-500 dark:border-zinc-400"
                           />
                         </div>
                       </div>
@@ -164,10 +168,10 @@ function Token() {
                           type="text"
                           name=""
                           id=""
-                          className="w-[3rem] rounded-md border px-1 text-center"
+                          className="w-[3rem] rounded-md border px-1 text-center border border-zinc-500 dark:border-zinc-400"
                         />
                       </div>
-                      <Button variant="transfer" className="w-full h-8 px-4 mt-2 py-2">
+                      <Button variant="secondary" className="w-full h-8 px-4 mt-2 py-2 text-xl">
                         Transfer
                       </Button>
                     </div>
