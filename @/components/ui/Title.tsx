@@ -30,7 +30,7 @@ const nightPhrase = [
   'attack is the best defence',
 ]
 
-const title = {
+const title: Record<any, string> = {
   whitelist: 'Join the whitelist to buy your ticket early',
   beginnings: 'Come on up to get your ticket',
   countdown: countdownPhrase[Math.floor(Math.random() * countdownPhrase.length)],

@@ -20,12 +20,12 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['phase'], string> = {
-  beginnings: 'City.svg',
-  countdown: 'City.svg',
+  start: 'City.svg',
   day: 'Desert.svg',
-  dusk: 'Dusk.svg',
   night: 'Night.avif',
   lastmanfound: 'Snow.avif',
+  drain: 'Drain.svg',
+  peacefound: 'Peace.svg',
 }
 
 type LayoutProps = {

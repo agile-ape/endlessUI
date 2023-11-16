@@ -1,12 +1,6 @@
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import BeginningsScreen from '@/components/screen/BeginningsScreen'
-import { useStoreState } from '../store'
 import type { IApp } from '../types/app'
-import DayScreen from '@/components/screen/DayScreen'
-import DuskScreen from '@/components/screen/DuskScreen'
-import NightScreen from '@/components/screen/NightScreen'
-import CountdownScreen from '@/components/screen/CountdownScreen'
-import LastManScreen from '@/components/screen/LastManScreen'
+import Screen from '@/components/screen/Screen'
 import type { MetaProps } from '@/components/Metadata'
 
 type Props = {
@@ -16,16 +10,7 @@ type Props = {
 }
 
 const Home = ({ phase, theme }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  // const screen: Record<IApp['phase'], JSX.Element> = {
-  //   beginnings: <BeginningsScreen />,
-  //   countdown: <CountdownScreen />,
-  //   day: <DayScreen />,
-  //   dusk: <DuskScreen />,
-  //   night: <NightScreen />,
-  //   lastmanfound: <LastManScreen />,
-  // }
-
-  return <DayScreen />
+  return <Screen />
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
@@ -39,14 +24,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const phase: IApp['phase'] = result?.message || 'beginnings'
 
   const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
-    beginnings: 'dark',
-    countdown: 'dark',
+    start: 'light',
     day: 'light',
     night: 'dark',
-    dusk: 'dark',
     lastmanfound: 'dark',
-    // drain: 'dark',
-    // peacefound: 'light',
+    drain: 'dark',
+    peacefound: 'light',
   }
 
   return {

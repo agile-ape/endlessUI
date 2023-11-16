@@ -20,7 +20,7 @@ const GameFeedButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button variant="dropdown" className="text-lg rounded-xl h-10 px-4 py-2">
+        <Button variant="default" className="text-lg rounded-xl h-10 px-4 py-2">
           Recent Plays
         </Button>
       </DropdownMenuTrigger>

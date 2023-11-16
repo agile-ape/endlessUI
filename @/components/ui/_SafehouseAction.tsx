@@ -23,7 +23,7 @@ function SafehouseAction() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive" className="w-full text-2xl">
+        <Button variant="default" className="w-full text-2xl">
           Safehouse
         </Button>
       </DialogTrigger>
@@ -92,7 +92,7 @@ function SafehouseAction() {
                     <Button className="" variant="submit">
                       Checked In on Round 1
                     </Button>
-                    <Button className="" variant="destructive">
+                    <Button className="" variant="default">
                       Checked Out
                     </Button>
                   </>

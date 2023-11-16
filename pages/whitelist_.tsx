@@ -120,7 +120,7 @@ const Whitelist: NextPage = () => {
           <Button
             disabled={!write || isAddressWhitelisted}
             size="lg"
-            variant="ghost"
+            variant="default"
             onClick={() => write()}
             isLoading={isLoading && !isAddressWhitelisted}
           >

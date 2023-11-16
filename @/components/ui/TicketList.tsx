@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 
-import TicketCardOld from './_TicketCard'
-import TicketCard from './TicketCard'
-import AllPrize from './_AllPrize'
-import PrizeInfo from './_PrizeInfo'
 import { Button } from './button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
-import { HelpCircle, Gem, Users } from 'lucide-react'
-import Link from 'next/link'
+import { Gem, Users } from 'lucide-react'
 import TicketUI from './TicketUI'
-import { useStoreActions, useStoreState } from '../../../store'
+import { useStoreState } from '../../../store'
 import { useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
-import GameFeedButton from './_GameFeedButton'
-import CompletionModal from './CompletionModal'
 
 type TicketListType = {
   stage: string
@@ -154,7 +145,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
       </summary>
 
-      {totalTicketCount === 0 && (
+      {!totalTicketCount && (
         <div className="flex flex-col justify-center">
           <div className="flex items-center place-content-center">
             <div className="relative">
@@ -183,7 +174,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
       )}
 
-      {totalTicketCount !== 0 && (
+      {totalTicketCount && (
         <div
           className="
             flex

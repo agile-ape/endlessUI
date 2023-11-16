@@ -13,6 +13,7 @@ import { Send, CheckCircle2 } from 'lucide-react'
 
 import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
+import { DialogClose } from '@radix-ui/react-dialog'
 
 interface CompletionModalType {
   emittedEvent: string
@@ -129,7 +130,7 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger>
         {/* Button to click on */}
         <Button variant="transfer" className="w-full text-2xl">
           Check Modal
@@ -147,7 +148,6 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
         >
           <div className="rounded-t-sm">
             <div className="flex flex-col justify-center gap-1 items-center pt-5">
-              {/* <CheckCircle2 size={24} className="text-green-800 w-[1.4rem]" /> */}
               <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
                 {title}
               </p>
@@ -156,36 +156,24 @@ const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
                 src={`/faces/${face}.png`}
                 height={152}
                 width={152}
-                // fill={true}
-                // sizes="max-width:150px"
-                // className={mt}
-                // layout="fixed"
                 alt={`${face} pepe`}
               />
             </div>
-
-            {/* <div 
-            //   className="w-[8rem] h-[8rem] rounded-full mx-auto relative -bottom-4"
-            //   style={{
-            //     backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
-            //     backgroundRepeat: 'no-repeat',
-            //     backgroundSize: 'cover',
-            //   }}
-            >
-            </div> */}
           </div>
 
-          <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
-            <div className="text-black text-xl my-4">{message}</div>
-            <div className="flex justify-center mb-4">
-              <Button
-                variant="primary"
-                className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
-              >
-                Continue
-              </Button>
+          <DialogClose className="flex justify-center w-full">
+            <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
+              <div className="text-black text-xl my-4">{message}</div>
+              <div className="flex justify-center mb-4">
+                <Button
+                  variant="primary"
+                  className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
+                >
+                  Continue
+                </Button>
+              </div>
             </div>
-          </div>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>

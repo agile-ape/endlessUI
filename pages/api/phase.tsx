@@ -9,12 +9,12 @@ type ResponseData = {
 }
 
 const stagePayload: Record<number, IApp['phase']> = {
-  0: 'beginnings',
-  1: 'countdown',
-  2: 'day',
-  3: 'dusk',
-  4: 'night',
-  5: 'lastmanfound',
+  0: 'start',
+  1: 'day',
+  2: 'night',
+  3: 'lastmanfound',
+  4: 'peacefound',
+  5: 'drain',
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {

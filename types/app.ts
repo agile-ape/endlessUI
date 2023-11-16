@@ -6,7 +6,7 @@ interface Ticket {
 }
 
 interface IApp {
-  phase: 'beginnings' | 'countdown' | 'day' | 'dusk' | 'night' | 'lastmanfound'
+  phase: 'start' | 'day' | 'night' | 'lastmanfound' | 'peacefound' | 'drain'
   round: number
   ticketState: 'default' | 'checked' | 'checkin' | 'dead' | 'redeemed' | 'beforeBuy'
   id: bigint

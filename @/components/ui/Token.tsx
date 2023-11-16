@@ -52,21 +52,23 @@ function Token() {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="shrink-0">
         {/* Button to click on */}
         {/* <Button variant="splitPot" className="w-full text-xl">
           Split Pot
           <Split size={16} className="text-sm ml-1"></Split>
         </Button> */}
-        <div className="flex justify-center items-center border border-transparent rounded-full px-2 sm:px-3 py-0 sm:py-1 hover:border-zinc-300 hover:bg-zinc-200/50 hover:cursor-pointer">
+
+        <div className="flex items-center border border-transparent rounded-full px-2 sm:px-3 py-0 sm:py-1 hover:border-zinc-300 hover:bg-zinc-200/50 hover:cursor-pointer">
           <Image
             priority
             src="/logo/token.svg"
-            height={32}
-            width={32}
-            alt="$last token"
-            className="shrink-0 inline mr-2"
+            height={30}
+            width={30}
+            alt="last token"
+            className="shrink-0 mr-2"
           />
+
           <span className="text-lg sm:text-xl font-whitrabt">200</span>
         </div>
       </DialogTrigger>

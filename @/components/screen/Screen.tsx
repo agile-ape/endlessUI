@@ -13,7 +13,7 @@ import GameStats from '../ui/_GameStats'
 import Indicator from '../ui/Indicator'
 import UserActions from '../ui/UserActions'
 
-export default function DayScreen() {
+export default function Screen() {
   const { isConnected } = useAccount()
 
   const { data } = useContractReads({
@@ -41,56 +41,6 @@ export default function DayScreen() {
   }
 
   return (
-    // <div className="container mx-auto py-[26px] flex flex-col gap-7 mt-7">
-    //   <div className="text-center">
-    //     <p className="text-xl text-black"> Day </p>
-    //     <Round />
-    //     <Title stageType={'day'} />
-    //     <AllPrize />
-    //   </div>
-    //   <GameTab />
-    //   <UserActions />
-    //   <Countdown countdownTime={countdownTime} timeFlag={timeFlag} />
-    //   {/* <CheckIn /> */}
-    //   <NextClaim />
-    //   <TicketList stage="beginning" />
-    // </div>
-
-    // <div className="flex flex-col h">
-    //   <div className="text-center">
-    //     <Round />
-    //     <p className="text-3xl font-headline uppercase day-last my-2"> Day </p>
-    //     <Countdown timeFlag={timeFlag} countdownTime={countdownTime} />
-
-    //     {/* <Title stageType={'countdown'} /> */}
-    //     {/* <div className="flex justify-center items-center text-sm container-last">
-    //       <AllPrize />
-    //     </div> */}
-    //     <div className="">
-    //       <GameStats />
-    //     </div>
-    //   </div>
-
-    //   <div className="flex flex-col lg:flex-row gap-8 xl:mx-[70px] mb-8">
-    //     <div>
-    //       <div
-    //         className="flex flex-col items-center gap-3 rounded-xl px-4 py-2
-    //       container-last"
-    //       >
-    //         <GameTab />
-    //         <UserActions />Day
-    //       </div>
-    //     </div>
-
-    //     <div
-    //       className="grow rounded-xl py-2
-    //     container-last"
-    //     >
-    //       <TicketList stage="beginning" />
-    //     </div>
-    //   </div>
-    // </div>
-
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
         {/* <p className="text-xl">Game: Pilot</p> */}
@@ -113,7 +63,7 @@ export default function DayScreen() {
       {/* </div> */}
       {/* bottom container */}
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last">
+        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
           <GameTab />
         </div>
 
