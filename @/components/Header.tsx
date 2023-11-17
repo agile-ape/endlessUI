@@ -22,9 +22,18 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useAccount } from 'wagmi'
 import CompletionModal from './ui/CompletionModal'
+import { cn } from '@/lib/utils'
+import { useRouter } from 'next/router'
 
 function Header() {
   const { isConnected } = useAccount()
+
+  const router = useRouter()
+
+  const isActive = (href: string) => {
+    return router.pathname === href
+  }
+
   return (
     <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
       <div className="flex justify-start order-1">
@@ -38,17 +47,16 @@ function Header() {
       </div> */}
 
       <div className="flex justify-self-end gap-3 order-3">
-        <CompletionModal emittedEvent={'beforePurchase'} />
         <div className="flex justify-self-end xl:hidden order-4">
           <SideMenu />
         </div>
         <div className="hidden xl:flex items-center">
           {/* custom styling */}
           <Link
-            className="px-2
-            text-xl text-zinc-700 dark:text-zinc-200
-            hover:text-neutral-900 
-            dark:hover:text-zinc-50 border border-white/40 rounded-md py-1 px-3 mx-2 flex items-center"
+            className={cn(
+              `px-2 text-xl text-zinc-700 dark:text-zinc-200 hover:text-neutral-900 dark:hover:text-zinc-50 border border-white/40 rounded-md py-1 px-3 mx-2 flex items-center`,
+              isActive('/quickstart') && 'bg-red-900', //example of active class link
+            )}
             href="/quickstart"
           >
             Quickstart
