@@ -16,6 +16,13 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Button } from './button'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
 import Image from 'next/image'
 import { Split, AlertTriangle, ExternalLink } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
@@ -24,10 +31,21 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useStoreActions, useStoreState } from '../../../store'
 
 function Token() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
-  const phase = useStoreState((state) => state.phase)
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // const phase = useStoreState((state) => state.phase)
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
+  const { address, isConnected } = useAccount()
+
+  // const { data: balanceOf } = useContractRead({
+  //   ...tokenContractObj,
+  //   functionName: 'balanceOf',
+  //   args: [address as `0x${string}`],
+  // })
+
+  // const tokenBalance = balanceOf / priceConversion
+  const tokenBalance = 200
 
   //   if (isDisabled)
   //     return (
@@ -69,7 +87,7 @@ function Token() {
             className="shrink-0 mr-2"
           />
 
-          <span className="text-lg sm:text-xl font-whitrabt">200</span>
+          <span className="text-lg sm:text-xl font-whitrabt">{tokenBalance}</span>
         </div>
       </DialogTrigger>
 
@@ -120,13 +138,13 @@ function Token() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
                       <p className="text-left">$LAST tokens in wallet</p>
-                      <p className="text-right"> 200 </p>
+                      <p className="text-right"> {tokenBalance} </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
+                    {/* <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">$LAST price</p>
                       <p className="text-right"> 3 ETH </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 {/* 2 columns */}

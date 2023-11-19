@@ -30,20 +30,21 @@ export const appStore = createStore<StoreModel>({
   nextTicketPrice: 1 * 1e16,
   increaseInPrice: 1 * 1e16,
   ticketsAvailableAtCurrentPrice: 10,
-  ticketsIncreaseMultiple: 2,
+  // ticketsIncreaseMultiple: 2,
+  ticketsCounter: 1,
 
   voteThreshold: 50,
   totalPot: 0,
   currentPot: 0,
-  drainPot: 0,
-  potToSplit: 0,
+  // drainPot: 0,
+  // potToSplit: 0,
   // sumReciprocal
   prizeFactor: 0, // what last man gets
   // lastMan
   // feePool
-  nextPot: 0,
+  // nextPot: 0,
   voteCount: 0,
-  // rankShare
+  rankShare: 0,
 
   /*-- time is seconds ----*/
   countdownTime: 216000,
@@ -66,7 +67,7 @@ export const appStore = createStore<StoreModel>({
   drainSwitch: false,
   amountDrained: 0,
   drainStart: 0,
-  drainPerRound: 0,
+  // drainPerRound: 0,
 
   // totalPrizePool: 0,
   // nextPrizeAmount: 0,
@@ -122,9 +123,9 @@ export const appStore = createStore<StoreModel>({
     state.ticketsAvailableAtCurrentPrice = payload
   }),
 
-  updateTicketsIncreaseMultiple: action((state, payload) => {
-    state.ticketsIncreaseMultiple = payload
-  }),
+  // updateTicketsIncreaseMultiple: action((state, payload) => {
+  //   state.ticketsIncreaseMultiple = payload
+  // }),
 
   updateVoteThreshold: action((state, payload) => {
     state.voteThreshold = payload
@@ -138,13 +139,13 @@ export const appStore = createStore<StoreModel>({
     state.currentPot = payload
   }),
 
-  updateDrainPot: action((state, payload) => {
-    state.drainPot = payload
-  }),
+  // updateDrainPot: action((state, payload) => {
+  //   state.drainPot = payload
+  // }),
 
-  updatePotToSplit: action((state, payload) => {
-    state.potToSplit = payload
-  }),
+  // updatePotToSplit: action((state, payload) => {
+  //   state.potToSplit = payload
+  // }),
 
   // sumReciprocal
   updatePrizeFactor: action((state, payload) => {
@@ -153,9 +154,9 @@ export const appStore = createStore<StoreModel>({
   // what last man gets
   // lastMan
   // feePool
-  updateNextPot: action((state, payload) => {
-    state.nextPot = payload
-  }),
+  // updateNextPot: action((state, payload) => {
+  //   state.nextPot = payload
+  // }),
 
   updateVoteCount: action((state, payload) => {
     state.voteCount = payload
@@ -226,9 +227,9 @@ export const appStore = createStore<StoreModel>({
     state.drainStart = payload
   }),
 
-  updateDrainPerRound: action((state, payload) => {
-    state.drainPerRound = payload
-  }),
+  // updateDrainPerRound: action((state, payload) => {
+  //   state.drainPerRound = payload
+  // }),
 
   // // PREVIOUS
   // updateTotalPrizePool: action((state, payload) => {

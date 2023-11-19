@@ -19,20 +19,21 @@ interface StoreModel {
   nextTicketPrice: IApp['nextTicketPrice']
   increaseInPrice: IApp['increaseInPrice']
   ticketsAvailableAtCurrentPrice: IApp['ticketsAvailableAtCurrentPrice']
-  ticketsIncreaseMultiple: IApp['ticketsIncreaseMultiple']
+  // ticketsIncreaseMultiple: IApp['ticketsIncreaseMultiple']
+  ticketsCounter: IApp['ticketsCounter']
 
   voteThreshold: IApp['voteThreshold']
   totalPot: IApp['totalPot']
   currentPot: IApp['currentPot']
-  drainPot: IApp['drainPot']
-  potToSplit: IApp['potToSplit']
+  // drainPot: IApp['drainPot']
+  // potToSplit: IApp['potToSplit']
   // sumReciprocal
   prizeFactor: IApp['prizeFactor'] // what last man gets
   // lastMan
   // feePool
-  nextPot: IApp['nextPot']
+  // nextPot: IApp['nextPot']
   voteCount: IApp['voteCount']
-  // rankShare
+  rankShare: IApp['rankShare']
 
   countdownTime: IApp['countdownTime']
   timeAddon: IApp['timeAddon']
@@ -54,7 +55,7 @@ interface StoreModel {
   drainSwitch: IApp['drainSwitch']
   amountDrained: IApp['amountDrained']
   drainStart: IApp['drainStart']
-  drainPerRound: IApp['drainPerRound']
+  // drainPerRound: IApp['drainPerRound']
 
   // // PREVIOUS
   // totalPrizePool: IApp['totalPrizePool']
@@ -77,18 +78,18 @@ interface StoreModel {
   updateNextTicketPrice: Action<StoreModel, number>
   updateIncreaseInPrice: Action<StoreModel, number>
   updateTicketsAvailableAtCurrentPrice: Action<StoreModel, number>
-  updateTicketsIncreaseMultiple: Action<StoreModel, number>
+  // updateTicketsIncreaseMultiple: Action<StoreModel, number>
 
   updateVoteThreshold: Action<StoreModel, number>
   updateTotalPot: Action<StoreModel, number>
   updateCurrentPot: Action<StoreModel, number>
-  updateDrainPot: Action<StoreModel, number>
-  updatePotToSplit: Action<StoreModel, number>
+  // updateDrainPot: Action<StoreModel, number>
+  // updatePotToSplit: Action<StoreModel, number>
   // sumReciprocal
   updatePrizeFactor: Action<StoreModel, number> // what last man gets
   // lastMan
   // feePool
-  updateNextPot: Action<StoreModel, number>
+  // updateNextPot: Action<StoreModel, number>
   updateVoteCount: Action<StoreModel, number>
   // rankShare
 
@@ -112,7 +113,7 @@ interface StoreModel {
   updateDrainSwitch: Action<StoreModel, boolean>
   updateAmountDrained: Action<StoreModel, number>
   updateDrainStart: Action<StoreModel, number>
-  updateDrainPerRound: Action<StoreModel, number>
+  // updateDrainPerRound: Action<StoreModel, number>
 
   // insertKeyword: Action<StoreModel, string>
   // // PREVIOUS

@@ -197,8 +197,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'enter',
           id: nextTicketId,
           status: 'next ticket',
-          label: 'price',
-          value: nextTicketPrice + ' ETH',
+          label: 'bounty',
+          value: ' - ',
         }
       case 'afterPurchase':
         return {
@@ -353,7 +353,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   }
 
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
-    <Sword size={16} className="text-black"></Sword>
+    <Sword key={index} size={16} className="text-black"></Sword>
   ))
 
   return (
@@ -469,7 +469,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             ticketLookTest == 'inSafehouse' ||
             ticketLookTest == 'killed' ||
             ticketLookTest == 'exitGame'
-          ) && <Attack />}
+          ) && <Attack id={ticketId} />}
 
           {ownTicket == false && ticketLookTest == 'inSafehouse' && <KickOut />}
           {ownTicket == true && ticketLookTest == 'inSafehouse' && <CheckOut />}

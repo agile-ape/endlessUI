@@ -13,6 +13,12 @@ export const defaultContractObj = {
   abi: LAST_MAN_STANDING_ABI,
 }
 
+// token contract object - need to update contract
+// export const tokenContractObj = {
+//   address: LAST_MAN_STANDING_ADDRESS,
+//   abi: LAST_MAN_STANDING_ABI,
+// }
+
 export const whitelistContractObj = {
   address: isDevelopment ? WHITELIST_DEV_ADDRESS : WHITELIST_PROD_ADDRESS,
   abi: WHITELIST_ABI,

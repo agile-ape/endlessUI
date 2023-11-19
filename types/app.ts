@@ -26,6 +26,7 @@ interface IApp {
   increaseInPrice: number
   ticketsAvailableAtCurrentPrice: number
   ticketsIncreaseMultiple: number
+  ticketsCounter: number
 
   voteThreshold: number
   totalPot: number
@@ -38,7 +39,7 @@ interface IApp {
   // feePool
   nextPot: number
   voteCount: number
-  // rankShare
+  rankShare: number
 
   countdownTime: number
   timeAddon: number

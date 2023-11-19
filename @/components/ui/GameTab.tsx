@@ -27,13 +27,13 @@ import { toast } from './use-toast'
 import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
 
-type GameTabType = {
-  onBuy?: () => Promise<void>
-  // isCouldBuyTicket: boolean
-}
+// type GameTabType = {
+//   onBuy?: () => Promise<void>
+//   // isCouldBuyTicket: boolean
+// }
 
-const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
-  const [defaultView, setdefaultView] = useState<string>('ticket')
+const GameTab = () => {
+  // const [defaultView, setdefaultView] = useState<string>('ticket')
 
   // const handleViewChange = useEffect(() => {
   //   setdefaultView(isConnected ? 'ticket' : 'game')
@@ -41,16 +41,6 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
   // })
 
   // console.log(defaultView)
-  const { address, isConnected } = useAccount({
-    // onConnect() {
-    //   setdefaultView('ticket')
-    // },
-    // onDisconnect() {
-    //   setdefaultView('game')
-    // },
-  })
-
-  const tabDefaultValue = isConnected ? 'ticket' : 'game'
 
   // const { playerAddress, isConnected } = useAccount()
   // const { data: playerAddress } = useContractRead({
@@ -65,34 +55,15 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
   //   args: [playerAddress as `0x${string}`],
   // })
 
-  const { data: walletClient } = useWalletClient()
+  // const { data: walletClient } = useWalletClient()
+  // const { signMessageAsync } = useSignMessage({})
 
-  const { signMessageAsync } = useSignMessage({})
+  // const { writeAsync } = useContractWrite({
+  //   ...defaultContractObj,
+  //   functionName: 'checkIn',
+  // })
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
-
-  const id = playerTicket?.[0] || BigInt(0)
-  const nextTicketPrice = BigInt(2)
-
-  // console.log(Number(ticketId));
-
-  // const phase = useStoreState((state) => state.phase)
-  const phase = 'countdown'
-
-  const nextPrizeAmount = useStoreState((state) => state.nextPrizeAmount)
-  const totalPrizePool = useStoreState((state) => state.totalPrizePool)
-
-  //  add buyTicket logic
-
-  const { writeAsync } = useContractWrite({
-    ...defaultContractObj,
-    functionName: 'checkIn',
-  })
-
+  /*--- Buy ticket not done here-------
   const onSubmit = async (input: string) => {
     console.log({ input })
     try {
@@ -122,6 +93,24 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
     }
   }
 
+  ---*/
+
+  const { address, isConnected } = useAccount()
+
+  // for individual player, we call their status here?
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  const id = playerTicket?.[0] || BigInt(0)
+
+  const phase = useStoreState((state) => state.phase)
+  const ticketId = useStoreState((state) => state.ticketId)
+
+  const tabDefaultValue = isConnected ? 'ticket' : 'game'
+
   return (
     // <div className="flex flex-col items-center justify-center">
     <Tabs defaultValue={tabDefaultValue} className="w-[240px] mx-auto">
@@ -140,13 +129,14 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {Number(id) === 0 && phase === 'countdown' && (
+            {/* next ticket info */}
+            {Number(id) === 0 && phase === 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
                 <TicketUI
                   ownTicket={true}
-                  ticketNumber={nextTicketPrice}
-                  ticketLookInput={'inSafehouse'}
+                  ticketNumber={ticketId}
+                  ticketLookInput={'beforePurchase'}
                 />
                 <BuyTicket />
                 {/* <ExitGame /> */}
@@ -154,7 +144,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
             )}
 
             {/* if you have a ticket and not day */}
-            {Number(id) === 0 && phase !== 'countdown' && (
+            {Number(id) === 0 && phase !== 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">You</div>
                 <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'attackedButSafu'} />

@@ -16,29 +16,29 @@ import UserActions from '../ui/UserActions'
 export default function Screen() {
   const { isConnected } = useAccount()
 
-  const { data } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'timeFlag',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'dayTime',
-      },
-    ],
-    enabled: isConnected,
-  })
+  // const { data } = useContractReads({
+  //   contracts: [
+  //     {
+  //       ...defaultContractObj,
+  //       functionName: 'timeFlag',
+  //     },
+  //     {
+  //       ...defaultContractObj,
+  //       functionName: 'dayTime',
+  //     },
+  //   ],
+  //   enabled: isConnected,
+  // })
 
-  let timeFlag = 0
-  let countdownTime = 0
+  // let timeFlag = 0
+  // let countdownTime = 0
 
-  if (data && data?.length > 0) {
-    timeFlag = Number(data[0]?.result)
-    countdownTime = Number(data[1]?.result) || 0
+  // if (data && data?.length > 0) {
+  //   timeFlag = Number(data[0]?.result)
+  //   countdownTime = Number(data[1]?.result) || 0
 
-    console.log('countdownTime', countdownTime)
-  }
+  //   console.log('countdownTime', countdownTime)
+  // }
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
@@ -49,7 +49,7 @@ export default function Screen() {
       {/* top container */}
       <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
         <Round />
-        <Countdown timeFlag={410000000} countdownTime={900000000} />
+        <Countdown />
         <Indicator />
       </div>
 

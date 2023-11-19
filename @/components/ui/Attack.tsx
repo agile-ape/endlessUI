@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
+import type { FC } from 'react'
+
 import { LogOut, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
@@ -27,13 +29,23 @@ import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
 
 import { useStoreActions, useStoreState } from '../../../store'
+import { priceConversion } from '@/lib/utils'
 
-function Attack() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+type AttackType = {
+  id: number
+}
+
+// pass id as argument into the write function
+
+const Attack: FC<AttackType> = ({ id }) => {
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const tokensPerAttack = useStoreState((state) => state.tokensPerAttack)
+  const isAttackTime = useStoreState((state) => state.isAttackTime)
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
+  const tokensPerAttackConverted = tokensPerAttack / priceConversion
   // const {write, isLoading} = useContractWrite({
   //   ...defaultContractObj,
   //   functionName:'checkTicket',
@@ -117,8 +129,8 @@ function Attack() {
                   <p className="mb-2">You kill the player if the submitted keyword is wrong.</p>
                   <div className="flex mb-2 border rounded-lg border-zinc-800 dark:border-zinc-200 py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-                    Player's value does not go to the killer. It goes to the player before him - if
-                    #4 is killed, all his value goes to #3
+                    Killed player value does not go to the killer. It goes to the player before him
+                    - if #4 is killed, all his value goes to #3
                   </div>
                   <p className="mb-2">
                     Each check earns you some $LAST during{' '}
@@ -139,11 +151,11 @@ function Attack() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">$LAST per check</p>
-                      <p className="text-right"> 6</p>
+                      <p className="text-right"> {tokensPerAttackConverted}</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Player's value</p>
+                      <p className="text-left">Player value</p>
                       <p className="text-right"> 30 ETH</p>
                     </div>
 

@@ -19,14 +19,43 @@ import { Button } from './button'
 import Image from 'next/image'
 import { LogOut, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
 
 function ExitGame() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const ticketCount = useStoreState((state) => state.ticketCount)
+  const giveUpCount = useStoreState((state) => state.giveUpCount)
+  const killedCount = useStoreState((state) => state.killedCount)
+  const rankShare = useStoreState((state) => state.rankShare)
+  const prizeFactor = useStoreState((state) => state.prizeFactor)
+
+  // nextClaim adjusted for phases
+  const { data: nextClaim } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'rankClaim',
+    args: [ticketCount],
+  })
+
+  let exitRank: number
+
+  if (phase === 'peacefound' || phase === 'drain') {
+    exitRank = rankShare
+  } else {
+    exitRank = ticketCount
+  }
+
   const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
 
   // if (isDisabled)
@@ -60,7 +89,7 @@ function ExitGame() {
           variant="exit"
           className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
         >
-          Exit Game
+          Exit Game and claim {nextClaim} ETH
         </Button>
       </DialogTrigger>
 
@@ -122,16 +151,37 @@ function ExitGame() {
                   Saying Goodbye?
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[300px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Next claim amount</p>
-                      <p className="text-right"> 5 ETH </p>
+                      <p className="text-left">Exit rank/Exit claim now</p>
+                      <p className="text-right">
+                        {' '}
+                        {exitRank}/{nextClaim} ETH{' '}
+                      </p>
+                    </div>
+
+                    {/* <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Rank if exit now</p>
+                      <p className="text-right">  </p>
+                    </div> */}
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Players left</p>
+                      <p className="text-right"> {ticketCount} </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Rank if exit now</p>
-                      <p className="text-right"> 3 </p>
+                      <p className="text-left">Not in play (give up/killed) </p>
+                      <p className="text-right">
+                        {' '}
+                        {ticketCount} ({giveUpCount}/{killedCount})
+                      </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Last Man can claim</p>
+                      <p className="text-right"> {prizeFactor} ETH </p>
                     </div>
                   </div>
                   {!isDisabled && (

@@ -122,7 +122,7 @@ function Quickstart() {
                       Join with a buddy - Both of you receive more $LAST when attacking players
                     </li>
                     <li className="mb-2">
-                      30% of fee is kept on player's ticket / 60% goes to a pot / 10% goes to team
+                      30% of fee is kept on player ticket / 60% goes to a pot / 10% goes to team
                     </li>
                   </ul>
                 </div>
@@ -143,7 +143,7 @@ function Quickstart() {
                   <ul className="list-disc ml-5 text-lg">
                     <li className="mb-2">Your game status is represented by a play ticket</li>
                     <li className="mb-2">Pepe changes depending on your status</li>
-                    <li className="mb-2">Hover on each player's ticket to see their stats</li>
+                    <li className="mb-2">Hover on each player ticket to see their stats</li>
                   </ul>
                 </div>
               </div>

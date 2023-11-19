@@ -187,7 +187,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   return (
     <main
-      className={`${font.className} bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
+      className={`font-VT323 bg-cover bg-center bg-no-repeat bg-fixed min-h-screen`}
       style={{
         backgroundImage: `url(/background/${background})`,
       }}

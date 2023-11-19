@@ -16,22 +16,45 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
 import { Button } from './button'
 import Image from 'next/image'
 import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucide-react'
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import Prompt from './Prompt'
-
+import { priceConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
+// import { tokenContractObj } from '../../../services/constant'
 
 function CheckIn() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
+  const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
+
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
 
   const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+
+  const { address, isConnected } = useAccount()
+
+  // const { data: balanceOf } = useContractRead({
+  //   ...tokenContractObj,
+  //   functionName: 'balanceOf',
+  //   args: [address as `0x${string}`],
+  // })
+
+  // const tokenBalance = balanceOf / priceConversion
+  const tokenBalance = 200
+
+  const stayCost = safehouseCostPerNight / priceConversion
 
   // if (isDisabled)
   //   return (
@@ -134,14 +157,14 @@ function CheckIn() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
                       <p className="text-left">$LAST in wallet</p>
-                      <p className="text-right"> 33 </p>
+                      <p className="text-right"> {tokenBalance} </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">
                         Price per night {'('}in $LAST{')'}
                       </p>
-                      <p className="text-right"> 2 </p>
+                      <p className="text-right"> {stayCost} </p>
                     </div>
                   </div>
 

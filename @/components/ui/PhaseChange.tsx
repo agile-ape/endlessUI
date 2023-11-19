@@ -19,15 +19,17 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
 import Prompt from './Prompt'
 
-type PhaseChangeType = {
-  phaseType: IApp['phase']
-}
+// type PhaseChangeType = {
+//   phaseType: IApp['phase']
+// }
 
 const mappedFunction: Record<string, string> = {
-  day: 'changeDayToDusk',
-  dusk: 'changeDuskToNight',
+  start: 'changeStartToDay',
+  day: 'changeDayToNight',
   night: 'changeNightToDay',
-  countdown: 'changeCountdownToDay',
+  lastmanfound: 'closeGame',
+  peacefound: 'closeGame',
+  drain: 'closeGame',
 }
 
 const bgColorPhase: Record<string, string> = {
@@ -43,7 +45,7 @@ const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
   // const phase = 'night'
   const { address, isConnected } = useAccount()
-  console.log({ phase: bgColorPhase[phase], phaseNow: phase })
+  // console.log({ phase: bgColorPhase[phase], phaseNow: phase })
 
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
@@ -54,7 +56,7 @@ const PhaseChange = () => {
     enabled: isConnected,
   })
 
-  const ticketSignature = (playerTicket?.[2] || 0) as `0x${string}`
+  // const ticketSignature = (playerTicket?.[2] || 0) as `0x${string}`
 
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
@@ -73,7 +75,7 @@ const PhaseChange = () => {
       toast({
         variant: 'success',
         // title: 'The phase has change',
-        description: 'Welcome to the Day!',
+        description: 'The phase has change!',
       })
     },
   })
@@ -132,6 +134,20 @@ const PhaseChange = () => {
                   </p>
                   <p className="mb-2">Would you help us usher in the new phase?</p>
                 </div>
+
+                {/* Pay for stay */}
+                {/* <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  Join us?
+                </div>
+
+                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Current phase</p>
+                      <p className="text-right capitalize"> {phase} </p>
+                    </div>
+                  </div>
+                </div> */}
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
                   {!isDisabled && (

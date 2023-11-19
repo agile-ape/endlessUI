@@ -19,16 +19,30 @@ import { Button } from './button'
 import Image from 'next/image'
 import { LogOut } from 'lucide-react'
 import Prompt from './Prompt'
-
+import { tokenConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 
 function BuyTicket() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
-  const phase = useStoreState((state) => state.phase)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
+  const increaseInPrice = useStoreState((state) => state.increaseInPrice)
+  const ticketsAvailableAtCurrentPrice = useStoreState(
+    (state) => state.ticketsAvailableAtCurrentPrice,
+  )
+  const ticketsCounter = useStoreState((state) => state.ticketsCounter)
+  const timeAddon = useStoreState((state) => state.timeAddon)
 
+  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+
+  // const phase = useStoreState((state) => state.phase)
   // const [value, setValue] = useState(0)
+
+  const nextTicketPriceConverted = nextTicketPrice / tokenConversion
+
+  const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
+
+  const nextPrice = (nextTicketPrice + increaseInPrice) / tokenConversion
 
   return (
     <Dialog>
@@ -38,7 +52,7 @@ function BuyTicket() {
           variant="enter"
           className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
         >
-          Buy for 0.05 ETH
+          Buy for {nextTicketPriceConverted} ETH
         </Button>
       </DialogTrigger>
 
@@ -105,13 +119,23 @@ function BuyTicket() {
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Next ticket price</p>
-                      <p className="text-right"> 0.5ETH </p>
+                      <p className="text-left">Current ticket price</p>
+                      <p className="text-right"> {nextTicketPriceConverted} ETH </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Tickets left at this price </p>
-                      <p className="text-right"> 30 </p>
+                      <p className="text-right"> {ticketsLeft} </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Next ticket price</p>
+                      <p className="text-right"> {nextPrice} ETH </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className="text-left">Time add on per joiner </p>
+                      <p className="text-right"> {timeAddon} secs </p>
                     </div>
                   </div>
 

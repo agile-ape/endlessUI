@@ -22,14 +22,40 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
+import { tokenConversion } from '@/lib/utils'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
 function SplitIt() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
-  const phase = useStoreState((state) => state.phase)
+  // const [otpInput, setOtpInput] = React.useState<string>('')
+  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // const phase = useStoreState((state) => state.phase)
+  const round = useStoreState((state) => state.round)
+  const suddenDeath = useStoreState((state) => state.suddenDeath)
+  const currentPot = useStoreState((state) => state.currentPot)
+  const ticketCount = useStoreState((state) => state.ticketCount)
+  const voteCount = useStoreState((state) => state.voteCount)
+  const voteThreshold = useStoreState((state) => state.voteThreshold)
+  const amountDrained = useStoreState((state) => state.amountDrained)
+  const drainStart = useStoreState((state) => state.drainStart)
+  const drainSwitch = useStoreState((state) => state.drainSwitch)
+
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
+  const splitAmountPerPerson = currentPot / tokenConversion / ticketCount
+
+  const voteShare = voteCount / ticketCount
+
+  const amountDrainedConverted = amountDrained / tokenConversion
+
+  let stage: number
+  if (round < suddenDeath) {
+    stage = 1
+  } else if (round >= suddenDeath && round < drainStart && drainSwitch === false) {
+    stage = 2
+  } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
+    stage = 3
+  }
 
   // if (isDisabled)
   //   return (
@@ -129,22 +155,30 @@ function SplitIt() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Current pot</p>
-                      <p className="text-right"> 5 ETH </p>
+                      <p className="text-right"> {currentPot} ETH </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">If split now, each gets </p>
-                      <p className="text-right"> 3 ETH </p>
+                      <p className="text-right"> {splitAmountPerPerson} ETH </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left"> Yes votes</p>
-                      <p className="text-right"> 8 </p>
+                      <p className="text-left"> Yes votes / Yes share</p>
+                      <p className="text-right">
+                        {' '}
+                        {voteCount} / {voteShare}%
+                      </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Vote threshold</p>
-                      <p className="text-right"> 7 </p>
+                      <p className="text-right"> {voteThreshold}% </p>
+                    </div>
+
+                    <div className="flex text-lg justify-between gap-4">
+                      <p className={`text-left`}>Amount drained</p>
+                      <p className="text-right"> {amountDrainedConverted} ETH </p>
                     </div>
 
                     <div className="text-xl md:text-2xl lg:text-3xl m-1 mt-4 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">

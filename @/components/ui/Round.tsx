@@ -7,6 +7,7 @@ import { Badge } from './badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Triangle } from 'lucide-react'
 import Image from 'next/image'
+import { shareConversion } from '@/lib/utils'
 
 // type RoundType = {
 //   round: IApp['round']
@@ -19,7 +20,11 @@ const Round = () => {
   const suddenDeath = useStoreState((state) => state.suddenDeath)
   const drainStart = useStoreState((state) => state.drainStart)
   const drainSwitch = useStoreState((state) => state.drainSwitch)
+  const drainRate = useStoreState((state) => state.drainRate)
+  const minPotSize = useStoreState((state) => state.minPotSize)
 
+  const drainRateConverted = drainRate / shareConversion
+  const minPotSizeConverted = minPotSize / shareConversion
   /*---
   Stage 1: default when game starts
   Stage 2: round >= suddenDeath
@@ -43,7 +48,7 @@ const Round = () => {
   const On =
     'text-zinc-700 dark:text-white text-md sm:text-lg whitespace-nowrap font-medium tracking-wider'
   const Off =
-    'text-zinc-600 dark:text-zinc-800 text-xs sm:text-base whitespace-nowrap tracking-tight'
+    'text-zinc-600 dark:text-zinc-400 text-xs sm:text-base whitespace-nowrap tracking-tight'
 
   return (
     <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
@@ -87,7 +92,10 @@ const Round = () => {
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                <p>Pot begins to get drained at 10% per round</p>
+                <p>
+                  Pot begins to get drained at {drainRateConverted}% per round, until the pot is
+                  left with {minPotSizeConverted}% of pot size
+                </p>
               </p>
             </TooltipContent>
           </Tooltip>

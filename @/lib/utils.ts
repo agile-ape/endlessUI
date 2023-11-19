@@ -29,6 +29,10 @@ export const calculateTimeLeft = () => {
   return timeLeft
 }
 
+export const tokenConversion = 1e18
+export const shareConversion = 1000
+export const priceConversion = 1000
+
 export const transformToTicket = (ticket: any[]): IApp['tickets'] => {
   return ticket.map((t) => ({
     id: t.ticket_id,
