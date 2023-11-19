@@ -21,6 +21,10 @@ import { LogOut, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
+import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
+import { toast } from '@/components/ui/use-toast'
+import CompletionModal from './CompletionModal'
 
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -29,6 +33,29 @@ function Attack() {
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   const phase = useStoreState((state) => state.phase)
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+
+  // const {write, isLoading} = useContractWrite({
+  //   ...defaultContractObj,
+  //   functionName:'checkTicket',
+  //   onError(error) {
+  //     // @ts-ignore
+  //     const errorMsg = error?.cause?.shortMessage || error?.message
+  //     toast({
+  //       variant: 'destructive',
+  //       description: (
+  //         <div className="flex flex-row">
+  //           <AlertCircle size={24} className="mr-2 stroke-red-800" />
+  //           <span className="text-base">Reason: {errorMsg}</span>
+  //         </div>
+  //       ),
+  //     })
+  //   },
+  //   onSuccess(data) {
+  //     console.log('Success', data)
+  //     <CompletionModal alertLookTest={ }/>
+  //   },
+
+  // })
 
   return (
     <Dialog>

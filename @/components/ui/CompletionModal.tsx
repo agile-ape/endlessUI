@@ -16,13 +16,13 @@ import dynamic from 'next/dynamic'
 import { DialogClose } from '@radix-ui/react-dialog'
 
 interface CompletionModalType {
-  emittedEvent: string
+  alertLookTest: string
   //   children: React.ReactNode | null
 }
 
-const CompletionModal: React.FC<CompletionModalType> = ({ emittedEvent }) => {
+const CompletionModal: React.FC<CompletionModalType> = ({ alertLookTest }) => {
   // const alertLookTest: string = emittedEvent
-  const alertLookTest = 'attackedButSafe'
+  alertLookTest = 'attackedButSafe'
 
   const getAlertLook = (alertLookTest: string) => {
     switch (alertLookTest) {

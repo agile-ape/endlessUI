@@ -52,10 +52,11 @@ function Header() {
         </div>
         <div className="hidden xl:flex items-center">
           {/* custom styling */}
+          {/* border border-white/40 rounded-md */}
           <Link
             className={cn(
-              `px-2 text-xl text-zinc-700 dark:text-zinc-200 hover:text-neutral-900 dark:hover:text-zinc-50 border border-white/40 rounded-md py-1 px-3 mx-2 flex items-center`,
-              isActive('/quickstart') && 'bg-red-900', //example of active class link
+              `px-2 text-xl text-zinc-700 dark:text-zinc-200 hover:underline hover:text-neutral-900 dark:hover:text-zinc-50 py-1 px-3 mx-2 flex items-center`,
+              isActive('/quickstart') && 'underline', //example of active class link
             )}
             href="/quickstart"
           >

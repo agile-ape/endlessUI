@@ -323,7 +323,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       case 'killed':
         return {
           bgImage: 'deadOverlay',
-          header: 'bg-zinc-400/90',
+          header: 'bg-zinc-400/40',
           face: 'angry',
           id: ticketId,
           status: 'killed',
@@ -358,7 +358,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   return (
     <div
-      className={`flex flex-col mx-auto relative justify-center border border-blue-950 ${size} ${edge}`}
+      className={`flex flex-col mx-auto relative justify-center shadow-xl ${size} ${edge}`}
       style={{
         backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
         backgroundRepeat: 'no-repeat',

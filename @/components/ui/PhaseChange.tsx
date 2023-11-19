@@ -40,8 +40,8 @@ const bgColorPhase: Record<string, string> = {
 }
 
 const PhaseChange = () => {
-  // const phase = useStoreState((state) => state.phase)
-  const phase = 'night'
+  const phase = useStoreState((state) => state.phase)
+  // const phase = 'night'
   const { address, isConnected } = useAccount()
   console.log({ phase: bgColorPhase[phase], phaseNow: phase })
 

@@ -64,9 +64,9 @@ export default function SideMenu() {
           <Link
             className="px-2
             text-xl text-zinc-700 dark:text-zinc-200
-            hover:text-neutral-900 
+            hover:text-neutral-900 hover:underline 
             dark:hover:text-neutral-200 dark:hover:text-neutral-200 flex items-center"
-            href="/howtoplay"
+            href="/quickstart"
           >
             Quickstart
           </Link>

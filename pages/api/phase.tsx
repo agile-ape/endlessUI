@@ -27,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .catch(() => 0)
 
   const currentPhase = stagePayload[phase] || 'unknown'
+  console.log(currentPhase)
 
   res.status(200).json({
     // message: currentPhase,

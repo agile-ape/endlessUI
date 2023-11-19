@@ -20,12 +20,13 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['phase'], string> = {
-  start: 'City.svg',
-  day: 'Desert.svg',
-  night: 'Night.avif',
-  lastmanfound: 'Snow.avif',
+  start: 'Start.svg',
+  day: 'Day.svg',
+  night: 'Night.svg',
+  lastmanfound: 'LastManFound.svg',
   drain: 'Drain.svg',
-  peacefound: 'Peace.svg',
+  peacefound: 'PeaceFound.svg',
+  gameclosed: 'PeaceFound.svg', // undecided
 }
 
 type LayoutProps = {
@@ -37,13 +38,13 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
-  const updateTotalPrizePool = useStoreActions((actions) => actions.updateTotalPrizePool)
-  const updateNextPrizeAmount = useStoreActions((actions) => actions.updateNextPrizeAmount)
-  const updateTopPrize = useStoreActions((actions) => actions.updateTopPrize)
-  const updateBounty = useStoreActions((actions) => actions.updateBounty)
-  const updateCurrentTicketCount = useStoreActions((actions) => actions.updateCurrentTicketCount)
-  const updateTotalTicketCount = useStoreActions((actions) => actions.updateTotalTicketCount)
-  const updateSuddenDeathRound = useStoreActions((actions) => actions.updateSuddenDeathRound)
+  // const updateTotalPrizePool = useStoreActions((actions) => actions.updateTotalPrizePool)
+  // const updateNextPrizeAmount = useStoreActions((actions) => actions.updateNextPrizeAmount)
+  // const updateTopPrize = useStoreActions((actions) => actions.updateTopPrize)
+  // const updateBounty = useStoreActions((actions) => actions.updateBounty)
+  // const updateCurrentTicketCount = useStoreActions((actions) => actions.updateCurrentTicketCount)
+  // const updateTotalTicketCount = useStoreActions((actions) => actions.updateTotalTicketCount)
+  // const updateSuddenDeathRound = useStoreActions((actions) => actions.updateSuddenDeathRound)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   // const addTicket = useStoreActions((actions) => actions.addTicket)
 
@@ -156,22 +157,23 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const suddenDeath = data[8]?.result || 0
 
     // make all names consistent from this point out
-    updateRound(Number(round))
-    updatePhase(Number(2))
-    updateTotalPrizePool(Number(totalPrizePool))
-    updateNextPrizeAmount(Number(nextPrizeAmount))
-    updateTopPrize(Number(prizeFactor))
-    updateBounty(Number(bounty))
-    updateCurrentTicketCount(Number(ticketCount))
-    updateTotalTicketCount(Number(ticketId) - 1)
-    updateSuddenDeathRound(Number(suddenDeath))
+    updateRound(Number(0))
+    // updatePhase(Number(phase))
+    updatePhase(Number(1))
+    // updateTotalPrizePool(Number(totalPrizePool))
+    // updateNextPrizeAmount(Number(nextPrizeAmount))
+    // updateTopPrize(Number(prizeFactor))
+    // updateBounty(Number(bounty))
+    // updateCurrentTicketCount(Number(ticketCount))
+    // updateTotalTicketCount(Number(ticketId) - 1)
+    // updateSuddenDeathRound(Number(suddenDeath))
   }
 
   const refreshData = () => {
     router.replace(router.asPath)
   }
 
-  const background = router.pathname.includes('whitelist') ? 'Night.svg' : typeStage[phase]
+  const background = router.pathname.includes('quickstart') ? 'Default.svg' : typeStage[phase]
 
   useEffect(() => {
     ;(async () => {

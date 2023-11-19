@@ -9,57 +9,257 @@ const stagePayload: Record<number, IApp['phase']> = {
   3: 'lastmanfound',
   4: 'peacefound',
   5: 'drain',
+  6: 'gameclosed',
 }
 
 export const appStore = createStore<StoreModel>({
   phase: 'start',
-  ticketState: 'default',
+  ticketState: 'new',
+  // game:,
   round: 0,
-  totalPrizePool: 0,
-  nextPrizeAmount: 0,
-  topPrize: 0,
-  bounty: 0,
-  currentTicketCount: 0,
-  totalTicketCount: 0,
-  suddenDeathRound: 0, //if this value doesn't change, how should we call it?
 
-  insertKeyword: action((state, payload) => {
-    console.log('insertKeyword', payload)
-  }),
+  // randNumber:,
+  isAttackTime: false,
+
+  ticketId: 1,
+  ticketCount: 0,
+  giveUpCount: 0,
+  killedCount: 0,
+  // leaderboard
+
+  nextTicketPrice: 1 * 1e16,
+  increaseInPrice: 1 * 1e16,
+  ticketsAvailableAtCurrentPrice: 10,
+  ticketsIncreaseMultiple: 2,
+
+  voteThreshold: 50,
+  totalPot: 0,
+  currentPot: 0,
+  drainPot: 0,
+  potToSplit: 0,
+  // sumReciprocal
+  prizeFactor: 0, // what last man gets
+  // lastMan
+  // feePool
+  nextPot: 0,
+  voteCount: 0,
+  // rankShare
+
+  /*-- time is seconds ----*/
+  countdownTime: 216000,
+  timeAddon: 60,
+  roundTime: 3600,
+  // dayShare
+  // nightShare
+  // levelUp
+  suddenDeath: 3,
+  gameCloseTime: 3600,
+  timeFlag: 0,
+  dayTime: 1800,
+  nightTime: 1800,
+
+  safehouseCostPerNight: 2000,
+  tokensPerAttack: 1000,
+
+  drainRate: 100,
+  minPotSize: 200,
+  drainSwitch: false,
+  amountDrained: 0,
+  drainStart: 0,
+  drainPerRound: 0,
+
+  // totalPrizePool: 0,
+  // nextPrizeAmount: 0,
+  // topPrize: 0,
+  // bounty: 0,
+  // currentTicketCount: 0,
+  // totalTicketCount: 0,
+  // suddenDeath: 0, //if this value doesn't change, how should we call it?
+
+  // insertKeyword: action((state, payload) => {
+  //   console.log('insertKeyword', payload)
+  // }),
+
   updatePhase: action((state, payload) => {
     state.phase = stagePayload[payload]
   }),
+
   updateRound: action((state, payload) => {
     state.round = payload
   }),
-  updateTotalPrizePool: action((state, payload) => {
-    state.totalPrizePool = payload
+
+  updateIsAttackTime: action((state, payload) => {
+    state.isAttackTime = payload
   }),
-  updateNextPrizeAmount: action((state, payload) => {
-    state.nextPrizeAmount = payload
+
+  updateTicketId: action((state, payload) => {
+    state.ticketId = payload
   }),
-  updateTopPrize: action((state, payload) => {
-    state.topPrize = payload
+
+  updateTicketCount: action((state, payload) => {
+    state.ticketCount = payload
   }),
-  updateBounty: action((state, payload) => {
-    state.bounty = payload
+
+  updateGiveUpCount: action((state, payload) => {
+    state.giveUpCount = payload
   }),
-  updateCurrentTicketCount: action((state, payload) => {
-    state.currentTicketCount = payload
+
+  updateKilledCount: action((state, payload) => {
+    state.killedCount = payload
   }),
-  updateTotalTicketCount: action((state, payload) => {
-    state.totalTicketCount = payload
+
+  // leaderboard
+
+  updateNextTicketPrice: action((state, payload) => {
+    state.nextTicketPrice = payload
   }),
-  updateSuddenDeathRound: action((state, payload) => {
-    state.suddenDeathRound = payload
+
+  updateIncreaseInPrice: action((state, payload) => {
+    state.increaseInPrice = payload
   }),
+
+  updateTicketsAvailableAtCurrentPrice: action((state, payload) => {
+    state.ticketsAvailableAtCurrentPrice = payload
+  }),
+
+  updateTicketsIncreaseMultiple: action((state, payload) => {
+    state.ticketsIncreaseMultiple = payload
+  }),
+
+  updateVoteThreshold: action((state, payload) => {
+    state.voteThreshold = payload
+  }),
+
+  updateTotalPot: action((state, payload) => {
+    state.totalPot = payload
+  }),
+
+  updateCurrentPot: action((state, payload) => {
+    state.currentPot = payload
+  }),
+
+  updateDrainPot: action((state, payload) => {
+    state.drainPot = payload
+  }),
+
+  updatePotToSplit: action((state, payload) => {
+    state.potToSplit = payload
+  }),
+
+  // sumReciprocal
+  updatePrizeFactor: action((state, payload) => {
+    state.prizeFactor = payload
+  }),
+  // what last man gets
+  // lastMan
+  // feePool
+  updateNextPot: action((state, payload) => {
+    state.nextPot = payload
+  }),
+
+  updateVoteCount: action((state, payload) => {
+    state.voteCount = payload
+  }),
+
+  // rankShare
+
+  updateCountdownTime: action((state, payload) => {
+    state.countdownTime = payload
+  }),
+
+  updateTimeAddon: action((state, payload) => {
+    state.timeAddon = payload
+  }),
+
+  updateRoundTime: action((state, payload) => {
+    state.roundTime = payload
+  }),
+
+  // dayShare
+  // nightShare
+  // levelUp
+  updateSuddenDeath: action((state, payload) => {
+    state.suddenDeath = payload
+  }),
+
+  updateGameCloseTime: action((state, payload) => {
+    state.gameCloseTime = payload
+  }),
+
+  updateTimeFlag: action((state, payload) => {
+    state.timeFlag = payload
+  }),
+
+  updateDayTime: action((state, payload) => {
+    state.dayTime = payload
+  }),
+
+  updateNightTime: action((state, payload) => {
+    state.nightTime = payload
+  }),
+
+  updateSafehouseCostPerNight: action((state, payload) => {
+    state.safehouseCostPerNight = payload
+  }),
+
+  updateTokensPerAttack: action((state, payload) => {
+    state.tokensPerAttack = payload
+  }),
+
+  updateDrainRate: action((state, payload) => {
+    state.drainRate = payload
+  }),
+
+  updateMinPotSize: action((state, payload) => {
+    state.minPotSize = payload
+  }),
+
+  updateDrainSwitch: action((state, payload) => {
+    state.drainSwitch = payload
+  }),
+
+  updateAmountDrained: action((state, payload) => {
+    state.amountDrained = payload
+  }),
+
+  updateDrainStart: action((state, payload) => {
+    state.drainStart = payload
+  }),
+
+  updateDrainPerRound: action((state, payload) => {
+    state.drainPerRound = payload
+  }),
+
+  // // PREVIOUS
+  // updateTotalPrizePool: action((state, payload) => {
+  //   state.totalPrizePool = payload
+  // }),
+  // updateNextPrizeAmount: action((state, payload) => {
+  //   state.nextPrizeAmount = payload
+  // }),
+  // updateTopPrize: action((state, payload) => {
+  //   state.topPrize = payload
+  // }),
+  // updateBounty: action((state, payload) => {
+  //   state.bounty = payload
+  // }),
+  // updateCurrentTicketCount: action((state, payload) => {
+  //   state.currentTicketCount = payload
+  // }),
+  // updateTotalTicketCount: action((state, payload) => {
+  //   state.totalTicketCount = payload
+  // }),
+  // updateSuddenDeath: action((state, payload) => {
+  //   state.suddenDeath = payload
+  // }),
+
   tickets: [],
   updateTickets: action((state, payload) => {
     state.tickets = payload
   }),
-  addTicket: action((state, payload) => {
-    state.tickets.push(payload)
-  }),
+  // addTicket: action((state, payload) => {
+  //   state.tickets.push(payload)
+  // }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()

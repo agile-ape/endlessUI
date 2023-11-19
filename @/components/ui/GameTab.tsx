@@ -146,7 +146,7 @@ const GameTab: React.FC<GameTabType> = ({ onBuy }) => {
                 <TicketUI
                   ownTicket={true}
                   ticketNumber={nextTicketPrice}
-                  ticketLookInput={'beforePurchase'}
+                  ticketLookInput={'inSafehouse'}
                 />
                 <BuyTicket />
                 {/* <ExitGame /> */}

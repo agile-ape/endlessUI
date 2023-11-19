@@ -1,9 +1,8 @@
 import Image from 'next/image'
+import { useStoreState } from '../../../store'
 
 export default function Indicator() {
-  // const phase = useStoreState((state) => state.phase)
-  const phase = 'start'
-
+  const phase = useStoreState((state) => state.phase)
   const indicator = `${phase}Indicator.svg`
 
   return (
@@ -13,16 +12,9 @@ export default function Indicator() {
         src={`/indicator/${indicator}`}
         height={300}
         width={100}
-        // fill={true}
-        // sizes="max-width:150px"
         className=""
-        // layout="fixed"
         alt={`${indicator}`}
       />
     </div>
-    // <div className="text-4xl flex justify-center lg:justify-end font-headline uppercase day-last">
-    //   {' '}
-    //   {phase}{' '}
-    // </div>
   )
 }

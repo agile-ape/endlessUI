@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
+import { useStoreState } from '../../../store'
 
 type TitleType = {
   stageType: IApp['phase']
 }
 
-const countdownPhrase = [
+const startPhrase = [
   'wake up. the matrix has you. follow the white rabbit',
   'entry fee is the lowest they will ever be',
   'how long can you endure before breaking',
@@ -31,13 +32,13 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
-  whitelist: 'Join the whitelist to buy your ticket early',
-  beginnings: 'Come on up to get your ticket',
-  countdown: countdownPhrase[Math.floor(Math.random() * countdownPhrase.length)],
+  start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
-  dusk: 'I smell blood in the air',
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
   lastmanfound: 'A hero stands, triumphant',
+  peacefound: 'Make love, drink beers, no more war',
+  drain: 'an eye for an eye leaves everyone blind',
+  gameclosed: 'stay tuned for the next game',
 }
 
 const CursorSVG = () => (
@@ -58,6 +59,7 @@ const CursorSVG = () => (
 const Title: FC<TitleType> = ({ stageType }) => {
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
+  const phase = useStoreState((state) => state.phase)
 
   useEffect(() => {
     setCompletedTyping(false)
