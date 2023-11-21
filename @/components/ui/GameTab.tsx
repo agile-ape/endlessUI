@@ -96,8 +96,15 @@ const GameTab = () => {
   ---*/
 
   const { address, isConnected } = useAccount()
+  const tabValue = useStoreState((state) => state.gameTab)
+  const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
 
-  // for individual player, we call their status here?
+  useEffect(() => {
+    if (isConnected) {
+      updateTabValue('ticket')
+    }
+  }, [isConnected])
+
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
@@ -109,11 +116,13 @@ const GameTab = () => {
   const phase = useStoreState((state) => state.phase)
   const ticketId = useStoreState((state) => state.ticketId)
 
-  const tabDefaultValue = isConnected ? 'ticket' : 'game'
+  function changeTabValue(value: string) {
+    updateTabValue(value as 'ticket' | 'game')
+  }
 
   return (
     // <div className="flex flex-col items-center justify-center">
-    <Tabs defaultValue={tabDefaultValue} className="w-[240px] mx-auto">
+    <Tabs value={tabValue} onValueChange={changeTabValue} className="w-[240px] mx-auto">
       <div className="flex justify-center">
         <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
           <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">

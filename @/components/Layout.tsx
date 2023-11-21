@@ -38,6 +38,7 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
   // const updateTotalPrizePool = useStoreActions((actions) => actions.updateTotalPrizePool)
   // const updateNextPrizeAmount = useStoreActions((actions) => actions.updateNextPrizeAmount)
   // const updateTopPrize = useStoreActions((actions) => actions.updateTopPrize)
@@ -48,17 +49,18 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   // const addTicket = useStoreActions((actions) => actions.addTicket)
 
-  /* init modal welcome */
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(
-    !localStorage.getItem('closeWelcomeModal') ||
-      localStorage.getItem('closeWelcomeModal') !== 'true',
-  )
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+    return result
+  })
+
   const toggleModal = () => {
     setShowWelcomeModal((prevState) => !prevState)
-    const currentFlag = localStorage.getItem('closeWelcomeModal')
-    if (currentFlag) localStorage.removeItem('closeWelcomeModal')
+    // const currentFlag = localStorage.getItem('showWelcomeModal')
+    // if (currentFlag) localStorage.removeItem('showWelcomeModal')
 
-    localStorage.setItem('closeWelcomeModal', 'true')
+    localStorage.setItem('showWelcomeModal', 'false')
   }
 
   const router = useRouter()
@@ -114,59 +116,22 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'totalPrizePool',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'nextPrizeAmount',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'prizeFactor',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'bounty',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketCount',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketId',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'suddenDeath',
+        functionName: 'nextTicketPrice',
       },
     ],
     enabled: isConnected,
   })
 
   if (data && data?.length > 0) {
-    // kept
-    const round = data[0]?.result
+    const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
-    const totalPrizePool = data[2]?.result || 0
-    const nextPrizeAmount = data[3]?.result || 0
-    const prizeFactor = data[4]?.result || 0
-    const bounty = data[5]?.result || 0
-    const ticketCount = data[6]?.result || 0
-    const ticketId = data[7]?.result || 0
-    const suddenDeath = data[8]?.result || 0
+    const nextTicketPrice = data[2]?.result || 0
 
-    // make all names consistent from this point out
-    updateRound(Number(0))
-    // updatePhase(Number(phase))
-    updatePhase(Number(1))
-    // updateTotalPrizePool(Number(totalPrizePool))
-    // updateNextPrizeAmount(Number(nextPrizeAmount))
-    // updateTopPrize(Number(prizeFactor))
-    // updateBounty(Number(bounty))
-    // updateCurrentTicketCount(Number(ticketCount))
-    // updateTotalTicketCount(Number(ticketId) - 1)
-    // updateSuddenDeathRound(Number(suddenDeath))
+    console.log({ nextTicketPrice })
+
+    updateRound(Number(round))
+    updatePhase(Number(phase))
+    updateNextTicketPrice(Number(nextTicketPrice))
   }
 
   const refreshData = () => {
@@ -175,15 +140,15 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const background = router.pathname.includes('quickstart') ? 'Default.svg' : typeStage[phase]
 
-  useEffect(() => {
-    ;(async () => {
-      const data = await getTickets()
-      if (data?.data?.length > 0) {
-        const tickets = transformToTicket(data.data)
-        updateTickets(tickets)
-      }
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     const data = await getTickets()
+  //     if (data?.data?.length > 0) {
+  //       const tickets = transformToTicket(data.data)
+  //       updateTickets(tickets)
+  //     }
+  //   })()
+  // }, [])
 
   return (
     <main

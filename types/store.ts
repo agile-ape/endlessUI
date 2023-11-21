@@ -126,7 +126,8 @@ interface StoreModel {
   // updateSuddenDeath: Action<StoreModel, number>
   tickets: IApp['tickets']
   updateTickets: Action<StoreModel, IApp['tickets']>
-  // addTicket: Action<StoreModel, IApp['tickets'][0]>
+  gameTab: 'ticket' | 'game'
+  updateGameTab: Action<StoreModel, 'ticket' | 'game'>
 }
 
 export type { StoreModel }

@@ -27,7 +27,7 @@ export const appStore = createStore<StoreModel>({
   killedCount: 0,
   // leaderboard
 
-  nextTicketPrice: 1 * 1e16,
+  nextTicketPrice: 0,
   increaseInPrice: 1 * 1e16,
   ticketsAvailableAtCurrentPrice: 10,
   // ticketsIncreaseMultiple: 2,
@@ -261,6 +261,10 @@ export const appStore = createStore<StoreModel>({
   // addTicket: action((state, payload) => {
   //   state.tickets.push(payload)
   // }),
+  gameTab: 'game',
+  updateGameTab: action((state, payload) => {
+    state.gameTab = payload
+  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()

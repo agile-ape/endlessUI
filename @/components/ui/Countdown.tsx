@@ -81,7 +81,6 @@ export default function Countdown() {
   }, [endTime])
 
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
-  console.log({ phase })
   return (
     <div className="text-lime-800 dark:text-lime-200 gap-1">
       {/* need to fix the height to avoid layout shifts */}
