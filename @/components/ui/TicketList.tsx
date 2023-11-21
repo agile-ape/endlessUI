@@ -118,11 +118,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'aroundMe'}
-              // className={`${
-              //   ticketState === 'aroundMe'
-              //     ? disabled
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // } `}
             >
               Around Me
             </Button>
@@ -131,11 +126,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'inPlay'}
-              // className={`${
-              //   ticketState === 'inPlay'
-              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // }`}
             >
               In Play
             </Button>
@@ -146,11 +136,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'mostValue'}
-              // className={`${
-              //   ticketState === 'mostValue'
-              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // }`}
             >
               Not In Play
             </Button>
@@ -159,11 +144,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'safehouse'}
-              // className={`${
-              //   ticketState === 'mostValue'
-              //     ? 'bg-neutral-800 text-white hover:bg-neutral-800 cursor-default'
-              //     : 'bg-neutral-500 text-white hover:bg-neutral-600'
-              // }`}
             >
               In Safehouse
             </Button>

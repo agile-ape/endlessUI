@@ -102,6 +102,8 @@ const GameTab = () => {
   useEffect(() => {
     if (isConnected) {
       updateTabValue('ticket')
+    } else {
+      updateTabValue('game')
     }
   }, [isConnected])
 
