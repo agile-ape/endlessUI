@@ -12,58 +12,58 @@ import Inspect from './Attack'
 import KickOut from './KickOut'
 import ChangePhase from './_ChangePhase'
 import { Send, Home } from 'lucide-react'
+import OnSignal from './OnSignal'
+import Image from 'next/image'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
+import { defaultContractObj, DOCS_URL_exit } from '../../../services/constant'
+import { statusPayload } from '@/lib/utils'
+import { useStoreActions, useStoreState } from '../../../store'
 
 const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const toggle = () => setShowModal((prevState) => !prevState)
+  const phase = useStoreState((state) => state.phase)
+
+  // Address read
+  const { address, isConnected } = useAccount()
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+  // const ticketStatusString = 'safe'
+
+  // Active condition
+  let submitActive: boolean
+  submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
+
   return (
     <div
       className="w-[240px] rounded-xl p-3 pt-5 pb-5
     container-last
     flex flex-col gap-3 mb-5"
     >
-      {/* <div className="flex gap-2">
-        <p className="text-2xl capitalize pl-1 ml-2">User Actions</p>
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger>
-              <HelpCircle size={24} className="stroke-slate-900 dark:stroke-slate-100" />
-            </TooltipTrigger>
-            <TooltipContent side="top" align="center">
-              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default"></p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div> */}
-
-      {/* <SubmitKeyword /> */}
-      <Button variant="submit" className="w-full text-2xl" onClick={toggle}>
+      <Button variant="submit" className="w-full text-2xl flex justify-start" onClick={toggle}>
+        <OnSignal active={submitActive} own={true} />
         Submit Keyword
       </Button>
 
       <CheckIn />
       <SplitIt />
 
-      {/*
-      <div className="flex flex-col">
-       <div className="text-center text-xl text-zinc-600 dark:text-zinc-800 font-thin">
-          Safehouse
-        </div> 
-        {/* <CheckOut />
-      </div>
-
-      <div className="flex flex-col">
-      </div>
-      {/* <ExitGame />
-        <Inspect />
-        <KickOut />
-        <ChangePhase />*/}
-
-      {/* <Button variant="enter" className="w-full" >Top Up $LAST</Button> */}
-      {/* <Button variant="submit" className="bg-green-700" onClick={toggle}>Submit Keyword</Button> */}
-      {/* <SplitPotAction /> */}
-      {/* </div> */}
-      {showModal && <SubmitKeywordModal toggle={toggle} />}
+      {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} />}
     </div>
   )
 }

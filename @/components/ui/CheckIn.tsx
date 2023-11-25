@@ -32,19 +32,35 @@ import Prompt from './Prompt'
 import { priceConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
+import OnSignal from './OnSignal'
+import { defaultContractObj, DOCS_URL_safehouse } from '../../../services/constant'
+import { statusPayload } from '@/lib/utils'
+import { toast } from './use-toast'
 
 function CheckIn() {
-  // const [otpInput, setOtpInput] = React.useState<string>('')
-  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // State variables
   const phase = useStoreState((state) => state.phase)
   const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
 
-  const [amountTicket, setAmountTicket] = React.useState<number>(0)
+  const stayCost = safehouseCostPerNight / priceConversion
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+  // Address read
 
   const { address, isConnected } = useAccount()
 
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  let ticketSafehouseNights = Number(playerTicket?.[15] || 0)
+
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
+  // Token contract read
   // const { data: balanceOf } = useContractRead({
   //   ...tokenContractObj,
   //   functionName: 'balanceOf',
@@ -54,38 +70,42 @@ function CheckIn() {
   // const tokenBalance = balanceOf / priceConversion
   const tokenBalance = 200
 
-  const stayCost = safehouseCostPerNight / priceConversion
+  // Active condition
+  let checkInActive: boolean
+  checkInActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
 
-  // if (isDisabled)
-  //   return (
-  //     <TooltipProvider delayDuration={10}>
-  //       <Tooltip>
-  //         <TooltipTrigger>
-  //           <Button variant="checkIn" className="w-full text-xl" disabled>
-  //             Check In
-  //           </Button>
-  //         </TooltipTrigger>
-  //         <TooltipContent side="top" align="center">
-  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-  //             <span>You can only check in during the Day</span>
-  //           </div>
-  //           {/* <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-  //             This is an instruction lalalalala
-  //           </p>
-  //           <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-  //             This is an instruction lalalalala
-  //           </p> */}
-  //         </TooltipContent>
-  //       </Tooltip>
-  //     </TooltipProvider>
-  //   )
+  // Contract write
+  const { writeAsync, isLoading } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'checkIntoSafehouse',
+  })
+
+  const [amountTicket, setAmountTicket] = React.useState<number>(0)
+
+  const checkInHandler = async () => {
+    try {
+      const tx = await writeAsync({
+        args: [BigInt(amountTicket)],
+      })
+      const hash = tx.hash
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Check into Safehouse failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkIn" className="w-full text-xl">
+        <Button variant="checkIn" className="w-full text-xl flex justify-start">
+          <OnSignal active={checkInActive} own={true} />
           Check In
           {/* <LogIn size={16} className="text-sm ml-1"></LogIn> */}
         </Button>
@@ -136,35 +156,51 @@ function CheckIn() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion> */}
-                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
+                <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2 leading-tight">
+                    Pay $LAST to stay in the Safehouse in the{' '}
+                    <span className="font-headline day-last">Day</span>.
+                  </p>
+
+                  {/* <p className="mb-2">
                     You can only check in during the{' '}
-                    <span className="font-headline day-last">Day</span>. Safehouse accepts payment
-                    in $LAST.
+                    <span className="font-headline day-last">Day</span>.
+                  </p> */}
+                  <p className="mb-2 leading-tight">
+                    You cannot be killed in Safehouse. However, actions are limited.
                   </p>
-                  <p className="mb-2">You can check out anytime once you are checked in.</p>
-                  <p className="mb-2">
-                    You cannot be killed in Safehouse. Some actions are limited as well.
+                  {/* <p className="mb-2">Check out anytime once you are checked in.</p> */}
+                  <p className="mb-2 leading-tight">
+                    If you overstay, you can be kicked out and killed.
                   </p>
-                  <p className="mb-2">If you overstay, you can be kicked out and killed.</p>
+                  <a
+                    href={DOCS_URL_safehouse}
+                    target="_blank"
+                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                  >
+                    Learn more
+                  </a>
                 </div>
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                   How long would you be staying?
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4 text-xl">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
                       <p className="text-left">$LAST in wallet</p>
                       <p className="text-right"> {tokenBalance} </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">
-                        Price per night {'('}in $LAST{')'}
-                      </p>
-                      <p className="text-right"> {stayCost} </p>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Nights stayed</p>
+                      <p className="text-right"> {ticketSafehouseNights} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1">
+                      <p className="text-left">Price per night</p>
+                      <p className="text-right"> {stayCost} $LAST </p>
                     </div>
                   </div>
 
@@ -192,13 +228,29 @@ function CheckIn() {
                     </div>
                   </div>
 
-                  {!isDisabled && (
-                    <Button variant="checkIn" size="lg" className="w-[100%]">
+                  {checkInActive && (
+                    <Button
+                      variant="checkIn"
+                      size="lg"
+                      className="w-[100%]"
+                      onClick={checkInHandler}
+                      isLoading={isLoading}
+                    >
                       Check In
                     </Button>
                   )}
 
-                  {isDisabled && (
+                  {!checkInActive && ticketStatusString === 'safe' && (
+                    <>
+                      <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                        In Safehouse
+                      </Button>
+
+                      <Prompt />
+                    </>
+                  )}
+
+                  {!checkInActive && ticketStatusString !== 'safe' && (
                     <>
                       <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
                         Check In
@@ -208,17 +260,6 @@ function CheckIn() {
                     </>
                   )}
                 </div>
-
-                {/* <div
-                    className="
-                      m-4 mt-0
-                      rounded-xl py-3 px-3
-
-                      capitalize text-center text-white
-                      flex flex-col gap-5
-                      "
-                  >
-                  </div> */}
               </DialogDescription>
             </ScrollArea>
           </DialogHeader>

@@ -23,13 +23,22 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Link from 'next/link'
 import Prompt from './Prompt'
 import { tokenConversion } from '@/lib/utils'
-
+import { defaultContractObj, DOCS_URL_split } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
+import OnSignal from './OnSignal'
+import { statusPayload } from '@/lib/utils'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
+import { toast } from './use-toast'
 
 function SplitIt() {
-  // const [otpInput, setOtpInput] = React.useState<string>('')
-  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
-  // const phase = useStoreState((state) => state.phase)
+  // State variables
+  const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
   const suddenDeath = useStoreState((state) => state.suddenDeath)
   const currentPot = useStoreState((state) => state.currentPot)
@@ -40,49 +49,76 @@ function SplitIt() {
   const drainStart = useStoreState((state) => state.drainStart)
   const drainSwitch = useStoreState((state) => state.drainSwitch)
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
-
   const splitAmountPerPerson = currentPot / tokenConversion / ticketCount
-
   const voteShare = voteCount / ticketCount
-
   const amountDrainedConverted = amountDrained / tokenConversion
 
+  // Address read
+  const { address, isConnected } = useAccount()
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  let ticketVote = Boolean(playerTicket?.[6] || 0)
+
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
+  // Active condition
   let stage: number
-  if (round < suddenDeath) {
+
+  if (round === 0) {
+    stage = 0
+  } else if (round < suddenDeath) {
     stage = 1
   } else if (round >= suddenDeath && round < drainStart && drainSwitch === false) {
     stage = 2
   } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
     stage = 3
+  } else {
+    stage = 0
   }
 
-  // if (isDisabled)
-  //   return (
-  //     <TooltipProvider delayDuration={10}>
-  //       <Tooltip>
-  //         <TooltipTrigger>
-  //           <Button variant="splitPot" className="w-full text-xl" disabled>
-  //             Split Pot
-  //           </Button>
-  //         </TooltipTrigger>
-  //         <TooltipContent side="top" align="center">
-  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-  //             <span>
-  //               Players can only vote to split pot during the Day, and only after Stage 1.
-  //             </span>
-  //           </div>
-  //         </TooltipContent>
-  //       </Tooltip>
-  //     </TooltipProvider>
-  //   )
+  let splitActive: boolean
+  splitActive =
+    phase === 'day' &&
+    (stage === 2 || stage === 3) &&
+    ticketStatusString !== 'safe' &&
+    ticketIsInPlay === true
+  // splitActive = true
+
+  // Contract write
+  const { writeAsync, isLoading } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'toggleSplitPot',
+  })
+
+  const splitHandler = async () => {
+    try {
+      const tx = await writeAsync()
+      const hash = tx.hash
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Split failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="splitPot" className="w-full text-xl">
+        <Button variant="splitPot" className="w-full text-xl flex justify-start">
+          <OnSignal active={splitActive} own={true} />
           Split Pot
           {/* <Split size={16} className="text-sm ml-1"></Split> */}
         </Button>
@@ -124,60 +160,64 @@ function SplitIt() {
                   alt="enter-into-the-pepe"
                 />
 
-                {/* <Accordion type="multiple">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                        Notes
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p>The pot is split once the votes cross the threshold.</p>
-                      <p>You can change your mind and vote No later too.</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion> */}
-                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
-                    Players can only vote to split pot during the{' '}
-                    <span className="font-headline day-last">Day</span>, and only after Stage 1.
+                <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2 leading-tight">
+                    Players can vote to split pot post-Stage 1 in the{' '}
+                    <span className="font-headline day-last">Day</span>.
                   </p>
-                  <p className="mb-2">
-                    Once vote threshold is crossed, the game ends with pot split among remaining
-                    players.
+                  <p className="mb-2 leading-tight">
+                    Once vote threshold is crossed, the game ends.
                   </p>
-                  <p className="mb-2">You can change your mind and vote back No too.</p>
+
+                  <p className="mb-2 leading-tight">
+                    Remaining pot is split among remaining players.
+                  </p>
+
+                  <p className="mb-2 leading-tight">
+                    Players can change their mind and vote back No.
+                  </p>
+                  <a
+                    href={DOCS_URL_split}
+                    target="_blank"
+                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                  >
+                    Learn more
+                  </a>
                 </div>
                 {/* Voting information */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                   Do you want to split pot?
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4">
+                    <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Current pot</p>
                       <p className="text-right"> {currentPot} ETH </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">If split now, each gets </p>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left">If split, each gets </p>
                       <p className="text-right"> {splitAmountPerPerson} ETH </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left"> Yes votes / Yes share</p>
-                      <p className="text-right">
-                        {' '}
-                        {voteCount} / {voteShare}%
-                      </p>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left"> Yes votes</p>
+                      <p className="text-right"> {voteCount}</p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left"> Yes share</p>
+                      <p className="text-right"> {voteShare}%</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Vote threshold</p>
                       <p className="text-right"> {voteThreshold}% </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className={`text-left`}>Amount drained</p>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className={`text-left`}>Amount drained (Stage 3)</p>
                       <p className="text-right"> {amountDrainedConverted} ETH </p>
                     </div>
 
@@ -187,12 +227,14 @@ function SplitIt() {
 
                     <div className="flex justify-center text-2xl gap-4">
                       <span>No</span>
-                      {isDisabled && <Switch disabled />}
-                      {!isDisabled && <Switch />}
+                      {splitActive && (
+                        <Switch defaultChecked={ticketVote} onCheckedChange={splitHandler} />
+                      )}
+                      {!splitActive && <Switch defaultChecked={ticketVote} disabled />}
 
                       <span>Yes</span>
                     </div>
-                    {isDisabled && <Prompt />}
+                    {!splitActive && <Prompt />}
                   </div>
                 </div>
               </DialogDescription>

@@ -1,19 +1,10 @@
 import { createStore, action, createTypedHooks } from 'easy-peasy'
 import type { StoreModel } from './types/store'
 import type { IApp } from 'types/app'
-
-const stagePayload: Record<number, IApp['phase']> = {
-  0: 'start',
-  1: 'day',
-  2: 'night',
-  3: 'lastmanfound',
-  4: 'peacefound',
-  5: 'drain',
-  6: 'gameclosed',
-}
+import { phasePayload, statusPayload } from '@/lib/utils'
 
 export const appStore = createStore<StoreModel>({
-  phase: 'start',
+  phase: 'day',
   ticketState: 'new',
   // game:,
   round: 0,
@@ -82,7 +73,7 @@ export const appStore = createStore<StoreModel>({
   // }),
 
   updatePhase: action((state, payload) => {
-    state.phase = stagePayload[payload]
+    state.phase = phasePayload[payload]
   }),
 
   updateRound: action((state, payload) => {

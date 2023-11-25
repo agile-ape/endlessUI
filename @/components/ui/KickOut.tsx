@@ -17,23 +17,105 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from './button'
 import Image from 'next/image'
+import type { FC } from 'react'
 import { LogOut, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import Prompt from './Prompt'
-
+import OnSignal from './OnSignal'
+import { toast } from './use-toast'
+import { defaultContractObj, DOCS_URL_kickout } from '../../../services/constant'
+import { statusPayload } from '@/lib/utils'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
 import { useStoreActions, useStoreState } from '../../../store'
 
-function KickOut() {
-  const [otpInput, setOtpInput] = React.useState<string>('')
-  const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+type KickOutType = {
+  id: number
+}
+
+const KickOut: FC<KickOutType> = ({ id }) => {
+  // State variables
   const phase = useStoreState((state) => state.phase)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const round = useStoreState((state) => state.round)
+
+  // Address read
+  // Attacker
+  const { address, isConnected } = useAccount()
+
+  const { data: attackerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let attackerStatus = attackerTicket?.[3] || 0
+  const attackerStatusString = statusPayload[attackerStatus] || 'unknown'
+
+  // Defender
+  const { data: idAddress } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'idToPlayer',
+    args: [BigInt(id)],
+  })
+
+  const { data: defenderTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [idAddress as `0x${string}`],
+  })
+
+  let defenderStatus = defenderTicket?.[3] || 0
+  let defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
+  let defenderCheckOutRound = Number(defenderTicket?.[16] || 0)
+  let defenderValue = Number(defenderTicket?.[7]) || 0
+  const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
+
+  // Active condition
+  let kickOutActive: boolean
+  kickOutActive =
+    phase === 'night' &&
+    attackerStatusString !== 'safe' &&
+    defenderIsInPlay === true &&
+    defenderStatusString === 'safe' &&
+    defenderCheckOutRound <= round
+
+  // kickOutActive = true
+
+  // Contract write
+  const { writeAsync, isLoading } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'kickOutFromSafehouse',
+  })
+
+  const kickOutHandler = async () => {
+    try {
+      const tx = await writeAsync({
+        args: [BigInt(id)],
+      })
+      const hash = tx.hash
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Kick out failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
         <Button variant="kickOut" className="w-full py-1 text-lg h-8 rounded-md">
+          <OnSignal active={kickOutActive} own={false} />
           Kick Out
         </Button>
       </DialogTrigger>
@@ -42,7 +124,7 @@ function KickOut() {
         <div className="overflow-auto">
           <DialogHeader className="items-center">
             <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
-              Kick overstayers out
+              Kick player out
               <Image
                 priority
                 src={`/indicator/nightIndicator.svg`}
@@ -71,57 +153,65 @@ function KickOut() {
                   alt="enter-into-the-pepe"
                 />
 
-                {/* <Accordion type="multiple">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                        Notes
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p>Player ticket is forfeited if they got kicked out.</p>
-                      <p>Kick them out if their check out round is this round or less.</p>
-                      <p>Ticket value goes to the player before him.</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion> */}
-
-                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
-                    Player can be kicked out and killed once it is the{' '}
-                    <span className="font-headline night-last">Night</span> of his check out round.
+                <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
+                  <p className="leading-tight mb-2">Kick out players that overstay in Safehouse.</p>
+                  <p className="leading-tight mb-2">
+                    Track their check out round: Once it is the{' '}
+                    <span className="font-headline night-last">Night</span> of their check out
+                    round, you can kick them out.
                   </p>
+
                   <div className="flex mb-2 border border-zinc-800 dark:border-zinc-200 rounded-lg py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-                    Player's value does not go to the kicker/killer. It goes to the player before
-                    him - if #4 is killed, all his value goes to #3
+                    Killed ticket value does not go to the kicker. It goes to the player ticket
+                    before him - if #4 is killed, all his value goes to #3
                   </div>
+                  <a
+                    href={DOCS_URL_kickout}
+                    target="_blank"
+                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                  >
+                    Learn more
+                  </a>
                 </div>
 
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Kick him out?
+                  Kick Player #{id} Out?
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left"> Check out round</p>
-                      <p className="text-right"> 8 </p>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left"> Player value</p>
+                      <p className="text-right"> {defenderValue} ETH </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left"> Check out round</p>
+                      <p className="text-right underline"> {defenderCheckOutRound} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Current round</p>
-                      <p className="text-right"> 7 </p>
+                      <p className="text-right underline"> {round} </p>
                     </div>
                   </div>
 
-                  {!isDisabled && (
-                    <Button variant="kickOut" size="lg" className="w-[100%]">
+                  {kickOutActive && (
+                    <Button
+                      variant="kickOut"
+                      size="lg"
+                      className="w-[100%]"
+                      onClick={kickOutHandler}
+                      isLoading={isLoading}
+                    >
                       {/* {IsCurrentRound>=CheckOutDay ? 'Kick out' : 'Not yet'} */}
-                      Kick Out
+                      Kick Out Player #{id}
                     </Button>
                   )}
 
-                  {isDisabled && (
+                  {!kickOutActive && (
                     <>
                       <Button variant="kickOut" size="lg" className="w-[100%]" disabled>
                         Kick Out

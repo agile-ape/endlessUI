@@ -36,7 +36,7 @@ export interface MetaProps {
 const Metadata = ({
   title,
   description,
-  ogDescription = 'Last Man Standing',
+  ogDescription = 'Last Man',
   ogTitle = '',
   ogType = '',
   ogUrl = '',
@@ -44,11 +44,11 @@ const Metadata = ({
 }: MetaProps) => {
   const { locale, query } = useRouter()
 
-  const titleWithPageNumber = title || 'Last Man Standing'
+  const titleWithPageNumber = title || 'Last Man'
 
   return (
     <Head>
-      <title>{`${titleWithPageNumber} - Last Man Standing`}</title>
+      <title>{`${titleWithPageNumber} - Last Man`}</title>
 
       <meta name="description" content={description} />
       <meta
@@ -59,10 +59,10 @@ const Metadata = ({
       <meta property="product:price:currency" content="USD" />
       <link rel="shortcut icon" href={`/logo/game-logo.png`} type="image/png" />
 
-      <meta property="og:site_name" content="Last Man Standing" />
+      <meta property="og:site_name" content="Last Man" />
       <meta property="og:locale" content={'en'} />
       <meta property="og:type" content={ogType} />
-      <meta property="og:title" content={`${ogTitle || title} - Last Man Standing`} />
+      <meta property="og:title" content={`${ogTitle || title} - Last Man`} />
       <meta property="og:description" content={ogDescription || description} />
       <meta property="og:image" content={ogImageUrl} />
       <meta property="og:url" content={ogUrl} />
@@ -71,7 +71,7 @@ const Metadata = ({
       <meta name="twitter:site" content="@LastManStanding" />
       <meta name="twitter:creator" content="@LastManStanding" />
       <meta name="twitter:description" content={ogDescription} />
-      <meta name="twitter:title" content={`${ogTitle || title} - Last Man Standing`} />
+      <meta name="twitter:title" content={`${ogTitle || title} - Last Man`} />
       <meta name="twitter:image" content={ogImageUrl} />
     </Head>
   )

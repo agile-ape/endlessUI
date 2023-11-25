@@ -20,13 +20,14 @@ const font = VT323({
 })
 
 const typeStage: Record<IApp['phase'], string> = {
+  deployed: 'Default.svg',
   start: 'Start.svg',
   day: 'Day.svg',
   night: 'Night.svg',
   lastmanfound: 'LastManFound.svg',
   drain: 'Drain.svg',
   peacefound: 'PeaceFound.svg',
-  gameclosed: 'PeaceFound.svg', // undecided
+  gameclosed: 'Default.svg',
 }
 
 type LayoutProps = {
@@ -130,7 +131,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     console.log({ nextTicketPrice })
 
     updateRound(Number(round))
-    updatePhase(Number(phase))
+    // updatePhase(Number(phase))
+    updatePhase(Number(2))
     updateNextTicketPrice(Number(nextTicketPrice))
   }
 

@@ -16,6 +16,7 @@ import { shareConversion } from '@/lib/utils'
 
 // Adjust later to pull from blockchain
 const Round = () => {
+  const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
   const suddenDeath = useStoreState((state) => state.suddenDeath)
   const drainStart = useStoreState((state) => state.drainStart)
@@ -25,18 +26,19 @@ const Round = () => {
 
   const drainRateConverted = drainRate / shareConversion
   const minPotSizeConverted = minPotSize / shareConversion
-  /*---
-  Stage 1: default when game starts
-  Stage 2: round >= suddenDeath
-  Stage 3: round >= drainStart && drainStart != 0
-  ---*/
+
   let stage: number
-  if (round < suddenDeath) {
+
+  if (round === 0) {
+    stage = 0
+  } else if (round < suddenDeath) {
     stage = 1
   } else if (round >= suddenDeath && round < drainStart && drainSwitch === false) {
     stage = 2
   } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
     stage = 3
+  } else {
+    stage = 0
   }
 
   const [isActive, setIsActive] = useState(false)
@@ -46,14 +48,19 @@ const Round = () => {
   // }
 
   const On =
-    'text-zinc-700 dark:text-white text-md sm:text-lg whitespace-nowrap font-medium tracking-wider'
+    'text-zinc-700 dark:text-white text-md sm:text-lg whitespace-nowrap font-medium tracking-wider cursor-default'
   const Off =
-    'text-zinc-600 dark:text-zinc-400 text-xs sm:text-base whitespace-nowrap tracking-tight'
+    'text-zinc-600 dark:text-zinc-400 text-xs sm:text-base whitespace-nowrap tracking-tight cursor-default'
 
   return (
     <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
       <div>
-        <p className="text-lg sm:text-2xl whitespace-nowrap">
+        <p
+          className={cn(
+            'text-lg sm:text-2xl whitespace-nowrap',
+            round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
+          )}
+        >
           Round <span className="underline">{round}</span>
         </p>
       </div>
@@ -61,7 +68,7 @@ const Round = () => {
       <div className="flex flex-row gap-4">
         <TooltipProvider delayDuration={10}>
           <Tooltip>
-            <TooltipTrigger className={`${On} cursor-default`}>Stage 1</TooltipTrigger>
+            <TooltipTrigger className={stage === 1 ? On : Off}>Stage 1</TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                 Time is halved after every 4 rounds.
@@ -72,9 +79,7 @@ const Round = () => {
 
         <TooltipProvider delayDuration={10}>
           <Tooltip>
-            <TooltipTrigger className={`${isActive ? On : Off} cursor-default`}>
-              Stage 2
-            </TooltipTrigger>
+            <TooltipTrigger className={stage === 2 ? On : Off}>Stage 2</TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                 <p>Time stops halving.</p>
@@ -87,9 +92,7 @@ const Round = () => {
 
         <TooltipProvider delayDuration={10}>
           <Tooltip>
-            <TooltipTrigger className={`${isActive ? On : Off} cursor-default`}>
-              Stage 3
-            </TooltipTrigger>
+            <TooltipTrigger className={stage === 3 ? On : Off}>Stage 3</TooltipTrigger>
             <TooltipContent side="top" align="center">
               <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                 <p>

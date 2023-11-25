@@ -23,6 +23,7 @@ import {
 import { useAccount } from 'wagmi'
 import CompletionModal from './ui/CompletionModal'
 import { cn } from '@/lib/utils'
+import { DOCS_URL, TWITTER_URL, TELEGRAM_URL } from '../../services/constant'
 import { useRouter } from 'next/router'
 
 function Header() {
@@ -53,7 +54,7 @@ function Header() {
         <div className="hidden xl:flex items-center">
           {/* custom styling */}
           {/* border border-white/40 rounded-md */}
-          <Link
+          {/* <Link
             className={cn(
               `px-2 text-xl text-zinc-700 dark:text-zinc-200 hover:underline hover:text-neutral-900 dark:hover:text-zinc-50 py-1 px-3 mx-2 flex items-center`,
               isActive('/quickstart') && 'underline', //example of active class link
@@ -61,22 +62,27 @@ function Header() {
             href="/quickstart"
           >
             Quickstart
-          </Link>
-          <a href="https://twitter.com/lastman0x" target="_blank">
+          </Link> */}
+          <a href={DOCS_URL} target="_blank">
+            <Button variant="link" className="px-2 text-lg" size="sm">
+              Quickstart <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            </Button>
+          </a>
+          <a href={TWITTER_URL} target="_blank">
             <Button variant="link" className="px-2 text-lg" size="sm">
               Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
           </a>
-          <a href="https://twitter.com/fachryadhitya" target="_blank">
+          <a href={TELEGRAM_URL} target="_blank">
             <Button variant="link" className="px-2 text-lg" size="sm">
-              Chat <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+              Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
           </a>
-          <a href="https://twitter.com/fachryadhitya" target="_blank">
+          {/* <a href="https://twitter.com/fachryadhitya" target="_blank">
             <Button variant="link" className="px-2 text-lg" size="sm">
               Learn <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
-          </a>
+          </a> */}
         </div>
 
         {isConnected ? (

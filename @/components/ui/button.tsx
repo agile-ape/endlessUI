@@ -63,7 +63,7 @@ const buttonVariants = cva(
 
         // does not use size
         splitPot:
-          'text-white whitespace-nowrap bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-white whitespace-nowrap border-2 border-pink-800 bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size

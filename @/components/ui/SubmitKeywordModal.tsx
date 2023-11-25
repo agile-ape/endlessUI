@@ -17,17 +17,40 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
+import { defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
+import { statusPayload } from '@/lib/utils'
+import { useStoreActions, useStoreState } from '../../../store'
 
 interface SubmitKeywordModalType {
   toggle: () => void
+  active: boolean
 }
-const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
+const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }) => {
+  // Address read
+  const { address, isConnected } = useAccount()
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
+  // Contract Write
   const [otpInput, setOtpInput] = React.useState<string>('')
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
 
   const modalRef = useRef<HTMLDivElement | null>(null)
   const captchaRef = useRef<HCaptcha>(null)
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
 
   const onCaptchaClick = () => {
     if (captchaRef.current) {
@@ -107,6 +130,13 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                         stay safe when <span className="font-headline night-last">Night</span>{' '}
                         comes.
                       </p>
+                      <a
+                        href={DOCS_URL_submit}
+                        target="_blank"
+                        className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                      >
+                        Learn more
+                      </a>
                     </div>
 
                     {/* Captcha */}
@@ -142,11 +172,6 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                         capitalize text-center text-white
                         flex flex-col gap-5
                         "
-                        // style={{
-                        //   backgroundImage: `url('/ticket/motif.svg')`, // different for true
-                        //   backgroundRepeat: 'no-repeat',
-                        //   backgroundSize: 'cover',
-                        // }}
                       >
                         <p className="text-xl">keyword of the day</p>
 
@@ -159,7 +184,6 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                           inputStyle={{
                             width: '90%',
                             height: '50px',
-                            // color: theme === 'light' ? 'black' : 'white',
                             borderRadius: '12px',
                             margin: '0 auto',
                             fontSize: '36px',
@@ -168,11 +192,10 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                           className="dark:text-white text-black"
                         />
 
-                        {!isDisabled && (
+                        {active && (
                           <Button
                             variant="submit"
                             size="lg"
-                            // disabled={phase !== 'day'}
                             onClick={async () => {
                               if (otpInput) {
                                 // await onSubmit(otpInput)
@@ -184,15 +207,19 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle }) => {
                           </Button>
                         )}
 
-                        {isDisabled && (
-                          <>
-                            <Button variant="submit" size="lg" className="w-[100%]" disabled>
-                              Submit
-                            </Button>
-                          </>
+                        {!active && ticketStatusString === 'safe' && (
+                          <Button variant="submit" size="lg" className="w-[100%]" disabled>
+                            In Safehouse
+                          </Button>
+                        )}
+
+                        {!active && ticketStatusString !== 'safe' && (
+                          <Button variant="submit" size="lg" className="w-[100%]" disabled>
+                            Submit
+                          </Button>
                         )}
                       </div>
-                      {isDisabled && <Prompt />}
+                      {!active && <Prompt />}
                     </div>
                   </div>
                 </ScrollArea>

@@ -18,7 +18,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
 import Prompt from './Prompt'
-
+import OnSignal from './OnSignal'
 // type PhaseChangeType = {
 //   phaseType: IApp['phase']
 // }
@@ -43,11 +43,8 @@ const bgColorPhase: Record<string, string> = {
 
 const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
-  // const phase = 'night'
-  const { address, isConnected } = useAccount()
-  // console.log({ phase: bgColorPhase[phase], phaseNow: phase })
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const { address, isConnected } = useAccount()
 
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
@@ -55,8 +52,6 @@ const PhaseChange = () => {
     args: [address as `0x${string}`],
     enabled: isConnected,
   })
-
-  // const ticketSignature = (playerTicket?.[2] || 0) as `0x${string}`
 
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
@@ -80,6 +75,14 @@ const PhaseChange = () => {
     },
   })
 
+  let phaseChangeActive: boolean
+  // if (phase !== 'day') {
+  //   buttonDisabled = true
+  // } else {
+  //   buttonDisabled = false
+  // }
+  phaseChangeActive = false
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -93,6 +96,7 @@ const PhaseChange = () => {
           className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
         >
           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+          <OnSignal active={phaseChangeActive} own={true} />
           Change phase
         </Button>
       </DialogTrigger>
@@ -150,7 +154,7 @@ const PhaseChange = () => {
                 </div> */}
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
-                  {!isDisabled && (
+                  {phaseChangeActive && (
                     <Button
                       disabled={!write || !playerTicket}
                       // size="md"
@@ -165,7 +169,7 @@ const PhaseChange = () => {
                     </Button>
                   )}
 
-                  {isDisabled && (
+                  {!phaseChangeActive && (
                     <>
                       <Button
                         // disabled={!write || !playerTicket}

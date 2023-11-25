@@ -6,8 +6,17 @@ interface Ticket {
 }
 
 interface IApp {
-  phase: 'start' | 'day' | 'night' | 'lastmanfound' | 'peacefound' | 'drain' | 'gameclosed'
-  ticketState: 'new' | 'submitted' | 'checked' | 'safe' | 'dead' | 'exited'
+  phase:
+    | 'deployed'
+    | 'start'
+    | 'day'
+    | 'night'
+    | 'lastmanfound'
+    | 'peacefound'
+    | 'drain'
+    | 'gameclosed'
+
+  ticketStatus: 'new' | 'submitted' | 'checked' | 'safe' | 'dead' | 'exited'
 
   game: string
 

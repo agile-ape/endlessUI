@@ -57,3 +57,23 @@ export function formatNumber(value: any, options?: Intl.NumberFormatOptions) {
     ...options,
   }).format(Number(value))
 }
+
+export const phasePayload: Record<number, IApp['phase']> = {
+  0: 'deployed',
+  1: 'start',
+  2: 'day',
+  3: 'night',
+  4: 'lastmanfound',
+  5: 'peacefound',
+  6: 'drain',
+  7: 'gameclosed',
+}
+
+export const statusPayload: Record<number, IApp['ticketStatus']> = {
+  0: 'new',
+  1: 'submitted',
+  2: 'checked',
+  3: 'safe',
+  4: 'dead',
+  5: 'exited',
+}

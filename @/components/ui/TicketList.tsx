@@ -9,7 +9,6 @@ import { useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { tokenConversion } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-
 type TicketListType = {
   stage: string
 }
@@ -71,6 +70,14 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Gem size={18} className="mr-1" />
+                    {/* <Image
+                      priority
+                      src="/logo/diamondEth.svg"
+                      className=""
+                      height={18}
+                      width={18}
+                      alt="sneak-a-peek-pepe"
+                    /> */}
                     <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
                       {currentPotConverted}
                     </div>

@@ -24,12 +24,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const phase: IApp['phase'] = result?.message || 'beginnings'
 
   const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
+    deployed: 'dark',
     start: 'dark',
     day: 'light',
     night: 'dark',
     lastmanfound: 'dark',
     drain: 'dark',
     peacefound: 'light',
+    gameclosed: 'dark',
   }
 
   return {

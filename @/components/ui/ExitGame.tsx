@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react'
+import type { IApp } from 'types/app'
+
 import {
   Dialog,
   DialogContent,
@@ -26,14 +28,15 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
-
+import { defaultContractObj, DOCS_URL_exit } from '../../../services/constant'
+import { statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
+import OnSignal from './OnSignal'
+import { toast } from './use-toast'
 
 function ExitGame() {
-  // const [otpInput, setOtpInput] = React.useState<string>('')
-  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
+  // State variables
   const phase = useStoreState((state) => state.phase)
   const ticketCount = useStoreState((state) => state.ticketCount)
   const giveUpCount = useStoreState((state) => state.giveUpCount)
@@ -41,11 +44,10 @@ function ExitGame() {
   const rankShare = useStoreState((state) => state.rankShare)
   const prizeFactor = useStoreState((state) => state.prizeFactor)
 
-  // nextClaim adjusted for phases
   const { data: nextClaim } = useContractRead({
     ...defaultContractObj,
     functionName: 'rankClaim',
-    args: [ticketCount],
+    args: [BigInt(ticketCount)],
   })
 
   let exitRank: number
@@ -56,40 +58,64 @@ function ExitGame() {
     exitRank = ticketCount
   }
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
+  // Address read
+  const { address, isConnected } = useAccount()
 
-  // if (isDisabled)
-  //   return (
-  //     <TooltipProvider delayDuration={10}>
-  //       <Tooltip>
-  //         <TooltipTrigger>
-  //           <Button
-  //             variant="exit"
-  //             className=" rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-  //             disabled
-  //           >
-  //             Exit Game
-  //           </Button>
-  //         </TooltipTrigger>
-  //         {/* <TooltipContent side="top" align="center">
-  //           <div className="flex flex-row px-3 py-1 max-w-[240px] text-sm cursor-default">
-  //             <AlertTriangle size={16} className="text-sm mr-1"></AlertTriangle>
-  //             <span>You can only exit duing the DAY</span>
-  //           </div>
-  //         </TooltipContent>*/}
-  //       </Tooltip>
-  //     </TooltipProvider>
-  //   )
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
+  // Active condition
+  let exitGameActive: boolean
+  exitGameActive =
+    (phase === 'day' || phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') &&
+    ticketStatusString !== 'exited'
+
+  // Contract write
+  const { writeAsync, isLoading } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'exitGame',
+  })
+
+  const exitGameHandler = async () => {
+    try {
+      // const nextPrice = parseUnits(String(nextTicketPriceConverted), 18)
+
+      const tx = await writeAsync()
+      const hash = tx.hash
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Exit Game failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {/* Button to click on */}
-        <Button
-          variant="exit"
-          className="rounded-full px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-        >
-          Exit Game and claim {nextClaim} ETH
+        <Button variant="exit" className="px-5 py-1 leading-10 h-12 w-full mt-4 text-2xl">
+          {ticketStatusString !== 'exited' && (
+            <div className="flex justify-start items-center">
+              <OnSignal active={exitGameActive} own={true} />
+              Exit and claim ETH
+            </div>
+          )}
+          {ticketStatusString === 'exited' && (
+            <div className=" text-center text-2xl pointer-events-none cursor-default rounded-none border-0">
+              You have exited
+            </div>
+          )}
         </Button>
       </DialogTrigger>
 
@@ -126,24 +152,19 @@ function ExitGame() {
                   alt="enter-into-the-pepe"
                 />
 
-                {/* <Accordion type="multiple">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                        Notes
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p>Players can claim a pot reward and exit even if their ticket has been forfeited.</p>
-                      <p>Psst. Your ticket changes when you exit.</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion> */}
-                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
+                <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2 leading-tight">
                     Players can claim their pot reward and exit anytime in the{' '}
                     <span className="font-headline day-last">DAY</span> (or when game ends).
                   </p>
                   <p>Players can claim even if they are killed.</p>
-                  {/* <p className="mb-2">Psst. Your ticket changes when you exit.</p> */}
+                  <a
+                    href={DOCS_URL_exit}
+                    target="_blank"
+                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                  >
+                    Learn more
+                  </a>
                 </div>
 
                 {/* Pay for stay */}
@@ -151,14 +172,16 @@ function ExitGame() {
                   Saying Goodbye?
                 </div>
 
-                <div className="w-[300px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Exit rank/Exit claim now</p>
-                      <p className="text-right">
-                        {' '}
-                        {exitRank}/{nextClaim} ETH{' '}
-                      </p>
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Claim if exit now</p>
+                      <p className="text-right"> {`${nextClaim} ETH`} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Exit rank</p>
+                      <p className="text-right"> {exitRank}</p>
                     </div>
 
                     {/* <div className="flex text-lg justify-between gap-4">
@@ -166,31 +189,44 @@ function ExitGame() {
                       <p className="text-right">  </p>
                     </div> */}
 
-                    <div className="flex text-lg justify-between gap-4">
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left">Players left</p>
                       <p className="text-right"> {ticketCount} </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Not in play (give up/killed) </p>
+                    {/* <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left leading-tight">Not in play (give up/killed) </p>
                       <p className="text-right">
                         {' '}
                         {ticketCount} ({giveUpCount}/{killedCount})
                       </p>
-                    </div>
+                    </div> */}
 
-                    <div className="flex text-lg justify-between gap-4">
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left">Last Man can claim</p>
                       <p className="text-right"> {prizeFactor} ETH </p>
                     </div>
                   </div>
-                  {!isDisabled && (
-                    <Button variant="exit" size="lg" className="w-[100%]">
-                      Exit Game
+
+                  {ticketStatusString === 'exited' && (
+                    <Button variant="exit" size="lg" className="w-[100%]" disabled>
+                      You have exited
                     </Button>
                   )}
 
-                  {isDisabled && (
+                  {ticketStatusString !== 'exited' && exitGameActive && (
+                    <Button
+                      variant="exit"
+                      size="lg"
+                      isLoading={isLoading}
+                      onClick={exitGameHandler}
+                      className="w-[100%]"
+                    >
+                      {`Exit Game and claim ${nextClaim} ETH`}
+                    </Button>
+                  )}
+
+                  {ticketStatusString !== 'exited' && !exitGameActive && (
                     <>
                       <Button variant="exit" size="lg" className="w-[100%]" disabled>
                         Exit Game

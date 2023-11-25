@@ -32,6 +32,7 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
+  deployed: 'stand by to buy tickets',
   start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],

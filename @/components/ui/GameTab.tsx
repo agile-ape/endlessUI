@@ -22,7 +22,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
-import { defaultContractObj } from '../../../services/constant'
+import { defaultContractObj, DOCS_URL, TWITTER_URL } from '../../../services/constant'
 import { toast } from './use-toast'
 import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
@@ -95,9 +95,23 @@ const GameTab = () => {
 
   ---*/
 
-  const { address, isConnected } = useAccount()
   const tabValue = useStoreState((state) => state.gameTab)
   const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
+  const phase = useStoreState((state) => state.phase)
+  const ticketId = useStoreState((state) => state.ticketId)
+
+  const { address, isConnected } = useAccount()
+
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [address as `0x${string}`],
+  })
+
+  // const id = Number(playerTicket?.[0] || BigInt(0))
+  const id = 1
+
+  console.log(id)
 
   useEffect(() => {
     if (isConnected) {
@@ -106,17 +120,6 @@ const GameTab = () => {
       updateTabValue('game')
     }
   }, [isConnected])
-
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
-
-  const id = playerTicket?.[0] || BigInt(0)
-
-  const phase = useStoreState((state) => state.phase)
-  const ticketId = useStoreState((state) => state.ticketId)
 
   function changeTabValue(value: string) {
     updateTabValue(value as 'ticket' | 'game')
@@ -140,8 +143,23 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {/* next ticket info */}
-            {Number(id) === 0 && phase === 'start' && (
+            {id === 0 && phase === 'deployed' && (
+              <div className="mb-2">
+                <div className="text-2xl text-center py-2 leading-7 capitalize">
+                  Buying starting soon
+                </div>
+                <TicketUI
+                  ownTicket={true}
+                  ticketNumber={ticketId}
+                  ticketLookInput={'beforePurchase'}
+                />
+                <BuyTicket />
+                {/* <ExitGame /> */}
+              </div>
+            )}
+
+            {/* no ticket - next ticket info */}
+            {id === 0 && phase === 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
                 <TicketUI
@@ -154,17 +172,27 @@ const GameTab = () => {
               </div>
             )}
 
-            {/* if you have a ticket and not day */}
-            {Number(id) === 0 && phase !== 'start' && (
+            {/* got ticket - wait to play */}
+            {id !== 0 && phase === 'start' && (
               <div className="mb-2">
-                <div className="text-2xl text-center py-2 leading-7 capitalize">You</div>
-                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'attackedButSafu'} />
+                <div className="text-2xl text-center py-2 leading-7 capitalize">Welcome Sire</div>
+                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'afterPurchase'} />
+                {/* <BuyTicket /> */}
+                {/* <ExitGame /> */}
+              </div>
+            )}
+
+            {/* got ticket, not start */}
+            {id !== 0 && phase !== 'start' && (
+              <div className="mb-2">
+                <div className="text-2xl text-center py-2 leading-7 capitalize">Your Player</div>
+                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'inSafehouse'} />
                 <ExitGame />
               </div>
             )}
 
             {/* if no ticket for rest of phase */}
-            {Number(id) > 0 && (
+            {id === 0 && !(phase === 'start' || phase === 'deployed') && (
               // <div className="mb-2 flex justify ">
               <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
                 <div className="">Want to join the fun?</div>
@@ -177,7 +205,7 @@ const GameTab = () => {
                   alt="pepe-in-thoughts"
                 />
                 <div className="text-center text-lg">
-                  Follow us for <a href="https://twitter.com/lastman0x">updates</a>
+                  Follow us for <a href={`https://twitter.com/lastman0x`}>updates</a>
                 </div>
               </div>
               // </div>

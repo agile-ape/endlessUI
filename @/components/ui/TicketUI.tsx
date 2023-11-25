@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits } from 'viem'
-import { cn } from '@/lib/utils'
+import { cn, statusPayload } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
@@ -90,6 +90,17 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   // const nextTicketId = useStoreState((state) => state.ticketId)
   const nextTicketId = 2
 
+  // const statusPayload: Record<number, IApp['ticketStatus']> = {
+  //   0: 'new',
+  //   1: 'submitted',
+  //   2: 'checked',
+  //   3: 'safe',
+  //   4: 'dead',
+  //   5: 'exited',
+  // }
+
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
   let ticketLook: string
 
   // case of phase !="countdown" && ticketId == 0 is covered in GameTab
@@ -103,7 +114,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   if (ticketIsInPlay == true) {
     if (phase == 'day') {
-      if (ticketStatus == 'submit' && ticketLastSeen == round) {
+      if (ticketStatusString == 'submit' && ticketLastSeen == round) {
         ticketLook = 'submittedDay'
       } else {
         if (round < suddenDeath) {
@@ -117,16 +128,16 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     }
 
     if (phase == 'night') {
-      if (ticketStatus == 'submit' && ticketLastSeen == round) {
+      if (ticketStatusString == 'submit' && ticketLastSeen == round) {
         ticketLook = 'submittedNight'
-      } else if (ticketStatus == 'checked') {
+      } else if (ticketStatusString == 'checked') {
         ticketLook = 'attackedButSafu'
       } else {
         ticketLook = 'neverSubmit'
       }
     }
 
-    if (ticketStatus == 'safe') {
+    if (ticketStatusString == 'safe') {
       ticketLook = 'inSafehouse'
     }
 
@@ -144,11 +155,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   }
 
   if (ticketIsInPlay == false) {
-    if (ticketStatus == 'dead') {
+    if (ticketStatusString == 'dead') {
       ticketLook = 'killed'
     }
 
-    if (ticketStatus == 'exited') {
+    if (ticketStatusString == 'exited') {
       ticketLook = 'exitGame'
     }
   }
@@ -471,7 +482,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             ticketLookTest == 'exitGame'
           ) && <Attack id={ticketId} />}
 
-          {ownTicket == false && ticketLookTest == 'inSafehouse' && <KickOut />}
+          {ownTicket == false && ticketLookTest == 'inSafehouse' && <KickOut id={ticketId} />}
           {ownTicket == true && ticketLookTest == 'inSafehouse' && <CheckOut />}
         </div>
       )}
