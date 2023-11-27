@@ -132,7 +132,7 @@ function CheckIn() {
               </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/CheckIntoSafehouse.png"
@@ -260,7 +260,7 @@ function CheckIn() {
                     </>
                   )}
                 </div>
-              </DialogDescription>
+              </div>
             </ScrollArea>
           </DialogHeader>
         </div>

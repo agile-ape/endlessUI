@@ -148,7 +148,7 @@ function SplitIt() {
               </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/SplitPot.png"
@@ -237,7 +237,7 @@ function SplitIt() {
                     {!splitActive && <Prompt />}
                   </div>
                 </div>
-              </DialogDescription>
+              </div>
             </ScrollArea>
           </DialogHeader>
         </div>
