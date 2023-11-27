@@ -128,6 +128,13 @@ interface StoreModel {
   updateTickets: Action<StoreModel, IApp['tickets']>
   gameTab: 'ticket' | 'game'
   updateGameTab: Action<StoreModel, 'ticket' | 'game'>
+  triggerCompletionModal: CompletionModal
+  updateTriggerCompletionModal: Action<StoreModel, CompletionModal>
+}
+
+type CompletionModal = {
+  state: string
+  isOpen: boolean
 }
 
 export type { StoreModel }

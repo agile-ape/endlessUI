@@ -256,6 +256,13 @@ export const appStore = createStore<StoreModel>({
   updateGameTab: action((state, payload) => {
     state.gameTab = payload
   }),
+  triggerCompletionModal: {
+    isOpen: false,
+    state: 'attackedButSafe',
+  },
+  updateTriggerCompletionModal: action((state, payload) => {
+    state.triggerCompletionModal = payload
+  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()

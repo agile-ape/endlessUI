@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
 import { isJson, transformToTicket } from '@/lib/utils'
 import WelcomeModal from './ui/WelcomeModal'
+import CompletionModal from './ui/CompletionModal'
 const font = VT323({
   weight: ['400'],
   subsets: ['latin-ext'],
@@ -164,6 +165,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />
         {children}
+        <CompletionModal alertLookTest="attackedButSafe" />
       </div>
     </main>
   )
