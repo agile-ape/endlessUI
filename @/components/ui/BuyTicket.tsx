@@ -48,8 +48,7 @@ function BuyTicket() {
   let ticketId = playerTicket?.[0] || 0
 
   // Active condition
-  let buyTicketActive: boolean
-  buyTicketActive = phase === 'start' && ticketId === 0
+  const buyTicketActive = phase === 'start' && ticketId === 0
 
   // Contract write
   // call buyTicket() - default value 0

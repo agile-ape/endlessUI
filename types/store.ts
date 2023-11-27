@@ -3,7 +3,7 @@ import type { IApp } from './app'
 
 interface StoreModel {
   phase: IApp['phase']
-  ticketState: IApp['ticketState']
+  ticketState: IApp['ticketStatus']
   // game: IApp['game']
   round: IApp['round']
 

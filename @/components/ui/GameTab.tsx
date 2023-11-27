@@ -108,10 +108,10 @@ const GameTab = () => {
     args: [address as `0x${string}`],
   })
 
-  // const id = Number(playerTicket?.[0] || BigInt(0))
-  const id = 1
+  const id = Number(playerTicket?.[0] || BigInt(0))
+  // const id = 1
 
-  console.log(id)
+  console.log({ id, phase, ticketId, isConnected })
 
   useEffect(() => {
     if (isConnected) {

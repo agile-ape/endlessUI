@@ -131,8 +131,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     console.log({ nextTicketPrice })
 
     updateRound(Number(round))
-    // updatePhase(Number(phase))
-    updatePhase(Number(2))
+    updatePhase(Number(phase))
+    // updatePhase(Number(2))
     updateNextTicketPrice(Number(nextTicketPrice))
   }
 

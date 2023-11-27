@@ -29,23 +29,62 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
+import { formatNumber } from '@/lib/utils'
+import { tokenContractObj } from '../../../services/constant'
+import { formatUnits } from 'viem'
+import { toast } from './use-toast'
 
 function Token() {
   // const [otpInput, setOtpInput] = React.useState<string>('')
   // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   // const phase = useStoreState((state) => state.phase)
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
+  const [receiverAddress, setReceiverAddress] = useState<string>('')
+  const [tokenValue, setTokenValue] = useState<string>('0')
 
   const { address, isConnected } = useAccount()
 
-  // const { data: balanceOf } = useContractRead({
-  //   ...tokenContractObj,
-  //   functionName: 'balanceOf',
-  //   args: [address as `0x${string}`],
-  // })
+  const { data: balanceOf } = useContractRead({
+    ...tokenContractObj,
+    functionName: 'balanceOf',
+    args: [address as `0x${string}`],
+  })
 
-  // const tokenBalance = balanceOf / priceConversion
-  const tokenBalance = 200
+  const tokenBalance = formatUnits(balanceOf || BigInt(0), 18)
+
+  const { writeAsync: transfer } = useContractWrite({
+    ...tokenContractObj,
+    functionName: 'transfer',
+  })
+
+  const transferToken = async () => {
+    try {
+      if (Number(tokenBalance) < Number(tokenValue)) {
+        toast({
+          variant: 'destructive',
+          description: `You don't have enough tokens to transfer`,
+        })
+        return
+      }
+
+      if (!Number(tokenValue)) {
+        toast({
+          variant: 'destructive',
+          description: `Amount must be greater than 0`,
+        })
+        return
+      }
+
+      const doTransfer = await transfer({
+        args: [receiverAddress as `0x${string}`, BigInt(tokenValue)],
+      })
+
+      setTokenValue('')
+      setReceiverAddress('')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   //   if (isDisabled)
   //     return (
@@ -87,7 +126,12 @@ function Token() {
             className="shrink-0 mr-2"
           />
 
-          <span className="text-lg sm:text-xl font-whitrabt">{tokenBalance}</span>
+          <span className="text-lg sm:text-xl font-whitrabt">
+            {formatNumber(tokenBalance, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+            })}
+          </span>
         </div>
       </DialogTrigger>
 
@@ -138,7 +182,13 @@ function Token() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
                       <p className="text-left">$LAST tokens in wallet</p>
-                      <p className="text-right"> {tokenBalance} </p>
+                      <p className="text-right">
+                        {' '}
+                        {formatNumber(tokenBalance, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}
+                      </p>
                     </div>
 
                     {/* <div className="flex text-lg justify-between gap-4">
@@ -171,27 +221,35 @@ function Token() {
                     </div>
                     <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
                       <div className="flex md:flex-row flex-col justify-center items-center md:justify-between my-2">
-                        <p>Player #</p>
+                        <label htmlFor="player_address">Player #</label>
 
                         <div className="flex gap-1 items-center">
                           <input
                             type="text"
-                            name=""
-                            id=""
+                            id="player_address"
                             className="w-[3rem] rounded-md border px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                            value={receiverAddress}
+                            onChange={(e) => setReceiverAddress(e.target.value)}
+                            required
                           />
                         </div>
                       </div>
                       <div className="flex md:flex-row flex-col justify-center items-center md:justify-between my-2">
-                        <p>Tokens</p>
+                        <label htmlFor="token">Tokens</label>
                         <input
                           type="text"
-                          name=""
-                          id=""
+                          id="token"
+                          required
                           className="w-[3rem] rounded-md border px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                          value={tokenValue}
+                          onChange={(e) => setTokenValue(e.target.value)}
                         />
                       </div>
-                      <Button variant="secondary" className="w-full h-8 px-4 mt-2 py-2 text-xl">
+                      <Button
+                        variant="secondary"
+                        className="w-full h-8 px-4 mt-2 py-2 text-xl dark:bg-white dark:text-black"
+                        onClick={transferToken}
+                      >
                         Transfer
                       </Button>
                     </div>

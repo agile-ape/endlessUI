@@ -12,7 +12,7 @@ export const appStore = createStore<StoreModel>({
   // randNumber:,
   isAttackTime: false,
 
-  ticketId: 1,
+  ticketId: 0,
   ticketCount: 0,
   giveUpCount: 0,
   killedCount: 0,
