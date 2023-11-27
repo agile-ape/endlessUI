@@ -6,28 +6,48 @@ import Image from 'next/image'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits } from 'viem'
-import { cn, statusPayload } from '@/lib/utils'
+import { cn, formatAddress, statusPayload } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
 import { Button } from './button'
 import Attack from './Attack'
-import { ExitTicketUI } from './_ExitTicketUI'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 
 type TicketUIType = {
   ownTicket: boolean
   ticketNumber: IApp['id']
   ticketLookInput: string
+}
+
+const getTicketSize = (ownTicket) => {
+  switch (ownTicket) {
+    case true:
+      return {
+        size: 'w-[220px] h-[240px]',
+        edge: 'rounded-xl',
+        h1: 'text-xl',
+        h2: 'text-md',
+        h3: 'text-sm',
+        imgh: '110',
+        imgw: '150',
+        mt: 'mt-0 mb-0',
+        gap: 'gap-y-1',
+      }
+    case false:
+      return {
+        size: 'w-[160px] h-[180px]',
+        edge: 'rounded-md',
+        h1: 'text-md',
+        h2: 'text-sm',
+        h3: 'text-xs',
+        imgh: '75',
+        imgw: '95',
+        mt: 'mt-0 mb-2',
+        gap: '',
+      }
+  }
 }
 
 const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }) => {
@@ -52,7 +72,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     ...defaultContractObj,
     functionName: 'playerTicket',
     args: [(playerAddress || '') as `0x${string}`],
+    enabled: !!playerAddress,
   })
+
+  console.log({ playerTicket })
 
   let ticketId = playerTicket?.[0] || 0
   let ticketAddress = playerTicket?.[1] || 0
@@ -78,8 +101,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   // let ticketRank = playerTicket?.[19] || 0
   let ticketRank = 123
 
-  // const phase = useStoreState((state) => state.phase)
-  const phase = 'countdown'
+  const phase = useStoreState((state) => state.phase)
+  // const phase = 'countdown'
 
   // const round = useStoreState((state) => state.round)
   const round = 0
@@ -104,15 +127,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   let ticketLook: string
 
   // case of phase !="countdown" && ticketId == 0 is covered in GameTab
-  if (phase == 'countdown') {
-    if (ticketId == 0) {
+  if (phase === 'countdown') {
+    if (ticketId === 0) {
       ticketLook = 'beforePurchase'
     } else if (ticketId != 0) {
       ticketLook = 'afterPurchase'
     }
   }
 
-  if (ticketIsInPlay == true) {
+  if (ticketIsInPlay) {
     if (phase == 'day') {
       if (ticketStatusString == 'submit' && ticketLastSeen == round) {
         ticketLook = 'submittedDay'
@@ -137,24 +160,28 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       }
     }
 
-    if (ticketStatusString == 'safe') {
+    if (ticketStatusString === 'safe') {
       ticketLook = 'inSafehouse'
     }
 
-    if (phase == 'lastManFound') {
+    if (phase === 'lastManFound') {
       ticketLook = 'lastManStanding'
     }
 
-    if (phase == 'peaceFound') {
+    if (phase === 'peaceFound') {
       ticketLook = 'agreedToSplitPot'
     }
 
-    if (phase == 'drain') {
+    if (phase === 'drain') {
       ticketLook = 'noMorePot'
+    }
+
+    if (phase === 'start') {
+      ticketLook = 'afterPurchase'
     }
   }
 
-  if (ticketIsInPlay == false) {
+  if (!ticketIsInPlay) {
     if (ticketStatusString == 'dead') {
       ticketLook = 'killed'
     }
@@ -164,38 +191,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     }
   }
 
-  const getTicketSize = (ownTicket) => {
-    switch (ownTicket) {
-      case true:
-        return {
-          size: 'w-[220px] h-[240px]',
-          edge: 'rounded-xl',
-          h1: 'text-xl',
-          h2: 'text-md',
-          h3: 'text-sm',
-          imgh: '110',
-          imgw: '150',
-          mt: 'mt-0 mb-0',
-          gap: 'gap-y-1',
-        }
-      case false:
-        return {
-          size: 'w-[160px] h-[180px]',
-          edge: 'rounded-md',
-          h1: 'text-md',
-          h2: 'text-sm',
-          h3: 'text-xs',
-          imgh: '75',
-          imgw: '95',
-          mt: 'mt-0 mb-2',
-          gap: '',
-        }
-    }
-  }
-
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
-  const ticketLookTest = ticketLookInput
+  const ticketLookTest = ticketLook
 
   const conversion = Number(10 ** 15)
 
@@ -397,7 +395,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
           <div className="flex justify-between gap-6">
             <p className="text-left"> Player</p>
-            <p className="text-right"> 0x12..32 </p>
+            <p className="text-right"> {formatAddress(ticketAddress)} </p>
           </div>
 
           {/* <div className="flex justify-between gap-6">

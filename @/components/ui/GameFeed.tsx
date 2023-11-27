@@ -1,29 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import GameTextVariant from './GameTextVariant'
-import { Button } from './button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuSubTrigger,
-  DropdownMenuSub,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
-} from '@/components/ui/dropdown-menu'
+import useSWR from 'swr'
+import { fetcher, replacePlaceholders } from '@/lib/utils'
+import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../../services/constant'
 
 // Limit to 15 events. Avoid scrolling if possible
 const GameFeed = () => {
   // i guess the logic is pull out an array of statements and .map them here?
   /* < 1 min == just */
+
+  const { data, error, isLoading } = useSWR<{
+    data: {
+      block_timestamp: number
+      block_number: number
+      message: {
+        value: string
+        args: Record<string, string>
+      }
+    }[]
+  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=10`, fetcher)
+
   return (
     <div
       className="overflow-auto container-last rounded-xl px-2"
       // style={{background: "linear-gradient(140deg, #0D032D 0%, #1E1049 100%)"}}
     >
-      <p className="py-2 border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300">
+      {data?.data?.map((item, index) => (
+        <GameTextVariant
+          number={item.block_number}
+          keyword={''}
+          text={replacePlaceholders(item.message)}
+          timestamp={item.block_timestamp}
+          isLastIndex={index === data.data.length - 1}
+        />
+      ))}
+      {/* <p className="py-2 border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300">
         GAME BEGINS.
       </p>
       <p className="py-2 border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300">
@@ -147,7 +158,7 @@ const GameFeed = () => {
         text="20 tokens to 12."
         timestamp="1 hr ago"
         isLastIndex={false}
-      />
+      /> */}
     </div>
   )
 }

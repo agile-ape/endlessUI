@@ -22,8 +22,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const currentPot = useStoreState((state) => state.currentPot)
   const totalPot = useStoreState((state) => state.totalPot)
 
-  // const totalTicketCount = ticketId - 1
-  const totalTicketCount = 2
+  const totalTicketCount = ticketList.length
   const totalPotConverted = totalPot / tokenConversion
   const currentPotConverted = currentPot / tokenConversion
 
@@ -90,34 +89,6 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               </Tooltip>
             </TooltipProvider>
           </div>
-
-          {/* <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                <HelpCircle
-                    size={24}
-                    className="align-end ml-1 stroke-slate-900 dark:stroke-slate-100"
-                    />
-                    </TooltipTrigger>
-                    <TooltipContent side="top" align="center">
-                    <p className="px-3 py-1.5 max-w-[240px] text-sm cursor-default">
-                    Shows every ticket info and their status (
-                      <span className="bg-purple-800 text-white rounded-xs">New</span>
-                      {', '}
-                    <span className="bg-green-800 text-white rounded-xs">Check-in</span>
-                    {', '}
-                    <span className="bg-blue-800 text-white rounded-xs">Checked</span>
-                    {', '}
-                    <span className="bg-gray-800 text-white rounded-xs">Left</span>).
-                    <br />
-                    Check others tickets here. Checks can only be done during the Night.
-                    </p>
-                    </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider> */}
-          {/* <div className="flex px-2">
-            <GameFeedButton />
-          </div> */}
 
           <div className="grid grid-cols-2 sm:flex gap-3 justify-center mt-2 mb-4">
             <Button
@@ -201,7 +172,7 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             overflow-y-scroll max-h-[750px]
           "
         >
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'beforePurchase'} />
+          {/* <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'beforePurchase'} />
 
           <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'afterPurchase'} />
 
@@ -229,32 +200,16 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
 
           <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'killed'} />
 
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'exitGame'} />
+          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'exitGame'} /> */}
 
-          {/*
-        {ticketList.map((item, i) => (
-          <div key={i} className="mt-[27px]">
+          {ticketList.map((item, i) => (
             <TicketUI
+              key={item.id}
               ownTicket={false}
-              ticketId={BigInt(item.id)}
-              ticketWidthPx={220}
-              ticketLookInput={'beforePurchase'}
+              ticketNumber={item.id}
+              ticketLookInput={'afterPurchase'}
             />
-            <Button
-              onClick={() =>
-                write({
-                  args: [BigInt(item.id)],
-                })
-              }
-              variant="inspect"
-              // size="md"
-              disabled={phase != 'night'}
-              className="w-full h-10 rounded-xl px-3 leading-6 text-xl mt-3"
-            >
-              Inspect
-            </Button>
-          </div>
-        ))}*/}
+          ))}
         </div>
       )}
     </>

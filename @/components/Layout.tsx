@@ -11,14 +11,10 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
-import { isJson, transformToTicket } from '@/lib/utils'
+import { fetcher, isJson, transformToTicket } from '@/lib/utils'
 import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
-const font = VT323({
-  weight: ['400'],
-  subsets: ['latin-ext'],
-  variable: '--font-vt323',
-})
+import useSWR from 'swr'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -41,13 +37,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
-  // const updateTotalPrizePool = useStoreActions((actions) => actions.updateTotalPrizePool)
-  // const updateNextPrizeAmount = useStoreActions((actions) => actions.updateNextPrizeAmount)
-  // const updateTopPrize = useStoreActions((actions) => actions.updateTopPrize)
-  // const updateBounty = useStoreActions((actions) => actions.updateBounty)
-  // const updateCurrentTicketCount = useStoreActions((actions) => actions.updateCurrentTicketCount)
-  // const updateTotalTicketCount = useStoreActions((actions) => actions.updateTotalTicketCount)
-  // const updateSuddenDeathRound = useStoreActions((actions) => actions.updateSuddenDeathRound)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   // const addTicket = useStoreActions((actions) => actions.addTicket)
 
@@ -57,16 +46,37 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     return result
   })
 
+  const { data: ticketsData, error } = useSWR<{
+    data: {
+      ticketId: number
+      player: string
+      status: number
+      lastSeen: number
+      isInPlay: boolean
+      value: number
+      purchasePrice: number
+      redeemValue: number
+      killCount: number
+      killedBy: string
+      safehouseNights: number
+      checkOutRound: number
+      rank: number
+    }[]
+  }>('/tickets?page=1&limit=10&sortOrder=ASC&sortBy=purchasePrice', fetcher)
+
+  console.log({ ticketsData, error })
+
+  if (ticketsData?.data.length) {
+    const formattedTickets = transformToTicket(ticketsData?.data)
+    updateTickets(formattedTickets)
+  }
+
   const toggleModal = () => {
     setShowWelcomeModal((prevState) => !prevState)
-    // const currentFlag = localStorage.getItem('showWelcomeModal')
-    // if (currentFlag) localStorage.removeItem('showWelcomeModal')
-
     localStorage.setItem('showWelcomeModal', 'false')
   }
 
   const router = useRouter()
-
   const { isConnected } = useAccount()
 
   useContractEvent({
@@ -129,8 +139,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const phase = data[1]?.result || 0
     const nextTicketPrice = data[2]?.result || 0
 
-    console.log({ nextTicketPrice })
-
     updateRound(Number(round))
     updatePhase(Number(phase))
     // updatePhase(Number(2))
@@ -142,16 +150,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   }
 
   const background = router.pathname.includes('quickstart') ? 'Default.svg' : typeStage[phase]
-
-  // useEffect(() => {
-  //   ;(async () => {
-  //     const data = await getTickets()
-  //     if (data?.data?.length > 0) {
-  //       const tickets = transformToTicket(data.data)
-  //       updateTickets(tickets)
-  //     }
-  //   })()
-  // }, [])
 
   return (
     <main

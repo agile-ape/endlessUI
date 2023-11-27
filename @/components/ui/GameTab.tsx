@@ -111,8 +111,6 @@ const GameTab = () => {
   const id = Number(playerTicket?.[0] || BigInt(0))
   // const id = 1
 
-  console.log({ id, phase, ticketId, isConnected })
-
   useEffect(() => {
     if (isConnected) {
       updateTabValue('ticket')

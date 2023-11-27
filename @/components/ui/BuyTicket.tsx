@@ -21,6 +21,7 @@ import { toast } from './use-toast'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './connect-button'
 import OnSignal from './OnSignal'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function BuyTicket() {
   // State variables
@@ -31,6 +32,7 @@ function BuyTicket() {
     (state) => state.ticketsAvailableAtCurrentPrice,
   )
   const ticketsCounter = useStoreState((state) => state.ticketsCounter)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
   const nextTicketPriceConverted = nextTicketPrice / tokenConversion
@@ -53,6 +55,10 @@ function BuyTicket() {
   // Contract write
   // call buyTicket() - default value 0
   const [buddyValue, setBuddyValue] = useState('0')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLButtonElement | null>(null)
+  // useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
@@ -66,6 +72,13 @@ function BuyTicket() {
         args: [BigInt(buddyValue)],
       })
       const hash = tx.hash
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'afterPurchase',
+      })
+
+      // setIsModalOpen(false)
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -80,11 +93,12 @@ function BuyTicket() {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger asChild>
+      <Dialog open={isModalOpen}>
+        <DialogTrigger asChild ref={modalRef}>
           <Button
             variant="enter"
             className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+            onClick={() => setIsModalOpen(true)}
           >
             {buyTicketActive && (
               <div className="flex justify-start items-center">
@@ -127,7 +141,7 @@ function BuyTicket() {
                 />
               </DialogTitle>
               <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-                <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+                <div className="w-[85%] mx-auto flex flex-col gap-3">
                   <Image
                     priority
                     src="/lore/EnterGame.png"
@@ -190,35 +204,18 @@ function BuyTicket() {
                       </div>
                     </div>
 
-                    {buyTicketActive && (
-                      <Button
-                        variant="enter"
-                        size="lg"
-                        className="rounded-full w-[100%]"
-                        onClick={buyTicketHandler}
-                        isLoading={isLoading}
-                      >
-                        Buy Ticket
-                      </Button>
-                    )}
-
-                    {!buyTicketActive && (
-                      <>
-                        <Button
-                          disabled
-                          variant="enter"
-                          size="lg"
-                          className="rounded-full w-[100%]"
-                          // onClick={buyTicketHandler}
-                        >
-                          Buy Ticket
-                        </Button>
-
-                        <Prompt />
-                      </>
-                    )}
+                    <Button
+                      disabled={!buyTicketActive}
+                      variant="enter"
+                      size="lg"
+                      className="rounded-full w-[100%]"
+                      onClick={buyTicketHandler}
+                      isLoading={isLoading}
+                    >
+                      Buy Ticket
+                    </Button>
                   </div>
-                </DialogDescription>
+                </div>
               </ScrollArea>
             </DialogHeader>
           </div>

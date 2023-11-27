@@ -1,10 +1,11 @@
 import React from 'react'
+import { formatDistanceToNow } from 'date-fns'
 
 interface GameTextVariantType {
   number: number
   keyword: string
   // variant: string
-  timestamp: string
+  timestamp: number
   text: string
   isLastIndex: boolean
 }
@@ -99,7 +100,7 @@ const GameTextVariant: React.FC<GameTextVariantType> = ({
         <span className="text-md underline">{keyword}</span> <span className="text-md">{text}</span>
       </p>
       <p className="text-sm text-right whitespace-nowrap text-neutral-600 dark:text-neutral-100">
-        {timestamp}
+        {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}
       </p>
     </div>
   )

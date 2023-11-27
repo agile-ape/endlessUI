@@ -42,3 +42,6 @@ export const DOCS_URL_split =
 
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
 export const TELEGRAM_URL = 'https://twitter.com/lastman0x'
+export const API_ENDPOINT = isDevelopment
+  ? 'https://lsm-be.onrender.com'
+  : 'https://lsm-be.onrender.com'

@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import type { IApp } from 'types/app'
+import { API_ENDPOINT } from '../../services/constant'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -33,12 +34,28 @@ export const tokenConversion = 1e18
 export const shareConversion = 1000
 export const priceConversion = 1000
 
-export const transformToTicket = (ticket: any[]): IApp['tickets'] => {
+export const transformToTicket = (
+  ticket: {
+    ticketId: number
+    player: string
+    status: number
+    lastSeen: number
+    isInPlay: boolean
+    value: number
+    purchasePrice: number
+    redeemValue: number
+    killCount: number
+    killedBy: string
+    safehouseNights: number
+    checkOutRound: number
+    rank: number
+  }[],
+): IApp['tickets'] => {
   return ticket.map((t) => ({
-    id: t.ticket_id,
-    ticket_value: t.ticket_value,
-    purchase_time: t.purchase_time,
-    user_address: t.user_address,
+    id: t.ticketId,
+    ticket_value: t.value,
+    purchase_time: new Date().getHours(),
+    user_address: t.player,
   }))
 }
 
@@ -76,4 +93,30 @@ export const statusPayload: Record<number, IApp['ticketStatus']> = {
   3: 'safe',
   4: 'dead',
   5: 'exited',
+}
+
+export async function fetcher(path: string) {
+  try {
+    const response = await fetch(API_ENDPOINT + path)
+    const json = await response.json()
+
+    return json
+  } catch (error) {
+    console.log({ error })
+    throw new Error('Failed to fetch API')
+  }
+}
+
+export function replacePlaceholders(message: { value: string; args: Record<string, string> }) {
+  let result = message.value
+
+  for (const key in message.args) {
+    result = result.replace(`[${key}]`, message.args[key])
+  }
+
+  return result
+}
+
+export function formatAddress(address: string) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
