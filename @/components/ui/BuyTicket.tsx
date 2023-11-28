@@ -14,7 +14,7 @@ import { LogOut } from 'lucide-react'
 import Prompt from './Prompt'
 import { formatNumber, tokenConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
-import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { defaultContractObj, DOCS_URL_buy } from '../../../services/constant'
 import { parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -61,7 +61,7 @@ function BuyTicket() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const { writeAsync, isLoading } = useContractWrite({
+  const { data, writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
     value: parseUnits(String(nextTicketPriceConverted), 18),
@@ -72,36 +72,14 @@ function BuyTicket() {
       const tx = await writeAsync({
         args: [BigInt(buddyValue)],
       })
+
       const hash = tx.hash
+
+      setIsModalOpen(false)
 
       updateCompletionModal({
         isOpen: true,
         state: 'afterPurchase',
-      })
-
-      setIsModalOpen(false)
-
-      addTicket({
-        id: 1,
-        sign: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-        vote: false,
-        potClaim: 0,
-        attacks: 3,
-        attackCount: 0,
-        player: address as `0x${string}`,
-        status: 0,
-        lastSeen: 0,
-        isInPlay: true,
-        value: nextTicketPriceConverted,
-        purchasePrice: nextTicketPriceConverted,
-        redeemValue: 0,
-        killCount: 0,
-        killedBy: '0x0000000000000000000000000000000000000000',
-        safehouseNights: 0,
-        checkOutRound: 0,
-        rank: 0,
-        buddy: 0,
-        buddyCount: Number(buddyValue),
       })
     } catch (error: any) {
       const errorMsg =
