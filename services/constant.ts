@@ -27,6 +27,8 @@ export const whitelistContractObj = {
 }
 
 export const DOCS_URL = 'https://lastman-n4p5h.notaku.site'
+export const DOCS_URL_stages = 'https://lastman-n4p5h.notaku.site/more-info/more-on-stages'
+
 export const DOCS_URL_buy = 'https://lastman-n4p5h.notaku.site/more-info/more-on-start'
 export const DOCS_URL_exit =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-submit#7a1575b9c3ef4632a8336be33faa90e9'
@@ -39,6 +41,8 @@ export const DOCS_URL_kickout =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse#93cd2d661c9b4bd8b42daacbce9ce24c'
 export const DOCS_URL_split =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-stages#cb029b4005c94699b1d7eb8856321ea6'
+
+export const DOCS_URL_phases = 'https://lastman-n4p5h.notaku.site/glossary/phases'
 
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
 export const TELEGRAM_URL = 'https://twitter.com/lastman0x'

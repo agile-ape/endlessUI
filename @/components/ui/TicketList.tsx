@@ -15,6 +15,7 @@ type TicketListType = {
 
 const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const [ticketState, setTicketState] = useState<string>('aroundMe') // default 'aroundMe'
+  const phase = useStoreState((state) => state.phase)
 
   const ticketList = useStoreState((state) => state.tickets)
   const ticketCount = useStoreState((state) => state.ticketCount)
@@ -129,38 +130,94 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
         </div>
       </summary>
 
-      {!totalTicketCount && (
-        <div className="flex flex-col justify-center">
-          <div className="flex items-center place-content-center">
-            <div className="relative">
-              <Image
-                priority
-                src="/pepe/sun.svg"
-                className="place-self-center animate-pulse"
-                height={300}
-                width={300}
-                alt="sneak-a-peek-pepe"
-              />
-
-              <div className="absolute top-[50px]">
-                <Image
-                  priority
-                  src="/pepe/pepe-robe.svg"
-                  className="place-self-center"
-                  height={300}
-                  width={300}
-                  alt="sneak-a-peek-pepe"
-                />
-              </div>
-            </div>
+      {phase === 'deployed' && (
+        <>
+          <div className="flex flex-col justify-center">
+            <div className="text-center mt-4 text-2xl">Recap of ticket looks</div>
           </div>
-          <div className="text-center my-4 text-2xl">We await patiently for our first warrior</div>
-        </div>
+
+          <div
+            className="
+                  flex
+                  w-[100%]
+                  justify-evenly
+                  sm:justify-start
+                  gap-x-6
+                  gap-y-6
+                  flex-wrap
+                  px-6 py-6
+                  overflow-y-scroll max-h-[750px]
+                "
+          >
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'beforePurchase'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'afterPurchase'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage1New'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage2New'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage3New'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'submittedDay'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'submittedNight'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'attackedButSafu'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'inSafehouse'} />
+
+            {/* <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'neverSubmit'} /> */}
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'killed'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'exitGame'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'agreedToSplitPot'} />
+
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} />
+          </div>
+        </>
       )}
 
-      {totalTicketCount && (
-        <div
-          className="
+      {phase !== 'deployed' && (
+        <div>
+          {!totalTicketCount && (
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center place-content-center">
+                <div className="relative">
+                  <Image
+                    priority
+                    src="/pepe/sun.svg"
+                    className="place-self-center animate-pulse"
+                    height={300}
+                    width={300}
+                    alt="sneak-a-peek-pepe"
+                  />
+
+                  <div className="absolute top-[50px]">
+                    <Image
+                      priority
+                      src="/pepe/pepe-robe.svg"
+                      className="place-self-center"
+                      height={300}
+                      width={300}
+                      alt="sneak-a-peek-pepe"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-center my-4 text-2xl">
+                We await patiently for our first warrior
+              </div>
+            </div>
+          )}
+
+          {totalTicketCount && (
+            <div
+              className="
             flex
             w-[100%]
             justify-evenly
@@ -171,45 +228,17 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
             px-6 py-6
             overflow-y-scroll max-h-[750px]
           "
-        >
-          {/* <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'beforePurchase'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'afterPurchase'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'submittedDay'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'stage1New'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'stage2New'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'stage3New'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'submittedNight'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'attackedButSafu'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'neverSubmit'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'inSafehouse'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'lastManStanding'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'agreedToSplitPot'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'noMorePot'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'killed'} />
-
-          <TicketUI ownTicket={false} ticketNumber={2} ticketLookInput={'exitGame'} /> */}
-
-          {ticketList.map((item, i) => (
-            <TicketUI
-              key={item.id}
-              ownTicket={false}
-              ticketNumber={item.id}
-              ticketLookInput={'afterPurchase'}
-            />
-          ))}
+            >
+              {ticketList.map((item, i) => (
+                <TicketUI
+                  key={item.id}
+                  ownTicket={false}
+                  ticketNumber={item.id}
+                  ticketLookInput={'afterPurchase'}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>

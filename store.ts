@@ -4,7 +4,7 @@ import type { IApp } from 'types/app'
 import { phasePayload, statusPayload } from '@/lib/utils'
 
 export const appStore = createStore<StoreModel>({
-  phase: 'day',
+  phase: 'start',
   ticketState: 'new',
   // game:,
   round: 0,

@@ -76,20 +76,24 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     enabled: !!playerAddress,
   })
 
+  // used
   let ticketId = playerTicket?.[0] || 0
+  // used
   let ticketAddress = playerTicket?.[1] || 0
+
   let ticketSignature = playerTicket?.[2] || 0
   let ticketStatus = playerTicket?.[3] || 0
   let ticketLastSeen = playerTicket?.[4] || 0
   // let ticketIsInPlay = playerTicket?.[5] || 0
   let ticketIsInPlay = true
-  let ticketVote = playerTicket?.[6] || 0
+  let ticketVote = Boolean(playerTicket?.[6] || 0)
   let ticketValue = Number(playerTicket?.[7]) || 0
   let ticketPurchasePrice = playerTicket?.[8] || 0
   let ticketPotClaim = playerTicket?.[9] || 0
   let ticketRedeemValue = playerTicket?.[10] || 0
-  // let ticketAttacks = Number(playerTicket?.[11]) || 0
-  let ticketAttacks = Number(3)
+  // used
+  let ticketAttacks = Number(playerTicket?.[11]) || 0
+
   let ticketAttackCount = playerTicket?.[12] || 0
   let ticketKillCount = playerTicket?.[13] || 0
   let ticketKilledBy = playerTicket?.[14] || 0
@@ -100,33 +104,28 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   // let ticketRank = playerTicket?.[19] || 0
   let ticketRank = 123
 
+  let ticketVoteString: string
+  ticketVote === false ? (ticketVoteString = 'No') : (ticketVoteString = 'Yes')
+
   const phase = useStoreState((state) => state.phase)
-  // const phase = 'countdown'
 
-  // const round = useStoreState((state) => state.round)
-  const round = 0
+  const round = useStoreState((state) => state.round)
 
-  // const round = useStoreState((state) => state.nextTicketPrice)
-  const nextTicketPrice = 2
+  const suddenDeath = useStoreState((state) => state.suddenDeath)
 
-  // const nextTicketId = useStoreState((state) => state.ticketId)
-  const nextTicketId = 2
-
-  // const statusPayload: Record<number, IApp['ticketStatus']> = {
-  //   0: 'new',
-  //   1: 'submitted',
-  //   2: 'checked',
-  //   3: 'safe',
-  //   4: 'dead',
-  //   5: 'exited',
-  // }
+  const nextTicketId = useStoreState((state) => state.ticketId)
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   let ticketLook: string
 
   // case of phase !="countdown" && ticketId == 0 is covered in GameTab
-  if (phase === 'countdown') {
+
+  if (phase === 'deployed') {
+    ticketLook = 'beforePurchase'
+  }
+
+  if (phase === 'start') {
     if (ticketId === 0) {
       ticketLook = 'beforePurchase'
     } else if (ticketId != 0) {
@@ -192,12 +191,14 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
-  const ticketLookTest = ticketLook
+  let ticketLookFinal: string
 
-  const conversion = Number(10 ** 15)
+  ticketLookInput === '' ? (ticketLookFinal = ticketLook) : (ticketLookFinal = ticketLookInput)
 
-  const getTicketLook = (ticketLookTest) => {
-    switch (ticketLookTest) {
+  const conversion = Number(10 ** 15) // remember to check this
+
+  const getTicketLook = (ticketLookFinal) => {
+    switch (ticketLookFinal) {
       case 'beforePurchase':
         return {
           bgImage: 'burst',
@@ -205,8 +206,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'enter',
           id: nextTicketId,
           status: 'next ticket',
-          label: 'bounty',
-          value: ' - ',
+          label: 'value',
+          value: ' - ETH',
         }
       case 'afterPurchase':
         return {
@@ -215,7 +216,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'happy',
           id: ticketId,
           status: 'ticket claimed',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'submittedDay':
@@ -225,7 +226,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'handsup',
           id: ticketId,
           status: 'submitted',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'stage1New':
@@ -235,7 +236,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'confident',
           id: ticketId,
           status: 'ready to submit word',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'stage2New':
@@ -245,7 +246,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'worried',
           id: ticketId,
           status: 'ready to submit word',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'stage3New':
@@ -255,7 +256,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'anxious',
           id: ticketId,
           status: 'ready to submit word',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'submittedNight':
@@ -265,7 +266,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'attack',
           id: ticketId,
           status: 'time to attack',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'attackedButSafu':
@@ -275,7 +276,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'pray',
           id: ticketId,
           status: 'SAFU',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'neverSubmit':
@@ -285,7 +286,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'attack',
           id: ticketId,
           status: 'time to attack',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'inSafehouse':
@@ -295,7 +296,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'warm',
           id: ticketId,
           status: 'taking a break',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'lastManStanding':
@@ -305,7 +306,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'king',
           id: ticketId,
           status: 'last man standing',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'agreedToSplitPot':
@@ -315,7 +316,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'beers',
           id: ticketId,
           status: 'WAGMI',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'noMorePot':
@@ -325,7 +326,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           face: 'watchitburn',
           id: ticketId,
           status: 'let it burn',
-          label: 'bounty',
+          label: 'value',
           value: ticketValue / conversion + ' ETH',
         }
       case 'killed':
@@ -351,7 +352,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     }
   }
 
-  const { bgImage, header, face, id, status, label, value } = getTicketLook(ticketLookTest)
+  const { bgImage, header, face, id, status, label, value } = getTicketLook(ticketLookFinal)
 
   const gradientStyle = {
     background: 'linear-gradient(to right, #ff00cc, #3333cc)',
@@ -404,7 +405,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Attacks/Kills</p>
-            <p className="text-right"> 10/3 </p>
+            <p className="text-right">
+              {' '}
+              {ticketAttackCount}/{ticketKillCount}{' '}
+            </p>
           </div>
 
           {/* <div className="flex justify-between gap-6">
@@ -424,7 +428,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             <p className="text-left">Last Seen/Vote</p>
             <p className="text-right">
               {' '}
-              <span className="underline">1</span>/No{' '}
+              <span className="underline">{ticketLastSeen}</span>/{ticketVoteString}{' '}
             </p>
           </div>
 
@@ -435,12 +439,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Safe nights </p>
-            <p className="text-right"> 20 </p>
+            <p className="text-right"> {ticketSafehouseNights} </p>
           </div>
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Buddy/Bud Count </p>
-            <p className="text-right"> -/3</p>
+            <p className="text-right">
+              {' '}
+              #{ticketBuddy}/{ticketBuddyCount}
+            </p>
           </div>
 
           {/* <div className="flex justify-between gap-6">
@@ -448,46 +455,47 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
                 <p className="text-right"> 1 </p>
               </div> */}
 
-          {ticketLookTest == 'inSafehouse' && (
+          {ticketLookFinal == 'inSafehouse' && (
             <div className="flex justify-between text-lg text-amber-600  gap-6">
               <p className="text-left">Check out by</p>
-              <p className="text-right underline"> 10</p>
+              <p className="text-right underline"> {ticketcheckOutRound}</p>
             </div>
           )}
 
-          {(ticketLookTest == 'exitGame' || ticketLookTest == 'killed') && (
+          {(ticketLookFinal == 'exitGame' || ticketLookFinal == 'killed') && (
             <div className="flex justify-between gap-6">
               <p className="text-left">Killed By</p>
-              <p className="text-right"> #7</p>
+              <p className="text-right"> #{ticketKilledBy}</p>
             </div>
           )}
 
-          {ticketLookTest == 'exitGame' && (
+          {ticketLookFinal == 'exitGame' && (
             <div className="flex justify-between gap-6">
               <p className="text-left">Exited with</p>
               <p className="text-right">
                 {' '}
-                7<span className="text-[0.5rem]">ETH</span>
+                {ticketRedeemValue}
+                <span className="text-[0.5rem]">ETH</span>
               </p>
             </div>
           )}
 
           {!(
             ownTicket == true ||
-            ticketLookTest == 'inSafehouse' ||
-            ticketLookTest == 'killed' ||
-            ticketLookTest == 'exitGame'
+            ticketLookFinal == 'inSafehouse' ||
+            ticketLookFinal == 'killed' ||
+            ticketLookFinal == 'exitGame'
           ) && <Attack id={ticketId} />}
 
-          {ownTicket == false && ticketLookTest == 'inSafehouse' && <KickOut id={ticketId} />}
-          {ownTicket == true && ticketLookTest == 'inSafehouse' && <CheckOut />}
+          {ownTicket == false && ticketLookFinal == 'inSafehouse' && <KickOut id={ticketId} />}
+          {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />}
         </div>
       )}
 
       {/* default */}
       {!isOverlayInspect && (
         <>
-          {/* {!ownTicket && ticketLookTest == 'killed' && (
+          {/* {!ownTicket && ticketLookFinal == 'killed' && (
             <div
               className="absolute top-0 left-0 h-full w-full"
               style={{
@@ -497,7 +505,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               }}
             ></div>
           )} */}
-          {/* {!ownTicket && ticketLookTest == 'exitGame' && (
+          {/* {!ownTicket && ticketLookFinal == 'exitGame' && (
             <div
               className="absolute top-0 left-0 h-full w-full"
               style={{
@@ -537,7 +545,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             <div className="flex flex-row-reverse mx-3 ">{swords}</div>
           )}
           {/* rank */}
-          {(ticketLookTest == 'killed' || ticketLookTest == 'exitGame') && (
+          {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div className="flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text">
               {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
               <div className={`uppercase font-semibold tracking-wider ${h1}`}>
@@ -546,7 +554,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             </div>
           )}
           {/* not killed or exitGame */}
-          {!(ticketLookTest == 'killed' || ticketLookTest == 'exitGame') && (
+          {!(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
               <div className={`capitalize ${h3} text-zinc-600 dark:text-zinc-800 leading-tight`}>
                 {label}

@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Triangle } from 'lucide-react'
 import Image from 'next/image'
 import { shareConversion } from '@/lib/utils'
+import { DOCS_URL_stages } from '../../../services/constant'
 
 // type RoundType = {
 //   round: IApp['round']
@@ -53,76 +54,40 @@ const Round = () => {
     'text-zinc-600 dark:text-zinc-400 text-xs sm:text-base whitespace-nowrap tracking-tight cursor-default'
 
   return (
-    <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
-      <div>
-        <p
-          className={cn(
-            'text-lg sm:text-2xl whitespace-nowrap',
-            round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
-          )}
-        >
-          Round <span className="underline">{round}</span>
-        </p>
-      </div>
+    // <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
+    // <div>
+    <TooltipProvider delayDuration={10}>
+      <Tooltip>
+        <TooltipTrigger className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
+          <p
+            className={cn(
+              'text-lg sm:text-2xl whitespace-nowrap',
+              round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
+            )}
+          >
+            Round <span className="underline">{round}</span>
+          </p>
 
-      <div className="flex flex-row gap-4">
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger className={stage === 1 ? On : Off}>Stage 1</TooltipTrigger>
-            <TooltipContent side="top" align="center">
-              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                Time is halved after every 4 rounds.
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger className={stage === 2 ? On : Off}>Stage 2</TooltipTrigger>
-            <TooltipContent side="top" align="center">
-              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                <p>Time stops halving.</p>
-                <p>Tokens emission stops.</p>
-                <p>Split pot option activated.</p>
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger className={stage === 3 ? On : Off}>Stage 3</TooltipTrigger>
-            <TooltipContent side="top" align="center">
-              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                <p>
-                  Pot begins to get drained at {drainRateConverted}% per round, until the pot is
-                  left with {minPotSizeConverted}% of pot size
-                </p>
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* <div className="flex justify-center">
-          <Image
-            priority
-            src={`/icon/triangle-up.svg`}
-            height={18}
-            width={18}
-            // fill={true}
-            // sizes="max-width:150px"
-            className=""
-            // layout="fixed"
-            alt={`arrow`}
-          />
-        </div>
-
-        <div></div>
-
-        <div></div> */}
-      </div>
-    </div>
+          <div className={cn('flex flex-row gap-4', stage === 1 ? On : Off)}>
+            <div className={stage === 1 ? On : Off}>Stage 1</div>
+            <div className={stage === 2 ? On : Off}>Stage 2</div>
+            <div className={stage === 3 ? On : Off}>Stage 3</div>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top" align="start">
+          <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+            1 round = 1 day and night. Halving every 4 rounds. Diff stages, diff rules.
+            <div>
+              <a href={DOCS_URL_stages} target="_blank" className="text-xs underline">
+                Learn more
+              </a>
+            </div>
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+    // </div>
+    // </div>
   )
 }
 
