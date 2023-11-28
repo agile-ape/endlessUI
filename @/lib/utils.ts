@@ -102,3 +102,7 @@ export function formatAddress(address: string) {
   if (!address) return '0x'
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
+
+export function encodeSvg(svg: string) {
+  return `data:image/svg+xml;base64,${btoa(svg)}`
+}

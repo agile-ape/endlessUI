@@ -24,8 +24,8 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
-import { statusPayload } from '@/lib/utils'
+import { API_ENDPOINT, defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
+import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 
 interface SubmitKeywordModalType {
@@ -47,6 +47,8 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
 
   // Contract Write
   const [otpInput, setOtpInput] = React.useState<string>('')
+  const [svgKeyword, setSvgKeyword] = React.useState<string>('')
+
   const excludeSpecialChar = /^[a-zA-Z0-9]+$/
 
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -54,7 +56,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
 
   const onCaptchaClick = () => {
     if (captchaRef.current) {
-      captchaRef.current.execute()
+      captchaRef.current.removeCaptcha()
     }
   }
 
@@ -75,7 +77,17 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
     const res = await data.json()
 
     if (res?.message === 'success') {
-      setOtpInput('ABCD')
+      try {
+        const fetchKeyword = await fetch(`${API_ENDPOINT}/keywords`)
+        const svgResult = await fetchKeyword.text()
+
+        setSvgKeyword(svgResult)
+
+        console.log({ svgResult })
+      } catch (error) {
+        console.log({ error })
+        setSvgKeyword('')
+      }
     }
     console.log({ res })
   }
@@ -166,7 +178,6 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
                       <HCaptcha
                         sitekey="38e2ff83-f255-4b90-88ff-c65a443e82db"
                         onVerify={(token, ekey) => verifyCaptcha(token)}
-                        loadAsync={true}
                         tabIndex={0}
                         size="normal"
                         id={crypto.randomUUID()}
@@ -174,6 +185,17 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
                         // onExpire={onExpire}
                       />
                     </div>
+
+                    {svgKeyword && (
+                      <div className="flex justify-center">
+                        <Image
+                          alt="keyword that will be used to submit"
+                          src={encodeSvg(svgKeyword)}
+                          height={200}
+                          width={300}
+                        />
+                      </div>
+                    )}
 
                     <div
                       className="w-[240px] rounded-xl
