@@ -75,8 +75,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     enabled: !!playerAddress,
   })
 
-  console.log({ playerTicket })
-
   let ticketId = playerTicket?.[0] || 0
   let ticketAddress = playerTicket?.[1] || 0
   let ticketSignature = playerTicket?.[2] || 0

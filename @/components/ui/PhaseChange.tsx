@@ -108,7 +108,7 @@ const PhaseChange = () => {
               Trigger the phase change
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/ChangePhase.png"
@@ -154,41 +154,22 @@ const PhaseChange = () => {
                 </div> */}
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
-                  {phaseChangeActive && (
-                    <Button
-                      disabled={!write || !playerTicket}
-                      // size="md"
-                      variant="default"
-                      onClick={() => write()}
-                      isLoading={isLoading}
-                      // variant="change"
-                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                    >
-                      {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                      Change phase
-                    </Button>
-                  )}
+                  <Button
+                    disabled={!write || !playerTicket || !phaseChangeActive}
+                    // size="md"
+                    variant="default"
+                    onClick={() => write()}
+                    isLoading={isLoading}
+                    // variant="change"
+                    className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                  >
+                    {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+                    Change phase
+                  </Button>
 
-                  {!phaseChangeActive && (
-                    <>
-                      <Button
-                        // disabled={!write || !playerTicket}
-                        // size="md"
-                        variant="default"
-                        onClick={() => write()}
-                        isLoading={isLoading}
-                        // variant="change"
-                        className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                        disabled
-                      >
-                        {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                        Change phase
-                      </Button>
-                      <Prompt />
-                    </>
-                  )}
+                  {!phaseChangeActive && <Prompt />}
                 </div>
-              </DialogDescription>
+              </div>
             </ScrollArea>
           </DialogHeader>
         </div>

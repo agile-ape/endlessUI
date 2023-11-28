@@ -57,8 +57,8 @@ function BuyTicket() {
   const [buddyValue, setBuddyValue] = useState('0')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const modalRef = useRef<HTMLButtonElement | null>(null)
-  // useOutsideClick(modalRef, () => setIsModalOpen(false))
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
@@ -78,7 +78,7 @@ function BuyTicket() {
         state: 'afterPurchase',
       })
 
-      // setIsModalOpen(false)
+      setIsModalOpen(false)
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -94,39 +94,45 @@ function BuyTicket() {
   return (
     <>
       <Dialog open={isModalOpen}>
-        <DialogTrigger asChild ref={modalRef}>
-          <Button
-            variant="enter"
-            className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-            onClick={() => setIsModalOpen(true)}
-          >
-            {buyTicketActive && (
-              <div className="flex justify-start items-center">
-                <OnSignal active={buyTicketActive} own={true} />
-                Join for{' '}
-                {formatNumber(nextTicketPriceConverted, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
-                ETH
-              </div>
-            )}
+        <DialogTrigger asChild>
+          {isConnected ? (
+            <Button
+              variant="enter"
+              className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+              onClick={() => setIsModalOpen(true)}
+            >
+              {buyTicketActive && (
+                <div className="flex justify-start items-center">
+                  <OnSignal active={buyTicketActive} own={true} />
+                  Join for{' '}
+                  {formatNumber(nextTicketPriceConverted, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 3,
+                  })}{' '}
+                  ETH
+                </div>
+              )}
 
-            {!buyTicketActive && (
-              <div className="flex justify-start items-center">
-                <OnSignal active={buyTicketActive} own={true} />
-                Starts at:{' '}
-                {formatNumber(nextTicketPriceConverted, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
-                ETH
-              </div>
-            )}
-          </Button>
+              {!buyTicketActive && (
+                <div className="flex justify-start items-center">
+                  <OnSignal active={buyTicketActive} own={true} />
+                  Starts at:{' '}
+                  {formatNumber(nextTicketPriceConverted, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 3,
+                  })}{' '}
+                  ETH
+                </div>
+              )}
+            </Button>
+          ) : (
+            <div className="flex mt-4 justify-center">
+              <CustomConnectButton />
+            </div>
+          )}
         </DialogTrigger>
 
-        <DialogContent>
+        <DialogContent ref={modalRef}>
           <div className="overflow-auto">
             <DialogHeader className="items-center">
               <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
