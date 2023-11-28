@@ -62,6 +62,24 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
     toggle()
   })
 
+  const verifyCaptcha = async (token: string) => {
+    const data = await fetch('/api/captcha', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: token,
+      }),
+    })
+    const res = await data.json()
+
+    if (res?.message === 'success') {
+      setOtpInput('ABCD')
+    }
+    console.log({ res })
+  }
+
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none text-black">
@@ -147,10 +165,11 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
 
                       <HCaptcha
                         sitekey="38e2ff83-f255-4b90-88ff-c65a443e82db"
-                        onVerify={(token, ekey) => console.log(token, ekey)}
+                        onVerify={(token, ekey) => verifyCaptcha(token)}
                         loadAsync={true}
                         tabIndex={0}
                         size="normal"
+                        id={crypto.randomUUID()}
                         // onError={onError}
                         // onExpire={onExpire}
                       />
@@ -219,6 +238,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
                           </Button>
                         )}
                       </div>
+
                       {!active && <Prompt />}
                     </div>
                   </div>

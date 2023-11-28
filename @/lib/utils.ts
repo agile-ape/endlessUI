@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type { IApp } from 'types/app'
+import type { IApp, Ticket } from 'types/app'
 import { API_ENDPOINT } from '../../services/constant'
 
 export function cn(...inputs: ClassValue[]) {
@@ -34,28 +34,9 @@ export const tokenConversion = 1e18
 export const shareConversion = 1000
 export const priceConversion = 1000
 
-export const transformToTicket = (
-  ticket: {
-    ticketId: number
-    player: string
-    status: number
-    lastSeen: number
-    isInPlay: boolean
-    value: number
-    purchasePrice: number
-    redeemValue: number
-    killCount: number
-    killedBy: string
-    safehouseNights: number
-    checkOutRound: number
-    rank: number
-  }[],
-): IApp['tickets'] => {
+export const transformToTicket = (ticket: Ticket[]): IApp['tickets'] => {
   return ticket.map((t) => ({
-    id: t.ticketId,
-    ticket_value: t.value,
-    purchase_time: new Date().getHours(),
-    user_address: t.player,
+    ...t,
   }))
 }
 
@@ -118,5 +99,6 @@ export function replacePlaceholders(message: { value: string; args: Record<strin
 }
 
 export function formatAddress(address: string) {
+  if (!address) return '0x'
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }

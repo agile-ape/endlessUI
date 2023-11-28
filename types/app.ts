@@ -1,8 +1,24 @@
 interface Ticket {
   id: number
-  user_address: string
-  ticket_value: number
-  purchase_time: number
+  sign: string
+  vote: boolean
+  potClaim: number
+  attacks: number
+  attackCount: number
+  player: string
+  status: number
+  lastSeen: number
+  isInPlay: boolean
+  value: number
+  purchasePrice: number
+  redeemValue: number
+  killCount: number
+  killedBy: string
+  safehouseNights: number
+  checkOutRound: number
+  rank: number
+  buddy: number
+  buddyCount: number
 }
 
 interface IApp {
@@ -82,4 +98,4 @@ interface IApp {
   // disabled: boolean
 }
 
-export type { IApp }
+export type { IApp, Ticket }

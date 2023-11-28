@@ -66,6 +66,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     ...defaultContractObj,
     functionName: 'idToPlayer',
     args: [ticketNumber],
+    enabled: !!ticketNumber,
   })
 
   const { data: playerTicket } = useContractRead({

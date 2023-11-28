@@ -249,6 +249,9 @@ export const appStore = createStore<StoreModel>({
   updateTickets: action((state, payload) => {
     state.tickets = payload
   }),
+  addTicket: action((state, payload) => {
+    state.tickets.push(payload)
+  }),
   // addTicket: action((state, payload) => {
   //   state.tickets.push(payload)
   // }),

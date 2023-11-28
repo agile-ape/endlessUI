@@ -1,5 +1,5 @@
 import type { Action } from 'easy-peasy'
-import type { IApp } from './app'
+import type { IApp, Ticket } from './app'
 
 interface StoreModel {
   phase: IApp['phase']
@@ -130,6 +130,7 @@ interface StoreModel {
   updateGameTab: Action<StoreModel, 'ticket' | 'game'>
   triggerCompletionModal: CompletionModal
   updateTriggerCompletionModal: Action<StoreModel, CompletionModal>
+  addTicket: Action<StoreModel, Ticket>
 }
 
 type CompletionModal = {

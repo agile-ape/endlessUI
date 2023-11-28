@@ -46,8 +46,7 @@ const UserActions = () => {
   // const ticketStatusString = 'safe'
 
   // Active condition
-  let submitActive: boolean
-  submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
+  const submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
 
   return (
     <div

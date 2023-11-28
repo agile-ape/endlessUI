@@ -1,6 +1,6 @@
 import Header from './Header'
 import { VT323 } from 'next/font/google'
-import type { IApp } from 'types/app'
+import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
@@ -47,21 +47,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   })
 
   const { data: ticketsData, error } = useSWR<{
-    data: {
-      ticketId: number
-      player: string
-      status: number
-      lastSeen: number
-      isInPlay: boolean
-      value: number
-      purchasePrice: number
-      redeemValue: number
-      killCount: number
-      killedBy: string
-      safehouseNights: number
-      checkOutRound: number
-      rank: number
-    }[]
+    data: Ticket[]
   }>('/tickets?page=1&limit=10&sortOrder=ASC&sortBy=purchasePrice', fetcher)
 
   console.log({ ticketsData, error })

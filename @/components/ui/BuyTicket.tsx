@@ -33,6 +33,7 @@ function BuyTicket() {
   )
   const ticketsCounter = useStoreState((state) => state.ticketsCounter)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const addTicket = useStoreActions((actions) => actions.addTicket)
 
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
   const nextTicketPriceConverted = nextTicketPrice / tokenConversion
@@ -79,6 +80,29 @@ function BuyTicket() {
       })
 
       setIsModalOpen(false)
+
+      addTicket({
+        id: 1,
+        sign: '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        vote: false,
+        potClaim: 0,
+        attacks: 3,
+        attackCount: 0,
+        player: address as `0x${string}`,
+        status: 0,
+        lastSeen: 0,
+        isInPlay: true,
+        value: nextTicketPriceConverted,
+        purchasePrice: nextTicketPriceConverted,
+        redeemValue: 0,
+        killCount: 0,
+        killedBy: '0x0000000000000000000000000000000000000000',
+        safehouseNights: 0,
+        checkOutRound: 0,
+        rank: 0,
+        buddy: 0,
+        buddyCount: Number(buddyValue),
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
