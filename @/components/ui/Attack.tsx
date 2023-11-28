@@ -32,6 +32,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { priceConversion } from '@/lib/utils'
 import OnSignal from './OnSignal'
 import { statusPayload } from '@/lib/utils'
+import { formatUnits } from 'viem'
 
 type AttackType = {
   id: number
@@ -211,7 +212,7 @@ const Attack: FC<AttackType> = ({ id }) => {
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Player value</p>
-                      <p className="text-right"> {defenderValue} ETH</p>
+                      <p className="text-right"> {formatUnits(BigInt(defenderValue), 18)} ETH</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
