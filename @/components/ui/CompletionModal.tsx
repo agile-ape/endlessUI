@@ -17,6 +17,14 @@ import { DialogClose } from '@radix-ui/react-dialog'
 
 const getAlertLook = (alertLookTest: string) => {
   switch (alertLookTest) {
+    case 'sentTokens':
+      return {
+        bgImage: 'rainbow',
+        face: 'muscle',
+        title: 'Tokens sent!',
+        message: 'Thanks for spreading the love',
+      }
+    //used
     case 'afterPurchase':
       return {
         bgImage: 'rainbow',
@@ -45,6 +53,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Player is safe!',
         message: 'Player submitted the right keyword and is safe from attacks. Try another player?',
       }
+    //used
     case 'kickedOut':
       return {
         bgImage: 'deadOverlay',
@@ -52,6 +61,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Player kicked out and killed!',
         message: 'Thanks for kicking the overstayer out.',
       }
+    //used
     case 'checkedIn':
       return {
         bgImage: 'safeOverlay',
@@ -59,6 +69,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You are checked in!',
         message: 'Enjoy your stay. Please remember to check out on time. Or else.',
       }
+    //used
     case 'checkedOut':
       return {
         bgImage: 'rainbow',
@@ -67,6 +78,7 @@ const getAlertLook = (alertLookTest: string) => {
         message:
           'We hope you enjoyed your stay. Please remember to submit the keyword now that you are back in the game.',
       }
+    //used
     case 'voteYes':
       return {
         bgImage: 'rainbow',
@@ -74,6 +86,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You voted Yes!',
         message: 'Cheers man. Make love not war.',
       }
+    //used
     case 'voteNo':
       return {
         bgImage: 'rainbow',
@@ -81,6 +94,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You voted back No!',
         message: 'Awww. We appreciate you fighting the good fight.',
       }
+    //used
     case 'exitGame':
       return {
         bgImage: 'burst',
@@ -88,7 +102,8 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Thanks for playing!',
         message: 'We hope you have fun.',
       }
-    // sent to another player
+
+    /*------  sent to another player ------*/
     case 'killed':
       return {
         bgImage: 'deadOverlay',

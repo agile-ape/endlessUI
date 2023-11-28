@@ -85,10 +85,10 @@ const buttonVariants = cva(
 
         // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
         primary:
-          'text-white whitespace-nowrap bg-blue-950 hover:bg-blue-900 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+          'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:bg-transparent dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
 
-        secondary:
-          'text-blue-950 whitespace-nowrap border border-blue-950 bg-transparent hover:bg-blue-800 hover:text-white focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+        // secondary:
+        //   'text-blue-950 dark:text-white whitespace-nowrap border-2 border-blue-950 dark:border-2 dark:border-white bg-transparent hover:bg-sky-800 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
         // used to be whitelist
         /*-------------------- CONNECT BUTTON ---------------------*/
         connect:

@@ -176,7 +176,7 @@ const GameTab = () => {
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Welcome Sire</div>
                 <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'afterPurchase'} />
                 {/* <BuyTicket /> */}
-                {/* <ExitGame /> */}
+                <ExitGame />
               </div>
             )}
 

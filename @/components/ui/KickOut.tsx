@@ -33,6 +33,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { useStoreActions, useStoreState } from '../../../store'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 type KickOutType = {
   id: number
@@ -42,6 +43,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
   // Attacker
@@ -87,6 +89,11 @@ const KickOut: FC<KickOutType> = ({ id }) => {
   // kickOutActive = true
 
   // Contract write
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'kickOutFromSafehouse',
@@ -98,6 +105,13 @@ const KickOut: FC<KickOutType> = ({ id }) => {
         args: [BigInt(id)],
       })
       const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'kickedOut',
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'

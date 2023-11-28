@@ -36,6 +36,7 @@ import OnSignal from './OnSignal'
 import { defaultContractObj, DOCS_URL_safehouse } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function CheckIn() {
   // State variables
@@ -43,6 +44,7 @@ function CheckIn() {
   const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
 
   const stayCost = safehouseCostPerNight / priceConversion
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
 
@@ -75,12 +77,16 @@ function CheckIn() {
   checkInActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
 
   // Contract write
+  const [amountTicket, setAmountTicket] = React.useState<number>(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'checkIntoSafehouse',
   })
-
-  const [amountTicket, setAmountTicket] = React.useState<number>(0)
 
   const checkInHandler = async () => {
     try {
@@ -88,6 +94,13 @@ function CheckIn() {
         args: [BigInt(amountTicket)],
       })
       const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'checkedIn',
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'

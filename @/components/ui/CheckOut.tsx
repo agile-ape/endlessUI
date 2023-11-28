@@ -32,11 +32,13 @@ import OnSignal from './OnSignal'
 import { defaultContractObj, DOCS_URL_checkout } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function CheckOut() {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -60,6 +62,12 @@ function CheckOut() {
   checkOutActive = phase === 'day' && ticketStatusString === 'safe'
 
   // Contract write
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'checkOutFromSafehouse',
@@ -71,6 +79,13 @@ function CheckOut() {
 
       const tx = await writeAsync({})
       const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'checkedOut',
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'

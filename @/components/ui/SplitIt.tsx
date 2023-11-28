@@ -35,6 +35,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { toast } from './use-toast'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function SplitIt() {
   // State variables
@@ -52,6 +53,8 @@ function SplitIt() {
   const splitAmountPerPerson = currentPot / tokenConversion / ticketCount
   const voteShare = voteCount / ticketCount
   const amountDrainedConverted = amountDrained / tokenConversion
+
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -92,6 +95,11 @@ function SplitIt() {
   // splitActive = true
 
   // Contract write
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'toggleSplitPot',
@@ -99,8 +107,18 @@ function SplitIt() {
 
   const splitHandler = async () => {
     try {
+      // const originalVote = ticketVote
+
       const tx = await writeAsync()
+
       const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: ticketVote ? 'voteYes' : 'voteNo',
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'

@@ -34,6 +34,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
 import OnSignal from './OnSignal'
 import { toast } from './use-toast'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function ExitGame() {
   // State variables
@@ -43,6 +44,7 @@ function ExitGame() {
   const killedCount = useStoreState((state) => state.killedCount)
   const rankShare = useStoreState((state) => state.rankShare)
   const prizeFactor = useStoreState((state) => state.prizeFactor)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   const { data: nextClaim } = useContractRead({
     ...defaultContractObj,
@@ -78,6 +80,11 @@ function ExitGame() {
     ticketStatusString !== 'exited'
 
   // Contract write
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'exitGame',
@@ -89,6 +96,13 @@ function ExitGame() {
 
       const tx = await writeAsync()
       const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'exitGame',
+      })
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'

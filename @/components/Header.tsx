@@ -25,6 +25,7 @@ import CompletionModal from './ui/CompletionModal'
 import { cn } from '@/lib/utils'
 import { DOCS_URL, TWITTER_URL, TELEGRAM_URL } from '../../services/constant'
 import { useRouter } from 'next/router'
+import Admin from './ui/Admin'
 
 function Header() {
   const { isConnected } = useAccount()
@@ -78,6 +79,8 @@ function Header() {
               Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
           </a>
+          <Admin />
+
           {/* <a href="https://twitter.com/fachryadhitya" target="_blank">
             <Button variant="link" className="px-2 text-lg" size="sm">
               Learn <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>

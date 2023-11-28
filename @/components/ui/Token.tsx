@@ -33,14 +33,21 @@ import { formatNumber } from '@/lib/utils'
 import { tokenContractObj } from '../../../services/constant'
 import { formatUnits } from 'viem'
 import { toast } from './use-toast'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function Token() {
   // const [otpInput, setOtpInput] = React.useState<string>('')
   // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
   // const phase = useStoreState((state) => state.phase)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
   const [receiverAddress, setReceiverAddress] = useState<string>('')
   const [tokenValue, setTokenValue] = useState<string>('0')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const { address, isConnected } = useAccount()
 
@@ -77,6 +84,15 @@ function Token() {
 
       const doTransfer = await transfer({
         args: [receiverAddress as `0x${string}`, BigInt(tokenValue)],
+      })
+
+      const hash = doTransfer.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'sentTokens',
       })
 
       setTokenValue('')
@@ -178,7 +194,7 @@ function Token() {
                   $LAST price info
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4 text-xl">
                       <p className="text-left">$LAST tokens in wallet</p>
@@ -246,8 +262,8 @@ function Token() {
                         />
                       </div>
                       <Button
-                        variant="secondary"
-                        className="w-full h-8 px-4 mt-2 py-2 text-xl dark:bg-white dark:text-black"
+                        variant="filter"
+                        className="w-full h-8 px-4 mt-2 py-2 text-xl"
                         onClick={transferToken}
                       >
                         Transfer
