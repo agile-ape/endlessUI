@@ -13,6 +13,7 @@ const GameFeed = () => {
     data: {
       block_timestamp: number
       block_number: number
+      datetime: number
       message: {
         value: string
         args: Record<string, string>
@@ -27,10 +28,11 @@ const GameFeed = () => {
     >
       {data?.data?.map((item, index) => (
         <GameTextVariant
-          number={item.block_number}
+          key={item.block_number}
+          number={index + 1}
           keyword={''}
           text={replacePlaceholders(item.message)}
-          timestamp={item.block_timestamp}
+          timestamp={item.datetime}
           isLastIndex={index === data.data.length - 1}
         />
       ))}

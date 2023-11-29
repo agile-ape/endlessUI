@@ -92,6 +92,10 @@ export function replacePlaceholders(message: { value: string; args: Record<strin
   let result = message.value
 
   for (const key in message.args) {
+    if (key === 'address') {
+      result = result.replace(`[${key}]`, formatAddress(message.args[key]))
+      continue
+    }
     result = result.replace(`[${key}]`, message.args[key])
   }
 
