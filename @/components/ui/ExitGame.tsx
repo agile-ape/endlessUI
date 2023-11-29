@@ -50,6 +50,7 @@ function ExitGame() {
     ...defaultContractObj,
     functionName: 'rankClaim',
     args: [BigInt(ticketCount)],
+    enabled: !!ticketCount,
   })
 
   let exitRank: number
@@ -154,7 +155,7 @@ function ExitGame() {
               </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/ExitGame.png"
@@ -249,7 +250,7 @@ function ExitGame() {
                     </>
                   )}
                 </div>
-              </DialogDescription>
+              </div>
             </ScrollArea>
           </DialogHeader>
         </div>

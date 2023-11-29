@@ -266,6 +266,11 @@ export const appStore = createStore<StoreModel>({
   updateTriggerCompletionModal: action((state, payload) => {
     state.triggerCompletionModal = payload
   }),
+
+  userTicket: null,
+  updateUserTicket: action((state, payload) => {
+    state.userTicket = payload
+  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()

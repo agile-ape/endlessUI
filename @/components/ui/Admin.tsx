@@ -38,9 +38,9 @@ export default function Admin() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button variant="link" className="h-10 border rounded-xl px-4 py-2 text-md font-whitrabt">
+        <p className="text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-10 border rounded-xl px-4 py-2 text-md font-whitrabt">
           Admin
-        </Button>
+        </p>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent

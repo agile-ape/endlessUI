@@ -5,7 +5,7 @@ import { useStoreActions, useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
 import { useAccount, useContractEvent, useContractReads } from 'wagmi'
-import { defaultContractObj } from '../../services/constant'
+import { defaultContractObj, tokenContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -38,7 +38,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
-  // const addTicket = useStoreActions((actions) => actions.addTicket)
+  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('showWelcomeModal')
@@ -63,7 +64,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   }
 
   const router = useRouter()
-  const { isConnected } = useAccount()
+  const { address, isConnected } = useAccount()
 
   useContractEvent({
     ...defaultContractObj,
@@ -74,6 +75,22 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
       updatePhase(Number(newPhase))
       refreshData()
+    },
+  })
+
+  useContractEvent({
+    ...tokenContractObj,
+    eventName: 'Transfer',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { from, to, value } = args
+      if (to?.toLowerCase() === address?.toLowerCase()) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'received',
+        })
+      }
+      console.log({ args })
     },
   })
 
@@ -116,6 +133,10 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'nextTicketPrice',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketCount',
+      },
     ],
     enabled: isConnected,
   })
@@ -124,11 +145,13 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
     const nextTicketPrice = data[2]?.result || 0
+    const ticketCount = data[3]?.result || 0
 
     updateRound(Number(round))
     updatePhase(Number(phase))
     // updatePhase(Number(2))
     updateNextTicketPrice(Number(nextTicketPrice))
+    updateTicketCount(Number(ticketCount))
   }
 
   const refreshData = () => {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,7 @@ import { Button } from './button'
 import {
   useAccount,
   useContractRead,
+  useContractReads,
   useContractWrite,
   useSignMessage,
   useWalletClient,
@@ -30,39 +31,69 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import { useStoreActions, useStoreState } from '../../../store'
 import { formatNumber } from '@/lib/utils'
-import { tokenContractObj } from '../../../services/constant'
-import { formatUnits } from 'viem'
+import { TOKEN_ADDRESS, tokenContractObj } from '../../../services/constant'
+import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 function Token() {
-  // const [otpInput, setOtpInput] = React.useState<string>('')
-  // const excludeSpecialChar = /^[a-zA-Z0-9]+$/
-  // const phase = useStoreState((state) => state.phase)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
-  const [isDisabled, setIsDisabled] = React.useState<boolean>(false)
   const [receiverAddress, setReceiverAddress] = useState<string>('')
   const [tokenValue, setTokenValue] = useState<string>('0')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [approved, setApproved] = useState(false)
 
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const { address, isConnected } = useAccount()
 
-  const { data: balanceOf } = useContractRead({
-    ...tokenContractObj,
-    functionName: 'balanceOf',
-    args: [address as `0x${string}`],
+  const { data } = useContractReads({
+    contracts: [
+      {
+        ...tokenContractObj,
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...tokenContractObj,
+        functionName: 'allowance',
+        args: [address as `0x${string}`, TOKEN_ADDRESS],
+      },
+    ],
   })
 
-  const tokenBalance = formatUnits(balanceOf || BigInt(0), 18)
+  const balance = data?.[0].result || BigInt(0)
+  const allowance = data?.[1].result || BigInt(0)
+
+  const tokenBalance = formatUnits(balance, 18)
 
   const { writeAsync: transfer } = useContractWrite({
     ...tokenContractObj,
     functionName: 'transfer',
   })
+
+  const { writeAsync: approve } = useContractWrite({
+    ...tokenContractObj,
+    functionName: 'approve',
+  })
+
+  const approveToken = async () => {
+    try {
+      const doApprove = await approve({
+        args: [
+          '0xe6E5Ba2d06ba33882F563e0f75D64F8e89ced9Bb',
+          BigInt('100000000000000000000000000000000'),
+        ],
+      })
+
+      const hash = doApprove.hash
+      setApproved(true)
+    } catch (error) {
+      console.log({ error })
+    }
+  }
 
   const transferToken = async () => {
     try {
@@ -82,8 +113,16 @@ function Token() {
         return
       }
 
+      if (!receiverAddress) {
+        toast({
+          variant: 'destructive',
+          description: `Please enter a receiver address`,
+        })
+        return
+      }
+
       const doTransfer = await transfer({
-        args: [receiverAddress as `0x${string}`, BigInt(tokenValue)],
+        args: [receiverAddress as `0x${string}`, parseUnits(tokenValue, 18)],
       })
 
       const hash = doTransfer.hash
@@ -261,8 +300,19 @@ function Token() {
                           onChange={(e) => setTokenValue(e.target.value)}
                         />
                       </div>
+                      {Number(allowance) <= Number(tokenValue) && (
+                        <Button
+                          variant="filter"
+                          className="w-full h-8 px-4 mt-2 py-2 text-xl"
+                          onClick={approveToken}
+                        >
+                          Approve {String(allowance)}
+                        </Button>
+                      )}
+
                       <Button
                         variant="filter"
+                        disabled={Number(allowance) <= Number(tokenValue) && !approved}
                         className="w-full h-8 px-4 mt-2 py-2 text-xl"
                         onClick={transferToken}
                       >
