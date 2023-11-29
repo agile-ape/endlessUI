@@ -191,168 +191,149 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
-  let ticketLookFinal: string
-
-  ticketLookInput === '' ? (ticketLookFinal = ticketLook) : (ticketLookFinal = ticketLookInput)
+  const ticketLookFinal = ticketLookInput || ticketLook
 
   const conversion = Number(10 ** 15) // remember to check this
 
-  const getTicketLook = (ticketLookFinal) => {
-    switch (ticketLookFinal) {
-      case 'beforePurchase':
-        return {
-          bgImage: 'burst',
-          header: 'bg-zinc-300/20',
-          face: 'enter',
-          id: nextTicketId,
-          status: 'next ticket',
-          label: 'value',
-          value: ' - ETH',
-        }
-      case 'afterPurchase':
-        return {
-          bgImage: 'rainbow',
-          header: 'bg-zinc-300/20',
-          face: 'happy',
-          id: ticketId,
-          status: 'ticket claimed',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'submittedDay':
-        return {
-          bgImage: 'motif',
-          header: 'bg-zinc-300/70',
-          face: 'handsup',
-          id: ticketId,
-          status: 'submitted',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'stage1New':
-        return {
-          bgImage: 'rainbow',
-          header: 'bg-zinc-300/20',
-          face: 'confident',
-          id: ticketId,
-          status: 'ready to submit word',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'stage2New':
-        return {
-          bgImage: 'rainbow',
-          header: 'bg-zinc-300/20',
-          face: 'worried',
-          id: ticketId,
-          status: 'ready to submit word',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'stage3New':
-        return {
-          bgImage: 'rainbow',
-          header: 'bg-zinc-300/20',
-          face: 'anxious',
-          id: ticketId,
-          status: 'ready to submit word',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'submittedNight':
-        return {
-          bgImage: 'motif',
-          header: 'bg-zinc-300/70',
-          face: 'attack',
-          id: ticketId,
-          status: 'time to attack',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'attackedButSafu':
-        return {
-          bgImage: 'combine',
-          header: 'bg-zinc-300/80',
-          face: 'pray',
-          id: ticketId,
-          status: 'SAFU',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'neverSubmit':
-        return {
-          bgImage: 'rainbow',
-          header: 'bg-zinc-300/20',
-          face: 'attack',
-          id: ticketId,
-          status: 'time to attack',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'inSafehouse':
-        return {
-          bgImage: 'safeOverlay',
-          header: 'bg-zinc-100/50',
-          face: 'warm',
-          id: ticketId,
-          status: 'taking a break',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'lastManStanding':
-        return {
-          bgImage: 'burst',
-          header: 'bg-zinc-300/20',
-          face: 'king',
-          id: ticketId,
-          status: 'last man standing',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'agreedToSplitPot':
-        return {
-          bgImage: 'burst',
-          header: 'bg-zinc-300/20',
-          face: 'beers',
-          id: ticketId,
-          status: 'WAGMI',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'noMorePot':
-        return {
-          bgImage: 'burst',
-          header: 'bg-zinc-300/20',
-          face: 'watchitburn',
-          id: ticketId,
-          status: 'let it burn',
-          label: 'value',
-          value: ticketValue / conversion + ' ETH',
-        }
-      case 'killed':
-        return {
-          bgImage: 'deadOverlay',
-          header: 'bg-zinc-400/40',
-          face: 'angry',
-          id: ticketId,
-          status: 'killed',
-          label: 'rank',
-          value: ticketRank,
-        }
-      case 'exitGame':
-        return {
-          bgImage: '',
-          header: 'bg-zinc-200/20',
-          face: 'exit',
-          id: ticketId,
-          status: 'exited',
-          label: 'rank',
-          value: ticketRank,
-        }
-    }
+  const ticketLookMapping = {
+    beforePurchase: {
+      bgImage: 'burst',
+      header: 'bg-zinc-300/20',
+      face: 'enter',
+      id: nextTicketId,
+      status: 'next ticket',
+      label: 'value',
+      value: ' - ETH',
+    },
+    afterPurchase: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'happy',
+      id: ticketId,
+      status: 'ticket claimed',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    submittedDay: {
+      bgImage: 'motif',
+      header: 'bg-zinc-300/70',
+      face: 'handsup',
+      id: ticketId,
+      status: 'submitted',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    stage1New: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'confident',
+      id: ticketId,
+      status: 'ready to submit word',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    stage2New: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'worried',
+      id: ticketId,
+      status: 'ready to submit word',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    stage3New: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'anxious',
+      id: ticketId,
+      status: 'ready to submit word',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    submittedNight: {
+      bgImage: 'motif',
+      header: 'bg-zinc-300/70',
+      face: 'attack',
+      id: ticketId,
+      status: 'time to attack',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    attackedButSafu: {
+      bgImage: 'combine',
+      header: 'bg-zinc-300/80',
+      face: 'pray',
+      id: ticketId,
+      status: 'SAFU',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    neverSubmit: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'attack',
+      id: ticketId,
+      status: 'time to attack',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    inSafehouse: {
+      bgImage: 'safeOverlay',
+      header: 'bg-zinc-100/50',
+      face: 'warm',
+      id: ticketId,
+      status: 'taking a break',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    lastManStanding: {
+      bgImage: 'burst',
+      header: 'bg-zinc-300/20',
+      face: 'king',
+      id: ticketId,
+      status: 'last man standing',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    agreedToSplitPot: {
+      bgImage: 'burst',
+      header: 'bg-zinc-300/20',
+      face: 'beers',
+      id: ticketId,
+      status: 'WAGMI',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    noMorePot: {
+      bgImage: 'burst',
+      header: 'bg-zinc-300/20',
+      face: 'watchitburn',
+      id: ticketId,
+      status: 'let it burn',
+      label: 'value',
+      value: ticketValue / conversion + ' ETH',
+    },
+    killed: {
+      bgImage: 'deadOverlay',
+      header: 'bg-zinc-400/40',
+      face: 'angry',
+      id: ticketId,
+      status: 'killed',
+      label: 'rank',
+      value: ticketRank,
+    },
+    exitGame: {
+      bgImage: '',
+      header: 'bg-zinc-200/20',
+      face: 'exit',
+      id: ticketId,
+      status: 'exited',
+      label: 'rank',
+      value: ticketRank,
+    },
   }
 
-  const { bgImage, header, face, id, status, label, value } = getTicketLook(ticketLookFinal)
+  const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
 
   const gradientStyle = {
     background: 'linear-gradient(to right, #ff00cc, #3333cc)',
@@ -378,30 +359,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     >
       {/* overlay */}
       {isOverlayInspect && (
-        /*--
-            <div
-              className={` w-[${ticketWidthPx}px] h-[100%] rounded-xl -ml-[2px] opacity-80 mx-auto flex justify-center items-center`}
-            >
-              {/* <div className="mx-auto rounded-xl grid items-center justify-center gap-6 p-2">
-              <div className="capitalized text-base leeading-tight">Status: Submitted</div>
-            */
         <div
           className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge} text-black`}
         >
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left"> Status</p>
-                <p className="text-right"> Submitted</p>
-              </div> */}
-
           <div className="flex justify-between gap-6">
             <p className="text-left"> Player</p>
             <p className="text-right"> {formatAddress(ticketAddress)} </p>
           </div>
-
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left">Last Seen</p>
-                <p className="text-right underline"> 7 </p>
-              </div> */}
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Attacks/Kills</p>
@@ -411,19 +375,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             </p>
           </div>
 
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left">Bought for</p>
-                <p className="text-right">
-                {' '}
-                7<span className="text-[0.5rem]">ETH</span>
-                </p>
-              </div> */}
-
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left">Total kills</p>
-                <p className="text-right"> 10 </p>
-              </div> */}
-
           <div className="flex justify-between gap-6">
             <p className="text-left">Last Seen/Vote</p>
             <p className="text-right">
@@ -431,11 +382,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               <span className="underline">{ticketLastSeen}</span>/{ticketVoteString}{' '}
             </p>
           </div>
-
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left">Killed by </p>
-                <p className="text-right"> - </p>
-              </div> */}
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Safe nights </p>
@@ -449,11 +395,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               #{ticketBuddy}/{ticketBuddyCount}
             </p>
           </div>
-
-          {/* <div className="flex justify-between gap-6">
-                <p className="text-left">Buddy Count</p>
-                <p className="text-right"> 1 </p>
-              </div> */}
 
           {ticketLookFinal == 'inSafehouse' && (
             <div className="flex justify-between text-lg text-amber-600  gap-6">
@@ -495,33 +436,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       {/* default */}
       {!isOverlayInspect && (
         <>
-          {/* {!ownTicket && ticketLookFinal == 'killed' && (
-            <div
-              className="absolute top-0 left-0 h-full w-full"
-              style={{
-                backgroundImage: `url('/ticket/deadOverlay.svg')`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-              }}
-            ></div>
-          )} */}
-          {/* {!ownTicket && ticketLookFinal == 'exitGame' && (
-            <div
-              className="absolute top-0 left-0 h-full w-full"
-              style={{
-                backgroundImage: `url('/ticket/exitOverlay.svg')`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-              }}
-            ></div>
-          )} */}
           {/* top header */}
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
               Player{' '}
               <span className="font-whitrabt">
                 {' '}
-                <span className={h2}>#{id}</span>
+                <span className={h2}>#{String(id)}</span>
               </span>
             </p>
             <p className={`lowercase ${h3} italic text-zinc-700 dark:text-zinc-800`}>{status}</p>
@@ -533,8 +454,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
               src={`/faces/${face}.png`}
               height={imgh}
               width={imgw}
-              // fill={true}
-              // sizes="max-width:150px"
               className={mt}
               layout="fixed"
               alt={`${face} pepe`}

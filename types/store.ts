@@ -4,10 +4,8 @@ import type { IApp, Ticket } from './app'
 interface StoreModel {
   phase: IApp['phase']
   ticketState: IApp['ticketStatus']
-  // game: IApp['game']
   round: IApp['round']
 
-  // randNumber: IApp['randNumber']
   isAttackTime: IApp['isAttackTime']
 
   ticketId: IApp['ticketId']
@@ -19,19 +17,12 @@ interface StoreModel {
   nextTicketPrice: IApp['nextTicketPrice']
   increaseInPrice: IApp['increaseInPrice']
   ticketsAvailableAtCurrentPrice: IApp['ticketsAvailableAtCurrentPrice']
-  // ticketsIncreaseMultiple: IApp['ticketsIncreaseMultiple']
   ticketsCounter: IApp['ticketsCounter']
 
   voteThreshold: IApp['voteThreshold']
   totalPot: IApp['totalPot']
   currentPot: IApp['currentPot']
-  // drainPot: IApp['drainPot']
-  // potToSplit: IApp['potToSplit']
-  // sumReciprocal
   prizeFactor: IApp['prizeFactor'] // what last man gets
-  // lastMan
-  // feePool
-  // nextPot: IApp['nextPot']
   voteCount: IApp['voteCount']
   rankShare: IApp['rankShare']
 
@@ -55,18 +46,8 @@ interface StoreModel {
   drainSwitch: IApp['drainSwitch']
   amountDrained: IApp['amountDrained']
   drainStart: IApp['drainStart']
-  // drainPerRound: IApp['drainPerRound']
-
-  // // PREVIOUS
-  // totalPrizePool: IApp['totalPrizePool']
-  // nextPrizeAmount: IApp['nextPrizeAmount']
-  // topPrize: IApp['topPrize']
-  // bounty: IApp['bounty']
-  // currentTicketCount: IApp['currentTicketCount']
-  // totalTicketCount: IApp['totalTicketCount']
 
   updatePhase: Action<StoreModel, number>
-
   updateRound: Action<StoreModel, number>
   updateIsAttackTime: Action<StoreModel, boolean>
   updateTicketId: Action<StoreModel, number>
@@ -113,17 +94,7 @@ interface StoreModel {
   updateDrainSwitch: Action<StoreModel, boolean>
   updateAmountDrained: Action<StoreModel, number>
   updateDrainStart: Action<StoreModel, number>
-  // updateDrainPerRound: Action<StoreModel, number>
 
-  // insertKeyword: Action<StoreModel, string>
-  // // PREVIOUS
-  // updateTotalPrizePool: Action<StoreModel, number>
-  // updateNextPrizeAmount: Action<StoreModel, number>
-  // updateTopPrize: Action<StoreModel, number>
-  // updateBounty: Action<StoreModel, number>
-  // updateCurrentTicketCount: Action<StoreModel, number>
-  // updateTotalTicketCount: Action<StoreModel, number>
-  // updateSuddenDeath: Action<StoreModel, number>
   tickets: IApp['tickets']
   updateTickets: Action<StoreModel, IApp['tickets']>
   gameTab: 'ticket' | 'game'
@@ -131,6 +102,9 @@ interface StoreModel {
   triggerCompletionModal: CompletionModal
   updateTriggerCompletionModal: Action<StoreModel, CompletionModal>
   addTicket: Action<StoreModel, Ticket>
+
+  userTicket: Ticket | null
+  updateUserTicket: Action<StoreModel, Ticket | null>
 }
 
 type CompletionModal = {
