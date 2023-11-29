@@ -125,6 +125,13 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You were attacked!',
         message: 'A player attacked you but you are safe as you submitted the keyword.',
       }
+    case 'receivedTokens':
+      return {
+        bgImage: 'rainbow',
+        face: 'surprised',
+        title: 'You were given $LAST!',
+        message: 'More $LAST!',
+      }
 
     default:
       return {}
@@ -156,7 +163,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
     <Dialog open={modalState.isOpen}>
       <DialogContent className="bg-white dark:bg-white p-0 md:w-[20rem] w-[90%] rounded-3xl">
         <div
-          className="rounded-lg h-full w-full"
+          className="rounded-lg h-full w-full shadow-xl"
           style={{
             backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
             backgroundRepeat: 'no-repeat',

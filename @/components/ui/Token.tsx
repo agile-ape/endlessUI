@@ -311,7 +311,7 @@ function Token() {
                       )}
 
                       <Button
-                        variant="filter"
+                        variant="exit"
                         disabled={Number(allowance) <= Number(tokenValue) && !approved}
                         className="w-full h-8 px-4 mt-2 py-2 text-xl"
                         onClick={transferToken}

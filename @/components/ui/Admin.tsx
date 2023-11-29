@@ -31,9 +31,46 @@ export default function Admin() {
         ...defaultContractObj,
         functionName: 'nextTicketPrice',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'timeFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'countdownTime',
+      },
     ],
     enabled: isConnected,
   })
+
+  const timeFlag = Number(data[3]?.result || 0)
+
+  const timeFlagInDate = new Date(timeFlag * 1000)
+
+  console.log(timeFlag)
+
+  type TimeLeftType = {
+    // days: number;
+    hours: number
+    minutes: number
+    seconds: number
+  }
+
+  const formatTime = (timeInSeconds: number): TimeLeftType => {
+    let hours = Math.floor(timeInSeconds / 3600)
+    let minutes = Math.floor((timeInSeconds % 3600) / 60)
+    let seconds = Math.floor(timeInSeconds % 60)
+
+    return {
+      hours,
+      minutes,
+      seconds,
+    }
+  }
+
+  // let timeFlagInDate = formatTime(new Date(timeFlag).getTime())
+  // console.log(timeFlag)
+  // let timeFlagInDate = new Date(timeFlag)
 
   return (
     <DropdownMenu>
@@ -49,8 +86,15 @@ export default function Admin() {
       >
         <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
           <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-            <p className="text-left">$LAST in wallet</p>
-            <p className="text-right"> 100 </p>
+            <p className="text-left">Time Flag</p>
+            <p className="text-right">
+              <p>Current Date: {timeFlagInDate.toDateString()}</p>
+              <p>Current Time: {timeFlagInDate.toLocaleTimeString()}</p>
+            </p>
+          </div>
+          <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+            <p className="text-left">Countdown Time</p>
+            {/* <p className="text-right"> {countdownTime} </p> */}
           </div>
 
           <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">

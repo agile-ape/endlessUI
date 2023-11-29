@@ -289,7 +289,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     lastManStanding: {
       bgImage: 'burst',
       header: 'bg-zinc-300/20',
-      face: 'king',
+      face: 'lastman',
       id: ticketId,
       status: 'last man standing',
       label: 'value',

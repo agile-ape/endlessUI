@@ -121,7 +121,6 @@ export default function CustomConnectButton() {
 
                   {/* <button onClick={openAccountModal} type="button" className="connect-last">
                     </button> */}
-                  {/* {account.displayBalance ? ` (${account.displayBalance})` : ''} */}
 
                   <Button
                     onClick={openAccountModal}
@@ -129,6 +128,7 @@ export default function CustomConnectButton() {
                     className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
                   >
                     {account.displayName}
+                    {/* {account.displayBalance ? ` [${account.displayBalance}]` : ''} */}
                   </Button>
 
                   {/* <button
