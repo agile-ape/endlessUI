@@ -22,6 +22,7 @@ import {
   useContractReads,
   useContractWrite,
   useSignMessage,
+  useWaitForTransaction,
   useWalletClient,
 } from 'wagmi'
 import Image from 'next/image'
@@ -49,7 +50,7 @@ function Token() {
 
   const { address, isConnected } = useAccount()
 
-  const { data } = useContractReads({
+  const { data, refetch } = useContractReads({
     contracts: [
       {
         ...tokenContractObj,
@@ -69,7 +70,7 @@ function Token() {
 
   const tokenBalance = formatUnits(balance, 18)
 
-  const { writeAsync: transfer } = useContractWrite({
+  const { data: trfData, writeAsync: transfer } = useContractWrite({
     ...tokenContractObj,
     functionName: 'transfer',
   })
@@ -77,6 +78,16 @@ function Token() {
   const { writeAsync: approve } = useContractWrite({
     ...tokenContractObj,
     functionName: 'approve',
+  })
+
+  const {} = useWaitForTransaction({
+    hash: trfData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
   })
 
   const approveToken = async () => {
