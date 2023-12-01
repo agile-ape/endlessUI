@@ -72,6 +72,14 @@ export default function Admin() {
   // console.log(timeFlag)
   // let timeFlagInDate = new Date(timeFlag)
 
+  /*------THINGS TO MONITOR
+
+  OZ relayer ETH balance
+  
+
+
+  ----------*/
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

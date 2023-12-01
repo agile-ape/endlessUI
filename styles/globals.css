@@ -167,6 +167,64 @@
     @apply bg-slate-200 bg-opacity-50 border-2 border-slate-400/50
     dark:bg-slate-500 dark:bg-opacity-50;
   }
+
+  @keyframes shootingStarAnimation {
+    /* rotate 
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    } 
+    */
+
+    /* scaling
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+    */
+
+    /* wriggle */
+    0%,
+    7% {
+      transform: rotateZ(0);
+    }
+    15% {
+      transform: rotateZ(-4deg);
+    }
+    20% {
+      transform: rotateZ(4deg);
+    }
+    25% {
+      transform: rotateZ(-2deg);
+    }
+    30% {
+      transform: rotateZ(2deg);
+    }
+    35% {
+      transform: rotateZ(0deg);
+    }
+    40%,
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+
+  /* animation: duration | easing-function | delay |
+iteration-count | direction | fill-mode | play-state | name */
+
+  .border-rainbow {
+    background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
+    background-size: 600% 100%;
+    animation: shootingStarAnimation 1s linear 1;
+    animation-fill-mode: forwards;
+  }
 }
 
 /* .dusk-last {

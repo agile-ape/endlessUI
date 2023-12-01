@@ -1,10 +1,12 @@
 import Header from './Header'
+import Image from 'next/image'
+
 import { VT323 } from 'next/font/google'
 import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
-import { useAccount, useContractEvent, useContractReads } from 'wagmi'
+import { useAccount, useContractEvent, useContractRead, useContractReads } from 'wagmi'
 import { defaultContractObj, tokenContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -39,6 +41,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
@@ -66,6 +70,16 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const router = useRouter()
   const { address, isConnected } = useAccount()
 
+  const { data: playerTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [(address || '') as `0x${string}`],
+    enabled: !!address,
+  })
+
+  const ticketId = playerTicket?.[0] || 0
+  console.log(ticketId)
+
   useContractEvent({
     ...defaultContractObj,
     eventName: 'PhaseChange',
@@ -78,16 +92,53 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     },
   })
 
+  // ticket bought
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'NewTicketBought',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { caller, player, purchasePrice, time } = args
+  //     console.log(recipient)
+
+  //     if (recipient === ticketId) {
+  //       triggerCompletionModal({
+  //         isOpen: true,
+  //         state: 'receivedTokens',
+  //       })
+  //     }
+  //     console.log({ args })
+  //   },
+  // })
+
+  // alerts tokens sender
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'TokensTransferred',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { caller, recipient, amount, time } = args
+  //     if (caller === ticketId) {
+  //       updateCompletionModal({
+  //         isOpen: true,
+  //         state: 'sentTokens',
+  //       })
+  //     }
+  //     console.log({ args })
+  //   },
+  // })
+
+  // alerts ticket that got killed
   useContractEvent({
-    ...tokenContractObj,
-    eventName: 'Transfer',
+    ...defaultContractObj,
+    eventName: 'AttackAndKilled',
     listener: (event) => {
       const args = event[0]?.args
-      const { from, to, value } = args
-      if (to?.toLowerCase() === address?.toLowerCase()) {
+      const { caller, defendingTicket, ticketValue, time } = args
+      if (defendingTicket === ticketId) {
         triggerCompletionModal({
           isOpen: true,
-          state: 'received',
+          state: 'killed',
         })
       }
       console.log({ args })
@@ -162,17 +213,29 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   return (
     <main
-      className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+      className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen relative`}
       style={{
         backgroundImage: `url(/background/${background})`,
       }}
     >
       {/* width of header */}
+      <div className="absolute bottom-10 left-40 h-[10vw] w-[10vw]">
+        <Image
+          priority
+          src="/background/portal.svg"
+          className="animate-pulse"
+          // height={100}
+          // width={50}
+          fill
+          // sizes="5vw"
+          alt="sneak-a-peek-pepe"
+        />
+      </div>
       <div className="container mx-auto">
         {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />
         {children}
-        <CompletionModal alertLookTest="attackedButSafe" />
+        <CompletionModal alertLookTest="afterPurchase" />
       </div>
     </main>
   )

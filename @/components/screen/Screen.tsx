@@ -1,4 +1,6 @@
 import Countdown from '../ui/Countdown'
+import Image from 'next/image'
+
 import GameTab from '../ui/GameTab'
 import NextClaim from '../ui/_NextClaim'
 import Round from '../ui/Round'

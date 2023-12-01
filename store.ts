@@ -261,7 +261,7 @@ export const appStore = createStore<StoreModel>({
   }),
   triggerCompletionModal: {
     isOpen: false,
-    state: 'attackedButSafe',
+    state: '',
   },
   updateTriggerCompletionModal: action((state, payload) => {
     state.triggerCompletionModal = payload

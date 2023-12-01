@@ -43,6 +43,7 @@ export const DOCS_URL_split =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-stages#cb029b4005c94699b1d7eb8856321ea6'
 
 export const DOCS_URL_phases = 'https://lastman-n4p5h.notaku.site/glossary/phases'
+export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
 export const BLOG_URL = 'https://lastmanblog-i14qn.blog.notaku.site'
 
 export const TWITTER_URL = 'https://twitter.com/lastman0x'

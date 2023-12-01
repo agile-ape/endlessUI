@@ -14,9 +14,15 @@ import { LogOut } from 'lucide-react'
 import Prompt from './Prompt'
 import { formatNumber, tokenConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
-import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi'
+import {
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import { defaultContractObj, DOCS_URL_buy } from '../../../services/constant'
-import { parseUnits } from 'viem'
+import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './connect-button'
@@ -26,29 +32,56 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 function BuyTicket() {
   // State variables
   const phase = useStoreState((state) => state.phase)
-  const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
-  const increaseInPrice = useStoreState((state) => state.increaseInPrice)
-  const ticketsAvailableAtCurrentPrice = useStoreState(
-    (state) => state.ticketsAvailableAtCurrentPrice,
-  )
-  const ticketsCounter = useStoreState((state) => state.ticketsCounter)
+  // const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
+  // console.log(nextTicketPrice)
+  // const increaseInPrice = useStoreState((state) => state.increaseInPrice)
+  // console.log(increaseInPrice)
+  // const ticketsAvailableAtCurrentPrice = useStoreState(
+  //   (state) => state.ticketsAvailableAtCurrentPrice,
+  // )
+  // const ticketsCounter = useStoreState((state) => state.ticketsCounter)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const addTicket = useStoreActions((actions) => actions.addTicket)
-
-  const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
-  const nextTicketPriceConverted = nextTicketPrice / tokenConversion
-  const nextPrice = (nextTicketPrice + increaseInPrice) / tokenConversion
+  // const addTicket = useStoreActions((actions) => actions.addTicket)
 
   // Address read
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'playerTicket',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'nextTicketPrice',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'increaseInPrice',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketsAvailableAtCurrentPrice',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketsCounter',
+      },
+    ],
   })
 
+  const playerTicket = data?.[0].result || BigInt(0)
+  const nextTicketPrice = data?.[1].result || BigInt(0)
+  const increaseInPrice = data?.[2].result || BigInt(0)
+  const ticketsAvailableAtCurrentPrice = Number(data?.[3].result || BigInt(0))
+  const ticketsCounter = Number(data?.[4].result || BigInt(0))
+
   let ticketId = playerTicket?.[0] || 0
+  const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
+  const ticketPrice = formatUnits(nextTicketPrice, 18)
+  const nextPrice = formatUnits(nextTicketPrice + increaseInPrice, 18)
 
   // Active condition
   const buyTicketActive = phase === 'start' && ticketId === 0
@@ -61,10 +94,14 @@ function BuyTicket() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const { data, writeAsync, isLoading } = useContractWrite({
+  const {
+    data: buyData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
-    value: parseUnits(String(nextTicketPriceConverted), 18),
+    value: parseUnits(String(ticketPrice), 18),
   })
 
   const buyTicketHandler = async () => {
@@ -93,6 +130,16 @@ function BuyTicket() {
     }
   }
 
+  const {} = useWaitForTransaction({
+    hash: buyData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
   return (
     <>
       <Dialog open={isModalOpen}>
@@ -107,7 +154,7 @@ function BuyTicket() {
                 <div className="flex justify-start items-center">
                   <OnSignal active={buyTicketActive} own={true} />
                   Join for{' '}
-                  {formatNumber(nextTicketPriceConverted, {
+                  {formatNumber(ticketPrice, {
                     maximumFractionDigits: 3,
                     minimumFractionDigits: 3,
                   })}{' '}
@@ -119,7 +166,7 @@ function BuyTicket() {
                 <div className="flex justify-start items-center">
                   <OnSignal active={buyTicketActive} own={true} />
                   Starts at:{' '}
-                  {formatNumber(nextTicketPriceConverted, {
+                  {formatNumber(ticketPrice, {
                     maximumFractionDigits: 3,
                     minimumFractionDigits: 3,
                   })}{' '}
@@ -185,7 +232,7 @@ function BuyTicket() {
                     <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                       <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                         <p className="text-left leading-tight">Current price</p>
-                        <p className="text-right align-middle"> {nextTicketPriceConverted} ETH </p>
+                        <p className="text-right align-middle"> {ticketPrice} ETH </p>
                       </div>
 
                       <div className="grid grid-cols-2 text-lg gap-1 mb-2">
@@ -206,7 +253,7 @@ function BuyTicket() {
                           type="text"
                           id="buddy"
                           className="w-[3rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
-                          value={buddyValue}
+                          placeholder={buddyValue}
                           onChange={(e) => setBuddyValue(e.target.value)}
                         />
                       </div>
