@@ -6,7 +6,7 @@ import { Timer } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
-import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import PhaseChange from './PhaseChange'
@@ -43,28 +43,64 @@ export default function Countdown() {
 
   // const phase = 'gameclosed'
 
-  const timeFlag = useStoreState((state) => state.timeFlag)
-  const countdownTime = useStoreState((state) => state.countdownTime)
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'timeFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'countdownTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'dayTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'nightTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'gameCloseTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'timeAddon',
+      },
+    ],
+  })
+
+  // const timeFlag = useStoreState((state) => state.timeFlag)
+  // const countdownTime = useStoreState((state) => state.countdownTime)
   // const timeAddon = useStoreState((state) => state.timeAddon)
-  const dayTime = useStoreState((state) => state.dayTime)
-  const nightTime = useStoreState((state) => state.nightTime)
-  const gameCloseTime = useStoreState((state) => state.gameCloseTime)
+  // const dayTime = useStoreState((state) => state.dayTime)
+  // const nightTime = useStoreState((state) => state.nightTime)
+  // const gameCloseTime = useStoreState((state) => state.gameCloseTime)
 
-  const timeAddon = useStoreState((state) => state.timeAddon)
+  // const timeAddon = useStoreState((state) => state.timeAddon)
 
-  const timeAddonConverted = timeAddon / 60 // assuming timeAddon will be expressed in minutes
+  const timeFlag = data?.[0].result || BigInt(0)
+  const countdownTime = data?.[1].result || BigInt(0)
+  const dayTime = data?.[2].result || BigInt(0)
+  const nightTime = data?.[3].result || BigInt(0)
+  const gameCloseTime = data?.[4].result || BigInt(0)
+  const timeAddon = data?.[5].result || BigInt(0)
+
+  const timeAdded = Number(timeAddon) / 60 // assuming timeAddon will be expressed in minutes
 
   let endTime: Date
 
   if (phase === 'start') {
     // timeAddon is added to countdownTime whenever someone buys a ticket
-    endTime = new Date(timeFlag * 1000 + countdownTime * 1000)
+    endTime = new Date(Number(timeFlag) * 1000 + Number(countdownTime) * 1000)
   } else if (phase === 'day') {
-    endTime = new Date(timeFlag * 1000 + dayTime * 1000)
+    endTime = new Date(Number(timeFlag) * 1000 + Number(dayTime) * 1000)
   } else if (phase === 'night') {
-    endTime = new Date(timeFlag * 1000 + nightTime * 1000)
+    endTime = new Date(Number(timeFlag) * 1000 + Number(nightTime) * 1000)
   } else if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
-    endTime = new Date(timeFlag * 1000 + gameCloseTime * 1000)
+    endTime = new Date(Number(timeFlag) * 1000 + Number(gameCloseTime) * 1000)
   } else if (phase === 'deployed' || phase === 'gameclosed') {
     endTime = new Date()
   } else {
@@ -134,7 +170,7 @@ export default function Countdown() {
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
                     <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                      {timeAddonConverted} mins is added for every new joiner
+                      {timeAdded} mins is added for every new joiner
                     </p>
                   </TooltipContent>
                 </Tooltip>
