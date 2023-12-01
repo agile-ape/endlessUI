@@ -62,7 +62,7 @@ export default function Screen() {
         </div>
 
         <div className="grow rounded-xl py-2 container-last">
-          <TicketList stage="beginning" />
+          <TicketList />
         </div>
       </div>
     </div>

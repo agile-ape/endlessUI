@@ -27,6 +27,8 @@ import {
 import { API_ENDPOINT, defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
 import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
+import { toBytes } from 'viem'
+import { toast } from './use-toast'
 
 interface SubmitKeywordModalType {
   toggle: () => void
@@ -35,6 +37,7 @@ interface SubmitKeywordModalType {
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }) => {
   // Address read
   const { address, isConnected } = useAccount()
+  const { data: walletClient } = useWalletClient()
 
   const { data: playerTicket } = useContractRead({
     ...defaultContractObj,
@@ -90,6 +93,62 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
       }
     }
     console.log({ res })
+  }
+
+  const { writeAsync } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'submit',
+  })
+
+  async function verifyKeyword(input: string) {
+    try {
+      const data = await fetch(`${API_ENDPOINT}/keywords/verify`, {
+        method: 'POST',
+        body: JSON.stringify({
+          keyword: input,
+        }),
+      })
+
+      const res = await data.json()
+
+      return res
+    } catch (error) {
+      console.log({ error })
+    }
+  }
+
+  const submitKeyword = async (input: string) => {
+    console.log({ input })
+    try {
+      // const verifyResult = await verifyKeyword(input)
+      // console.log({ verifyResult })
+
+      const hashedMessage = toBytes(input)
+      const signature = await walletClient?.signMessage({
+        message: { raw: hashedMessage },
+      })
+      const result = await writeAsync({
+        args: [signature as `0x${string}`],
+      })
+      console.log({ hashedMessage, signature, result })
+      toast({
+        title: 'Check in success!',
+        description: <p className="text-base">You have successfully checked in.</p>,
+      })
+
+      toggle()
+
+      // console.log(result)
+    } catch (error: any) {
+      console.log({ error: error?.cause })
+      // @ts-ignore
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
+      toast({
+        variant: 'destructive',
+        title: 'Buy ticket failed',
+        description: <p className="text-base">{errorMsg}</p>,
+      })
+    }
   }
 
   return (
@@ -237,12 +296,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
                           <Button
                             variant="submit"
                             size="lg"
-                            onClick={async () => {
-                              if (otpInput) {
-                                // await onSubmit(otpInput)
-                                setOtpInput('')
-                              }
-                            }}
+                            onClick={() => submitKeyword(otpInput)}
                           >
                             Submit
                           </Button>

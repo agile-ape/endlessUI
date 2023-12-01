@@ -75,14 +75,6 @@ const PhaseChange = () => {
     },
   })
 
-  let phaseChangeActive: boolean
-  // if (phase !== 'day') {
-  //   buttonDisabled = true
-  // } else {
-  //   buttonDisabled = false
-  // }
-  phaseChangeActive = false
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -96,7 +88,7 @@ const PhaseChange = () => {
           className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
         >
           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-          <OnSignal active={phaseChangeActive} own={true} />
+          <OnSignal active={true} own={true} />
           Change phase
         </Button>
       </DialogTrigger>
@@ -155,7 +147,7 @@ const PhaseChange = () => {
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
                   <Button
-                    disabled={!write || !playerTicket || !phaseChangeActive}
+                    disabled={!write || !playerTicket}
                     // size="md"
                     variant="default"
                     onClick={() => write()}
@@ -166,8 +158,6 @@ const PhaseChange = () => {
                     {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
                     Change phase
                   </Button>
-
-                  {!phaseChangeActive && <Prompt />}
                 </div>
               </div>
             </ScrollArea>

@@ -162,9 +162,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       } else {
         if (round < suddenDeath) {
           ticketLook = 'stage1New'
-        } else if (round >= suddenDeath && round < drainStart) {
+        } else if (round >= suddenDeath && round) {
           ticketLook = 'stage2New'
-        } else if (round >= suddenDeath && round >= drainStart) {
+        } else if (round >= suddenDeath && round) {
           ticketLook = 'stage3New'
         }
       }
