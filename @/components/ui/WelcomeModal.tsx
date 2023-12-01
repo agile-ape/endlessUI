@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from './button'
 import Image from 'next/image'
+import { DOCS_URL } from '../../../services/constant'
 
 interface WelcomeModalType {
   toggleModal: () => void
@@ -38,7 +39,11 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
                 LastMan is an on-chain game where players compete to outlast one another for magic
                 internet money. <br />
                 <br />
-                Check our Quickstart to learn more.
+                Check our{' '}
+                <a href={DOCS_URL} className="underline">
+                  Quickstart
+                </a>{' '}
+                to learn more.
               </div>
               <div className="flex justify-center mb-4">
                 <Button

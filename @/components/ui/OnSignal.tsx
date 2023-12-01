@@ -9,7 +9,7 @@ const OnSignal: React.FC<OnSignalProps> = ({ active, own }) => {
   return (
     <div
       className={`rounded-full shadow-md border-gray-500 
-      ${active ? 'bg-[#ff0000]' : 'bg-red-900'}
+      ${active ? 'bg-[#5eff00]' : 'bg-red-900'}
 
       ${
         own

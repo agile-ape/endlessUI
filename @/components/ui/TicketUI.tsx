@@ -3,7 +3,7 @@ import React from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import Image from 'next/image'
-import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits } from 'viem'
 import { cn, formatAddress, statusPayload } from '@/lib/utils'
@@ -69,12 +69,35 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     enabled: !!ticketNumber,
   })
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [(playerAddress || '') as `0x${string}`],
-    enabled: !!playerAddress,
+  // const { data: playerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [(playerAddress || '') as `0x${string}`],
+  //   enabled: !!playerAddress,
+  // })
+
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'playerTicket',
+        args: [(playerAddress || '') as `0x${string}`],
+        enabled: !!playerAddress,
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketId',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'suddenDeath',
+      },
+    ],
   })
+
+  const playerTicket = data?.[0].result || BigInt(0)
+  const nextTicketId = data?.[1].result || BigInt(0)
+  const suddenDeath = data?.[2].result || BigInt(0)
 
   // used
   let ticketId = playerTicket?.[0] || 0
@@ -108,12 +131,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   ticketVote === false ? (ticketVoteString = 'No') : (ticketVoteString = 'Yes')
 
   const phase = useStoreState((state) => state.phase)
-
   const round = useStoreState((state) => state.round)
 
-  const suddenDeath = useStoreState((state) => state.suddenDeath)
+  // const suddenDeath = useStoreState((state) => state.suddenDeath)
 
-  const nextTicketId = useStoreState((state) => state.ticketId)
+  // const nextTicketId = useStoreState((state) => state.ticketId)
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
@@ -289,7 +311,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     lastManStanding: {
       bgImage: 'burst',
       header: 'bg-zinc-300/20',
-      face: 'king',
+      face: 'lastman',
       id: ticketId,
       status: 'last man standing',
       label: 'value',
@@ -348,7 +370,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   return (
     <div
-      className={`flex flex-col mx-auto relative justify-center shadow-xl ${size} ${edge}`}
+      className={`flex flex-col border-rainbow mx-auto relative justify-center shadow-xl ${size} ${edge}`}
       style={{
         backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
         backgroundRepeat: 'no-repeat',

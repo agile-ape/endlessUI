@@ -18,7 +18,7 @@ import HowToPlay from './ui/_HowToPlay'
 import GameHeader from './ui/_GameHeader'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { DOCS_URL, TWITTER_URL, TELEGRAM_URL } from '../../services/constant'
+import { DOCS_URL, TWITTER_URL, TELEGRAM_URL, BLOG_URL } from '../../services/constant'
 
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 
@@ -90,6 +90,14 @@ export default function SideMenu() {
           <a href={TELEGRAM_URL} target="_blank">
             <Button variant="link" size="md">
               Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            </Button>
+          </a>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem className="cursor-pointer">
+          <a href={BLOG_URL} target="_blank">
+            <Button variant="link" size="md">
+              Blog <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
             </Button>
           </a>
         </DropdownMenuItem>

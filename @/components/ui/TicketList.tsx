@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-
+import { useTheme } from 'next-themes'
 import { Button } from './button'
 import { Gem, Users } from 'lucide-react'
 import TicketUI from './TicketUI'
@@ -26,6 +26,10 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
   const totalTicketCount = ticketList.length
   const totalPotConverted = totalPot / tokenConversion
   const currentPotConverted = currentPot / tokenConversion
+
+  const { theme, forcedTheme } = useTheme()
+
+  console.log(theme)
 
   // const { data, write } = useContractWrite({
   //   ...defaultContractObj,
@@ -69,15 +73,27 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Gem size={18} className="mr-1" />
-                    {/* <Image
-                      priority
-                      src="/logo/diamondEth.svg"
-                      className=""
-                      height={18}
-                      width={18}
-                      alt="sneak-a-peek-pepe"
-                    /> */}
+                    {/* <Gem size={18} className="mr-1" /> */}
+
+                    {forcedTheme === 'dark' ? (
+                      <Image
+                        priority
+                        src="/logo/eth-dark.png"
+                        className="mr-1"
+                        height={12}
+                        width={12}
+                        alt="eth"
+                      />
+                    ) : (
+                      <Image
+                        priority
+                        src="/logo/eth-light.png"
+                        className="mr-1"
+                        height={12}
+                        width={12}
+                        alt="eth"
+                      />
+                    )}
                     <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
                       {currentPotConverted}
                     </div>
@@ -173,11 +189,11 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'exitGame'} />
 
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
+            {/* <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'agreedToSplitPot'} />
 
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} />
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} /> */}
           </div>
         </>
       )}
@@ -209,9 +225,9 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                   </div>
                 </div>
               </div>
-              <div className="text-center my-4 text-2xl">
+              {/* <div className="text-center my-4 text-2xl">
                 We await patiently for our first warrior
-              </div>
+              </div> */}
             </div>
           )}
 

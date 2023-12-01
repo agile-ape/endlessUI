@@ -17,6 +17,7 @@ import { DialogClose } from '@radix-ui/react-dialog'
 
 const getAlertLook = (alertLookTest: string) => {
   switch (alertLookTest) {
+    //used
     case 'sentTokens':
       return {
         bgImage: 'rainbow',
@@ -39,6 +40,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Keyword submitted!',
         message: 'In case you submitted wrongly, you can still submit again anytime in the DAY',
       }
+
     case 'attackAndKill':
       return {
         bgImage: 'deadOverlay',
@@ -46,6 +48,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Player killed!',
         message: 'Congrats on the kill. You are 1 step nearer to be the last man standing',
       }
+
     case 'attackButFail':
       return {
         bgImage: 'combine',
@@ -104,6 +107,8 @@ const getAlertLook = (alertLookTest: string) => {
       }
 
     /*------  sent to another player ------*/
+
+    //used
     case 'killed':
       return {
         bgImage: 'deadOverlay',
@@ -111,6 +116,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You got killed!',
         message: 'Sorry about that. You can still claim your share of the pot when you exit.',
       }
+
     case 'received':
       return {
         bgImage: 'motif',
@@ -125,6 +131,20 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You were attacked!',
         message: 'A player attacked you but you are safe as you submitted the keyword.',
       }
+    //used
+    case 'receivedTokens':
+      return {
+        bgImage: 'rainbow',
+        face: 'surprised',
+        title: '$LAST received!',
+        message: 'Do use it wisely in your game journey',
+      }
+
+    //peacefound
+
+    //drain
+
+    //lastman
 
     default:
       return {}
@@ -140,7 +160,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
   // const alertLookTest: string = emittedEvent
 
   const modalState = useStoreState((state) => state.triggerCompletionModal)
-  const modalLooks = getAlertLook(modalState.state || 'attackedButSafe')
+  const modalLooks = getAlertLook(modalState.state)
   const closeModalAction = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   function closeModal() {
@@ -156,7 +176,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
     <Dialog open={modalState.isOpen}>
       <DialogContent className="bg-white dark:bg-white p-0 md:w-[20rem] w-[90%] rounded-3xl">
         <div
-          className="rounded-lg h-full w-full"
+          className="rounded-lg h-full w-full shadow-xl"
           style={{
             backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
             backgroundRepeat: 'no-repeat',
@@ -165,7 +185,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
         >
           <div className="rounded-t-sm">
             <div className="flex flex-col justify-center gap-1 items-center pt-5">
-              <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
+              <p className="w-[90%] text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
                 {title}
               </p>
               <Image
@@ -178,19 +198,19 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
             </div>
           </div>
 
-          <DialogClose className="flex justify-center w-full" onClick={closeModal}>
-            <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
-              <div className="text-black text-xl my-4">{message}</div>
-              <div className="flex justify-center mb-4">
+          <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
+            <div className="text-black text-xl my-2">{message}</div>
+            <div className="flex justify-center mb-4">
+              <DialogClose className="flex justify-center w-full" onClick={closeModal}>
                 <Button
                   variant="primary"
                   className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
                 >
                   Continue
                 </Button>
-              </div>
+              </DialogClose>
             </div>
-          </DialogClose>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

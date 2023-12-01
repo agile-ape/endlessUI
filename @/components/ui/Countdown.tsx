@@ -71,14 +71,15 @@ export default function Countdown() {
     endTime = new Date()
   }
 
-  endTime = new Date('2023-11-24T16:30:00') // our deadline to launch
-  console.log(endTime)
+  // endTime = new Date('2023-11-24T16:30:00') // our deadline to launch
+  // console.log(endTime)
 
   useEffect(() => {
     const interval = setInterval(() => {
       // Calculate the time left in each tick
       const now = new Date()
       const timeLeftInMS = endTime.getTime() - now.getTime()
+
       // const timeLeftInMS = 100000
 
       console.log(now)
