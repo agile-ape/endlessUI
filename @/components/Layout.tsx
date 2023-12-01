@@ -180,14 +180,14 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'phase',
       },
-      {
-        ...defaultContractObj,
-        functionName: 'nextTicketPrice',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketCount',
-      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'nextTicketPrice',
+      // },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'ticketCount',
+      // },
     ],
     enabled: isConnected,
   })
@@ -195,14 +195,14 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   if (data && data?.length > 0) {
     const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
-    const nextTicketPrice = data[2]?.result || 0
-    const ticketCount = data[3]?.result || 0
+    // const nextTicketPrice = data[2]?.result || 0
+    // const ticketCount = data[3]?.result || 0
 
     updateRound(Number(round))
     updatePhase(Number(phase))
     // updatePhase(Number(2))
-    updateNextTicketPrice(Number(nextTicketPrice))
-    updateTicketCount(Number(ticketCount))
+    // updateNextTicketPrice(Number(nextTicketPrice))
+    // updateTicketCount(Number(ticketCount))
   }
 
   const refreshData = () => {

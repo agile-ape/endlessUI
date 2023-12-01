@@ -168,7 +168,7 @@
     dark:bg-slate-500 dark:bg-opacity-50;
   }
 
-  @keyframes shootingStarAnimation {
+  @keyframes wiggle {
     /* rotate 
     0% {
       transform: rotate(0deg);
@@ -216,14 +216,25 @@
     }
   }
 
+  @keyframes flashing {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
   /* animation: duration | easing-function | delay |
 iteration-count | direction | fill-mode | play-state | name */
 
-  .border-rainbow {
-    background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
-    background-size: 600% 100%;
-    animation: shootingStarAnimation 1s linear 1;
-    animation-fill-mode: forwards;
+  .wiggle {
+    animation: wiggle 1s linear 1;
+  }
+
+  .flash {
+    animation: flashing 1s linear 1;
   }
 }
 

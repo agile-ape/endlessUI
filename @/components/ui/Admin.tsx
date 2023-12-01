@@ -43,7 +43,7 @@ export default function Admin() {
     enabled: isConnected,
   })
 
-  const timeFlag = Number(data[3]?.result || 0)
+  const timeFlag = Number(data?.[3]?.result || 0)
 
   const timeFlagInDate = new Date(timeFlag * 1000)
 

@@ -234,7 +234,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'ticket claimed',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     submittedDay: {
       bgImage: 'motif',
@@ -243,7 +243,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'submitted',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     stage1New: {
       bgImage: 'rainbow',
@@ -252,7 +252,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     stage2New: {
       bgImage: 'rainbow',
@@ -261,7 +261,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     stage3New: {
       bgImage: 'rainbow',
@@ -270,7 +270,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     submittedNight: {
       bgImage: 'motif',
@@ -279,7 +279,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'time to attack',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     attackedButSafu: {
       bgImage: 'combine',
@@ -288,7 +288,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'SAFU',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     neverSubmit: {
       bgImage: 'rainbow',
@@ -297,7 +297,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'time to attack',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     inSafehouse: {
       bgImage: 'safeOverlay',
@@ -306,7 +306,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'taking a break',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     lastManStanding: {
       bgImage: 'burst',
@@ -315,7 +315,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'last man standing',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     agreedToSplitPot: {
       bgImage: 'burst',
@@ -324,7 +324,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'WAGMI',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     noMorePot: {
       bgImage: 'burst',
@@ -333,7 +333,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       id: ticketId,
       status: 'let it burn',
       label: 'value',
-      value: ticketValue / conversion + ' ETH',
+      value: formatUnits(ticketValue, 18) + ' ETH',
     },
     killed: {
       bgImage: 'deadOverlay',
@@ -370,7 +370,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   return (
     <div
-      className={`flex flex-col border-rainbow mx-auto relative justify-center shadow-xl ${size} ${edge}`}
+      className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge}`}
       style={{
         backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
         backgroundRepeat: 'no-repeat',

@@ -85,7 +85,7 @@ function Token() {
   // assign to variables
   const balanceOf = data?.[0].result || BigInt(0)
   const allowance = data?.[1].result || BigInt(0)
-  const playerTicket = data?.[2].result || BigInt(0)
+  const playerTicket = data?.[2].result || null
 
   // reduces it by 18 decimals
   const tokenBalance = formatUnits(balanceOf, 18)

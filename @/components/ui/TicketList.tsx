@@ -5,31 +5,66 @@ import { Button } from './button'
 import { Gem, Users } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
-import { useContractWrite } from 'wagmi'
+import { useContractWrite, useContractReads, useContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { tokenConversion } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-type TicketListType = {
-  stage: string
-}
+import { formatUnits, parseUnits } from 'viem'
 
-const TicketList: React.FC<TicketListType> = ({ stage }) => {
-  const [ticketState, setTicketState] = useState<string>('aroundMe') // default 'aroundMe'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+// type TicketListType = {
+//   stage: string
+// }
+
+const TicketList = () => {
   const phase = useStoreState((state) => state.phase)
 
   const ticketList = useStoreState((state) => state.tickets)
-  const ticketCount = useStoreState((state) => state.ticketCount)
-  const ticketId = useStoreState((state) => state.ticketId)
-  const currentPot = useStoreState((state) => state.currentPot)
-  const totalPot = useStoreState((state) => state.totalPot)
+  // const ticketCount = useStoreState((state) => state.ticketCount)
+  // const ticketId = useStoreState((state) => state.ticketId)
+  // const currentPot = useStoreState((state) => state.currentPot)
+  // const totalPot = useStoreState((state) => state.totalPot)
 
   const totalTicketCount = ticketList.length
-  const totalPotConverted = totalPot / tokenConversion
-  const currentPotConverted = currentPot / tokenConversion
+  // const totalETH = totalPot / tokenConversion
+  // const ethLeft = currentPot / tokenConversion
+
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'currentPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'totalPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketCount',
+      },
+    ],
+  })
+
+  const currentPot = data?.[0].result || BigInt(0)
+  const totalPot = data?.[1].result || BigInt(0)
+  const ticketCount = data?.[2].result || BigInt(0)
+
+  const ethLeft = formatUnits(currentPot, 18)
+  const totalETH = formatUnits(totalPot, 18)
+
+  const [ticketState, setTicketState] = useState<string>('aroundMe') // default 'aroundMe'
 
   const { theme, forcedTheme } = useTheme()
-
   console.log(theme)
+
+  // new ticket bought
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    listener: (event) => {
+      refetch()
+    },
+  })
 
   // const { data, write } = useContractWrite({
   //   ...defaultContractObj,
@@ -46,25 +81,25 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
     <>
       <summary
         className="list-none
-        relative px-3 py-0 flex flex-col"
+        relative px-6 py-0 flex flex-col"
       >
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col items-center md:flex-row">
           <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-2">
-            <span className=""> Players</span>
+            {/* <span className=""> Players</span> */}
 
             <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Users size={18} className="mr-1" />
-                    <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
-                      {ticketCount}
+                    <Users size={24} className="mr-1" />
+                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
+                      {Number(ticketCount)}
                     </div>
-                    <span className="text-md">/{totalTicketCount}</span>
+                    {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Players left / total joined</p>
+                  <p className="px-3 py-1 max-w-[240px] text-sm">Player count</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -80,8 +115,8 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                         priority
                         src="/logo/eth-dark.png"
                         className="mr-1"
-                        height={12}
-                        width={12}
+                        height={14}
+                        width={14}
                         alt="eth"
                       />
                     ) : (
@@ -89,25 +124,26 @@ const TicketList: React.FC<TicketListType> = ({ stage }) => {
                         priority
                         src="/logo/eth-light.png"
                         className="mr-1"
-                        height={12}
-                        width={12}
+                        height={14}
+                        width={14}
                         alt="eth"
                       />
                     )}
-                    <div className="text-3xl text-amber-600 dark:text-amber-300 tracking-wide">
-                      {currentPotConverted}
+                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
+                      {ethLeft}
                     </div>
-                    <span className="text-md">/{totalPotConverted} </span>
+                    {phase !== 'start' && <span className="text-md">/{totalETH}</span>}
+                    <span className="text-xl text-end">ETH</span>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Pot left / total pot (in ETH)</p>
+                  <p className="px-3 py-1 max-w-[240px] text-sm">Value in Pot</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex gap-3 justify-center mt-2 mb-4">
+          <div className="grid grid-cols-2 sm:flex gap-3 justify-center my-2">
             <Button
               onClick={() => setTicketState('aroundMe')}
               variant="filter"

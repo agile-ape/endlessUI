@@ -16,6 +16,7 @@ import { formatNumber, tokenConversion } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import {
   useAccount,
+  useBalance,
   useContractRead,
   useContractReads,
   useContractWrite,
@@ -46,6 +47,12 @@ function BuyTicket() {
   // Address read
   const { address, isConnected } = useAccount()
 
+  const { data: balanceData } = useBalance({
+    address: address,
+  })
+
+  const ethBalance = formatUnits(balanceData?.value || BigInt(0), 18)
+
   const { data, refetch } = useContractReads({
     contracts: [
       {
@@ -72,7 +79,7 @@ function BuyTicket() {
     ],
   })
 
-  const playerTicket = data?.[0].result || BigInt(0)
+  const playerTicket = data?.[0].result || null
   const nextTicketPrice = data?.[1].result || BigInt(0)
   const increaseInPrice = data?.[2].result || BigInt(0)
   const ticketsAvailableAtCurrentPrice = Number(data?.[3].result || BigInt(0))
@@ -230,6 +237,18 @@ function BuyTicket() {
 
                   <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                     <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                      <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                        <p className="text-left leading-tight">ETH in wallet</p>
+                        <p className="text-right align-middle">
+                          {' '}
+                          {formatNumber(ethBalance, {
+                            maximumFractionDigits: 3,
+                            minimumFractionDigits: 3,
+                          })}{' '}
+                          ETH{' '}
+                        </p>
+                      </div>
+
                       <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                         <p className="text-left leading-tight">Current price</p>
                         <p className="text-right align-middle"> {ticketPrice} ETH </p>
