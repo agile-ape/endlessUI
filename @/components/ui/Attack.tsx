@@ -79,14 +79,13 @@ const Attack: FC<AttackType> = ({ id }) => {
   let defenderLastSeen = Number(defenderTicket?.[4] || 0)
   let defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
   let defenderValue = Number(defenderTicket?.[7]) || 0
+  const defenderAddress = defenderTicket?.[1] || ''
 
   const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
 
   // Active condition
-  let attackActive: boolean
-  attackActive =
+  const attackActive =
     phase === 'night' &&
-    isAttackTime === true &&
     attackerStatusString !== 'safe' &&
     attackerAttacks > 0 &&
     defenderIsInPlay === true &&
@@ -103,13 +102,20 @@ const Attack: FC<AttackType> = ({ id }) => {
     try {
       // const nextPrice = parseUnits(String(nextTicketPriceConverted), 18)
 
+      if (defenderAddress.toLowerCase() === address?.toLowerCase()) {
+        throw new Error('You cannot attack yourself!')
+      }
+
       const tx = await writeAsync({
         args: [BigInt(id)],
       })
       const hash = tx.hash
     } catch (error: any) {
       const errorMsg =
-        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+        error?.cause?.reason ||
+        error?.cause?.shortMessage ||
+        error?.message ||
+        'Error, please try again!'
 
       toast({
         variant: 'destructive',
@@ -226,27 +232,18 @@ const Attack: FC<AttackType> = ({ id }) => {
                     </div> */}
                   </div>
 
-                  {attackActive && (
-                    <Button
-                      variant="attack"
-                      size="lg"
-                      className="w-[100%]"
-                      onClick={attackTicketHandler}
-                      isLoading={isLoading}
-                    >
-                      Attack Player #{id}
-                    </Button>
-                  )}
+                  <Button
+                    variant="attack"
+                    size="lg"
+                    className="w-[100%]"
+                    onClick={attackTicketHandler}
+                    isLoading={isLoading}
+                    disabled={!attackActive}
+                  >
+                    Attack Player #{id}
+                  </Button>
 
-                  {!attackActive && (
-                    <>
-                      <Button variant="attack" size="lg" className="w-[100%]" disabled>
-                        Attack
-                      </Button>
-
-                      <Prompt />
-                    </>
-                  )}
+                  {!attackActive && <Prompt />}
                 </div>
               </DialogDescription>
             </ScrollArea>

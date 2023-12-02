@@ -118,10 +118,6 @@ export default function Countdown() {
 
       // const timeLeftInMS = 100000
 
-      console.log(now)
-      console.log(now.getTime())
-      // console.log(now.getTime())
-
       if (timeLeftInMS > 0) {
         setTimeLeft(timeLeftInMS / 1000)
       } else {
@@ -131,7 +127,7 @@ export default function Countdown() {
     }, 1000) // Update every second
 
     return () => clearInterval(interval) // Cleanup on unmount
-  }, [endTime])
+  }, [])
 
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
   return (
