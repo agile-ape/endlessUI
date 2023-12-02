@@ -7,7 +7,7 @@ import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useContractWrite, useContractReads, useContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
-import { tokenConversion } from '@/lib/utils'
+import { formatNumber, tokenConversion } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -130,9 +130,18 @@ const TicketList = () => {
                       />
                     )}
                     <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
-                      {ethLeft}
+                      {formatNumber(ethLeft, {
+                        maximumFractionDigits: 3,
+                      })}
                     </div>
-                    {phase !== 'start' && <span className="text-md">/{totalETH}</span>}
+                    {phase !== 'start' && (
+                      <span className="text-md">
+                        /
+                        {formatNumber(totalETH, {
+                          maximumFractionDigits: 3,
+                        })}
+                      </span>
+                    )}
                     <span className="text-xl text-end">ETH</span>
                   </div>
                 </TooltipTrigger>

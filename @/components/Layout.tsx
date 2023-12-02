@@ -85,9 +85,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     eventName: 'PhaseChange',
     listener: (event) => {
       const args = event[0]?.args
-      const { newPhase } = args
-
-      updatePhase(Number(newPhase))
+      const { newPhase, previousPhase, time } = args
+      refetchInitData()
       refreshData()
     },
   })
@@ -170,7 +169,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   //   }
   // }, [])
 
-  const { data } = useContractReads({
+  const { data, refetch: refetchInitData } = useContractReads({
     contracts: [
       {
         ...defaultContractObj,
