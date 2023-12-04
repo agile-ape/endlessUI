@@ -87,8 +87,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   const { data: playerAddress } = useContractRead({
     ...defaultContractObj,
     functionName: 'idToPlayer',
-    args: [ticketNumber],
+    args: [BigInt(ticketNumber)],
     enabled: !!ticketNumber,
+    cacheTime: 5_000,
   })
 
   const { data: ensName } = useEnsName({
@@ -269,12 +270,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     }
   }
 
+  if (!ticketLook && !ticketIsInPlay) {
+    return null
+  }
+
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
-  // const ticketLookFinal = ticketLookInput || ticketLook
   const ticketLookFinal = ticketLook
-  // const ticketLookFinal = 'exitGame'
-  // ticketLookInput !== undefined && ticketLookInput !== null ? ticketLookInput : ticketLook
 
   const ticketLookMapping = {
     beforePurchase: {
