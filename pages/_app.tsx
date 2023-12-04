@@ -13,6 +13,7 @@ import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
 import Metadata from '@/components/Metadata'
+import useSWR from 'swr'
 
 const chainsConfig = [
   ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
@@ -35,7 +36,33 @@ const wagmiConfig = createConfig({
   webSocketPublicClient,
 })
 
+const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
+  deployed: 'dark',
+  start: 'dark',
+  day: 'light',
+  night: 'dark',
+  lastmanfound: 'dark',
+  drain: 'dark',
+  peacefound: 'light',
+  gameclosed: 'dark',
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
+  const { data } = useSWR('phase', async (data) => {
+    console.log({ data })
+
+    const res = await fetch('/api/phase')
+    const json = await res.json()
+
+    if (res.status !== 200) {
+      throw new Error(json.message)
+    }
+
+    return {
+      phase: json?.message as IApp['phase'],
+    }
+  })
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
@@ -54,7 +81,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ThemeProvider
             attribute="class"
             enableSystem
-            forcedTheme={pageProps.theme ? pageProps.theme : null}
+            forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
           >
             <Metadata {...pageProps.metadata} />
             <Layout metadata={...pageProps.metadata} phase={pageProps?.phase}>
