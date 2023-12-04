@@ -89,15 +89,18 @@ const GameTextVariant: React.FC<GameTextVariantType> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col justify-between items-end py-1
+      className={`flex flex-col justify-between py-1
     text-black dark:text-white ${
       !isLastIndex && 'border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300'
     }`}
     >
       {/* <div className="w-[240px] leading-tight"> */}
-      <div className="text-left leading-5">
+      <div className="text-left text-md leading-5">
         {/* <span className="text-md">{number}</span>{' '} */}
-        <span className="text-md underline">{keyword}</span> <span className="text-md">{text}</span>
+        {/* <span className="text-md underline">{keyword}</span>  */}
+        {/* <span className="text-left "> */}
+        {text}
+        {/* </span> */}
       </div>
       <div className="text-xs text-right whitespace-nowrap text-neutral-600 dark:text-neutral-300">
         {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}

@@ -3,6 +3,7 @@ import GameTextVariant from './GameTextVariant'
 import useSWR from 'swr'
 import { fetcher, replacePlaceholders } from '@/lib/utils'
 import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../../services/constant'
+import { formatDistanceToNow } from 'date-fns'
 
 // Limit to 15 events. Avoid scrolling if possible
 const GameFeed = () => {

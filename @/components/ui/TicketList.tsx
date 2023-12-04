@@ -276,7 +276,6 @@ const TicketList = () => {
               </div>
             </div>
           </div>
-          <div className="text-center my-4 text-2xl">We await patiently for our first warrior</div>
         </div>
       )}
 

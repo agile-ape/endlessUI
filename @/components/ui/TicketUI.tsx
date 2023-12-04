@@ -284,6 +284,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
 
   // const ticketLookFinal = ticketLookInput || ticketLook
   const ticketLookFinal = ticketLook
+  // const ticketLookFinal = 'exitGame'
   // ticketLookInput !== undefined && ticketLookInput !== null ? ticketLookInput : ticketLook
 
   console.log(ticketIsInPlay)

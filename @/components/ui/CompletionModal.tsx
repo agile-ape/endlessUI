@@ -45,23 +45,23 @@ const getAlertLook = (alertLookTest: string) => {
     case 'attackAndKill':
       return {
         bgImage: 'deadOverlay',
-        face: 'angry',
+        face: 'shoot',
         title: 'Player killed!',
         message: 'Congrats on the kill. You are 1 step nearer to be the last man standing',
       }
     //used
     case 'attackButFail':
       return {
-        bgImage: 'combine',
-        face: 'pray',
+        bgImage: 'rainbow',
+        face: 'missed',
         title: 'Player is safe!',
-        message: 'Player submitted the right keyword and is safe from attacks. Try another player?',
+        message: 'Player defended your attack as his keyword is valid. Try another player?',
       }
     //used
     case 'kickedOut':
       return {
         bgImage: 'deadOverlay',
-        face: 'angry',
+        face: 'police',
         title: 'Player kicked out and killed!',
         message: 'Thanks for kicking the overstayer out.',
       }
@@ -140,7 +140,7 @@ const getAlertLook = (alertLookTest: string) => {
         bgImage: 'combine',
         face: 'pray',
         title: 'You were attacked!',
-        message: 'A player attacked you but you are safe as you submitted the keyword.',
+        message: 'You were attacked but you are safe as your keyword is valid.',
       }
 
     /*------  sent to all ------*/
