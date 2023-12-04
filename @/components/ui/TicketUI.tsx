@@ -122,6 +122,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
         functionName: 'suddenDeath',
       },
     ],
+    cacheTime: 2_000,
   })
 
   const playerTicket = data?.[0].result || BigInt(0)

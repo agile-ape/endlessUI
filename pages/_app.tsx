@@ -48,9 +48,7 @@ const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { data } = useSWR('phase', async (data) => {
-    console.log({ data })
-
+  const { data } = useSWR('phase', async () => {
     const res = await fetch('/api/phase')
     const json = await res.json()
 
