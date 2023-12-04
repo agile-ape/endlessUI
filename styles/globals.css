@@ -196,16 +196,16 @@
       transform: rotateZ(0);
     }
     15% {
-      transform: rotateZ(-4deg);
-    }
-    20% {
-      transform: rotateZ(4deg);
-    }
-    25% {
       transform: rotateZ(-2deg);
     }
-    30% {
+    20% {
       transform: rotateZ(2deg);
+    }
+    25% {
+      transform: rotateZ(-1deg);
+    }
+    30% {
+      transform: rotateZ(1deg);
     }
     35% {
       transform: rotateZ(0deg);

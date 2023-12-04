@@ -33,14 +33,15 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Welcome to the game!',
         message: 'We are excited to have you. Just hold on tight until DAY comes!',
       }
-    case 'submittedDay':
+    //used
+    case 'submitted':
       return {
         bgImage: 'motif',
         face: 'handsup',
         title: 'Keyword submitted!',
         message: 'In case you submitted wrongly, you can still submit again anytime in the DAY',
       }
-
+    //used
     case 'attackAndKill':
       return {
         bgImage: 'deadOverlay',
@@ -48,7 +49,7 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'Player killed!',
         message: 'Congrats on the kill. You are 1 step nearer to be the last man standing',
       }
-
+    //used
     case 'attackButFail':
       return {
         bgImage: 'combine',
@@ -103,10 +104,19 @@ const getAlertLook = (alertLookTest: string) => {
         bgImage: 'burst',
         face: 'exit',
         title: 'Thanks for playing!',
-        message: 'We hope you have fun.',
+        message: 'We hope you have fun. We will see you in the next game.',
       }
 
     /*------  sent to another player ------*/
+
+    //used
+    case 'receivedTokens':
+      return {
+        bgImage: 'rainbow',
+        face: 'surprised',
+        title: '$LAST received!',
+        message: 'Do use it wisely in your game journey',
+      }
 
     //used
     case 'killed':
@@ -117,6 +127,7 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'Sorry about that. You can still claim your share of the pot when you exit.',
       }
 
+    // NEXT ITERATION
     case 'received':
       return {
         bgImage: 'motif',
@@ -131,20 +142,42 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You were attacked!',
         message: 'A player attacked you but you are safe as you submitted the keyword.',
       }
-    //used
-    case 'receivedTokens':
+
+    /*------  sent to all ------*/
+    //peacefound
+    case 'peacefound':
       return {
-        bgImage: 'rainbow',
-        face: 'surprised',
-        title: '$LAST received!',
-        message: 'Do use it wisely in your game journey',
+        bgImage: 'burst',
+        face: 'beers',
+        title: 'Peace to all!',
+        message: 'Peace is found. All remaining players gets to share the pot.',
+      }
+    //drain
+    case 'drain':
+      return {
+        bgImage: 'burst',
+        face: 'watchitburn',
+        title: 'Pot is drained!',
+        message:
+          'Some pot crumbs left. Remaining players can claim whatever that is left of the pot.',
+      }
+    //lastman
+    case 'lastman':
+      return {
+        bgImage: 'burst',
+        face: 'lastman',
+        title: 'Last Man Found!',
+        message: 'All hail the man, the myth, the legend. The last man standing!',
       }
 
-    //peacefound
-
-    //drain
-
-    //lastman
+    //game closed
+    case 'gameClosed':
+      return {
+        bgImage: 'rainbow',
+        face: 'love',
+        title: 'Game has ended!',
+        message: 'Stay tuned for the next game!',
+      }
 
     default:
       return {}

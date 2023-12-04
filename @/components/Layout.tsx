@@ -17,6 +17,7 @@ import { fetcher, isJson, transformToTicket } from '@/lib/utils'
 import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR from 'swr'
+import { toast } from '../components/ui/use-toast'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -74,9 +75,65 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     eventName: 'PhaseChange',
     listener: (event) => {
       const args = event[0]?.args
-      const { newPhase, previousPhase, time } = args
+      const { caller, previousPhase, newPhase, time } = args
       refetchInitData()
       refreshData()
+      // start
+      if (newPhase === 1) {
+        toast({
+          variant: 'info',
+          title: 'Ticket buying',
+          description: <p className="text-base">Ticket buying has started.</p>,
+        })
+      }
+
+      // day
+      if (newPhase === 2) {
+        toast({
+          variant: 'info',
+          title: 'Day has come',
+          description: <p className="text-base">Day has come.</p>,
+        })
+      }
+
+      // night
+      if (newPhase === 3) {
+        toast({
+          variant: 'info',
+          title: 'Night has come',
+          description: <p className="text-base">Night has come.</p>,
+        })
+      }
+
+      // lastmanfound
+      if (newPhase === 4) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'lastman',
+        })
+      }
+
+      // peacefound
+      if (newPhase === 5) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'peacefound',
+        })
+      }
+      // drain
+      if (newPhase === 6) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'drain',
+        })
+      }
+      // gameclosed
+      if (newPhase === 7) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'gameClosed',
+        })
+      }
     },
   })
 
@@ -117,21 +174,21 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   // })
 
   // alerts ticket that got killed
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'AttackAndKilled',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, defendingTicket, ticketValue, time } = args
-      if (defendingTicket === ticketId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'killed',
-        })
-      }
-      console.log({ args })
-    },
-  })
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'AttackAndKilled',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { caller, defendingTicket, ticketValue, time } = args
+  //     if (defendingTicket === ticketId) {
+  //       triggerCompletionModal({
+  //         isOpen: true,
+  //         state: 'killed',
+  //       })
+  //     }
+  //     console.log({ args })
+  //   },
+  // })
 
   // useEffect(() => {
   //   const socket = new WebSocket('ws://localhost:8090')
@@ -168,13 +225,13 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'phase',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketCount',
+      },
       // {
       //   ...defaultContractObj,
-      //   functionName: 'nextTicketPrice',
-      // },
-      // {
-      //   ...defaultContractObj,
-      //   functionName: 'ticketCount',
+      //   functionName: 'ticketId',
       // },
     ],
     enabled: isConnected,
@@ -183,14 +240,14 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   if (data && data?.length > 0) {
     const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
-    // const nextTicketPrice = data[2]?.result || 0
-    // const ticketCount = data[3]?.result || 0
+    const ticketCount = data[2]?.result || 0
+    // const totalTickets = data[3]?.result || 0
 
     updateRound(Number(round))
     updatePhase(Number(phase))
+    updateTicketCount(Number(ticketCount))
     // updatePhase(Number(2))
     // updateNextTicketPrice(Number(nextTicketPrice))
-    // updateTicketCount(Number(ticketCount))
   }
 
   const refreshData = () => {
@@ -201,13 +258,13 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   return (
     <main
-      className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen relative`}
+      className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
       style={{
         backgroundImage: `url(/background/${background})`,
       }}
     >
       {/* width of header */}
-      <div className="absolute bottom-10 left-40 h-[10vw] w-[10vw]">
+      {/* <div className="absolute bottom-10 left-40 h-[10vw] w-[10vw]">
         <Image
           priority
           src="/background/portal.svg"
@@ -218,7 +275,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           // sizes="5vw"
           alt="sneak-a-peek-pepe"
         />
-      </div>
+      </div> */}
       <div className="container mx-auto">
         {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />

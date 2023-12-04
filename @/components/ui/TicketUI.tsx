@@ -3,10 +3,17 @@ import React from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import Image from 'next/image'
-import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import {
+  useAccount,
+  useContractRead,
+  useContractEvent,
+  useContractReads,
+  useContractWrite,
+  useEnsName,
+} from 'wagmi'
+import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import { formatUnits } from 'viem'
-import { cn, formatAddress, statusPayload } from '@/lib/utils'
+import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStoreActions, useStoreState } from '../../../store'
 import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
@@ -18,7 +25,7 @@ import KickOut from './KickOut'
 type TicketUIType = {
   ownTicket: boolean
   ticketNumber: IApp['id']
-  ticketLookInput: string
+  // ticketLookInput: string
 }
 
 const getTicketSize = (ownTicket) => {
@@ -50,7 +57,7 @@ const getTicketSize = (ownTicket) => {
   }
 }
 
-const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }) => {
+const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const handleOnMouseEnter: MouseEventHandler = () => {
@@ -61,6 +68,23 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     setIsOverlayInspect(false)
   }
 
+  console.log(ticketNumber)
+
+  // update to safehouse
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'CheckIntoSafehouse',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, checkOutDate, time } = args
+
+      if (Number(caller) === ticketNumber) {
+        refetch()
+      }
+      console.log({ args })
+    },
+  })
+
   // hooks
   const { data: playerAddress } = useContractRead({
     ...defaultContractObj,
@@ -68,6 +92,14 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     args: [ticketNumber],
     enabled: !!ticketNumber,
   })
+
+  console.log(playerAddress)
+
+  const { data: ensName } = useEnsName({
+    address: playerAddress,
+  })
+
+  // console.log({ ensName })
 
   // const { data: playerTicket } = useContractRead({
   //   ...defaultContractObj,
@@ -81,8 +113,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
       {
         ...defaultContractObj,
         functionName: 'playerTicket',
-        args: [(playerAddress || '') as `0x${string}`],
-        enabled: !!playerAddress,
+        args: [playerAddress as `0x${string}`],
+        // enabled: !!playerAddress,
       },
       {
         ...defaultContractObj,
@@ -96,42 +128,79 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
   })
 
   const playerTicket = data?.[0].result || BigInt(0)
-  const nextTicketId = data?.[1].result || BigInt(0)
+  console.log(playerTicket)
+  const nextTicketId = Number(data?.[1].result || BigInt(0))
+  console.log(nextTicketId)
   const suddenDeath = data?.[2].result || BigInt(0)
 
   // used
   let ticketId = playerTicket?.[0] || 0
+  console.log(ticketId)
   // used
   let ticketAddress = playerTicket?.[1] || 0
 
   let ticketSignature = playerTicket?.[2] || 0
   let ticketStatus = playerTicket?.[3] || 0
-  let ticketLastSeen = playerTicket?.[4] || 0
-  // let ticketIsInPlay = playerTicket?.[5] || 0
-  let ticketIsInPlay = true
+  let ticketLastSeen = Number(playerTicket?.[4] || 0)
+  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  console.log(ticketIsInPlay)
+  // let ticketIsInPlay = true
   let ticketVote = Boolean(playerTicket?.[6] || 0)
+  console.log(ticketVote)
   let ticketValue = Number(playerTicket?.[7]) || 0
+  console.log(ticketValue)
   let ticketPurchasePrice = playerTicket?.[8] || 0
+  console.log(ticketPurchasePrice)
   let ticketPotClaim = playerTicket?.[9] || 0
   let ticketRedeemValue = playerTicket?.[10] || 0
   // used
   let ticketAttacks = Number(playerTicket?.[11]) || 0
 
-  let ticketAttackCount = playerTicket?.[12] || 0
-  let ticketKillCount = playerTicket?.[13] || 0
+  let ticketAttackCount = Number(playerTicket?.[12] || 0)
+  let ticketKillCount = Number(playerTicket?.[13] || 0)
   let ticketKilledBy = playerTicket?.[14] || 0
   let ticketSafehouseNights = playerTicket?.[15] || 0
-  let ticketcheckOutRound = playerTicket?.[16] || 0
+  let ticketcheckOutRound = Number(playerTicket?.[16] || 0)
   let ticketBuddy = playerTicket?.[17] || 0
   let ticketBuddyCount = playerTicket?.[18] || 0
-  // let ticketRank = playerTicket?.[19] || 0
-  let ticketRank = 123
+  let ticketRank = Number(playerTicket?.[19] || 0)
+  // let ticketRank = 123
 
   let ticketVoteString: string
   ticketVote === false ? (ticketVoteString = 'No') : (ticketVoteString = 'Yes')
 
+  const valueBought = formatUnits(ticketPurchasePrice, 18)
+  const valueRedeemed = formatUnits(ticketRedeemValue, 18)
+
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
+
+  /* 
+  // approach 1
+  // const ticketList = useStoreState((state) => state.tickets)
+  // const totalTicketCount = ticketList.length
+  */
+
+  // approach 2
+  const totalTicketCount = Number(nextTicketId) - 1
+
+  const quartile = (ticketRank / totalTicketCount) * 100
+  console.log(quartile)
+
+  let rankColor: string
+  if (quartile < 25) {
+    rankColor = 'bg-black'
+  } else if (quartile < 50) {
+    rankColor = 'bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600'
+  } else if (quartile < 75) {
+    rankColor = 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-500'
+  } else if (quartile <= 100) {
+    rankColor = 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500'
+  }
+
+  // bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500
+  // bg-gradient-to-r from-purple-500 via-pink-500 to-red-500
+  // console.log(rankColor)
 
   // const suddenDeath = useStoreState((state) => state.suddenDeath)
 
@@ -213,9 +282,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
 
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
 
-  const ticketLookFinal = ticketLookInput || ticketLook
+  // const ticketLookFinal = ticketLookInput || ticketLook
+  const ticketLookFinal = ticketLook
+  // ticketLookInput !== undefined && ticketLookInput !== null ? ticketLookInput : ticketLook
 
-  const conversion = Number(10 ** 15) // remember to check this
+  console.log(ticketIsInPlay)
+  console.log(ticketLook)
+  console.log(ticketLookFinal)
 
   const ticketLookMapping = {
     beforePurchase: {
@@ -368,6 +441,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
     <Sword key={index} size={16} className="text-black"></Sword>
   ))
 
+  console.log(ticketStatusString)
+
   return (
     <div
       className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge}`}
@@ -386,14 +461,18 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
         >
           <div className="flex justify-between gap-6">
             <p className="text-left"> Player</p>
-            <p className="text-right"> {formatAddress(ticketAddress)} </p>
+            <p className="text-right italic">
+              <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
+                {ensName ? ensName : formatAddress(ticketAddress)}
+              </a>
+            </p>
           </div>
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Attacks/Kills</p>
             <p className="text-right">
               {' '}
-              {ticketAttackCount}/{ticketKillCount}{' '}
+              {formatCount(ticketAttackCount)}/{formatCount(ticketKillCount)}{' '}
             </p>
           </div>
 
@@ -401,20 +480,20 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             <p className="text-left">Last Seen/Vote</p>
             <p className="text-right">
               {' '}
-              <span className="underline">{ticketLastSeen}</span>/{ticketVoteString}{' '}
+              <span className="underline">{formatCount(ticketLastSeen)}</span>/{ticketVoteString}{' '}
             </p>
           </div>
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Safe nights </p>
-            <p className="text-right"> {ticketSafehouseNights} </p>
+            <p className="text-right"> {formatCount(ticketSafehouseNights)} </p>
           </div>
 
           <div className="flex justify-between gap-6">
-            <p className="text-left">Buddy/Bud Count </p>
+            <p className="text-left">Bud/Bud Count </p>
             <p className="text-right">
               {' '}
-              #{ticketBuddy}/{ticketBuddyCount}
+              #{formatCount(ticketBuddy)}/{formatCount(ticketBuddyCount)}
             </p>
           </div>
 
@@ -428,19 +507,38 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           {(ticketLookFinal == 'exitGame' || ticketLookFinal == 'killed') && (
             <div className="flex justify-between gap-6">
               <p className="text-left">Killed By</p>
-              <p className="text-right"> #{ticketKilledBy}</p>
+              <p className="text-right"> #{formatCount(ticketKilledBy)}</p>
             </div>
           )}
 
           {ticketLookFinal == 'exitGame' && (
-            <div className="flex justify-between gap-6">
-              <p className="text-left">Exited with</p>
-              <p className="text-right">
-                {' '}
-                {ticketRedeemValue}
-                <span className="text-[0.5rem]">ETH</span>
-              </p>
-            </div>
+            <>
+              <div className="flex justify-between gap-6">
+                <p className="text-left">Bought for</p>
+                <p className="text-right">
+                  {' '}
+                  {/* {ticketRedeemValue} */}
+                  {formatNumber(valueBought, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 3,
+                  })}
+                  <span className="text-[0.5rem]">ETH</span>
+                </p>
+              </div>
+
+              <div className="flex justify-between gap-6">
+                <p className="text-left">Exited with</p>
+                <p className="text-right">
+                  {' '}
+                  {/* {ticketRedeemValue} */}
+                  {formatNumber(valueRedeemed, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 3,
+                  })}
+                  <span className="text-[0.5rem]">ETH</span>
+                </p>
+              </div>
+            </>
           )}
 
           {!(
@@ -448,9 +546,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
             ticketLookFinal == 'inSafehouse' ||
             ticketLookFinal == 'killed' ||
             ticketLookFinal == 'exitGame'
-          ) && <Attack id={ticketId} />}
+          ) && <Attack id={Number(ticketId)} />}
 
-          {ownTicket == false && ticketLookFinal == 'inSafehouse' && <KickOut id={ticketId} />}
+          {ownTicket == false && ticketLookFinal == 'inSafehouse' && (
+            <KickOut id={Number(ticketId)} />
+          )}
           {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />}
         </div>
       )}
@@ -487,7 +587,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticketLookInput }
           )}
           {/* rank */}
           {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
-            <div className="flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text">
+            <div
+              className={`flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
+            >
               {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
               <div className={`uppercase font-semibold tracking-wider ${h1}`}>
                 {label} {value}

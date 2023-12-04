@@ -19,7 +19,7 @@ const GameFeed = () => {
         args: Record<string, string>
       }
     }[]
-  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=10`, fetcher)
+  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=30`, fetcher)
 
   return (
     <div

@@ -90,7 +90,7 @@ function Token() {
   // reduces it by 18 decimals
   const tokenBalance = formatUnits(balanceOf, 18)
   const allowanceBalance = formatUnits(allowance, 18)
-  let ticketId = playerTicket?.[0] || 0
+  let playerId = playerTicket?.[0] || 0
 
   // receiver of tokens
   useContractEvent({
@@ -101,7 +101,7 @@ function Token() {
       const { caller, recipient, amount, time } = args
       console.log(recipient)
 
-      if (recipient === ticketId) {
+      if (recipient === playerId) {
         triggerCompletionModal({
           isOpen: true,
           state: 'receivedTokens',

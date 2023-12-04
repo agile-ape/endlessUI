@@ -22,6 +22,7 @@ import OnSignal from './OnSignal'
 // type PhaseChangeType = {
 //   phaseType: IApp['phase']
 // }
+import { DOCS_URL_phases } from '../../../services/constant'
 
 const mappedFunction: Record<string, string> = {
   start: 'changeStartToDay',
@@ -52,6 +53,11 @@ const PhaseChange = () => {
     args: [address as `0x${string}`],
     enabled: isConnected,
   })
+
+  let ticketId = Number(playerTicket?.[0] || BigInt(0))
+
+  let phaseChangeActive: boolean
+  phaseChangeActive = ticketId > 0
 
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
@@ -88,7 +94,7 @@ const PhaseChange = () => {
           className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
         >
           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-          <OnSignal active={true} own={true} />
+          <OnSignal active={phaseChangeActive} own={true} />
           Change phase
         </Button>
       </DialogTrigger>
@@ -129,6 +135,13 @@ const PhaseChange = () => {
                     Every phase change needs to be called by one of the players, dead or alive.
                   </p>
                   <p className="mb-2">Would you help us usher in the new phase?</p>
+                  <a
+                    href={DOCS_URL_phases}
+                    target="_blank"
+                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                  >
+                    Learn more
+                  </a>
                 </div>
 
                 {/* Pay for stay */}
@@ -146,19 +159,33 @@ const PhaseChange = () => {
                 </div> */}
 
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
-                  <Button
-                    disabled={!write || !playerTicket}
-                    // size="md"
-                    variant="default"
-                    onClick={() => write()}
-                    isLoading={isLoading}
-                    // variant="change"
-                    className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                  >
-                    {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                    Change phase
-                  </Button>
+                  {phaseChangeActive && (
+                    <Button
+                      disabled={!write || !playerTicket}
+                      // size="md"
+                      variant="default"
+                      onClick={() => write()}
+                      isLoading={isLoading}
+                      // variant="change"
+                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                    >
+                      {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+                      Change phase
+                    </Button>
+                  )}
+
+                  {!phaseChangeActive && (
+                    <Button
+                      disabled
+                      variant="default"
+                      onClick={() => write()}
+                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                    >
+                      Change phase
+                    </Button>
+                  )}
                 </div>
+                {!phaseChangeActive && <Prompt docLink={DOCS_URL_phases} />}
               </div>
             </ScrollArea>
           </DialogHeader>

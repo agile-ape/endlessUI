@@ -252,7 +252,7 @@ function SplitIt() {
 
                       <span>Yes</span>
                     </div>
-                    {!splitActive && <Prompt />}
+                    {!splitActive && <Prompt docLink={DOCS_URL_split} />}
                   </div>
                 </div>
               </div>

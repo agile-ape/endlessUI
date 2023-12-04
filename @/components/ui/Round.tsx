@@ -48,10 +48,8 @@ const Round = () => {
   //   setIsActive(!isActive)
   // }
 
-  const On =
-    'text-zinc-700 dark:text-white text-md sm:text-lg whitespace-nowrap font-medium tracking-wider cursor-default'
-  const Off =
-    'text-zinc-600 dark:text-zinc-400 text-xs sm:text-base whitespace-nowrap tracking-tight cursor-default'
+  const On = 'font-medium tracking-wider'
+  const Off = 'text-zinc-400 dark:text-zinc-400 tracking-tight'
 
   return (
     // <div className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
@@ -68,7 +66,12 @@ const Round = () => {
             Round <span className="underline">{round}</span>
           </p>
 
-          <div className={cn('flex flex-row gap-4', stage === 1 ? On : Off)}>
+          <div
+            className={cn(
+              'flex flex-row items-end gap-4 text-xs sm:text-base whitespace-nowrap cursor-default',
+              stage === 1 ? On : Off,
+            )}
+          >
             <div className={stage === 1 ? On : Off}>Stage 1</div>
             <div className={stage === 2 ? On : Off}>Stage 2</div>
             <div className={stage === 3 ? On : Off}>Stage 3</div>

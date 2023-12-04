@@ -19,7 +19,9 @@ import {
 import {
   useAccount,
   useContractRead,
+  useContractReads,
   useContractWrite,
+  useWaitForTransaction,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -29,38 +31,66 @@ import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucid
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { priceConversion } from '@/lib/utils'
+import { priceConversion, formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
 import OnSignal from './OnSignal'
-import { defaultContractObj, DOCS_URL_safehouse } from '../../../services/constant'
+import {
+  defaultContractObj,
+  tokenContractObj,
+  DOCS_URL_safehouse,
+} from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
+import { formatUnits, parseUnits } from 'viem'
 
 function CheckIn() {
   // State variables
   const phase = useStoreState((state) => state.phase)
-  const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
-
-  const stayCost = safehouseCostPerNight / priceConversion
+  // const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
-
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
+  // const { data: playerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [address as `0x${string}`],
+  // })
+
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'playerTicket',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'safehouseCostPerNight',
+      },
+      {
+        ...tokenContractObj,
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      },
+    ],
   })
 
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  let ticketSafehouseNights = Number(playerTicket?.[15] || 0)
+  const playerTicket = data?.[0].result || null
+  const safehouseCostPerNight = data?.[1].result || BigInt(0)
+  const balanceOf = data?.[2].result || BigInt(0)
+
+  const ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  const ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  const ticketSafehouseNights = Number(playerTicket?.[15] || 0)
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+
+  const stayCost = formatUnits(safehouseCostPerNight, 3)
+  const tokenBalance = formatUnits(balanceOf, 18)
 
   // Token contract read
   // const { data: balanceOf } = useContractRead({
@@ -70,7 +100,7 @@ function CheckIn() {
   // })
 
   // const tokenBalance = balanceOf / priceConversion
-  const tokenBalance = 200
+  // const tokenBalance = 200
 
   // Active condition
   let checkInActive: boolean
@@ -83,7 +113,11 @@ function CheckIn() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const { writeAsync, isLoading } = useContractWrite({
+  const {
+    data: checkInData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'checkIntoSafehouse',
   })
@@ -112,6 +146,16 @@ function CheckIn() {
       })
     }
   }
+
+  const {} = useWaitForTransaction({
+    hash: checkInData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
 
   return (
     <Dialog>
@@ -203,7 +247,13 @@ function CheckIn() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
                       <p className="text-left">$LAST in wallet</p>
-                      <p className="text-right"> {tokenBalance} </p>
+                      <p className="text-right">
+                        {' '}
+                        {formatNumber(tokenBalance, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}{' '}
+                      </p>
                     </div>
 
                     <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
@@ -259,7 +309,7 @@ function CheckIn() {
                         In Safehouse
                       </Button>
 
-                      <Prompt />
+                      <Prompt docLink={DOCS_URL_safehouse} />
                     </>
                   )}
 
@@ -269,7 +319,7 @@ function CheckIn() {
                         Check In
                       </Button>
 
-                      <Prompt />
+                      <Prompt docLink={DOCS_URL_safehouse} />
                     </>
                   )}
                 </div>

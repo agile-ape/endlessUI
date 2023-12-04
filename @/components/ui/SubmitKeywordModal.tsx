@@ -35,6 +35,8 @@ interface SubmitKeywordModalType {
   active: boolean
 }
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }) => {
+  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+
   // Address read
   const { address, isConnected } = useAccount()
   const { data: walletClient } = useWalletClient()
@@ -95,7 +97,13 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
     console.log({ res })
   }
 
-  const { writeAsync } = useContractWrite({
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const {
+    data: submitData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'submit',
   })
@@ -130,15 +138,23 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
       const result = await writeAsync({
         args: [signature as `0x${string}`],
       })
+
       console.log({ hashedMessage, signature, result })
-      toast({
-        title: 'Check in success!',
-        description: <p className="text-base">You have successfully checked in.</p>,
-      })
+      // toast({
+      //   title: 'Check in success!',
+      //   description: <p className="text-base">You have successfully checked in.</p>,
+      // })
 
       toggle()
 
       // console.log(result)
+
+      setIsModalOpen(false)
+
+      triggerCompletionModal({
+        isOpen: true,
+        state: 'submitted',
+      })
     } catch (error: any) {
       console.log({ error: error?.cause })
       // @ts-ignore
@@ -315,7 +331,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
                         )}
                       </div>
 
-                      {!active && <Prompt />}
+                      {!active && <Prompt docLink={DOCS_URL_submit} />}
                     </div>
                   </div>
                 </ScrollArea>

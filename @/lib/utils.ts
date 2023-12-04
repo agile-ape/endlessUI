@@ -30,6 +30,7 @@ export const calculateTimeLeft = () => {
   return timeLeft
 }
 
+// To delete
 export const tokenConversion = 1e18
 export const shareConversion = 1000
 export const priceConversion = 1000
@@ -54,6 +55,10 @@ export function formatNumber(value: any, options?: Intl.NumberFormatOptions) {
     style: 'decimal',
     ...options,
   }).format(Number(value))
+}
+
+export function formatCount(value: any): string {
+  return value == 0 ? '-' : String(value)
 }
 
 export const phasePayload: Record<number, IApp['phase']> = {

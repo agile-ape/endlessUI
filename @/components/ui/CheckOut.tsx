@@ -58,8 +58,7 @@ function CheckOut() {
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Active condition
-  let checkOutActive: boolean
-  checkOutActive = phase === 'day' && ticketStatusString === 'safe'
+  const checkOutActive: boolean = phase === 'day' && ticketStatusString === 'safe'
 
   // Contract write
 
@@ -207,7 +206,7 @@ function CheckOut() {
                       <Button variant="checkOut" size="lg" className="w-[100%]" disabled>
                         Check Out
                       </Button>
-                      <Prompt />
+                      <Prompt docLink={DOCS_URL_checkout} />
                     </>
                   )}
                 </div>

@@ -23,7 +23,14 @@ import { LogOut, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { useAccount, useContractRead, useContractWrite } from 'wagmi'
+import {
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useContractEvent,
+  useWaitForTransaction,
+} from 'wagmi'
 import { defaultContractObj, DOCS_URL_attack } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
@@ -42,24 +49,51 @@ const Attack: FC<AttackType> = ({ id }) => {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
-  const tokensPerAttack = useStoreState((state) => state.tokensPerAttack)
-  const isAttackTime = useStoreState((state) => state.isAttackTime)
+  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
-  const tokensPerAttackConverted = tokensPerAttack / priceConversion
+  // const tokensPerAttack = useStoreState((state) => state.tokensPerAttack)
+  // const isAttackTime = useStoreState((state) => state.isAttackTime)
 
   // Address read
   // Attacker
   const { address, isConnected } = useAccount()
 
-  const { data: attackerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
+  // const { data: attackerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [address as `0x${string}`],
+  // })
+
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'playerTicket',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'tokensPerAttack',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'isAttackTime',
+      },
+    ],
   })
 
-  let attackerStatus = attackerTicket?.[3] || 0
-  let attackerAttacks = Number(attackerTicket?.[11]) || 0
+  const attackerTicket = data?.[0].result || null
+  const tokensPerAttack = data?.[1].result || BigInt(0)
+  const isAttackTime = Boolean(data?.[2].result || BigInt(0))
 
+  const playerId = attackerTicket?.[0] || 0
+  const attackerStatus = attackerTicket?.[3] || 0
+  const attackerIsInPlay = Boolean(attackerTicket?.[5] || 0)
+  const attackerAttacks = Number(attackerTicket?.[11]) || 0
+
+  // const tokensPerAttackConverted = tokensPerAttack / priceConversion
+
+  const tokensFarmed = formatUnits(tokensPerAttack, 3)
   const attackerStatusString = statusPayload[attackerStatus] || 'unknown'
 
   // Defender
@@ -75,17 +109,20 @@ const Attack: FC<AttackType> = ({ id }) => {
     args: [idAddress as `0x${string}`],
   })
 
-  let defenderStatus = defenderTicket?.[3] || 0
-  let defenderLastSeen = Number(defenderTicket?.[4] || 0)
-  let defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
-  let defenderValue = Number(defenderTicket?.[7]) || 0
+  const defenderStatus = defenderTicket?.[3] || 0
+  const defenderLastSeen = Number(defenderTicket?.[4] || 0)
+  const defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
+  const defenderValue = Number(defenderTicket?.[7]) || 0
   const defenderAddress = defenderTicket?.[1] || ''
 
   const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
+  const submitOrNot = defenderStatusString === 'submitted' ? 'Yes' : 'No'
 
   // Active condition
-  const attackActive =
+  const attackActive: boolean =
     phase === 'night' &&
+    isAttackTime === true &&
+    attackerIsInPlay === true &&
     attackerStatusString !== 'safe' &&
     attackerAttacks > 0 &&
     defenderIsInPlay === true &&
@@ -93,7 +130,11 @@ const Attack: FC<AttackType> = ({ id }) => {
     !(defenderLastSeen === round && defenderStatusString === 'checked')
 
   // Contract write
-  const { writeAsync, isLoading } = useContractWrite({
+  const {
+    data: attackData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'attackTicket',
   })
@@ -124,6 +165,106 @@ const Attack: FC<AttackType> = ({ id }) => {
       })
     }
   }
+
+  const {} = useWaitForTransaction({
+    hash: attackData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
+  // keyword updated
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'KeywordUpdated',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { newKeyword, time } = args
+      refetch()
+      console.log({ args })
+      toast({
+        variant: 'info',
+        // title: 'Keyword updated',
+        description: <p className="text-base">Keyword updated. Time to rumble</p>,
+      })
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'AttackAndKilled',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, defendingTicket, ticketValue, time } = args
+
+      // attacker
+      if (caller === playerId) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'attackAndKill',
+        })
+      }
+      // defender
+      if (defendingTicket === playerId) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'killed',
+        })
+      }
+      refetch()
+      console.log({ args })
+    },
+  })
+
+  // attack unsuccessful
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'AttackAndSafe',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, defendingTicket, time } = args
+
+      // attacker
+      if (caller === playerId) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'attackButFail',
+        })
+      }
+      // defender
+      if (defendingTicket === playerId) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'attackedButSafe',
+        })
+      }
+      refetch()
+      console.log({ args })
+    },
+  })
+
+  // TO TEST ON NEXT ITERATION
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'ValueWaterfall',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { receivingTicket, amount, time } = args
+
+  //     // receiver
+  //     if (receivingTicket === playerId) {
+  //       triggerCompletionModal({
+  //         isOpen: true,
+  //         state: 'received',
+  //       })
+  //     }
+  //     refetch()
+  //     console.log({ args })
+  //   },
+  // })
 
   return (
     <Dialog>
@@ -208,12 +349,12 @@ const Attack: FC<AttackType> = ({ id }) => {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">$LAST per attack</p>
-                      <p className="text-right"> {tokensPerAttackConverted}</p>
+                      <p className="text-right"> {tokensFarmed}</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Player status</p>
-                      <p className="text-right capitalize"> {defenderStatusString}</p>
+                      <p className="text-left">Submitted?</p>
+                      <p className="text-right capitalize"> {submitOrNot}</p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">
@@ -231,19 +372,32 @@ const Attack: FC<AttackType> = ({ id }) => {
                       <p className="text-right"> Entered game </p>
                     </div> */}
                   </div>
+                  {!attackActive && (
+                    <Button variant="attack" size="lg" className="w-[100%]" disabled>
+                      Attack Player #{id}
+                    </Button>
+                  )}
 
-                  <Button
-                    variant="attack"
-                    size="lg"
-                    className="w-[100%]"
-                    onClick={attackTicketHandler}
-                    isLoading={isLoading}
-                    disabled={!attackActive}
-                  >
-                    Attack Player #{id}
-                  </Button>
+                  {phase === 'night' && isAttackTime === false && (
+                    <div className="h-12 rounded-xl px-5 py-1 text-xl leading-10">
+                      Keyword updating...
+                    </div>
+                  )}
 
-                  {!attackActive && <Prompt />}
+                  {attackActive && (
+                    <Button
+                      variant="attack"
+                      size="lg"
+                      className="w-[100%]"
+                      onClick={attackTicketHandler}
+                      isLoading={isLoading}
+                      disabled={!attackActive}
+                    >
+                      Attack Player #{id}
+                    </Button>
+                  )}
+
+                  {!attackActive && <Prompt docLink={DOCS_URL_attack} />}
                 </div>
               </DialogDescription>
             </ScrollArea>

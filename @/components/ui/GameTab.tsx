@@ -17,6 +17,7 @@ import { HelpCircle } from 'lucide-react'
 import {
   useAccount,
   useContractRead,
+  useContractEvent,
   useContractWrite,
   useSignMessage,
   useWalletClient,
@@ -102,13 +103,14 @@ const GameTab = () => {
 
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
+  const { data: playerTicket, refetch } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerTicket',
     args: [address as `0x${string}`],
   })
 
   const id = Number(playerTicket?.[0] || BigInt(0))
+  console.log(id)
   // const id = 1
 
   useEffect(() => {
@@ -141,6 +143,7 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
+            {/* deployed phase. buying hasn't started */}
             {id === 0 && phase === 'deployed' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">
@@ -149,51 +152,59 @@ const GameTab = () => {
                 <TicketUI
                   ownTicket={true}
                   ticketNumber={ticketId}
-                  ticketLookInput={'beforePurchase'}
+                  // ticketLookInput={'beforePurchase'}
                 />
                 <BuyTicket />
                 {/* <ExitGame /> */}
               </div>
             )}
 
-            {/* no ticket - next ticket info */}
+            {/* start phase. haven't bought ticket */}
             {id === 0 && phase === 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
                 <TicketUI
                   ownTicket={true}
                   ticketNumber={ticketId}
-                  ticketLookInput={'beforePurchase'}
+                  // ticketLookInput={'beforePurchase'}
                 />
                 <BuyTicket />
                 {/* <ExitGame /> */}
               </div>
             )}
 
-            {/* got ticket - wait to play */}
+            {/* start phase. ticket bought */}
             {id !== 0 && phase === 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Welcome Sire</div>
-                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'afterPurchase'} />
+                <TicketUI
+                  ownTicket={true}
+                  ticketNumber={id}
+                  // ticketLookInput={'afterPurchase'}
+                />
                 {/* <BuyTicket /> */}
                 <ExitGame />
               </div>
             )}
 
-            {/* got ticket, not start */}
+            {/* game begins. got ticket */}
             {id !== 0 && phase !== 'start' && (
               <div className="mb-2">
                 <div className="text-2xl text-center py-2 leading-7 capitalize">Your Player</div>
-                <TicketUI ownTicket={true} ticketNumber={id} ticketLookInput={'inSafehouse'} />
+                <TicketUI
+                  ownTicket={true}
+                  ticketNumber={id}
+                  // ticketLookInput={''}
+                />
                 <ExitGame />
               </div>
             )}
 
-            {/* if no ticket for rest of phase */}
+            {/* game begins. no ticket */}
             {id === 0 && !(phase === 'start' || phase === 'deployed') && (
               // <div className="mb-2 flex justify ">
               <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
-                <div className="">Want to join the fun?</div>
+                <div className="">Want to join us?</div>
                 <Image
                   priority
                   src="/pepe/pepe-lost.svg"
@@ -202,8 +213,10 @@ const GameTab = () => {
                   width={110}
                   alt="pepe-in-thoughts"
                 />
-                <div className="text-center text-lg">
-                  Follow us for <a href={`https://twitter.com/lastman0x`}>updates</a>
+                <div className="text-center text-lg underline">
+                  <a href={TWITTER_URL} target="_blank">
+                    Follow us for updates
+                  </a>
                 </div>
               </div>
               // </div>

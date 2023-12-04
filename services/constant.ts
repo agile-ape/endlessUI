@@ -26,7 +26,7 @@ export const whitelistContractObj = {
   abi: WHITELIST_ABI,
 }
 
-export const DOCS_URL = 'https://lastman-n4p5h.notaku.site'
+export const DOCS_URL = 'https://docs.lastman.xyz'
 export const DOCS_URL_stages = 'https://lastman-n4p5h.notaku.site/more-info/more-on-stages'
 
 export const DOCS_URL_buy = 'https://lastman-n4p5h.notaku.site/more-info/more-on-start'
@@ -44,10 +44,12 @@ export const DOCS_URL_split =
 
 export const DOCS_URL_phases = 'https://lastman-n4p5h.notaku.site/glossary/phases'
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
-export const BLOG_URL = 'https://lastmanblog-i14qn.blog.notaku.site'
+export const BLOG_URL = 'https://blog.lastman.xyz'
+
+export const BLOCK_EXPLORER = 'https://testnet.arbiscan.io/'
 
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
-export const TELEGRAM_URL = 'https://twitter.com/lastman0x'
+export const TELEGRAM_URL = 'https://t.me/lastmangame'
 export const API_ENDPOINT = isDevelopment
   ? 'https://lsm-be.onrender.com'
   : 'https://lsm-be.onrender.com'

@@ -29,11 +29,13 @@ import {
   useAccount,
   useContractRead,
   useContractWrite,
+  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
 import { useStoreActions, useStoreState } from '../../../store'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
+import { formatUnits } from 'viem'
 
 type KickOutType = {
   id: number
@@ -43,7 +45,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
-  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
   // Attacker
@@ -55,7 +57,10 @@ const KickOut: FC<KickOutType> = ({ id }) => {
     args: [address as `0x${string}`],
   })
 
-  let attackerStatus = attackerTicket?.[3] || 0
+  const playerId = attackerTicket?.[0] || 0
+  const attackerStatus = attackerTicket?.[3] || 0
+  const attackerIsInPlay = Boolean(attackerTicket?.[5] || 0)
+
   const attackerStatusString = statusPayload[attackerStatus] || 'unknown'
 
   // Defender
@@ -71,22 +76,21 @@ const KickOut: FC<KickOutType> = ({ id }) => {
     args: [idAddress as `0x${string}`],
   })
 
-  let defenderStatus = defenderTicket?.[3] || 0
-  let defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
-  let defenderCheckOutRound = Number(defenderTicket?.[16] || 0)
-  let defenderValue = Number(defenderTicket?.[7]) || 0
+  const defenderStatus = defenderTicket?.[3] || 0
+  const defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
+  const defenderCheckOutRound = Number(defenderTicket?.[16] || 0)
+  const defenderValue = defenderTicket?.[7] || BigInt(0)
+
   const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
 
   // Active condition
-  let kickOutActive: boolean
-  kickOutActive =
+  const kickOutActive: boolean =
     phase === 'night' &&
+    attackerIsInPlay === true &&
     attackerStatusString !== 'safe' &&
     defenderIsInPlay === true &&
     defenderStatusString === 'safe' &&
     defenderCheckOutRound <= round
-
-  // kickOutActive = true
 
   // Contract write
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -94,7 +98,11 @@ const KickOut: FC<KickOutType> = ({ id }) => {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const { writeAsync, isLoading } = useContractWrite({
+  const {
+    data: kickOutData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'kickOutFromSafehouse',
   })
@@ -108,7 +116,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
 
       setIsModalOpen(false)
 
-      updateCompletionModal({
+      triggerCompletionModal({
         isOpen: true,
         state: 'kickedOut',
       })
@@ -118,11 +126,35 @@ const KickOut: FC<KickOutType> = ({ id }) => {
 
       toast({
         variant: 'destructive',
-        title: 'Kick out failed',
+        // title: 'Kick out failed',
         description: <p className="text-base">{errorMsg}</p>,
       })
     }
   }
+
+  // got kicked out
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'KickedOutFromSafehouse',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, kickedOut, time } = args
+
+      if (kickedOut === playerId) {
+        triggerCompletionModal({
+          isOpen: true,
+          state: 'killed',
+        })
+      }
+
+      console.log({ args })
+      toast({
+        variant: 'info',
+        // title: 'Keyword updated',
+        description: <p className="text-base">Keyword updated. Time to rumble</p>,
+      })
+    },
+  })
 
   return (
     <Dialog>
@@ -198,7 +230,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left"> Player value</p>
-                      <p className="text-right"> {defenderValue} ETH </p>
+                      <p className="text-right">{formatUnits(defenderValue, 18)}ETH</p>
                     </div>
 
                     <div className="grid grid-cols-2 text-lg gap-1">
@@ -230,7 +262,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                       <Button variant="kickOut" size="lg" className="w-[100%]" disabled>
                         Kick Out
                       </Button>
-                      <Prompt />
+                      <Prompt docLink={DOCS_URL_kickout} />
                     </>
                   )}
                 </div>

@@ -107,11 +107,11 @@ const TicketList = () => {
                     <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
                       {Number(ticketCount)}
                     </div>
-                    {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>}
+                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Player count</p>
+                  <p className="px-3 py-1 max-w-[240px] text-sm">Players left</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -144,17 +144,11 @@ const TicketList = () => {
                     <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
                       {formatNumber(ethLeft, {
                         maximumFractionDigits: 3,
+                        minimumFractionDigits: 3,
                       })}
+                      <span className="text-xl text-end">ETH</span>
                     </div>
-                    {phase !== 'start' && (
-                      <span className="text-md">
-                        /
-                        {formatNumber(totalETH, {
-                          maximumFractionDigits: 3,
-                        })}
-                      </span>
-                    )}
-                    <span className="text-xl text-end">ETH</span>
+                    {/* {phase !== 'start' && <span className="text-md">/{totalETH}</span>} */}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
@@ -203,7 +197,7 @@ const TicketList = () => {
         </div>
       </summary>
 
-      {phase === 'deployed' && (
+      {/* {phase === 'deployed' && (
         <>
           <div className="flex flex-col justify-center">
             <div className="text-center mt-4 text-2xl">Recap of ticket looks</div>
@@ -240,57 +234,55 @@ const TicketList = () => {
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'inSafehouse'} />
 
-            {/* <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'neverSubmit'} /> */}
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'neverSubmit'} />
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'killed'} />
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'exitGame'} />
 
-            {/* <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
 
             <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'agreedToSplitPot'} />
 
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} /> */}
+            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} />
           </div>
         </>
+      )} */}
+
+      {/* {phase !== 'deployed' && (
+        <div> */}
+      {!totalTicketCount && (
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center place-content-center">
+            <div className="relative">
+              <Image
+                priority
+                src="/pepe/sun.svg"
+                className="place-self-center animate-pulse"
+                height={300}
+                width={300}
+                alt="sneak-a-peek-pepe"
+              />
+
+              <div className="absolute top-[50px]">
+                <Image
+                  priority
+                  src="/pepe/pepe-robe.svg"
+                  className="place-self-center"
+                  height={300}
+                  width={300}
+                  alt="sneak-a-peek-pepe"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="text-center my-4 text-2xl">We await patiently for our first warrior</div>
+        </div>
       )}
 
-      {phase !== 'deployed' && (
-        <div>
-          {!totalTicketCount && (
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center place-content-center">
-                <div className="relative">
-                  <Image
-                    priority
-                    src="/pepe/sun.svg"
-                    className="place-self-center animate-pulse"
-                    height={300}
-                    width={300}
-                    alt="sneak-a-peek-pepe"
-                  />
-
-                  <div className="absolute top-[50px]">
-                    <Image
-                      priority
-                      src="/pepe/pepe-robe.svg"
-                      className="place-self-center"
-                      height={300}
-                      width={300}
-                      alt="sneak-a-peek-pepe"
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* <div className="text-center my-4 text-2xl">
-                We await patiently for our first warrior
-              </div> */}
-            </div>
-          )}
-
-          {totalTicketCount && (
-            <div
-              className="
+      {totalTicketCount && (
+        <div
+          className="
             flex
             w-[100%]
             justify-evenly
@@ -301,19 +293,19 @@ const TicketList = () => {
             px-6 py-6
             overflow-y-scroll max-h-[750px]
           "
-            >
-              {ticketList.map((item, i) => (
-                <TicketUI
-                  key={item.id}
-                  ownTicket={false}
-                  ticketNumber={item.id}
-                  ticketLookInput={'afterPurchase'}
-                />
-              ))}
-            </div>
-          )}
+        >
+          {ticketList.map((item, i) => (
+            <TicketUI
+              key={item.id}
+              ownTicket={false}
+              ticketNumber={item.id}
+              // ticketLookInput={'afterPurchase'}
+            />
+          ))}
         </div>
       )}
+      {/* </div>
+      )} */}
     </>
   )
 }

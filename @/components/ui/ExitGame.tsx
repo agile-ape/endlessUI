@@ -24,53 +24,95 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import {
   useAccount,
   useContractRead,
+  useContractReads,
   useContractWrite,
   useSignMessage,
   useWalletClient,
+  useWaitForTransaction,
 } from 'wagmi'
 import { defaultContractObj, DOCS_URL_exit } from '../../../services/constant'
-import { statusPayload } from '@/lib/utils'
+import { formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
 import OnSignal from './OnSignal'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
+import { formatUnits, parseUnits } from 'viem'
 
 function ExitGame() {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const ticketCount = useStoreState((state) => state.ticketCount)
-  const giveUpCount = useStoreState((state) => state.giveUpCount)
-  const killedCount = useStoreState((state) => state.killedCount)
-  const rankShare = useStoreState((state) => state.rankShare)
-  const prizeFactor = useStoreState((state) => state.prizeFactor)
+
+  // const giveUpCount = useStoreState((state) => state.giveUpCount)
+  // const killedCount = useStoreState((state) => state.killedCount)
+  // const rankShare = useStoreState((state) => state.rankShare)
+  // const prizeFactor = useStoreState((state) => state.prizeFactor)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
-  const { data: nextClaim } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'rankClaim',
-    args: [BigInt(ticketCount)],
-    enabled: !!ticketCount,
-  })
-
-  let exitRank: number
-
-  if (phase === 'peacefound' || phase === 'drain') {
-    exitRank = rankShare
-  } else {
-    exitRank = ticketCount
-  }
+  // const { data: nextClaim } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'rankClaim',
+  //   args: [BigInt(ticketCount)],
+  //   enabled: !!ticketCount,
+  // })
+  // const { data: playerTicket } = useContractRead()
 
   // Address read
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'playerTicket',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'rankClaim',
+        args: [BigInt(ticketCount)],
+        // enabled: !!ticketCount,
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'giveUpCount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'killedCount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'rankShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'prizeFactor',
+      },
+    ],
   })
 
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  const playerTicket = data?.[0].result || null
+  const rankClaim = data?.[1].result || BigInt(0)
+  const giveUpCount = data?.[2].result || BigInt(0)
+  const killedCount = data?.[3].result || BigInt(0)
+  const rankShare = data?.[4].result || BigInt(0)
+  const prizeFactor = data?.[5].result || BigInt(0)
+
+  const exitClaim = formatUnits(rankClaim, 18)
+  // const ifSplit = formatUnits(rankShare, 18)
+  const lastManClaim = formatUnits(prizeFactor, 18)
+
+  let exitRank: number
+
+  if (phase === 'peacefound' || phase === 'drain') {
+    exitRank = Number(rankShare)
+  } else {
+    exitRank = ticketCount
+  }
+
+  let ticketStatus = Number(playerTicket?.[3])
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
@@ -86,7 +128,11 @@ function ExitGame() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const { writeAsync, isLoading } = useContractWrite({
+  const {
+    data: exitData,
+    writeAsync,
+    isLoading,
+  } = useContractWrite({
     ...defaultContractObj,
     functionName: 'exitGame',
   })
@@ -115,6 +161,16 @@ function ExitGame() {
       })
     }
   }
+
+  const {} = useWaitForTransaction({
+    hash: exitData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
 
   return (
     <Dialog>
@@ -169,10 +225,13 @@ function ExitGame() {
 
                 <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
                   <p className="mb-2 leading-tight">
-                    Players can claim their pot reward and exit anytime in the{' '}
+                    Players can decide to leave the game anytime in the{' '}
                     <span className="font-headline day-last">DAY</span> (or when game ends).
                   </p>
-                  <p>Players can claim even if they are killed.</p>
+                  <p className="mb-2 leading-tight">
+                    Every player that leave/exit gets to claim a portion of the pot, even if they
+                    are killed.
+                  </p>
                   <a
                     href={DOCS_URL_exit}
                     target="_blank"
@@ -191,7 +250,14 @@ function ExitGame() {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left">Claim if exit now</p>
-                      <p className="text-right"> {`${nextClaim} ETH`} </p>
+                      <p className="text-right">
+                        {/* {`${rankClaim} ETH`}  */}
+                        {formatNumber(exitClaim, {
+                          maximumFractionDigits: 5,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
+                      </p>
                     </div>
 
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
@@ -209,6 +275,14 @@ function ExitGame() {
                       <p className="text-right"> {ticketCount} </p>
                     </div>
 
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Give up/Killed </p>
+                      <p className="text-right">
+                        {' '}
+                        {Number(giveUpCount)} / {Number(killedCount)}{' '}
+                      </p>
+                    </div>
+
                     {/* <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left leading-tight">Not in play (give up/killed) </p>
                       <p className="text-right">
@@ -219,7 +293,14 @@ function ExitGame() {
 
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left">Last Man can claim</p>
-                      <p className="text-right"> {prizeFactor} ETH </p>
+                      <p className="text-right">
+                        {/* {Number(lastManClaim)} ETH  */}
+                        {formatNumber(lastManClaim, {
+                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
+                      </p>
                     </div>
                   </div>
 
@@ -237,7 +318,10 @@ function ExitGame() {
                       onClick={exitGameHandler}
                       className="w-[100%]"
                     >
-                      {`Exit Game and claim ${nextClaim} ETH`}
+                      {`Exit Game and claim ${formatNumber(exitClaim, {
+                        maximumFractionDigits: 3,
+                        minimumFractionDigits: 3,
+                      })} ETH`}
                     </Button>
                   )}
 
@@ -246,7 +330,7 @@ function ExitGame() {
                       <Button variant="exit" size="lg" className="w-[100%]" disabled>
                         Exit Game
                       </Button>
-                      <Prompt />
+                      <Prompt docLink={DOCS_URL_exit} />
                     </>
                   )}
                 </div>

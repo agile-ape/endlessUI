@@ -141,7 +141,7 @@ export default function Countdown() {
               <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <div className="h-[50px] text-2xl border border-lime-800 shadow-md rounded-md px-2 py-0 flex flex-row gap-0.5">
+                    <div className="h-[50px] text-2xl border-2 border-lime-800 shadow-md rounded-md px-4 py-0 flex flex-row gap-0.5">
                       <div className="flex flex-col text-center">
                         {formatTime(timeLeft).hours}
                         <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
@@ -165,9 +165,16 @@ export default function Countdown() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
-                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                      {timeAdded} mins is added for every new joiner
-                    </p>
+                    {phase === 'start' && (
+                      <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                        {timeAdded} mins is added for every new joiner
+                      </p>
+                    )}
+                    {phase !== 'start' && (
+                      <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                        Countdown until this current phase ends
+                      </p>
+                    )}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
