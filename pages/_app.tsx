@@ -14,7 +14,9 @@ import Layout from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
 import Metadata from '@/components/Metadata'
 
-const chainsConfig = [...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli])]
+const chainsConfig = [
+  ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
+]
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
   publicProvider(),

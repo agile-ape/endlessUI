@@ -372,11 +372,6 @@ const Attack: FC<AttackType> = ({ id }) => {
                       <p className="text-right"> Entered game </p>
                     </div> */}
                   </div>
-                  {!attackActive && (
-                    <Button variant="attack" size="lg" className="w-[100%]" disabled>
-                      Attack Player #{id}
-                    </Button>
-                  )}
 
                   {phase === 'night' && isAttackTime === false && (
                     <div className="h-12 rounded-xl px-5 py-1 text-xl leading-10">
@@ -384,18 +379,16 @@ const Attack: FC<AttackType> = ({ id }) => {
                     </div>
                   )}
 
-                  {attackActive && (
-                    <Button
-                      variant="attack"
-                      size="lg"
-                      className="w-[100%]"
-                      onClick={attackTicketHandler}
-                      isLoading={isLoading}
-                      disabled={!attackActive}
-                    >
-                      Attack Player #{id}
-                    </Button>
-                  )}
+                  <Button
+                    variant="attack"
+                    size="lg"
+                    className="w-[100%]"
+                    onClick={attackTicketHandler}
+                    isLoading={isLoading}
+                    disabled={!attackActive}
+                  >
+                    Attack Player #{id}
+                  </Button>
 
                   {!attackActive && <Prompt docLink={DOCS_URL_attack} />}
                 </div>

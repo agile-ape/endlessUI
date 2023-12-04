@@ -68,8 +68,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     setIsOverlayInspect(false)
   }
 
-  console.log(ticketNumber)
-
   // update to safehouse
   useContractEvent({
     ...defaultContractObj,
@@ -93,10 +91,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     enabled: !!ticketNumber,
   })
 
-  console.log(playerAddress)
-
   const { data: ensName } = useEnsName({
     address: playerAddress,
+    chainId: 1,
   })
 
   // console.log({ ensName })
@@ -114,7 +111,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
         ...defaultContractObj,
         functionName: 'playerTicket',
         args: [playerAddress as `0x${string}`],
-        // enabled: !!playerAddress,
+        enabled: !!playerAddress,
       },
       {
         ...defaultContractObj,
@@ -128,14 +125,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   })
 
   const playerTicket = data?.[0].result || BigInt(0)
-  console.log(playerTicket)
   const nextTicketId = Number(data?.[1].result || BigInt(0))
-  console.log(nextTicketId)
   const suddenDeath = data?.[2].result || BigInt(0)
 
   // used
   let ticketId = playerTicket?.[0] || 0
-  console.log(ticketId)
   // used
   let ticketAddress = playerTicket?.[1] || 0
 
@@ -143,14 +137,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   let ticketStatus = playerTicket?.[3] || 0
   let ticketLastSeen = Number(playerTicket?.[4] || 0)
   let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  console.log(ticketIsInPlay)
   // let ticketIsInPlay = true
   let ticketVote = Boolean(playerTicket?.[6] || 0)
-  console.log(ticketVote)
   let ticketValue = Number(playerTicket?.[7]) || 0
-  console.log(ticketValue)
   let ticketPurchasePrice = playerTicket?.[8] || 0
-  console.log(ticketPurchasePrice)
   let ticketPotClaim = playerTicket?.[9] || 0
   let ticketRedeemValue = playerTicket?.[10] || 0
   // used
@@ -166,8 +156,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   let ticketRank = Number(playerTicket?.[19] || 0)
   // let ticketRank = 123
 
-  let ticketVoteString: string
-  ticketVote === false ? (ticketVoteString = 'No') : (ticketVoteString = 'Yes')
+  let ticketVoteString = ticketVote ? 'Yes' : 'No'
 
   const valueBought = formatUnits(ticketPurchasePrice, 18)
   const valueRedeemed = formatUnits(ticketRedeemValue, 18)
@@ -185,7 +174,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   const totalTicketCount = Number(nextTicketId) - 1
 
   const quartile = (ticketRank / totalTicketCount) * 100
-  console.log(quartile)
 
   let rankColor: string
   if (quartile < 25) {
@@ -286,10 +274,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   const ticketLookFinal = ticketLook
   // const ticketLookFinal = 'exitGame'
   // ticketLookInput !== undefined && ticketLookInput !== null ? ticketLookInput : ticketLook
-
-  console.log(ticketIsInPlay)
-  console.log(ticketLook)
-  console.log(ticketLookFinal)
 
   const ticketLookMapping = {
     beforePurchase: {
@@ -441,8 +425,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
     <Sword key={index} size={16} className="text-black"></Sword>
   ))
-
-  console.log(ticketStatusString)
 
   return (
     <div
