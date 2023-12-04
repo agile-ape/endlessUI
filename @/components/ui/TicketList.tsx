@@ -22,7 +22,7 @@ const TicketList = () => {
 
   const { data: ticketsData, error } = useSWR<{
     data: Ticket[]
-  }>('/tickets?limit=30&sortOrder=ASC&sortBy=purchasePrice', fetcher)
+  }>('/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice', fetcher)
 
   let ticketList: Ticket[] = []
 
