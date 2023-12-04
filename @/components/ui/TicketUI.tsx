@@ -406,7 +406,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       value: ticketRank,
     },
     exitGame: {
-      bgImage: '',
+      bgImage: 'deadOverlay',
       header: 'bg-zinc-200/20',
       face: 'exit',
       id: ticketId,
