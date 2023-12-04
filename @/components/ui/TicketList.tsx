@@ -7,10 +7,12 @@ import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useContractWrite, useContractReads, useContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
-import { formatNumber, tokenConversion } from '@/lib/utils'
+import { fetcher, formatNumber, tokenConversion, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
+import useSWR from 'swr'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import type { Ticket } from 'types/app'
 // type TicketListType = {
 //   stage: string
 // }
@@ -18,7 +20,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 const TicketList = () => {
   const phase = useStoreState((state) => state.phase)
 
-  const ticketList = useStoreState((state) => state.tickets)
+  const { data: ticketsData, error } = useSWR<{
+    data: Ticket[]
+  }>('/tickets?limit=30&sortOrder=ASC&sortBy=purchasePrice', fetcher)
+
+  let ticketList: Ticket[] = []
+
+  if (ticketsData?.data.length) {
+    ticketList = transformToTicket(ticketsData?.data)
+  }
+
+  // const ticketList = useStoreState((state) => state.tickets)
   // const ticketCount = useStoreState((state) => state.ticketCount)
   // const ticketId = useStoreState((state) => state.ticketId)
   // const currentPot = useStoreState((state) => state.currentPot)

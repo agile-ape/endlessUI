@@ -51,17 +51,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     return result
   })
 
-  const { data: ticketsData, error } = useSWR<{
-    data: Ticket[]
-  }>('/tickets?page=1&limit=10&sortOrder=ASC&sortBy=purchasePrice', fetcher)
-
-  console.log({ ticketsData, error })
-
-  if (ticketsData?.data.length) {
-    const formattedTickets = transformToTicket(ticketsData?.data)
-    updateTickets(formattedTickets)
-  }
-
   const toggleModal = () => {
     setShowWelcomeModal((prevState) => !prevState)
     localStorage.setItem('showWelcomeModal', 'false')
