@@ -18,6 +18,7 @@ import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR from 'swr'
 import { toast } from '../components/ui/use-toast'
+// import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -35,6 +36,14 @@ type LayoutProps = {
   metadata: MetaProps
   phase: IApp['phase']
 }
+
+// const hashedMessage = keccak256(
+//   encodePacked(
+//     ['string', 'bytes'],
+//     ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], ['pepe']))],
+//   ),
+// )
+// console.log(hashedMessage)
 
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
