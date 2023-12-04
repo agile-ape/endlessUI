@@ -104,15 +104,30 @@ function ExitGame() {
   // const ifSplit = formatUnits(rankShare, 18)
   const lastManClaim = formatUnits(prizeFactor, 18)
 
+  let ticketStatus = Number(playerTicket?.[3])
+  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  let ticketRank = playerTicket?.[19] || BigInt(0)
+
   let exitRank: number
 
-  if (phase === 'peacefound' || phase === 'drain') {
-    exitRank = Number(rankShare)
+  if (ticketIsInPlay) {
+    if (phase === 'peacefound' || phase === 'drain') {
+      exitRank = Number(rankShare)
+    } else {
+      exitRank = ticketCount
+    }
   } else {
-    exitRank = ticketCount
+    exitRank = Number(ticketRank)
   }
 
-  let ticketStatus = Number(playerTicket?.[3])
+  const { data: claimIfKilled } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'rankClaim',
+    args: [ticketRank],
+    enabled: !!ticketRank,
+  })
+
+  const killClaim = formatUnits(claimIfKilled || BigInt(0), 18)
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
@@ -249,7 +264,19 @@ function ExitGame() {
                 <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Claim if exit now</p>
+                      <p className="text-left">Claim (if you are killed)</p>
+                      <p className="text-right">
+                        {/* {`${rankClaim} ETH`}  */}
+                        {formatNumber(killClaim, {
+                          maximumFractionDigits: 5,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Claim if lasted till now</p>
                       <p className="text-right">
                         {/* {`${rankClaim} ETH`}  */}
                         {formatNumber(exitClaim, {

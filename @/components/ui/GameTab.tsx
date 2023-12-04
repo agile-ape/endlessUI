@@ -27,6 +27,7 @@ import { defaultContractObj, DOCS_URL, TWITTER_URL } from '../../../services/con
 import { toast } from './use-toast'
 import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
+import CustomConnectButton from './connect-button'
 
 // type GameTabType = {
 //   onBuy?: () => Promise<void>
@@ -143,66 +144,7 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {/* deployed phase. buying hasn't started */}
-            {id === 0 && phase === 'deployed' && (
-              <div className="mb-2">
-                <div className="text-2xl text-center py-2 leading-7 capitalize">
-                  Buying starting soon
-                </div>
-                <TicketUI
-                  ownTicket={true}
-                  ticketNumber={ticketId}
-                  // ticketLookInput={'beforePurchase'}
-                />
-                <BuyTicket />
-                {/* <ExitGame /> */}
-              </div>
-            )}
-
-            {/* start phase. haven't bought ticket */}
-            {id === 0 && phase === 'start' && (
-              <div className="mb-2">
-                <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
-                <TicketUI
-                  ownTicket={true}
-                  ticketNumber={ticketId}
-                  // ticketLookInput={'beforePurchase'}
-                />
-                <BuyTicket />
-                {/* <ExitGame /> */}
-              </div>
-            )}
-
-            {/* start phase. ticket bought */}
-            {id !== 0 && phase === 'start' && (
-              <div className="mb-2">
-                <div className="text-2xl text-center py-2 leading-7 capitalize">Welcome Sire</div>
-                <TicketUI
-                  ownTicket={true}
-                  ticketNumber={id}
-                  // ticketLookInput={'afterPurchase'}
-                />
-                {/* <BuyTicket /> */}
-                <ExitGame />
-              </div>
-            )}
-
-            {/* game begins. got ticket */}
-            {id !== 0 && phase !== 'start' && (
-              <div className="mb-2">
-                <div className="text-2xl text-center py-2 leading-7 capitalize">Your Player</div>
-                <TicketUI
-                  ownTicket={true}
-                  ticketNumber={id}
-                  // ticketLookInput={''}
-                />
-                <ExitGame />
-              </div>
-            )}
-
-            {/* game begins. no ticket */}
-            {id === 0 && !(phase === 'start' || phase === 'deployed') && (
-              // <div className="mb-2 flex justify ">
+            {!isConnected && (
               <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
                 <div className="">Want to join us?</div>
                 <Image
@@ -218,8 +160,98 @@ const GameTab = () => {
                     Follow us for updates
                   </a>
                 </div>
+
+                <div className="flex mt-4 justify-center">
+                  <CustomConnectButton />
+                </div>
               </div>
-              // </div>
+            )}
+
+            {isConnected && (
+              <>
+                {/* deployed phase. buying hasn't started */}
+                {id === 0 && phase === 'deployed' && (
+                  <div className="mb-2">
+                    <div className="text-2xl text-center py-2 leading-7 capitalize">
+                      Buying starting soon
+                    </div>
+                    <TicketUI
+                      ownTicket={true}
+                      ticketNumber={ticketId}
+                      // ticketLookInput={'beforePurchase'}
+                    />
+                    <BuyTicket />
+                    {/* <ExitGame /> */}
+                  </div>
+                )}
+
+                {/* start phase. haven't bought ticket */}
+                {id === 0 && phase === 'start' && (
+                  <div className="mb-2">
+                    <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
+                    <TicketUI
+                      ownTicket={true}
+                      ticketNumber={ticketId}
+                      // ticketLookInput={'beforePurchase'}
+                    />
+                    <BuyTicket />
+                    {/* <ExitGame /> */}
+                  </div>
+                )}
+
+                {/* start phase. ticket bought */}
+                {id !== 0 && phase === 'start' && (
+                  <div className="mb-2">
+                    <div className="text-2xl text-center py-2 leading-7 capitalize">
+                      Welcome Sire
+                    </div>
+                    <TicketUI
+                      ownTicket={true}
+                      ticketNumber={id}
+                      // ticketLookInput={'afterPurchase'}
+                    />
+                    {/* <BuyTicket /> */}
+                    <ExitGame />
+                  </div>
+                )}
+
+                {/* game begins. got ticket */}
+                {id !== 0 && phase !== 'start' && (
+                  <div className="mb-2">
+                    <div className="text-2xl text-center py-2 leading-7 capitalize">
+                      Your Player
+                    </div>
+                    <TicketUI
+                      ownTicket={true}
+                      ticketNumber={id}
+                      // ticketLookInput={''}
+                    />
+                    <ExitGame />
+                  </div>
+                )}
+
+                {/* game begins. no ticket */}
+                {id === 0 && !(phase === 'start' || phase === 'deployed') && (
+                  // <div className="mb-2 flex justify ">
+                  <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
+                    <div className="">Want to join us?</div>
+                    <Image
+                      priority
+                      src="/pepe/pepe-lost.svg"
+                      className="place-self-center"
+                      height={150}
+                      width={110}
+                      alt="pepe-in-thoughts"
+                    />
+                    <div className="text-center text-lg underline">
+                      <a href={TWITTER_URL} target="_blank">
+                        Follow us for updates
+                      </a>
+                    </div>
+                  </div>
+                  // </div>
+                )}
+              </>
             )}
 
             <UserActions />
