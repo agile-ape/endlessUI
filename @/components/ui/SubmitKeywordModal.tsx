@@ -27,8 +27,8 @@ import {
 import { API_ENDPOINT, defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
 import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
-import { toBytes } from 'viem'
 import { toast } from './use-toast'
+import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
 
 interface SubmitKeywordModalType {
   toggle: () => void
@@ -131,7 +131,21 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }
       // const verifyResult = await verifyKeyword(input)
       // console.log({ verifyResult })
 
-      const hashedMessage = toBytes(input)
+      // const hashedMessage = toBytes(input)
+
+      // TEST
+      // keyword = keccak256(
+      //   abi.encodePacked('\x19Ethereum Signed Message:\n32', keccak256(abi.encodePacked(_newKeyword))),
+      // )
+
+      const hashedMessage = keccak256(
+        encodePacked(
+          ['string', 'bytes'],
+          ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], [input]))],
+        ),
+      )
+      console.log(hashedMessage)
+
       const signature = await walletClient?.signMessage({
         message: { raw: hashedMessage },
       })
