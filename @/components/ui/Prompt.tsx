@@ -15,7 +15,7 @@ const Prompt: FC<PromptType> = ({ docLink }) => {
       <span>
         This action is not available to you right now.{' '}
         <a href={docLink} target="_blank" className="underline">
-          Learn more at Quickstart
+          Learn more
         </a>
       </span>
     </div>
