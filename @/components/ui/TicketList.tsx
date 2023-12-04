@@ -27,7 +27,9 @@ const TicketList = () => {
   let ticketList: Ticket[] = []
 
   if (ticketsData?.data.length) {
-    ticketList = transformToTicket(ticketsData?.data)
+    ticketList = transformToTicket(ticketsData?.data).filter(
+      (item) => item.player !== '0x0000000000000000000000000000000000000000',
+    )
   }
 
   // const ticketList = useStoreState((state) => state.tickets)

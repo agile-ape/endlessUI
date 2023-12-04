@@ -127,7 +127,7 @@ export default function Countdown() {
     }, 1000) // Update every second
 
     return () => clearInterval(interval) // Cleanup on unmount
-  }, [])
+  }, [endTime])
 
   // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
   return (
