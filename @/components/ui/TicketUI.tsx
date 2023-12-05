@@ -196,13 +196,72 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
 
   // const nextTicketId = useStoreState((state) => state.ticketId)
 
-  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+  const ticketStatusString: string = statusPayload[ticketStatus] || 'unknown'
+  console.log(ticketStatusString)
 
   let ticketLook: string
 
-  // case of phase !="countdown" && ticketId == 0 is covered in GameTab
+  console.log(phase)
+  console.log(ticketId)
+  console.log(ticketIsInPlay)
 
-  /*
+  /* CHATGPT 
+  // Your main logic
+  if (phase === 'deployed') {
+    // handleDeployedPhase()
+    ticketLook = 'beforePurchase'
+  } else if (phase === 'start') {
+    // handleStartPhase()
+    if (ticketId === 0) {
+      ticketLook = 'beforePurchase'
+    } else {
+      ticketLook = 'afterPurchase'
+    }
+  } else if (ticketIsInPlay) {
+    if (phase === 'day') {
+      // handleDayPhase()
+      if (ticketStatusString === 'submitted') {
+        ticketLook = 'submittedDay'
+      } else {
+        if (round < suddenDeath) {
+          ticketLook = 'stage1New'
+        } else if (round < suddenDeath * 2) {
+          ticketLook = 'stage2New'
+        } else {
+          ticketLook = 'stage3New'
+        }
+      }
+    } else if (phase === 'night') {
+      // handleNightPhase()
+      if (ticketStatusString === 'submitted' && ticketLastSeen === round) {
+        ticketLook = 'submittedNight'
+      } else if (ticketStatusString === 'checked') {
+        ticketLook = 'attackedButSafu'
+      } else {
+        ticketLook = 'neverSubmit'
+      }
+    } else if (phase === 'lastManFound') {
+      // handleLastManFoundPhase()
+      ticketLook = 'lastManStanding'
+    } else if (phase === 'peaceFound') {
+      // handlePeaceFoundPhase()
+      ticketLook = 'agreedToSplitPot'
+    } else if (phase === 'drain') {
+      // handleDrainPhase()
+      ticketLook = 'noMorePot'
+    } else if (phase === 'start') {
+      ticketLook = 'afterPurchase'
+    }
+  } else {
+    // handleNotInPlay()
+    if (ticketStatusString === 'dead') {
+      ticketLook = 'killed'
+    } else if (ticketStatusString === 'exited') {
+      ticketLook = 'exitGame'
+    }
+  }
+  */
+  /* ORIGINAL */
   if (phase === 'deployed') {
     ticketLook = 'beforePurchase'
   }
@@ -217,7 +276,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
 
   if (ticketIsInPlay) {
     if (phase == 'day') {
-      if (ticketStatusString == 'submit' && ticketLastSeen == round) {
+      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
         ticketLook = 'submittedDay'
       } else {
         if (round < suddenDeath) {
@@ -231,7 +290,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     }
 
     if (phase == 'night') {
-      if (ticketStatusString == 'submit' && ticketLastSeen == round) {
+      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
         ticketLook = 'submittedNight'
       } else if (ticketStatusString == 'checked') {
         ticketLook = 'attackedButSafu'
@@ -267,119 +326,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     }
 
     if (ticketStatusString == 'exited') {
-      ticketLook = 'exitGame'
-    }
-  }
-  */
-  /*
-  function handleDeployedPhase() {
-    ticketLook = 'beforePurchase'
-  }
-
-  function handleStartPhase() {
-    if (ticketId === 0) {
-      ticketLook = 'beforePurchase'
-    } else {
-      ticketLook = 'afterPurchase'
-    }
-  }
-
-  function handleDayPhase() {
-    if (ticketStatusString === 'submit' && ticketLastSeen === round) {
-      ticketLook = 'submittedDay'
-    } else {
-      if (round < suddenDeath) {
-        ticketLook = 'stage1New'
-      } else if (round < suddenDeath * 2) {
-        ticketLook = 'stage2New'
-      } else {
-        ticketLook = 'stage3New'
-      }
-    }
-  }
-
-  function handleNightPhase() {
-    if (ticketStatusString === 'submit' && ticketLastSeen === round) {
-      ticketLook = 'submittedNight'
-    } else if (ticketStatusString === 'checked') {
-      ticketLook = 'attackedButSafu'
-    } else {
-      ticketLook = 'neverSubmit'
-    }
-  }
-
-  function handleLastManFoundPhase() {
-    ticketLook = 'lastManStanding'
-  }
-
-  function handlePeaceFoundPhase() {
-    ticketLook = 'agreedToSplitPot'
-  }
-
-  function handleDrainPhase() {
-    ticketLook = 'noMorePot'
-  }
-
-  function handleNotInPlay() {
-    if (ticketStatusString === 'dead') {
-      ticketLook = 'killed'
-    } else if (ticketStatusString === 'exited') {
-      ticketLook = 'exitGame'
-    }
-  }
-  */
-
-  // Your main logic
-  if (phase === 'deployed') {
-    // handleDeployedPhase()
-    ticketLook = 'beforePurchase'
-  } else if (phase === 'start') {
-    // handleStartPhase()
-    if (ticketId === 0) {
-      ticketLook = 'beforePurchase'
-    } else {
-      ticketLook = 'afterPurchase'
-    }
-  } else if (ticketIsInPlay) {
-    if (phase === 'day') {
-      // handleDayPhase()
-      if (ticketStatusString === 'submit' && ticketLastSeen === round) {
-        ticketLook = 'submittedDay'
-      } else {
-        if (round < suddenDeath) {
-          ticketLook = 'stage1New'
-        } else if (round < suddenDeath * 2) {
-          ticketLook = 'stage2New'
-        } else {
-          ticketLook = 'stage3New'
-        }
-      }
-    } else if (phase === 'night') {
-      // handleNightPhase()
-      if (ticketStatusString === 'submit' && ticketLastSeen === round) {
-        ticketLook = 'submittedNight'
-      } else if (ticketStatusString === 'checked') {
-        ticketLook = 'attackedButSafu'
-      } else {
-        ticketLook = 'neverSubmit'
-      }
-    } else if (phase === 'lastManFound') {
-      // handleLastManFoundPhase()
-      ticketLook = 'lastManStanding'
-    } else if (phase === 'peaceFound') {
-      // handlePeaceFoundPhase()
-      ticketLook = 'agreedToSplitPot'
-    } else if (phase === 'drain') {
-      // handleDrainPhase()
-      ticketLook = 'noMorePot'
-    } else if (phase === 'start') {
-      ticketLook = 'afterPurchase'
-    }
-  } else {
-    // handleNotInPlay()
-    if (ticketStatusString === 'dead') {
-      ticketLook = 'killed'
-    } else if (ticketStatusString === 'exited') {
       ticketLook = 'exitGame'
     }
   }
@@ -530,14 +476,17 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     },
   }
 
+  console.log(ticketLook)
   const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
 
-  const gradientStyle = {
-    background: 'linear-gradient(to right, #ff00cc, #3333cc)',
-    WebkitBackgroundClip: 'text',
-    color: 'transparent',
-    display: 'inline-block',
-  }
+  console.log(ticketLookMapping[ticketLookFinal])
+
+  // const gradientStyle = {
+  //   background: 'linear-gradient(to right, #ff00cc, #3333cc)',
+  //   WebkitBackgroundClip: 'text',
+  //   color: 'transparent',
+  //   display: 'inline-block',
+  // }
 
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
     <Sword key={index} size={16} className="text-black"></Sword>

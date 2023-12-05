@@ -16,13 +16,14 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Button } from './button'
+
 import Image from 'next/image'
 import { Split, AlertTriangle, AlertCircle } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { tokenConversion } from '@/lib/utils'
+import { tokenConversion, formatNumber } from '@/lib/utils'
 import { defaultContractObj, DOCS_URL_split } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
@@ -30,29 +31,105 @@ import { statusPayload } from '@/lib/utils'
 import {
   useAccount,
   useContractRead,
+  useContractReads,
   useContractWrite,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
+import { formatUnits, parseUnits } from 'viem'
 
 function SplitIt({ playerTicket }: { playerTicket: any }) {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
-  const suddenDeath = useStoreState((state) => state.suddenDeath)
-  const currentPot = useStoreState((state) => state.currentPot)
   const ticketCount = useStoreState((state) => state.ticketCount)
-  const voteCount = useStoreState((state) => state.voteCount)
-  const voteThreshold = useStoreState((state) => state.voteThreshold)
-  const amountDrained = useStoreState((state) => state.amountDrained)
-  const drainStart = useStoreState((state) => state.drainStart)
-  const drainSwitch = useStoreState((state) => state.drainSwitch)
 
-  const splitAmountPerPerson = currentPot / tokenConversion / ticketCount
-  const voteShare = voteCount / ticketCount
-  const amountDrainedConverted = amountDrained / tokenConversion
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'suddenDeath',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'currentPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'voteCount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'voteThreshold',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'minPotSize',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainStart',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainSwitch',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainRate',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainPerRound',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'amountDrained',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainPot',
+      },
+    ],
+  })
+
+  const suddenDeath = Number(data?.[0].result || BigInt(0))
+  const currentPot = data?.[1].result || BigInt(0)
+  const voteCount = Number(data?.[2].result || BigInt(0))
+  const voteThreshold = Number(data?.[3].result || BigInt(0))
+  const minPotSize = data?.[4].result || BigInt(0)
+  const drainStart = Number(data?.[5].result || 0)
+  const drainSwitch = Boolean(data?.[6].result || 0)
+  const drainRate = data?.[7].result || BigInt(0)
+  const drainPerRound = data?.[8].result || BigInt(0)
+  const amountDrained = data?.[9].result || BigInt(0)
+  const drainPot = data?.[10].result || BigInt(0)
+
+  const drainShare = formatUnits(drainRate, 3)
+  const minPot = formatUnits(minPotSize, 3)
+  const drainFromPot = formatUnits(amountDrained, 18)
+  const amountInPot = formatUnits(currentPot, 18)
+  const potToDrain = formatUnits(drainPot, 18)
+
+  // const suddenDeath = useStoreState((state) => state.suddenDeath)
+  // const currentPot = useStoreState((state) => state.currentPot)
+  // const voteCount = useStoreState((state) => state.voteCount)
+  // const voteThreshold = useStoreState((state) => state.voteThreshold)
+  // const amountDrained = useStoreState((state) => state.amountDrained)
+  // const drainStart = useStoreState((state) => state.drainStart)
+  // const drainSwitch = useStoreState((state) => state.drainSwitch)
+
+  const splitAmountPerPlayer = Number(amountInPot) / ticketCount
+
+  const thresholdCount = Math.floor((voteThreshold * ticketCount) / 100) + 1
+
+  if (drainSwitch === true) {
+  }
+
+  // const voteShare = voteCount / ticketCount
+  // const amountDrainedConverted = amountDrained / tokenConversion
 
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
@@ -184,7 +261,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                     <span className="font-headline day-last">Day</span>.
                   </p>
                   <p className="mb-2 leading-tight">
-                    Once vote threshold is crossed, the game ends.
+                    Once count to split pot is reached, the game ends.
                   </p>
 
                   <p className="mb-2 leading-tight">
@@ -207,37 +284,116 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                   Do you want to split pot?
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left">Current pot</p>
-                      <p className="text-right"> {currentPot} ETH </p>
+                      <p className="text-left leading-tight">Current pot</p>
+                      <p className="text-right">
+                        {' '}
+                        {formatNumber(amountInPot, {
+                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 0,
+                        })}{' '}
+                        ETH
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left leading-tight"> Stage 2 starts on</p>
+                      <p className="text-right underline"> Round {suddenDeath}</p>
                     </div>
 
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left">If split, each gets </p>
-                      <p className="text-right"> {splitAmountPerPerson} ETH </p>
-                    </div>
+                    <Accordion type="multiple">
+                      <AccordionItem value="item-1">
+                        <AccordionTrigger>
+                          <div className="text-xl border-b border-black">Stage 2 and 3 info</div>
+                        </AccordionTrigger>
+                        <AccordionContent className="gap-1">
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">Split now and get </p>
+                            <p className="text-right">
+                              {' '}
+                              {formatNumber(splitAmountPerPlayer, {
+                                maximumFractionDigits: 3,
+                                minimumFractionDigits: 0,
+                              })}{' '}
+                              ETH each
+                            </p>
+                          </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight"> Yes count</p>
+                            <p className="text-right"> {voteCount}</p>
+                          </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight"> Count to split pot </p>
+                            <p className="text-right"> {thresholdCount}</p>
+                          </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight"> Stage 3 starts on</p>{' '}
+                            {drainSwitch === true && (
+                              <p className="text-right underline">Round {drainStart}</p>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="item-2">
+                        <AccordionTrigger>
+                          <div className="text-xl border-b border-black">Stage 3 info</div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">% pot drain per round</p>
 
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left"> Yes votes</p>
-                      <p className="text-right"> {voteCount}</p>
-                    </div>
+                            <p className="text-right">
+                              {' '}
+                              {formatNumber(drainShare, {
+                                maximumFractionDigits: 3,
+                                minimumFractionDigits: 0,
+                              })}
+                              %
+                            </p>
+                          </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">Stage 3's pot</p>
+                            {drainSwitch === true && (
+                              <p className="text-right">
+                                {' '}
+                                {formatNumber(potToDrain, {
+                                  maximumFractionDigits: 3,
+                                  minimumFractionDigits: 0,
+                                })}
+                              </p>
+                            )}{' '}
+                          </div>
 
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left"> Yes share</p>
-                      <p className="text-right"> {voteShare}%</p>
-                    </div>
-
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left">Vote threshold</p>
-                      <p className="text-right"> {voteThreshold}% </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className={`text-left`}>Amount drained (Stage 3)</p>
-                      <p className="text-right"> {amountDrainedConverted} ETH </p>
-                    </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">
+                              Game ends once Stage 3's pot reach
+                            </p>
+                            <p className="text-right">
+                              {' '}
+                              {formatNumber(minPot, {
+                                maximumFractionDigits: 3,
+                                minimumFractionDigits: 0,
+                              })}
+                              % of pot
+                            </p>
+                          </div>
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight"> Amount drained (so far) </p>
+                            {drainSwitch === true && (
+                              <p className="text-right">
+                                {' '}
+                                {formatNumber(drainFromPot, {
+                                  maximumFractionDigits: 3,
+                                  minimumFractionDigits: 0,
+                                })}{' '}
+                                ETH
+                              </p>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
 
                     <div className="text-xl md:text-2xl lg:text-3xl m-1 mt-4 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                       Your Vote

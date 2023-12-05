@@ -70,8 +70,6 @@ export default function Admin() {
 
   const timeFlagInDate = new Date(timeFlag * 1000)
 
-  console.log(timeFlag)
-
   type TimeLeftType = {
     // days: number;
     hours: number

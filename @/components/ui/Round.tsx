@@ -8,7 +8,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Triangle } from 'lucide-react'
 import Image from 'next/image'
 import { shareConversion } from '@/lib/utils'
-import { DOCS_URL_stages } from '../../../services/constant'
+import { defaultContractObj, tokenContractObj, DOCS_URL_stages } from '../../../services/constant'
+import {
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
+import { formatUnits, parseUnits } from 'viem'
 
 // type RoundType = {
 //   round: IApp['round']
@@ -19,14 +29,35 @@ import { DOCS_URL_stages } from '../../../services/constant'
 const Round = () => {
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
-  const suddenDeath = useStoreState((state) => state.suddenDeath)
-  const drainStart = useStoreState((state) => state.drainStart)
-  const drainSwitch = useStoreState((state) => state.drainSwitch)
-  const drainRate = useStoreState((state) => state.drainRate)
-  const minPotSize = useStoreState((state) => state.minPotSize)
 
-  const drainRateConverted = drainRate / shareConversion
-  const minPotSizeConverted = minPotSize / shareConversion
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'suddenDeath',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainStart',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainSwitch',
+      },
+    ],
+  })
+
+  // const suddenDeath = useStoreState((state) => state.suddenDeath)
+  // const drainStart = useStoreState((state) => state.drainStart)
+  // const drainSwitch = useStoreState((state) => state.drainSwitch)
+  // const drainRate = useStoreState((state) => state.drainRate)
+  // const minPotSize = useStoreState((state) => state.minPotSize)
+  const suddenDeath = Number(data?.[0].result || BigInt(0))
+  const drainStart = Number(data?.[1].result || BigInt(0))
+  const drainSwitch = Boolean(data?.[2].result || 0)
+
+  // const drainRateConverted = drainRate / shareConversion
+  // const minPotSizeConverted = minPotSize / shareConversion
 
   let stage: number
 

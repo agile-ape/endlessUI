@@ -39,8 +39,7 @@ export const DOCS_URL_checkout =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse#eb59b65bb02845e894fdc55400c7d6ab'
 export const DOCS_URL_kickout =
   'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse#93cd2d661c9b4bd8b42daacbce9ce24c'
-export const DOCS_URL_split =
-  'https://lastman-n4p5h.notaku.site/more-info/more-on-stages#cb029b4005c94699b1d7eb8856321ea6'
+export const DOCS_URL_split = 'https://lastman-n4p5h.notaku.site/more-info/more-on-stages'
 
 export const DOCS_URL_phases = 'https://lastman-n4p5h.notaku.site/glossary/phases'
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'

@@ -39,7 +39,7 @@ const getAlertLook = (alertLookTest: string) => {
         bgImage: 'motif',
         face: 'handsup',
         title: 'Keyword submitted!',
-        message: 'In case you submitted wrongly, you can still submit again anytime in the DAY',
+        message: 'You can always submit again anytime in the DAY',
       }
     //used
     case 'attackAndKill':

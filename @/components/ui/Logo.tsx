@@ -26,10 +26,11 @@ export default function Logo() {
       className="h-12 w-16 rounded-md 
       px-2 py-0 text-[34px] font-headline
       text-white bg-red-800 
-      transition-colors
-      hover:bg-zinc-200 hover:text-blue-950 capitalized"
+      transition-colors capitalized
+      "
     >
       {buttonText}
     </button>
   )
 }
+// hover:bg-zinc-200 hover:text-blue-950

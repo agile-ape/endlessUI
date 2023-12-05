@@ -6,7 +6,13 @@ import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreState } from '../../store'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
-import { useAccount, useContractEvent, useContractRead, useContractReads } from 'wagmi'
+import {
+  useAccount,
+  useContractEvent,
+  useContractRead,
+  useContractReads,
+  useWalletClient,
+} from 'wagmi'
 import { defaultContractObj, tokenContractObj } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -18,7 +24,7 @@ import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR from 'swr'
 import { toast } from '../components/ui/use-toast'
-// import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
+import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -36,14 +42,6 @@ type LayoutProps = {
   metadata: MetaProps
   phase: IApp['phase']
 }
-
-// const hashedMessage = keccak256(
-//   encodePacked(
-//     ['string', 'bytes'],
-//     ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], ['pepe']))],
-//   ),
-// )
-// console.log(hashedMessage)
 
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
@@ -76,8 +74,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     enabled: !!address,
   })
 
-  const ticketId = playerTicket?.[0] || 0
-  console.log(ticketId)
+  // const ticketId = playerTicket?.[0] || 0
 
   useContractEvent({
     ...defaultContractObj,

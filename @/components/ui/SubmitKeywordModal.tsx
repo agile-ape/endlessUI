@@ -140,12 +140,15 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
       //   abi.encodePacked('\x19Ethereum Signed Message:\n32', keccak256(abi.encodePacked(_newKeyword))),
       // )
 
-      const hashedMessage = keccak256(
-        encodePacked(
-          ['string', 'bytes'],
-          ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], [input]))],
-        ),
-      )
+      // const hashedMessageFull = keccak256(
+      //   encodePacked(
+      //     ['string', 'bytes'],
+      //     ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], [input]))],
+      //   ),
+      // )
+      // console.log(hashedMessageFull)
+
+      const hashedMessage = keccak256(encodePacked(['string'], [input]))
       console.log(hashedMessage)
 
       const signature = await walletClient?.signMessage({

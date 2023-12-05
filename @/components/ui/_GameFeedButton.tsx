@@ -1,5 +1,5 @@
 import React from 'react'
-import GameTextVariant from './GameTextVariant'
+import GameTextVariant from './_GameTextVariant'
 import { Button } from './button'
 import GameFeed from './GameFeed'
 import {
