@@ -37,6 +37,7 @@ const UserActions = () => {
     ...defaultContractObj,
     functionName: 'playerTicket',
     args: [address as `0x${string}`],
+    cacheTime: 3_000,
   })
 
   let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
@@ -59,10 +60,12 @@ const UserActions = () => {
         Submit Keyword
       </Button>
 
-      <CheckIn />
-      <SplitIt />
+      <CheckIn playerTicket={playerTicket} />
+      <SplitIt playerTicket={playerTicket} />
 
-      {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} />}
+      {showModal && (
+        <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={playerTicket} />
+      )}
     </div>
   )
 }
