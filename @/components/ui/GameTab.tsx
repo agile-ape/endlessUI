@@ -23,11 +23,19 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
-import { defaultContractObj, DOCS_URL, TWITTER_URL } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL,
+  LAST_MAN_STANDING_ADDRESS,
+  TWITTER_URL,
+} from '../../../services/constant'
 import { toast } from './use-toast'
 import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
 import CustomConnectButton from './connect-button'
+import type { Ticket } from 'types/app'
+import { fetcher, transformPlayerTicket } from '@/lib/utils'
+import useSWR from 'swr'
 
 const GameTab = () => {
   const tabValue = useStoreState((state) => state.gameTab)
@@ -37,13 +45,48 @@ const GameTab = () => {
 
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket, refetch } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
+  const { data: ticketsData, mutate } = useSWR<{
+    data: Ticket[]
+  }>(
+    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
+    fetcher,
+  )
 
-  const id = Number(playerTicket?.[0] || BigInt(0))
+  let ticket: Ticket | undefined = {
+    id: 0,
+    user: address as `0x${string}`,
+    sign: '',
+    status: 0,
+    lastSeen: 0,
+    isInPlay: false,
+    vote: false,
+    value: 0,
+    purchasePrice: 0,
+    potClaim: 0,
+    redeemValue: 0,
+    attacks: 0,
+    attackCount: 0,
+    killCount: 0,
+    killedBy: 0,
+    safehouseNights: 0,
+    checkOutRound: 0,
+    buddy: 0,
+    buddyCount: 0,
+    rank: 0,
+    contractAddress: LAST_MAN_STANDING_ADDRESS,
+  }
+
+  if (ticketsData?.data.length) {
+    const userTicket = ticketsData?.data.find(
+      (item) => item.user.toLowerCase() === address?.toLowerCase(),
+    )
+
+    if (userTicket) {
+      ticket = userTicket
+    }
+  }
+
+  const id = ticket?.id || 0
 
   useEffect(() => {
     if (isConnected) {
@@ -108,6 +151,7 @@ const GameTab = () => {
                     <TicketUI
                       ownTicket={true}
                       ticketNumber={ticketId}
+                      ticket={ticket}
                       // ticketLookInput={'beforePurchase'}
                     />
                     <BuyTicket />
@@ -122,6 +166,7 @@ const GameTab = () => {
                     <TicketUI
                       ownTicket={true}
                       ticketNumber={ticketId}
+                      ticket={ticket}
                       // ticketLookInput={'beforePurchase'}
                     />
                     <BuyTicket />
@@ -138,6 +183,7 @@ const GameTab = () => {
                     <TicketUI
                       ownTicket={true}
                       ticketNumber={id}
+                      ticket={ticket}
                       // ticketLookInput={'afterPurchase'}
                     />
                     {/* <BuyTicket /> */}
@@ -151,11 +197,7 @@ const GameTab = () => {
                     <div className="text-2xl text-center py-2 leading-7 capitalize">
                       Your Player
                     </div>
-                    <TicketUI
-                      ownTicket={true}
-                      ticketNumber={id}
-                      // ticketLookInput={''}
-                    />
+                    <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
                     <ExitGame />
                   </div>
                 )}

@@ -236,14 +236,14 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
           <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
             <div className="text-black text-xl my-2">{message}</div>
             <div className="flex justify-center mb-4">
-              <DialogClose className="flex justify-center w-full" onClick={closeModal}>
+              <div className="flex justify-center w-full" onClick={closeModal}>
                 <Button
                   variant="primary"
                   className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
                 >
                   Continue
                 </Button>
-              </DialogClose>
+              </div>
             </div>
           </div>
         </div>

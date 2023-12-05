@@ -1,23 +1,13 @@
 // @ts-nocheck
 import React from 'react'
 import type { FC } from 'react'
-import type { IApp } from 'types/app'
+import type { IApp, Ticket } from 'types/app'
 import Image from 'next/image'
-import {
-  useAccount,
-  useContractRead,
-  useContractEvent,
-  useContractReads,
-  useContractWrite,
-  useEnsName,
-} from 'wagmi'
+import { useAccount, useContractEvent, useContractReads, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
-import { formatUnits } from 'viem'
 import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { useStoreActions, useStoreState } from '../../../store'
-import { Sword, Skull, DoorOpen, Trophy } from 'lucide-react'
-import { Button } from './button'
+import { useStoreState } from '../../../store'
+import { Sword } from 'lucide-react'
 import Attack from './Attack'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
@@ -25,7 +15,8 @@ import KickOut from './KickOut'
 type TicketUIType = {
   ownTicket: boolean
   ticketNumber: IApp['id']
-  // ticketLookInput: string
+  ticket?: Ticket
+  ticketLength?: number
 }
 
 const getTicketSize = (ownTicket) => {
@@ -57,7 +48,7 @@ const getTicketSize = (ownTicket) => {
   }
 }
 
-const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
+const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLength }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const handleOnMouseEnter: MouseEventHandler = () => {
@@ -98,41 +89,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     },
   })
 
-  // hooks
-  const { data: playerAddress } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'idToPlayer',
-    args: [BigInt(ticketNumber)],
-    enabled: !!ticketNumber,
-    cacheTime: 5_000,
-  })
-
   const { data: ensName } = useEnsName({
-    address: playerAddress,
+    address: ticket?.user,
     chainId: 1,
   })
 
-  // console.log({ ensName })
-
-  // const { data: playerTicket } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'playerTicket',
-  //   args: [(playerAddress || '') as `0x${string}`],
-  //   enabled: !!playerAddress,
-  // })
-
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'playerTicket',
-        args: [playerAddress as `0x${string}`],
-        enabled: !!playerAddress,
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketId',
-      },
       {
         ...defaultContractObj,
         functionName: 'suddenDeath',
@@ -141,54 +104,44 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     cacheTime: 2_000,
   })
 
-  const playerTicket = data?.[0].result || BigInt(0)
-  const nextTicketId = Number(data?.[1].result || BigInt(0))
-  const suddenDeath = data?.[2].result || BigInt(0)
+  // const playerTicket = data?.[0].result || BigInt(0)
+  const nextTicketId = ticket?.id || 0
+  const suddenDeath = data?.[0].result || 0
 
-  // used
-  let ticketId = playerTicket?.[0] || 0
-  // used
-  let ticketAddress = playerTicket?.[1] || 0
+  let ticketId = ticket?.id
+  let ticketAddress = ticket?.user
 
-  let ticketSignature = playerTicket?.[2] || 0
-  let ticketStatus = playerTicket?.[3] || 0
-  let ticketLastSeen = Number(playerTicket?.[4] || 0)
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  // let ticketSignature = playerTicket?.[2] || 0
+  let ticketStatus = ticket?.status
+  let ticketLastSeen = Number(ticket?.lastSeen || 0)
+  let ticketIsInPlay = Boolean(ticket?.isInPlay || 0)
   // let ticketIsInPlay = true
-  let ticketVote = Boolean(playerTicket?.[6] || 0)
-  let ticketValue = Number(playerTicket?.[7]) || 0
-  let ticketPurchasePrice = playerTicket?.[8] || 0
-  let ticketPotClaim = playerTicket?.[9] || 0
-  let ticketRedeemValue = playerTicket?.[10] || 0
+  let ticketVote = Boolean(ticket?.vote || 0)
+  let ticketValue = Number(ticket?.value) || 0
+  let ticketPurchasePrice = ticket?.purchasePrice || 0
+  let ticketPotClaim = ticket?.potClaim || 0
+  let ticketRedeemValue = ticket?.redeemValue || 0
   // used
-  let ticketAttacks = Number(playerTicket?.[11]) || 0
+  let ticketAttacks = Number(ticket?.attacks) || 0
 
-  let ticketAttackCount = Number(playerTicket?.[12] || 0)
-  let ticketKillCount = Number(playerTicket?.[13] || 0)
-  let ticketKilledBy = playerTicket?.[14] || 0
-  let ticketSafehouseNights = playerTicket?.[15] || 0
-  let ticketcheckOutRound = Number(playerTicket?.[16] || 0)
-  let ticketBuddy = playerTicket?.[17] || 0
-  let ticketBuddyCount = playerTicket?.[18] || 0
-  let ticketRank = Number(playerTicket?.[19] || 0)
-  // let ticketRank = 123
+  let ticketAttackCount = Number(ticket?.attackCount || 0)
+  let ticketKillCount = Number(ticket?.killCount || 0)
+  let ticketKilledBy = ticket?.killedBy || 0
+  let ticketSafehouseNights = ticket?.safehouseNights || 0
+  let ticketcheckOutRound = Number(ticket?.checkOutRound || 0)
+  let ticketBuddy = ticket?.buddy || 0
+  let ticketBuddyCount = ticket?.buddyCount || 0
+  let ticketRank = Number(ticket?.rank || 0)
 
   let ticketVoteString = ticketVote ? 'Yes' : 'No'
 
-  const valueBought = formatUnits(ticketPurchasePrice, 18)
-  const valueRedeemed = formatUnits(ticketRedeemValue, 18)
+  const valueBought = ticketPurchasePrice
+  const valueRedeemed = ticketRedeemValue
 
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
 
-  /* 
-  // approach 1
-  // const ticketList = useStoreState((state) => state.tickets)
-  // const totalTicketCount = ticketList.length
-  */
-
-  // approach 2
-  const totalTicketCount = Number(nextTicketId) - 1
+  const totalTicketCount = ticketLength
 
   const quartile = (ticketRank / totalTicketCount) * 100
 
@@ -372,7 +325,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'ticket claimed',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     submittedDay: {
       bgImage: 'motif',
@@ -381,7 +334,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'submitted',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     makePeace: {
       bgImage: 'rainbow',
@@ -390,7 +343,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     stage1New: {
       bgImage: 'rainbow',
@@ -399,7 +352,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     stage2New: {
       bgImage: 'rainbow',
@@ -408,7 +361,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     stage3New: {
       bgImage: 'rainbow',
@@ -417,7 +370,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'ready to submit word',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     submittedNight: {
       bgImage: 'motif',
@@ -426,7 +379,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'time to attack',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     attackedButSafu: {
       bgImage: 'combine',
@@ -435,7 +388,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'SAFU',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     neverSubmit: {
       bgImage: 'rainbow',
@@ -444,7 +397,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'time to attack',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     inSafehouse: {
       bgImage: 'safeOverlay',
@@ -453,7 +406,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'taking a break',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     lastManStanding: {
       bgImage: 'burst',
@@ -462,7 +415,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'last man standing',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     agreedToSplitPot: {
       bgImage: 'burst',
@@ -471,7 +424,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'WAGMI',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     noMorePot: {
       bgImage: 'burst',
@@ -480,7 +433,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       id: ticketId,
       status: 'let it burn',
       label: 'value',
-      value: formatUnits(ticketValue, 18) + ' ETH',
+      value: ticketValue + ' ETH',
     },
     killed: {
       bgImage: 'deadOverlay',
@@ -502,17 +455,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     },
   }
 
-  // console.log(ticketLook)
   const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
-
-  // console.log(ticketLookMapping[ticketLookFinal])
-
-  // const gradientStyle = {
-  //   background: 'linear-gradient(to right, #ff00cc, #3333cc)',
-  //   WebkitBackgroundClip: 'text',
-  //   color: 'transparent',
-  //   display: 'inline-block',
-  // }
 
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
     <Sword key={index} size={16} className="text-black"></Sword>

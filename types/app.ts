@@ -1,19 +1,20 @@
 interface Ticket {
+  user: string
+  contractAddress: string
   id: number
   sign: string
   vote: boolean
   potClaim: number
+  redeemValue: number
   attacks: number
   attackCount: number
-  player: string
   status: number
   lastSeen: number
   isInPlay: boolean
   value: number
   purchasePrice: number
-  redeemValue: number
   killCount: number
-  killedBy: string
+  killedBy: number
   safehouseNights: number
   checkOutRound: number
   rank: number

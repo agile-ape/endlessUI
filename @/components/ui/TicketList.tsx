@@ -6,7 +6,7 @@ import { Gem, Users } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useContractWrite, useContractReads, useContractEvent } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import { LAST_MAN_STANDING_ADDRESS, defaultContractObj } from '../../../services/constant'
 import { fetcher, formatNumber, tokenConversion, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
 import useSWR from 'swr'
@@ -22,7 +22,10 @@ const TicketList = () => {
 
   const { data: ticketsData, error } = useSWR<{
     data: Ticket[]
-  }>('/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice', fetcher)
+  }>(
+    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
+    fetcher,
+  )
 
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
@@ -31,7 +34,7 @@ const TicketList = () => {
 
   if (ticketsData?.data.length) {
     ticketList = transformToTicket(ticketsData?.data).filter(
-      (item) => item.player !== '0x0000000000000000000000000000000000000000',
+      (item) => item.user !== '0x0000000000000000000000000000000000000000',
     )
   }
 
@@ -262,6 +265,8 @@ const TicketList = () => {
               key={item.id}
               ownTicket={false}
               ticketNumber={item.id}
+              ticket={item}
+              ticketLength={ticketListState.length}
               // ticketLookInput={'afterPurchase'}
             />
           ))}

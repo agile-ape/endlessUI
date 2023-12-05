@@ -1,7 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import type { IApp, Ticket } from 'types/app'
-import { API_ENDPOINT } from '../../services/constant'
+import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../services/constant'
+import { formatUnits } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -114,4 +115,30 @@ export function formatAddress(address: string) {
 
 export function encodeSvg(svg: string) {
   return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+
+export function transformPlayerTicket(playerTicket: any, test?: any): Ticket {
+  return {
+    id: Number(playerTicket?.[0]) || 0,
+    user: playerTicket?.[1] || '',
+    sign: playerTicket?.[2] || '',
+    status: test ? 3 : Number(playerTicket?.[3]) || 0,
+    lastSeen: Number(playerTicket?.[4]) || 0,
+    isInPlay: Boolean(playerTicket?.[5]) || false,
+    vote: Boolean(playerTicket?.[6]) || false,
+    value: Number(formatUnits(playerTicket?.[7] || 0, 18)),
+    purchasePrice: Number(formatUnits(playerTicket?.[8] || 0, 18)),
+    potClaim: Number(playerTicket?.[9]) || 0,
+    redeemValue: Number(formatUnits(playerTicket?.[10] || 0, 18)),
+    attacks: Number(playerTicket?.[11]) || 0,
+    attackCount: Number(playerTicket?.[12]) || 0,
+    killCount: Number(playerTicket?.[13]) || 0,
+    killedBy: Number(playerTicket?.[14]) || 0,
+    safehouseNights: Number(playerTicket?.[15]) || 0,
+    checkOutRound: Number(playerTicket?.[16]) || 0,
+    buddy: Number(playerTicket?.[17]) || 0,
+    buddyCount: Number(playerTicket?.[18]) || 0,
+    rank: Number(playerTicket?.[19]) || 0,
+    contractAddress: LAST_MAN_STANDING_ADDRESS,
+  }
 }
