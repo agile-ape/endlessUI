@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '../@/components/ui/button'
-import Title from '../@/components/ui/Title'
-import Logo from '../@/components/ui/Logo'
+import { Button } from './button'
+import Title from './Title'
+import Logo from './Logo'
 import {
   Accordion,
   AccordionContent,

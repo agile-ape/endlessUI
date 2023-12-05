@@ -86,7 +86,7 @@ const getAlertLook = (alertLookTest: string) => {
     case 'voteYes':
       return {
         bgImage: 'rainbow',
-        face: 'beers',
+        face: 'prettyplease',
         title: 'You voted Yes!',
         message: 'Cheers man. Make love not war.',
       }
@@ -135,12 +135,14 @@ const getAlertLook = (alertLookTest: string) => {
         title: 'You got ETH!',
         message: 'Good things happen to those that outlast others.',
       }
+
+    //used
     case 'attackedButSafe':
       return {
         bgImage: 'combine',
         face: 'pray',
         title: 'You were attacked!',
-        message: 'You were attacked but you are safe as your keyword is valid.',
+        message: 'You are untouchable as your keyword is valid.',
       }
 
     /*------  sent to all ------*/

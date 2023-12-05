@@ -68,6 +68,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     setIsOverlayInspect(false)
   }
 
+  /*------ Update TicketUI once action is done --------------*/
   // update to safehouse
   useContractEvent({
     ...defaultContractObj,
@@ -79,7 +80,21 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       if (Number(caller) === ticketNumber) {
         refetch()
       }
-      console.log({ args })
+      // console.log({ args })
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'CheckOutFromSafehouse',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, time } = args
+
+      if (Number(caller) === ticketNumber) {
+        refetch()
+      }
+      // console.log({ args })
     },
   })
 
@@ -197,13 +212,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
   // const nextTicketId = useStoreState((state) => state.ticketId)
 
   const ticketStatusString: string = statusPayload[ticketStatus] || 'unknown'
-  console.log(ticketStatusString)
+  // console.log(ticketStatusString)
 
   let ticketLook: string
 
-  console.log(phase)
-  console.log(ticketId)
-  console.log(ticketIsInPlay)
+  // console.log(phase)
+  // console.log(ticketId)
+  // console.log(ticketIsInPlay)
 
   /* CHATGPT 
   // Your main logic
@@ -278,6 +293,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     if (phase == 'day') {
       if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
         ticketLook = 'submittedDay'
+      } else if (ticketVote === true) {
+        ticketLook = 'makePeace'
       } else {
         if (round < suddenDeath) {
           ticketLook = 'stage1New'
@@ -363,6 +380,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       face: 'handsup',
       id: ticketId,
       status: 'submitted',
+      label: 'value',
+      value: formatUnits(ticketValue, 18) + ' ETH',
+    },
+    makePeace: {
+      bgImage: 'rainbow',
+      header: 'bg-zinc-300/20',
+      face: 'prettyplease',
+      id: ticketId,
+      status: 'ready to submit word',
       label: 'value',
       value: formatUnits(ticketValue, 18) + ' ETH',
     },
@@ -476,10 +502,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     },
   }
 
-  console.log(ticketLook)
+  // console.log(ticketLook)
   const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
 
-  console.log(ticketLookMapping[ticketLookFinal])
+  // console.log(ticketLookMapping[ticketLookFinal])
 
   // const gradientStyle = {
   //   background: 'linear-gradient(to right, #ff00cc, #3333cc)',

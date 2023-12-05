@@ -34,12 +34,12 @@ export interface MetaProps {
  * @constructor
  */
 const Metadata = ({
-  title,
-  description,
-  ogDescription = 'Last Man',
-  ogTitle = '',
-  ogType = '',
-  ogUrl = '',
+  title = 'Last Man',
+  description = 'Outlast everyone and earn magic internet money',
+  ogTitle = 'Last Man - How Long Can You Last',
+  ogDescription = 'Outlast everyone and earn magic internet money',
+  ogType = 'website',
+  ogUrl = 'https://lastman.xyz',
   ogImageUrl = '',
 }: MetaProps) => {
   const { locale, query } = useRouter()
@@ -48,7 +48,7 @@ const Metadata = ({
 
   return (
     <Head>
-      <title>{`${titleWithPageNumber} - Last Man`}</title>
+      <title>{`${titleWithPageNumber}`}</title>
 
       <meta name="description" content={description} />
       <meta
@@ -62,7 +62,7 @@ const Metadata = ({
       <meta property="og:site_name" content="Last Man" />
       <meta property="og:locale" content={'en'} />
       <meta property="og:type" content={ogType} />
-      <meta property="og:title" content={`${ogTitle || title} - Last Man`} />
+      <meta property="og:title" content={`${ogTitle || title}`} />
       <meta property="og:description" content={ogDescription || description} />
       <meta property="og:image" content={ogImageUrl} />
       <meta property="og:url" content={ogUrl} />
@@ -71,7 +71,7 @@ const Metadata = ({
       <meta name="twitter:site" content="@LastManStanding" />
       <meta name="twitter:creator" content="@LastManStanding" />
       <meta name="twitter:description" content={ogDescription} />
-      <meta name="twitter:title" content={`${ogTitle || title} - Last Man`} />
+      <meta name="twitter:title" content={`${ogTitle || title}`} />
       <meta name="twitter:image" content={ogImageUrl} />
     </Head>
   )

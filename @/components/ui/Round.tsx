@@ -44,6 +44,10 @@ const Round = () => {
         ...defaultContractObj,
         functionName: 'drainSwitch',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'levelUp',
+      },
     ],
   })
 
@@ -55,6 +59,7 @@ const Round = () => {
   const suddenDeath = Number(data?.[0].result || BigInt(0))
   const drainStart = Number(data?.[1].result || BigInt(0))
   const drainSwitch = Boolean(data?.[2].result || 0)
+  const levelUp = Number(data?.[3].result || 0)
 
   // const drainRateConverted = drainRate / shareConversion
   // const minPotSizeConverted = minPotSize / shareConversion
@@ -109,8 +114,9 @@ const Round = () => {
           </div>
         </TooltipTrigger>
         <TooltipContent side="top" align="start">
-          <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-            1 round = 1 day and night. Halving every 4 rounds. Diff stages, diff rules.
+          <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+            1 round = 1 day and night. Halving every {levelUp} rounds. Stage 2 starts on Round{' '}
+            {suddenDeath}
             <div>
               <a href={DOCS_URL_stages} target="_blank" className="text-xs underline">
                 Learn more

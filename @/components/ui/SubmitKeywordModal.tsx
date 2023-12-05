@@ -148,7 +148,9 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
       // )
       // console.log(hashedMessageFull)
 
-      const hashedMessage = keccak256(encodePacked(['string'], [input]))
+      // const lowercaseInput = input.toLowerCase();
+
+      const hashedMessage = keccak256(encodePacked(['string'], [input.toLowerCase()]))
       console.log(hashedMessage)
 
       const signature = await walletClient?.signMessage({

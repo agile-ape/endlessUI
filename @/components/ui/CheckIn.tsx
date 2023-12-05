@@ -90,6 +90,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   const stayCost = formatUnits(safehouseCostPerNight, 3)
+
   const tokenBalance = formatUnits(balanceOf, 18)
 
   // Token contract read

@@ -62,6 +62,7 @@ const PhaseChange = () => {
   const { write, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: mappedFunction[phase] as any,
+
     onError(error) {
       // @ts-ignore
       const errorMsg = error?.cause?.shortMessage || error?.message

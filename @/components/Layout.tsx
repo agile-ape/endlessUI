@@ -46,10 +46,10 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
-  const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
-  const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  // const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
+  // const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  // const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
 
@@ -260,7 +260,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     router.replace(router.asPath)
   }
 
-  const background = router.pathname.includes('quickstart') ? 'Default.svg' : typeStage[phase]
+  const background = router.pathname.includes('404') ? 'Default.svg' : typeStage[phase]
+  // const background = typeStage[phase]
 
   return (
     <main
