@@ -45,7 +45,7 @@ import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 
-function CheckIn() {
+function CheckIn({ playerTicket }: { playerTicket: any }) {
   // State variables
   const phase = useStoreState((state) => state.phase)
   // const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
@@ -62,11 +62,11 @@ function CheckIn() {
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'playerTicket',
-        args: [address as `0x${string}`],
-      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'playerTicket',
+      //   args: [address as `0x${string}`],
+      // },
       {
         ...defaultContractObj,
         functionName: 'safehouseCostPerNight',
@@ -79,9 +79,9 @@ function CheckIn() {
     ],
   })
 
-  const playerTicket = data?.[0].result || null
+  // const playerTicket = data?.[0].result || null
   const safehouseCostPerNight = data?.[1].result || BigInt(0)
-  const balanceOf = data?.[2].result || BigInt(0)
+  const balanceOf = data?.[1].result || BigInt(0)
 
   const ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   const ticketIsInPlay = Boolean(playerTicket?.[5] || 0)

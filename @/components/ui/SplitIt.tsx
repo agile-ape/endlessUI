@@ -37,7 +37,7 @@ import {
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
-function SplitIt() {
+function SplitIt({ playerTicket }: { playerTicket: any }) {
   // State variables
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
@@ -59,11 +59,11 @@ function SplitIt() {
   // Address read
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
+  // const { data: playerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [address as `0x${string}`],
+  // })
 
   let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)

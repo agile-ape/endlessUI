@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 import { Button } from './button'
@@ -24,6 +24,9 @@ const TicketList = () => {
     data: Ticket[]
   }>('/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice', fetcher)
 
+  const [ticketState, setTicketState] = useState<string>('aroundMe')
+  const [ticketListState, setTicketListState] = useState<Ticket[]>([])
+
   let ticketList: Ticket[] = []
 
   if (ticketsData?.data.length) {
@@ -32,15 +35,13 @@ const TicketList = () => {
     )
   }
 
-  // const ticketList = useStoreState((state) => state.tickets)
-  // const ticketCount = useStoreState((state) => state.ticketCount)
-  // const ticketId = useStoreState((state) => state.ticketId)
-  // const currentPot = useStoreState((state) => state.currentPot)
-  // const totalPot = useStoreState((state) => state.totalPot)
+  useEffect(() => {
+    if (ticketsData?.data.length) {
+      setTicketListState(ticketList)
+    }
+  }, [ticketsData])
 
-  const totalTicketCount = ticketList.length
-  // const totalETH = totalPot / tokenConversion
-  // const ethLeft = currentPot / tokenConversion
+  const totalTicketCount = ticketListState.length
 
   const { data, refetch } = useContractReads({
     contracts: [
@@ -66,10 +67,7 @@ const TicketList = () => {
   const ethLeft = formatUnits(currentPot, 18)
   const totalETH = formatUnits(totalPot, 18)
 
-  const [ticketState, setTicketState] = useState<string>('aroundMe') // default 'aroundMe'
-
   const { theme, forcedTheme } = useTheme()
-  console.log(theme)
 
   // new ticket bought
   useContractEvent({
@@ -90,6 +88,26 @@ const TicketList = () => {
   //     console.log({ error })
   //   },
   // })
+
+  function toggleTab(tab: string) {
+    setTicketState(tab)
+    const nextTicketList = [...ticketList]
+
+    if (tab === 'inPlay') {
+      const inPlayList = nextTicketList.filter((item) => item.isInPlay)
+      setTicketListState(inPlayList)
+    } else if (tab === 'mostValue') {
+      const notInPlayList = nextTicketList.filter((item) => !item.isInPlay)
+      setTicketListState(notInPlayList)
+    } else if (tab === 'safehouse') {
+      const safehouseList = nextTicketList.filter(
+        (item) => item.isInPlay && item.safehouseNights > 0,
+      )
+      setTicketListState(safehouseList)
+    } else {
+      setTicketListState(ticketList)
+    }
+  }
 
   return (
     <>
@@ -162,7 +180,7 @@ const TicketList = () => {
 
           <div className="grid grid-cols-2 sm:flex gap-3 justify-center my-2">
             <Button
-              onClick={() => setTicketState('aroundMe')}
+              onClick={() => toggleTab('aroundMe')}
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'aroundMe'}
@@ -170,7 +188,7 @@ const TicketList = () => {
               Around Me
             </Button>
             <Button
-              onClick={() => setTicketState('inPlay')}
+              onClick={() => toggleTab('inPlay')}
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'inPlay'}
@@ -180,7 +198,7 @@ const TicketList = () => {
 
             {/* exit or dead */}
             <Button
-              onClick={() => setTicketState('mostValue')}
+              onClick={() => toggleTab('mostValue')}
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'mostValue'}
@@ -188,7 +206,7 @@ const TicketList = () => {
               Not In Play
             </Button>
             <Button
-              onClick={() => setTicketState('safehouse')}
+              onClick={() => toggleTab('safehouse')}
               variant="filter"
               className="text-sm rounded-full h-8 px-3 py-2"
               disabled={ticketState === 'safehouse'}
@@ -199,60 +217,6 @@ const TicketList = () => {
         </div>
       </summary>
 
-      {/* {phase === 'deployed' && (
-        <>
-          <div className="flex flex-col justify-center">
-            <div className="text-center mt-4 text-2xl">Recap of ticket looks</div>
-          </div>
-
-          <div
-            className="
-                  flex
-                  w-[100%]
-                  justify-evenly
-                  sm:justify-start
-                  gap-x-6
-                  gap-y-6
-                  flex-wrap
-                  px-6 py-6
-                  overflow-y-scroll max-h-[750px]
-                "
-          >
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'beforePurchase'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'afterPurchase'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage1New'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage2New'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'stage3New'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'submittedDay'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'submittedNight'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'attackedButSafu'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'inSafehouse'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'neverSubmit'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'killed'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'exitGame'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'lastManStanding'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'agreedToSplitPot'} />
-
-            <TicketUI ownTicket={false} ticketNumber={0} ticketLookInput={'noMorePot'} />
-          </div>
-        </>
-      )} */}
-
-      {/* {phase !== 'deployed' && (
-        <div> */}
       {!totalTicketCount && (
         <div className="flex flex-col justify-center">
           <div className="flex items-center place-content-center">
@@ -295,7 +259,7 @@ const TicketList = () => {
             overflow-y-scroll max-h-[750px]
           "
         >
-          {ticketList.map((item, i) => (
+          {ticketListState.map((item, i) => (
             <TicketUI
               key={item.id}
               ownTicket={false}
@@ -305,8 +269,6 @@ const TicketList = () => {
           ))}
         </div>
       )}
-      {/* </div>
-      )} */}
     </>
   )
 }

@@ -33,19 +33,21 @@ import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
 interface SubmitKeywordModalType {
   toggle: () => void
   active: boolean
+  playerTicket: any
 }
-const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active }) => {
+const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, playerTicket }) => {
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   // Address read
   const { address, isConnected } = useAccount()
   const { data: walletClient } = useWalletClient()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
+  // const { data: playerTicket } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [address as `0x${string}`],
+  //   cacheTime: 2000,
+  // })
 
   let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'

@@ -520,7 +520,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
       value: ticketRank,
     },
     exitGame: {
-      bgImage: 'deadOverlay',
+      bgImage: '',
       header: 'bg-zinc-200/20',
       face: 'exit',
       id: ticketId,
@@ -547,7 +547,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber }) => {
     <div
       className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge}`}
       style={{
-        backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
+        backgroundImage: bgImage ? `url('/ticket/${bgImage}.svg')` : 'none', // different for true
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
       }}
