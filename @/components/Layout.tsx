@@ -67,15 +67,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const router = useRouter()
   const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [(address || '') as `0x${string}`],
-    enabled: !!address,
-  })
-
-  // const ticketId = playerTicket?.[0] || 0
-
   useContractEvent({
     ...defaultContractObj,
     eventName: 'PhaseChange',
