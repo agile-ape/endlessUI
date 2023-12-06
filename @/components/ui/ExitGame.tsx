@@ -44,30 +44,14 @@ function ExitGame() {
   const phase = useStoreState((state) => state.phase)
   const ticketCount = useStoreState((state) => state.ticketCount)
 
-  // const giveUpCount = useStoreState((state) => state.giveUpCount)
-  // const killedCount = useStoreState((state) => state.killedCount)
-  // const rankShare = useStoreState((state) => state.rankShare)
-  // const prizeFactor = useStoreState((state) => state.prizeFactor)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-
-  // const { data: nextClaim } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'rankClaim',
-  //   args: [BigInt(ticketCount)],
-  //   enabled: !!ticketCount,
-  // })
-  // const { data: playerTicket } = useContractRead()
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   // Address read
   const { address, isConnected } = useAccount()
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'playerTicket',
-        args: [address as `0x${string}`],
-      },
       {
         ...defaultContractObj,
         functionName: 'rankClaim',
@@ -93,20 +77,19 @@ function ExitGame() {
     ],
   })
 
-  const playerTicket = data?.[0].result || null
-  const rankClaim = data?.[1].result || BigInt(0)
-  const giveUpCount = data?.[2].result || BigInt(0)
-  const killedCount = data?.[3].result || BigInt(0)
-  const rankShare = data?.[4].result || BigInt(0)
-  const prizeFactor = data?.[5].result || BigInt(0)
+  const rankClaim = data?.[0].result || BigInt(0)
+  const giveUpCount = data?.[1].result || BigInt(0)
+  const killedCount = data?.[2].result || BigInt(0)
+  const rankShare = data?.[3].result || BigInt(0)
+  const prizeFactor = data?.[4].result || BigInt(0)
 
   const exitClaim = formatUnits(rankClaim, 18)
   // const ifSplit = formatUnits(rankShare, 18)
   const lastManClaim = formatUnits(prizeFactor, 18)
 
-  let ticketStatus = Number(playerTicket?.[3])
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  let ticketRank = playerTicket?.[19] || BigInt(0)
+  let ticketStatus = ownedTicket?.status || 0
+  let ticketIsInPlay = ownedTicket?.isInPlay || false
+  let ticketRank = ownedTicket?.rank || 0
 
   let exitRank: number
 
@@ -123,7 +106,7 @@ function ExitGame() {
   const { data: claimIfKilled } = useContractRead({
     ...defaultContractObj,
     functionName: 'rankClaim',
-    args: [ticketRank],
+    args: [BigInt(ticketRank)],
     enabled: !!ticketRank,
   })
 

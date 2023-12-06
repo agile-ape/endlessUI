@@ -33,16 +33,8 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 function BuyTicket() {
   // State variables
   const phase = useStoreState((state) => state.phase)
-  // const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
-  // console.log(nextTicketPrice)
-  // const increaseInPrice = useStoreState((state) => state.increaseInPrice)
-  // console.log(increaseInPrice)
-  // const ticketsAvailableAtCurrentPrice = useStoreState(
-  //   (state) => state.ticketsAvailableAtCurrentPrice,
-  // )
-  // const ticketsCounter = useStoreState((state) => state.ticketsCounter)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  // const addTicket = useStoreActions((actions) => actions.addTicket)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -55,11 +47,6 @@ function BuyTicket() {
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'playerTicket',
-        args: [address as `0x${string}`],
-      },
       {
         ...defaultContractObj,
         functionName: 'nextTicketPrice',
@@ -80,18 +67,17 @@ function BuyTicket() {
   })
 
   const playerTicket = data?.[0].result || null
-  const nextTicketPrice = data?.[1].result || BigInt(0)
-  const increaseInPrice = data?.[2].result || BigInt(0)
-  const ticketsAvailableAtCurrentPrice = Number(data?.[3].result || BigInt(0))
-  const ticketsCounter = Number(data?.[4].result || BigInt(0))
+  const nextTicketPrice = data?.[0].result || BigInt(0)
+  const increaseInPrice = data?.[1].result || BigInt(0)
+  const ticketsAvailableAtCurrentPrice = Number(data?.[2].result || BigInt(0))
+  const ticketsCounter = Number(data?.[3].result || BigInt(0))
 
-  let ticketId = playerTicket?.[0] || 0
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
   const ticketPrice = formatUnits(nextTicketPrice, 18)
   const nextPrice = formatUnits(nextTicketPrice + increaseInPrice, 18)
 
   // Active condition
-  const buyTicketActive = phase === 'start' && ticketId === 0
+  const buyTicketActive = phase === 'start' && !ownedTicket
 
   // Contract write
   // call buyTicket() - default value 0

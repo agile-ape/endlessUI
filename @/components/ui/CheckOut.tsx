@@ -39,21 +39,13 @@ function CheckOut() {
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
-  // Address read
-  const { address, isConnected } = useAccount()
-
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-  })
-
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  let ticketLastSeen = Number(playerTicket?.[4] || 0)
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  let ticketSafehouseNights = Number(playerTicket?.[15] || 0)
-  let ticketCheckOutRound = Number(playerTicket?.[16] || 0)
+  let ticketStatus = ownedTicket?.status || 0
+  let ticketLastSeen = ownedTicket?.lastSeen || 0
+  let ticketIsInPlay = ownedTicket?.isInPlay || false
+  let ticketSafehouseNights = ownedTicket?.safehouseNights || 0
+  let ticketCheckOutRound = ownedTicket?.checkOutRound || 0
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
