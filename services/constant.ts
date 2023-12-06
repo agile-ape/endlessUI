@@ -52,3 +52,7 @@ export const TELEGRAM_URL = 'https://t.me/lastmangame'
 export const API_ENDPOINT = isDevelopment
   ? 'https://lsm-be.onrender.com'
   : 'https://lsm-be.onrender.com'
+
+export const WEBSOCKET_ENDPOINT = isDevelopment
+  ? 'wss://lsm-be.onrender.com/ws'
+  : 'wss://lsm-be.onrender.com/ws'

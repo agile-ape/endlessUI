@@ -4,14 +4,10 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
-import ExitTicketUI from './_ExitTicketUI'
-import SplitPot from './_SplitPot'
 import { useStoreActions, useStoreState } from '../../../store'
 import { formatUnits } from 'viem'
 
 import GameFeed from './GameFeed'
-import GameTextVariant from './_GameTextVariant'
-import CheckIn from './_CheckInBox'
 import UserActions from './UserActions'
 import { HelpCircle } from 'lucide-react'
 import {
@@ -41,18 +37,11 @@ const GameTab = () => {
   const tabValue = useStoreState((state) => state.gameTab)
   const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
   const phase = useStoreState((state) => state.phase)
-  const ticketId = useStoreState((state) => state.ticketId)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   const { address, isConnected } = useAccount()
 
-  const { data: ticketsData, mutate } = useSWR<{
-    data: Ticket[]
-  }>(
-    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
-    fetcher,
-  )
-
-  let ticket: Ticket | undefined = {
+  let ticket: Ticket | undefined = ownedTicket || {
     id: 0,
     user: address as `0x${string}`,
     sign: '',
@@ -74,16 +63,6 @@ const GameTab = () => {
     buddyCount: 0,
     rank: 0,
     contractAddress: LAST_MAN_STANDING_ADDRESS,
-  }
-
-  if (ticketsData?.data.length) {
-    const userTicket = ticketsData?.data.find(
-      (item) => item.user.toLowerCase() === address?.toLowerCase(),
-    )
-
-    if (userTicket) {
-      ticket = userTicket
-    }
   }
 
   const id = ticket?.id || 0
@@ -150,7 +129,7 @@ const GameTab = () => {
                     </div>
                     <TicketUI
                       ownTicket={true}
-                      ticketNumber={ticketId}
+                      ticketNumber={id}
                       ticket={ticket}
                       // ticketLookInput={'beforePurchase'}
                     />
@@ -165,7 +144,7 @@ const GameTab = () => {
                     <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div>
                     <TicketUI
                       ownTicket={true}
-                      ticketNumber={ticketId}
+                      ticketNumber={id}
                       ticket={ticket}
                       // ticketLookInput={'beforePurchase'}
                     />

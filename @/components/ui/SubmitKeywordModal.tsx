@@ -2,12 +2,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import OtpInput from 'react-otp-input'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import { Button } from './button'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import dynamic from 'next/dynamic'
@@ -37,6 +31,7 @@ interface SubmitKeywordModalType {
 }
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, playerTicket }) => {
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  // const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
 
   // Address read
   const { address, isConnected } = useAccount()

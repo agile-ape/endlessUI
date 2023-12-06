@@ -97,14 +97,15 @@ interface StoreModel {
 
   tickets: IApp['tickets']
   updateTickets: Action<StoreModel, IApp['tickets']>
+  modifyTicket: Action<StoreModel, { id: number; ticket: Ticket }>
   gameTab: 'ticket' | 'game'
   updateGameTab: Action<StoreModel, 'ticket' | 'game'>
   triggerCompletionModal: CompletionModal
   updateTriggerCompletionModal: Action<StoreModel, CompletionModal>
   addTicket: Action<StoreModel, Ticket>
 
-  userTicket: Ticket | null
-  updateUserTicket: Action<StoreModel, Ticket | null>
+  ownedTicket: Ticket | null
+  updateOwnedTicket: Action<StoreModel, Ticket | null>
 }
 
 type CompletionModal = {

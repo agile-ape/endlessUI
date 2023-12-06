@@ -19,30 +19,16 @@ import type { Ticket } from 'types/app'
 
 const TicketList = () => {
   const phase = useStoreState((state) => state.phase)
-
-  const { data: ticketsData, error } = useSWR<{
-    data: Ticket[]
-  }>(
-    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
-    fetcher,
-  )
+  const playerTickets = useStoreState((state) => state.tickets)
 
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
 
-  let ticketList: Ticket[] = []
-
-  if (ticketsData?.data.length) {
-    ticketList = transformToTicket(ticketsData?.data).filter(
-      (item) => item.user !== '0x0000000000000000000000000000000000000000',
-    )
-  }
-
   useEffect(() => {
-    if (ticketsData?.data.length) {
-      setTicketListState(ticketList)
+    if (playerTickets.length) {
+      setTicketListState(playerTickets)
     }
-  }, [ticketsData])
+  }, [playerTickets])
 
   const totalTicketCount = ticketListState.length
 
@@ -81,20 +67,9 @@ const TicketList = () => {
     },
   })
 
-  // const { data, write } = useContractWrite({
-  //   ...defaultContractObj,
-  //   functionName: 'checkTicket',
-  //   onSuccess(data, variables, context) {
-  //     console.log({ data })
-  //   },
-  //   onError(error, variables, context) {
-  //     console.log({ error })
-  //   },
-  // })
-
   function toggleTab(tab: string) {
     setTicketState(tab)
-    const nextTicketList = [...ticketList]
+    const nextTicketList = [...playerTickets]
 
     if (tab === 'inPlay') {
       const inPlayList = nextTicketList.filter((item) => item.isInPlay)
@@ -106,7 +81,7 @@ const TicketList = () => {
       const safehouseList = nextTicketList.filter((item) => item.isInPlay && item.status === 3)
       setTicketListState(safehouseList)
     } else {
-      setTicketListState(ticketList)
+      setTicketListState(playerTickets)
     }
   }
 

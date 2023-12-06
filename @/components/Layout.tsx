@@ -1,10 +1,6 @@
 import Header from './Header'
-import Image from 'next/image'
-
-import { VT323 } from 'next/font/google'
 import type { IApp, Ticket } from 'types/app'
-import { useStoreActions, useStoreState } from '../../store'
-import { ThemeProvider } from '@/components/theme-provider'
+import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
 import {
   useAccount,
@@ -13,7 +9,13 @@ import {
   useContractReads,
   useWalletClient,
 } from 'wagmi'
-import { defaultContractObj, tokenContractObj } from '../../services/constant'
+import {
+  API_ENDPOINT,
+  LAST_MAN_STANDING_ADDRESS,
+  WEBSOCKET_ENDPOINT,
+  defaultContractObj,
+  tokenContractObj,
+} from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -24,7 +26,7 @@ import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR from 'swr'
 import { toast } from '../components/ui/use-toast'
-import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
+import { io } from 'socket.io-client'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -46,10 +48,10 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
-  // const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
-  // const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  // const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
 
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
 
@@ -66,6 +68,62 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const router = useRouter()
   const { address, isConnected } = useAccount()
+
+  const {
+    data: ticketsData,
+    error,
+    mutate,
+  } = useSWR<{
+    data: Ticket[]
+  }>(
+    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
+    fetcher,
+  )
+
+  if (ticketsData?.data.length) {
+    const ticketList = transformToTicket(ticketsData?.data).filter(
+      (item) => item.user !== '0x0000000000000000000000000000000000000000',
+    )
+
+    const ownedTicket = ticketList.find(
+      (item) => item.user.toLowerCase() === address?.toLowerCase(),
+    )
+
+    updateTickets(ticketList)
+
+    if (ownedTicket) {
+      updateOwnedTicket(ownedTicket)
+    }
+  }
+
+  useEffect(() => {
+    const socket = io(WEBSOCKET_ENDPOINT)
+
+    socket.io.on('open', () => {
+      console.log('connected')
+    })
+
+    socket.on('tickets', (data) => {
+      if (!data?.id) return
+
+      if (data?.user?.toLowerCase() === address?.toLowerCase()) {
+        updateOwnedTicket(data)
+      } else {
+        modifyPlayerTicket({
+          id: data?.id,
+          ticket: data,
+        })
+      }
+    })
+
+    socket.on('events', (data) => {
+      console.log('events', data)
+    })
+
+    return () => {
+      socket.close()
+    }
+  }, [])
 
   useContractEvent({
     ...defaultContractObj,
@@ -186,31 +244,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   //     console.log({ args })
   //   },
   // })
-
-  // useEffect(() => {
-  //   const socket = new WebSocket('ws://localhost:8090')
-  //   socket.addEventListener('open', function (event) {
-  //     socket.send('Hello Server!')
-  //   })
-
-  //   socket.addEventListener('message', function (event) {
-  //     const jsonData = isJson(event.data)
-  //     if (jsonData) {
-  //       const result = JSON.parse(event.data)
-  //       console.log('Message from server ', result)
-  //       const tickets = transformToTicket(result?.ticketData)
-  //       tickets.forEach((ticket) => {
-  //         addTicket(ticket)
-  //       })
-  //     } else {
-  //       console.log('Message from server ', event.data)
-  //     }
-  //   })
-
-  //   return () => {
-  //     socket.close()
-  //   }
-  // }, [])
 
   const { data, refetch: refetchInitData } = useContractReads({
     contracts: [

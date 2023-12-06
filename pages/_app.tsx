@@ -14,12 +14,15 @@ import Layout from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
 import Metadata from '@/components/Metadata'
 import useSWR from 'swr'
+import { infuraProvider } from 'wagmi/providers/infura'
+import 'wagmi/window'
 
 const chainsConfig = [
   ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
 ]
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
+  infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
   publicProvider(),
 ])
 
@@ -33,7 +36,7 @@ const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  webSocketPublicClient,
+  // webSocketPublicClient,
 })
 
 const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {

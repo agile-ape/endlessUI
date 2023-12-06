@@ -252,9 +252,16 @@ export const appStore = createStore<StoreModel>({
   addTicket: action((state, payload) => {
     state.tickets.push(payload)
   }),
-  // addTicket: action((state, payload) => {
-  //   state.tickets.push(payload)
-  // }),
+  modifyTicket: action((state, payload) => {
+    const existingTicket = state.tickets.find((ticket) => ticket.id === payload.id)
+
+    if (existingTicket) {
+      const index = state.tickets.indexOf(existingTicket)
+      state.tickets[index] = payload.ticket
+    } else {
+      state.tickets.push(payload.ticket)
+    }
+  }),
   gameTab: 'game',
   updateGameTab: action((state, payload) => {
     state.gameTab = payload
@@ -267,9 +274,9 @@ export const appStore = createStore<StoreModel>({
     state.triggerCompletionModal = payload
   }),
 
-  userTicket: null,
-  updateUserTicket: action((state, payload) => {
-    state.userTicket = payload
+  ownedTicket: null,
+  updateOwnedTicket: action((state, payload) => {
+    state.ownedTicket = payload
   }),
 })
 
