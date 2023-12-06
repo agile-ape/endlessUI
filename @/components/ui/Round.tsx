@@ -113,16 +113,18 @@ const Round = () => {
             <div className={stage === 3 ? On : Off}>Stage 3</div>
           </div>
         </TooltipTrigger>
-        <TooltipContent side="top" align="start">
-          <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
-            1 round = 1 day and night. Halving every {levelUp} rounds. Stage 2 starts on Round{' '}
-            {suddenDeath}
-            <div>
-              <a href={DOCS_URL_stages} target="_blank" className="text-xs underline">
-                Learn more
-              </a>
-            </div>
-          </p>
+        <TooltipContent
+          side="top"
+          align="start"
+          className="px-3 py-1 max-w-[280px] text-sm cursor-default"
+        >
+          1 round = 1 day and night. Halving every {levelUp} rounds. Stage 2 starts on Round{' '}
+          {suddenDeath}
+          <div>
+            <a href={DOCS_URL_stages} target="_blank" className="text-xs underline">
+              Learn more
+            </a>
+          </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
