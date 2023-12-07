@@ -26,15 +26,13 @@ export default function Indicator() {
                   alt={`${indicator}`}
                 />
               </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                align="center"
-                className="px-3 py-1 max-w-[240px] text-sm cursor-default"
-              >
-                Current game phase
-                <a href={DOCS_URL_phases} target="_blank" className="text-xs underline block">
-                  Learn more
-                </a>
+              <TooltipContent side="top" align="center">
+                <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                  Current game phase
+                  <a href={DOCS_URL_phases} target="_blank" className="text-xs underline block">
+                    Learn more
+                  </a>
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

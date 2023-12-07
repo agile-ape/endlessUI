@@ -127,7 +127,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
       toast({
         variant: 'destructive',
         // title: 'Kick out failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }
@@ -146,13 +146,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
           state: 'killed',
         })
       }
-
       console.log({ args })
-      toast({
-        variant: 'info',
-        // title: 'Keyword updated',
-        description: <p className="text-base">Keyword updated. Time to rumble</p>,
-      })
     },
   })
 

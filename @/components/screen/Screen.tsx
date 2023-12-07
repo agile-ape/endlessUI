@@ -7,6 +7,7 @@ import Round from '../ui/Round'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
 import { useAccount, useContractReads } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 import Indicator from '../ui/Indicator'
 
 export default function Screen() {

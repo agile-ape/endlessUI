@@ -158,7 +158,7 @@ function Token() {
       toast({
         variant: 'destructive',
         title: 'Approve failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }
@@ -211,7 +211,7 @@ function Token() {
       toast({
         variant: 'destructive',
         title: 'Transfer failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }

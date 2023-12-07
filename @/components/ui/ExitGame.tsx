@@ -155,7 +155,7 @@ function ExitGame() {
       toast({
         variant: 'destructive',
         title: 'Exit Game failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }

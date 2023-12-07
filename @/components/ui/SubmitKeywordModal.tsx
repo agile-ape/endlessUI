@@ -163,8 +163,8 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
       const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || error?.message
       toast({
         variant: 'destructive',
-        title: 'Buy ticket failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        title: 'Submit keyword failed',
+        description: <p>{errorMsg}</p>,
       })
     }
   }

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import GameTextVariant from './_GameTextVariant'
 import useSWR from 'swr'
 import { fetcher, replacePlaceholders } from '@/lib/utils'
 import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../../services/constant'

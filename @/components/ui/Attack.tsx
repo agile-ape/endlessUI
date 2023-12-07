@@ -161,7 +161,7 @@ const Attack: FC<AttackType> = ({ id }) => {
       toast({
         variant: 'destructive',
         title: 'Attack ticket failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }
@@ -188,7 +188,7 @@ const Attack: FC<AttackType> = ({ id }) => {
       toast({
         variant: 'info',
         // title: 'Keyword updated',
-        description: <p className="text-base">Keyword updated. Time to rumble</p>,
+        description: <p>Keyword updated. Time to rumble</p>,
       })
     },
   })

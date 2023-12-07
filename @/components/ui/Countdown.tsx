@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Button } from './button'
 import { useEffect, useState } from 'react'
 import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import { defaultContractObj, DOCS_URL } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import PhaseChange from './PhaseChange'
 import { useStoreState } from '../../../store'
@@ -124,6 +124,7 @@ export default function Countdown() {
         // Clear the interval when countdown ends
         setTimeLeft(0)
         clearInterval(interval)
+        console.log('switch to B')
       }
     }, 1000) // Update every second
 
@@ -166,16 +167,29 @@ export default function Countdown() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
-                    {phase === 'start' && (
-                      <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                        {timeAdded} mins is added for every new joiner
-                      </p>
-                    )}
-                    {phase !== 'start' && (
-                      <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                        Countdown until this current phase ends
-                      </p>
-                    )}
+                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                      {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
+                      {phase === 'day' && (
+                        <p>
+                          Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends
+                        </p>
+                      )}
+                      {phase === 'night' && (
+                        <p>
+                          Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends
+                        </p>
+                      )}
+                      {(phase === 'lastmanfound' ||
+                        phase === 'peacefound' ||
+                        phase === 'drain') && (
+                        <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
+                      )}
+                      <div>
+                        <a href={DOCS_URL} target="_blank" className="text-xs underline">
+                          Learn more
+                        </a>
+                      </div>
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

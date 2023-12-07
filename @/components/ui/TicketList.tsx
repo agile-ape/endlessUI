@@ -5,7 +5,7 @@ import { Button } from './button'
 import { Gem, Users } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
-import { useContractWrite, useContractReads, useContractEvent } from 'wagmi'
+import { useAccount, useContractWrite, useContractReads, useContractEvent } from 'wagmi'
 import { LAST_MAN_STANDING_ADDRESS, defaultContractObj } from '../../../services/constant'
 import { fetcher, formatNumber, tokenConversion, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
@@ -23,6 +23,8 @@ const TicketList = () => {
 
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
+
+  const { address, isConnected } = useAccount()
 
   useEffect(() => {
     if (playerTickets.length) {
@@ -243,7 +245,7 @@ const TicketList = () => {
                 ownTicket={false}
                 ticketNumber={item.id}
                 ticket={item}
-                ticketLength={ticketListState.length}
+                // ticketLength={ticketListState.length}
                 // ticketLookInput={'afterPurchase'}
               />
             ))}
