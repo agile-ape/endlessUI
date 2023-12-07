@@ -2,18 +2,12 @@ import Countdown from '../ui/Countdown'
 import Image from 'next/image'
 
 import GameTab from '../ui/GameTab'
-import NextClaim from '../ui/_NextClaim'
 import Round from '../ui/Round'
 // import Ticket from '../ui/Ticket'
 import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import CheckIn from '../ui/_CheckInBox'
 import { useAccount, useContractReads } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
-import AllPrize from '../ui/_AllPrize'
-import GameStats from '../ui/_GameStats'
 import Indicator from '../ui/Indicator'
-import UserActions from '../ui/UserActions'
 
 export default function Screen() {
   const { isConnected } = useAccount()

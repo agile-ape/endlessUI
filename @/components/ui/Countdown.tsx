@@ -122,6 +122,7 @@ export default function Countdown() {
         setTimeLeft(timeLeftInMS / 1000)
       } else {
         // Clear the interval when countdown ends
+        setTimeLeft(0)
         clearInterval(interval)
       }
     }, 1000) // Update every second

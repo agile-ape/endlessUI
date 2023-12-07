@@ -235,16 +235,18 @@ const TicketList = () => {
             overflow-y-scroll max-h-[750px]
           "
         >
-          {ticketListState.map((item, i) => (
-            <TicketUI
-              key={item.id}
-              ownTicket={false}
-              ticketNumber={item.id}
-              ticket={item}
-              ticketLength={ticketListState.length}
-              // ticketLookInput={'afterPurchase'}
-            />
-          ))}
+          {ticketListState
+            .sort((a, b) => a.id - b.id)
+            .map((item, i) => (
+              <TicketUI
+                key={item.id}
+                ownTicket={false}
+                ticketNumber={item.id}
+                ticket={item}
+                ticketLength={ticketListState.length}
+                // ticketLookInput={'afterPurchase'}
+              />
+            ))}
         </div>
       )}
     </>

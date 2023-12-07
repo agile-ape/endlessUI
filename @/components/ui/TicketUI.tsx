@@ -59,6 +59,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     setIsOverlayInspect(false)
   }
 
+  const { address } = useAccount()
+
   /*------ Update TicketUI once action is done --------------*/
   // update to safehouse
   useContractEvent({
@@ -577,6 +579,12 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
       {!isOverlayInspect && (
         <>
           {/* top header */}
+          {!ownTicket && address?.toLowerCase() === ticket?.user && (
+            <p className="rounded border border-black w-max mx-auto px-1 py-0.5 bg-red-400">
+              Your ticket
+            </p>
+          )}
+
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
               Player{' '}
