@@ -84,7 +84,7 @@ function CheckOut() {
       toast({
         variant: 'destructive',
         title: 'Check out failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }

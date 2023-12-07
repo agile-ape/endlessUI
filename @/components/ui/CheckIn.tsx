@@ -143,7 +143,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
       toast({
         variant: 'destructive',
         title: 'Check into Safehouse failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }
@@ -162,7 +162,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkIn" className="w-full text-xl flex justify-start">
+        <Button variant="checkIn" className={`w-full text-xl flex justify-start`}>
           <OnSignal active={checkInActive} own={true} />
           Check In
           {/* <LogIn size={16} className="text-sm ml-1"></LogIn> */}

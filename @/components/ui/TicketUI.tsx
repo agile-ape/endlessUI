@@ -51,6 +51,8 @@ const getTicketSize = (ownTicket) => {
 const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLength }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
+  const playerTickets = useStoreState((state) => state.tickets)
+
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
   }
@@ -62,34 +64,34 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const { address } = useAccount()
 
   /*------ Update TicketUI once action is done --------------*/
-  // update to safehouse
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'CheckIntoSafehouse',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, checkOutDate, time } = args
+  // // update to safehouse
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'CheckIntoSafehouse',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { caller, checkOutDate, time } = args
 
-      if (Number(caller) === ticketNumber) {
-        refetch()
-      }
-      // console.log({ args })
-    },
-  })
+  //     if (Number(caller) === ticketNumber) {
+  //       refetch()
+  //     }
+  //     // console.log({ args })
+  //   },
+  // })
 
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'CheckOutFromSafehouse',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, time } = args
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'CheckOutFromSafehouse',
+  //   listener: (event) => {
+  //     const args = event[0]?.args
+  //     const { caller, time } = args
 
-      if (Number(caller) === ticketNumber) {
-        refetch()
-      }
-      // console.log({ args })
-    },
-  })
+  //     if (Number(caller) === ticketNumber) {
+  //       refetch()
+  //     }
+  //     // console.log({ args })
+  //   },
+  // })
 
   const { data: ensName } = useEnsName({
     address: ticket?.user,
@@ -143,7 +145,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
 
-  const totalTicketCount = ticketLength
+  const totalTicketCount = playerTickets.length
 
   const quartile = (ticketRank / totalTicketCount) * 100
 

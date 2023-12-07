@@ -17,6 +17,14 @@ import { DialogClose } from '@radix-ui/react-dialog'
 
 const getAlertLook = (alertLookTest: string) => {
   switch (alertLookTest) {
+    case 'changePhase':
+      return {
+        bgImage: 'rainbow',
+        face: 'salute',
+        title: 'Phase Changed!',
+        message: 'We thank you for your service',
+      }
+
     //used
     case 'sentTokens':
       return {

@@ -1,9 +1,10 @@
 import Image from 'next/image'
+import React, { useRef, useState } from 'react'
 import CustomConnectButton from '@/components/ui/connect-button'
-import Menu from './_Menu'
+
 import Logo from './ui/Logo'
 import SideMenu from './SideMenu'
-import DarkModeSwitcher from './ui/_DarkModeSwitcher'
+
 import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
@@ -29,8 +30,17 @@ import Admin from './ui/Admin'
 
 function Header() {
   const { isConnected } = useAccount()
-
+  const [hoveredLink, setHoveredLink] = useState<null | number>(null)
+  const [hoveredHeader, setHoveredHeader] = useState<null | boolean>(false)
   const router = useRouter()
+
+  const handleLinkHover = (index: number) => {
+    setHoveredLink(index)
+  }
+
+  // const handleHeaderHover = (index: boolean) => {
+  //   setHoveredHeader(index)
+  // }
 
   const isActive = (href: string) => {
     return router.pathname === href
@@ -52,7 +62,7 @@ function Header() {
         <div className="flex justify-self-end xl:hidden order-4">
           <SideMenu />
         </div>
-        <div className="hidden xl:flex items-center">
+        <div className={`hidden xl:flex items-center space-x-4`}>
           {/* custom styling */}
           {/* border border-white/40 rounded-md */}
           {/* <Link
@@ -65,23 +75,27 @@ function Header() {
             Quickstart
           </Link> */}
           <a href={DOCS_URL} target="_blank">
-            <Button variant="link" className="px-2 text-lg" size="sm">
-              Quickstart <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            <Button variant="link" className={`px-2 text-lg`} size="sm">
+              Docs
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
           <a href={TWITTER_URL} target="_blank">
-            <Button variant="link" className="px-2 text-lg" size="sm">
-              Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            <Button variant="link" className={`px-2 text-lg`} size="sm">
+              Follow
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
           <a href={TELEGRAM_URL} target="_blank">
-            <Button variant="link" className="px-2 text-lg" size="sm">
-              Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            <Button variant="link" className={`px-2 text-lg`} size="sm">
+              Community
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
           <a href={BLOG_URL} target="_blank">
-            <Button variant="link" className="px-2 text-lg" size="sm">
-              Blog <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+            <Button variant="link" className={`px-2 text-lg`} size="sm">
+              Blog
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
           <div className="ml-2">

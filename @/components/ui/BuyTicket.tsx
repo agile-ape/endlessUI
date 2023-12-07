@@ -118,7 +118,7 @@ function BuyTicket() {
       toast({
         variant: 'destructive',
         title: 'Buy ticket failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }

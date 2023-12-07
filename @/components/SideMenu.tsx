@@ -73,7 +73,8 @@ export default function SideMenu() {
           </Link> */}
           <a href={DOCS_URL} target="_blank">
             <Button variant="link" size="md">
-              Quickstart <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+              Docs
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
         </DropdownMenuItem>
@@ -81,7 +82,8 @@ export default function SideMenu() {
         <DropdownMenuItem className="cursor-pointer">
           <a href={TWITTER_URL} target="_blank">
             <Button variant="link" size="md">
-              Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+              Follow
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
         </DropdownMenuItem>
@@ -89,7 +91,8 @@ export default function SideMenu() {
         <DropdownMenuItem className="cursor-pointer">
           <a href={TELEGRAM_URL} target="_blank">
             <Button variant="link" size="md">
-              Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+              Community
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
         </DropdownMenuItem>
@@ -97,7 +100,8 @@ export default function SideMenu() {
         <DropdownMenuItem className="cursor-pointer">
           <a href={BLOG_URL} target="_blank">
             <Button variant="link" size="md">
-              Blog <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+              Blog
+              {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
         </DropdownMenuItem>

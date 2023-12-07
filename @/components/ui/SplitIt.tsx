@@ -203,7 +203,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
       toast({
         variant: 'destructive',
         title: 'Split failed',
-        description: <p className="text-base">{errorMsg}</p>,
+        description: <p>{errorMsg}</p>,
       })
     }
   }

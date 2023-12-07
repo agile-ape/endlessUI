@@ -32,7 +32,8 @@ const buttonVariants = cva(
 
         /*-------------------- HEADER ---------------------*/
 
-        link: 'text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
+        // link: 'text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
+        link: 'text-gray-600 dark:text-gray-200 whitespace-nowrap bg-transparent transition-opacity duration-[400ms] ease-in-out active:underline hover:underline font-medium focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4',
 
         // buy: 'dark:bg-blue-800 bg-lime-500 whitespace-nowrap hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
 
@@ -85,7 +86,7 @@ const buttonVariants = cva(
 
         // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
         primary:
-          'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:bg-transparent dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+          'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:border-2 hover:border-black dark:hover:text-white hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
 
         // secondary:
         //   'text-blue-950 dark:text-white whitespace-nowrap border-2 border-blue-950 dark:border-2 dark:border-white bg-transparent hover:bg-sky-800 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',

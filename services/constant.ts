@@ -27,21 +27,21 @@ export const whitelistContractObj = {
 }
 
 export const DOCS_URL = 'https://docs.lastman.xyz'
-export const DOCS_URL_stages = 'https://lastman-n4p5h.notaku.site/more-info/more-on-stages'
+export const DOCS_URL_stages = 'https://docs.lastman.xyz/more-info/more-on-stages'
 
-export const DOCS_URL_buy = 'https://lastman-n4p5h.notaku.site/more-info/more-on-start'
+export const DOCS_URL_buy = 'https://docs.lastman.xyz/more-info/more-on-start'
 export const DOCS_URL_exit =
-  'https://lastman-n4p5h.notaku.site/more-info/more-on-submit#7a1575b9c3ef4632a8336be33faa90e9'
-export const DOCS_URL_submit = 'https://lastman-n4p5h.notaku.site/more-info/more-on-submit'
-export const DOCS_URL_safehouse = 'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse'
-export const DOCS_URL_attack = 'https://lastman-n4p5h.notaku.site/more-info/more-on-attack'
+  'https://docs.lastman.xyz/more-info/more-on-submit#7a1575b9c3ef4632a8336be33faa90e9'
+export const DOCS_URL_submit = 'https://docs.lastman.xyz/more-info/more-on-submit'
+export const DOCS_URL_safehouse = 'https://docs.lastman.xyz/more-info/more-on-safehouse'
+export const DOCS_URL_attack = 'https://docs.lastman.xyz/more-info/more-on-attack'
 export const DOCS_URL_checkout =
-  'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse#eb59b65bb02845e894fdc55400c7d6ab'
+  'https://docs.lastman.xyz/more-info/more-on-safehouse#eb59b65bb02845e894fdc55400c7d6ab'
 export const DOCS_URL_kickout =
-  'https://lastman-n4p5h.notaku.site/more-info/more-on-safehouse#93cd2d661c9b4bd8b42daacbce9ce24c'
-export const DOCS_URL_split = 'https://lastman-n4p5h.notaku.site/more-info/more-on-stages'
+  'https://docs.lastman.xyz/more-info/more-on-safehouse#93cd2d661c9b4bd8b42daacbce9ce24c'
+export const DOCS_URL_split = 'https://docs.lastman.xyz/more-info/more-on-stages'
 
-export const DOCS_URL_phases = 'https://lastman-n4p5h.notaku.site/glossary/phases'
+export const DOCS_URL_phases = 'https://docs.lastman.xyz/guide/phases'
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
 export const BLOG_URL = 'https://blog.lastman.xyz'
 

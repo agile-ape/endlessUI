@@ -1,12 +1,13 @@
+import React, { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
-import React from 'react'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
-import { useStoreState } from '../../../store'
+import { useStoreActions, useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import {
   Dialog,
   DialogContent,
@@ -44,6 +45,7 @@ const bgColorPhase: Record<string, string> = {
 
 const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   const { address, isConnected } = useAccount()
 
@@ -59,28 +61,58 @@ const PhaseChange = () => {
   let phaseChangeActive: boolean
   phaseChangeActive = ticketId > 0
 
-  const { write, isLoading } = useContractWrite({
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setIsModalOpen(false))
+
+  const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: mappedFunction[phase] as any,
+  })
 
-    onError(error) {
-      // @ts-ignore
-      const errorMsg = error?.cause?.shortMessage || error?.message
+  const phaseChangeHandler = async () => {
+    try {
+      const tx = await writeAsync({})
+      const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'changePhase',
+      })
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
       toast({
         variant: 'destructive',
-        // title: 'Its not time yet 😭',
-        description: <p className="text-base">{errorMsg}</p>,
+        title: 'Its not time yet',
+        description: <p>{errorMsg}</p>,
       })
-    },
-    onSuccess(data) {
-      console.log('Success', data)
-      toast({
-        variant: 'success',
-        // title: 'The phase has change',
-        description: 'The phase has change!',
-      })
-    },
-  })
+    }
+  }
+
+  //   onError(error) {
+  //     // @ts-ignore
+  //     const errorMsg = error?.cause?.shortMessage || error?.message
+  //     toast({
+  //       variant: 'destructive',
+  //       // title: 'Its not time yet 😭',
+  //       description: <p>{errorMsg}</p>,
+  //     })
+  //   },
+  //   onSuccess(data) {
+  //     console.log('Success', data)
+
+  //     toast({
+  //       variant: 'success',
+  //       // title: 'The phase has change',
+  //       description: 'The phase has change!',
+  //     })
+  //   },
+  // })
 
   return (
     <Dialog>
@@ -162,12 +194,9 @@ const PhaseChange = () => {
                 <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
                   {phaseChangeActive && (
                     <Button
-                      disabled={!write || !playerTicket}
-                      // size="md"
                       variant="default"
-                      onClick={() => write()}
+                      onClick={phaseChangeHandler}
                       isLoading={isLoading}
-                      // variant="change"
                       className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
                     >
                       {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
@@ -179,7 +208,6 @@ const PhaseChange = () => {
                     <Button
                       disabled
                       variant="default"
-                      onClick={() => write()}
                       className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
                     >
                       Change phase

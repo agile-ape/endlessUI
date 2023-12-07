@@ -138,7 +138,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         toast({
           variant: 'info',
           title: 'Ticket buying',
-          description: <p className="text-base">Ticket buying has started.</p>,
+          description: <p>Ticket buying has started.</p>,
         })
       }
 
@@ -147,7 +147,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         toast({
           variant: 'info',
           title: 'Day has come',
-          description: <p className="text-base">Day has come.</p>,
+          description: <p>Day has come. Remember to submit keyword.</p>,
         })
       }
 
@@ -156,7 +156,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         toast({
           variant: 'info',
           title: 'Night has come',
-          description: <p className="text-base">Night has come.</p>,
+          description: <p>Night has come. Let the attacks begin</p>,
         })
       }
 

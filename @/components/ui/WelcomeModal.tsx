@@ -41,7 +41,7 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
                 <br />
                 Check our{' '}
                 <a href={DOCS_URL} className="underline">
-                  Quickstart
+                  Docs
                 </a>{' '}
                 to learn more.
               </div>
