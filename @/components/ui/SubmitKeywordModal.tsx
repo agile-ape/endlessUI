@@ -31,18 +31,9 @@ interface SubmitKeywordModalType {
 }
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, playerTicket }) => {
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  // const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
 
   // Address read
-  const { address, isConnected } = useAccount()
   const { data: walletClient } = useWalletClient()
-
-  // const { data: playerTicket } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'playerTicket',
-  //   args: [address as `0x${string}`],
-  //   cacheTime: 2000,
-  // })
 
   let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
@@ -112,6 +103,9 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
         body: JSON.stringify({
           keyword: input,
         }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
 
       const res = await data.json()
@@ -123,27 +117,19 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
   }
 
   const submitKeyword = async (input: string) => {
-    console.log({ input })
     try {
-      // const verifyResult = await verifyKeyword(input)
-      // console.log({ verifyResult })
+      if (!input) return
 
-      // const hashedMessage = toBytes(input)
+      const verifyResult = await verifyKeyword(input)
+      if (verifyResult?.error) {
+        toast({
+          variant: 'destructive',
+          title: 'Invalid keyword',
+          description: <p className="text-base">Keyword is not match.</p>,
+        })
 
-      // TEST
-      // keyword = keccak256(
-      //   abi.encodePacked('\x19Ethereum Signed Message:\n32', keccak256(abi.encodePacked(_newKeyword))),
-      // )
-
-      // const hashedMessageFull = keccak256(
-      //   encodePacked(
-      //     ['string', 'bytes'],
-      //     ['\x19Ethereum Signed Message:\n32', keccak256(encodePacked(['string'], [input]))],
-      //   ),
-      // )
-      // console.log(hashedMessageFull)
-
-      // const lowercaseInput = input.toLowerCase();
+        return
+      }
 
       const hashedMessage = keccak256(encodePacked(['string'], [input.toLowerCase()]))
       console.log(hashedMessage)
@@ -324,25 +310,18 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                           className="dark:text-white text-black"
                         />
 
-                        {active && (
-                          <Button
-                            variant="submit"
-                            size="lg"
-                            onClick={() => submitKeyword(otpInput)}
-                          >
-                            Submit
-                          </Button>
-                        )}
+                        <Button
+                          variant="submit"
+                          size="lg"
+                          onClick={() => submitKeyword(otpInput)}
+                          disabled={(!active && ticketStatusString !== 'safe') || !svgKeyword}
+                        >
+                          Submit
+                        </Button>
 
                         {!active && ticketStatusString === 'safe' && (
                           <Button variant="submit" size="lg" className="w-[100%]" disabled>
                             In Safehouse
-                          </Button>
-                        )}
-
-                        {!active && ticketStatusString !== 'safe' && (
-                          <Button variant="submit" size="lg" className="w-[100%]" disabled>
-                            Submit
                           </Button>
                         )}
                       </div>
