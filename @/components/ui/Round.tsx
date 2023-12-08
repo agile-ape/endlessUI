@@ -26,8 +26,7 @@ import { formatUnits, parseUnits } from 'viem'
 // }
 
 // Adjust later to pull from blockchain
-const Round = () => {
-  const phase = useStoreState((state) => state.phase)
+const Round = ({ phase }: { phase: string }) => {
   const round = useStoreState((state) => state.round)
 
   const { data, refetch } = useContractReads({

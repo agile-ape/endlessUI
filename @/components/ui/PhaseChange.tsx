@@ -115,15 +115,11 @@ const PhaseChange = () => {
   // })
 
   return (
-    <Dialog>
+    <Dialog open={isModalOpen}>
       <DialogTrigger asChild>
         <Button
-          // disabled={!write || !playerTicket}
-          // size="md"
+          onClick={() => setIsModalOpen(true)}
           variant="default"
-          // onClick={() => write()}
-          // isLoading={isLoading}
-          // variant="change"
           className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
         >
           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
@@ -133,7 +129,7 @@ const PhaseChange = () => {
       </DialogTrigger>
 
       <DialogContent>
-        <div className="overflow-auto">
+        <div className="overflow-auto" ref={modalRef}>
           <DialogHeader className="items-center">
             <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
               Trigger the phase change

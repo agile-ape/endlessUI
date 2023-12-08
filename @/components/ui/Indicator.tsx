@@ -3,9 +3,7 @@ import { useStoreState } from '../../../store'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { DOCS_URL_phases } from '../../../services/constant'
 
-export default function Indicator() {
-  const phase = useStoreState((state) => state.phase)
-  console.log(phase)
+export default function Indicator({ phase }: { phase: string }) {
   const indicator = `${phase}Indicator.svg`
 
   return (

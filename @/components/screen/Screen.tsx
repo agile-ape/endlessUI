@@ -9,9 +9,11 @@ import Title from '../ui/Title'
 import { useAccount, useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import Indicator from '../ui/Indicator'
+import { useStoreState } from '../../../store'
 
 export default function Screen() {
   const { isConnected } = useAccount()
+  const phase = useStoreState((state) => state.phase)
 
   // const { data } = useContractReads({
   //   contracts: [
@@ -45,9 +47,9 @@ export default function Screen() {
 
       {/* top container */}
       <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
-        <Round />
-        <Countdown />
-        <Indicator />
+        <Round phase={phase} />
+        <Countdown phase={phase} />
+        <Indicator phase={phase} />
       </div>
 
       {/* bottom container */}

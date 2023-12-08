@@ -6,7 +6,13 @@ import { Timer } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
-import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
+import {
+  useAccount,
+  useContractEvent,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+} from 'wagmi'
 import { defaultContractObj, DOCS_URL } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import PhaseChange from './PhaseChange'
@@ -37,9 +43,9 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
-export default function Countdown() {
+export default function Countdown({ phase }: { phase: string }) {
   const [timeLeft, setTimeLeft] = useState<number>()
-  const phase = useStoreState((state) => state.phase)
+  const [timeFlag, setTimeFlag] = useState<number>()
 
   // const phase = 'gameclosed'
 
@@ -70,18 +76,22 @@ export default function Countdown() {
         functionName: 'timeAddon',
       },
     ],
+    onSuccess(data) {
+      setTimeFlag(Number(data[0].result) || 0)
+    },
   })
 
-  // const timeFlag = useStoreState((state) => state.timeFlag)
-  // const countdownTime = useStoreState((state) => state.countdownTime)
-  // const timeAddon = useStoreState((state) => state.timeAddon)
-  // const dayTime = useStoreState((state) => state.dayTime)
-  // const nightTime = useStoreState((state) => state.nightTime)
-  // const gameCloseTime = useStoreState((state) => state.gameCloseTime)
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'PhaseChange',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, previousPhase, newPhase, time } = args
 
-  // const timeAddon = useStoreState((state) => state.timeAddon)
+      setTimeFlag(Number(time) || 0)
+    },
+  })
 
-  const timeFlag = data?.[0].result || BigInt(0)
   const countdownTime = data?.[1].result || BigInt(0)
   const dayTime = data?.[2].result || BigInt(0)
   const nightTime = data?.[3].result || BigInt(0)
@@ -164,30 +174,28 @@ export default function Countdown() {
                       </div>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent side="top" align="center">
-                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                      {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
-                      {phase === 'day' && (
-                        <p>
-                          Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends
-                        </p>
-                      )}
-                      {phase === 'night' && (
-                        <p>
-                          Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends
-                        </p>
-                      )}
-                      {(phase === 'lastmanfound' ||
-                        phase === 'peacefound' ||
-                        phase === 'drain') && (
-                        <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
-                      )}
-                      <div>
-                        <a href={DOCS_URL} target="_blank" className="text-xs underline">
-                          Learn more
-                        </a>
-                      </div>
-                    </p>
+                  <TooltipContent
+                    side="top"
+                    align="center"
+                    className="px-3 py-1 max-w-[240px] text-sm cursor-default"
+                  >
+                    {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
+                    {phase === 'day' && (
+                      <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
+                    )}
+                    {phase === 'night' && (
+                      <p>
+                        Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends
+                      </p>
+                    )}
+                    {(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') && (
+                      <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
+                    )}
+                    <div>
+                      <a href={DOCS_URL} target="_blank" className="text-xs underline">
+                        Learn more
+                      </a>
+                    </div>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

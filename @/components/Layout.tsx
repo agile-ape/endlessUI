@@ -24,7 +24,7 @@ import { getTickets } from '../../services/api'
 import { fetcher, isJson, transformToTicket } from '@/lib/utils'
 import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
 import { io } from 'socket.io-client'
 
@@ -52,8 +52,9 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
-
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
+
+  const { mutate: globalMutate } = useSWRConfig()
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('showWelcomeModal')
@@ -132,7 +133,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       const args = event[0]?.args
       const { caller, previousPhase, newPhase, time } = args
       refetchInitData()
-      refreshData()
+
       // start
       if (newPhase === 1) {
         toast({
@@ -189,6 +190,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           state: 'gameClosed',
         })
       }
+
+      globalMutate('phase')
     },
   })
 

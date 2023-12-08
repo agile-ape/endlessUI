@@ -22,8 +22,8 @@ const chainsConfig = [
 ]
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
-  infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
-  // publicProvider(),
+  // infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
+  publicProvider(),
 ])
 
 const { connectors } = getDefaultWallets({
@@ -85,7 +85,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
           >
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={...pageProps.metadata} phase={pageProps?.phase}>
+            <Layout metadata={...pageProps.metadata} phase={data?.phase || 'night'}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>
