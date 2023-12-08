@@ -94,13 +94,13 @@ export default function Countdown() {
 
   if (phase === 'start') {
     // timeAddon is added to countdownTime whenever someone buys a ticket
-    endTime = new Date(Number(timeFlag) * 1000 + Number(countdownTime) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(countdownTime)) * 1000)
   } else if (phase === 'day') {
-    endTime = new Date(Number(timeFlag) * 1000 + Number(dayTime) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(dayTime)) * 1000)
   } else if (phase === 'night') {
-    endTime = new Date(Number(timeFlag) * 1000 + Number(nightTime) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(nightTime)) * 1000)
   } else if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
-    endTime = new Date(Number(timeFlag) * 1000 + Number(gameCloseTime) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(gameCloseTime)) * 1000)
   } else if (phase === 'deployed' || phase === 'gameclosed') {
     endTime = new Date()
   } else {
@@ -124,14 +124,12 @@ export default function Countdown() {
         // Clear the interval when countdown ends
         setTimeLeft(0)
         clearInterval(interval)
-        console.log('switch to B')
       }
     }, 1000) // Update every second
 
     return () => clearInterval(interval) // Cleanup on unmount
   }, [endTime])
 
-  // <Timer size={28} className="stroke-slate-900 dark:stroke-slate-100" />
   return (
     <>
       {(phase === 'deployed' || phase === 'gameclosed') && <></>}
