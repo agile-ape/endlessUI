@@ -1,8 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { fetcher, replacePlaceholders } from '@/lib/utils'
-import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../../services/constant'
+import {
+  API_ENDPOINT,
+  LAST_MAN_STANDING_ADDRESS,
+  WEBSOCKET_ENDPOINT,
+} from '../../../services/constant'
 import { formatDistanceToNow } from 'date-fns'
+import { io } from 'socket.io-client'
+
+type Feeds = {
+  block_timestamp: number
+  block_number: number
+  datetime: number
+  message: {
+    value: string
+    args: Record<string, string>
+  }
+}
 
 // Limit to 15 events. Avoid scrolling if possible
 const GameFeed = () => {
@@ -18,9 +33,30 @@ const GameFeed = () => {
     }[]
   }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=30`, fetcher)
 
+  const [feeds, setFeeds] = useState<Feeds[]>([])
+
+  useEffect(() => {
+    if (data?.data?.length) {
+      setFeeds(data.data)
+    }
+  }, [data])
+
+  useEffect(() => {
+    const socket = io(WEBSOCKET_ENDPOINT)
+
+    socket.on('events', (data) => {
+      console.log('events', data)
+      setFeeds((prev) => [data, ...prev])
+    })
+
+    return () => {
+      socket.close()
+    }
+  }, [])
+
   return (
     <div className="overflow-auto max-h-[80vh] container-last rounded-xl px-5">
-      {data?.data?.map((item, index) => (
+      {feeds?.map((item, index) => (
         <div
           key={item.block_number}
           className="flex flex-col justify-between py-1 tracking-wide

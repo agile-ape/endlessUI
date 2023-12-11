@@ -117,10 +117,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       }
     })
 
-    socket.on('events', (data) => {
-      console.log('events', data)
-    })
-
     return () => {
       socket.close()
     }
