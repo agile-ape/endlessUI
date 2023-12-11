@@ -23,9 +23,9 @@ export default function Logo() {
       onClick={() => console.log('last')}
       onMouseOver={handleHover}
       onMouseLeave={handleLeave}
-      className="h-12 w-16 rounded-md 
+      className="h-12 w-18 rounded-md 
       px-2 py-0 text-[34px] font-headline
-      text-white bg-red-800 
+      text-white bg-red-800 hover:text-[37px]
       transition-colors capitalized
       "
     >

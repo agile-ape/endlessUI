@@ -27,6 +27,7 @@ import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
 import { io } from 'socket.io-client'
+import { formatUnits, parseUnits } from 'viem'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -48,6 +49,8 @@ type LayoutProps = {
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updateStage = useStoreActions((actions) => actions.updateStage)
+  const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
@@ -122,6 +125,76 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     }
   }, [])
 
+  // Safehouse price
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'SafehousePrice',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { price, time } = args
+      const priceRate = formatUnits(price || BigInt(0), 3)
+      toast({
+        variant: 'info',
+        // title: 'Keyword updated',
+        description: <p>Safehouse price is now {priceRate} $LAST per night </p>,
+      })
+    },
+  })
+
+  // tokens emission
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'TokenEmission',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { emission, time } = args
+      const emissionRate = formatUnits(emission || BigInt(0), 3)
+      toast({
+        variant: 'info',
+        // title: 'Keyword updated',
+        description: <p>Tokens are now emitted at {emissionRate} $LAST per attack </p>,
+      })
+    },
+  })
+
+  // trigger drain
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'DrainTriggered',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { drainRound, drainRate, time } = args
+      const drainBegins = formatUnits(drainRound || BigInt(0), 0)
+      toast({
+        variant: 'info',
+        // title: 'Keyword updated',
+        description: (
+          <p>
+            Pot will starting draining on round <span className="round-last">{drainBegins}</span>.
+          </p>
+        ),
+      })
+    },
+  })
+
+  // Vote Yes Vote No - update vote count
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'VoteYes',
+    listener: (event) => {
+      refetchInitData()
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'VoteNo',
+    listener: (event) => {
+      refetchInitData()
+    },
+  })
+
+  // phase change
   useContractEvent({
     ...defaultContractObj,
     eventName: 'PhaseChange',
@@ -258,6 +331,22 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'ticketCount',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'suddenDeath',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainStart',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'drainSwitch',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'voteCount',
+      },
       // {
       //   ...defaultContractObj,
       //   functionName: 'ticketId',
@@ -270,11 +359,31 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
     const ticketCount = data[2]?.result || 0
-    // const totalTickets = data[3]?.result || 0
+    const suddenDeath = data[3]?.result || 0
+    const drainStart = data[4]?.result || 0
+    const drainSwitch = Boolean(data[5]?.result || 0)
+    const voteCount = data[6]?.result || 0
+
+    // Active condition
+    let stage: number
+
+    if (round === 0) {
+      stage = 0
+    } else if (round < suddenDeath) {
+      stage = 1
+    } else if (round >= suddenDeath && drainSwitch === false) {
+      stage = 2
+    } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
+      stage = 3
+    } else {
+      stage = 0
+    }
 
     updateRound(Number(round))
     updatePhase(Number(phase))
     updateTicketCount(Number(ticketCount))
+    updateStage(Number(stage))
+    updateVoteCount(Number(voteCount))
     // updatePhase(Number(2))
     // updateNextTicketPrice(Number(nextTicketPrice))
   }

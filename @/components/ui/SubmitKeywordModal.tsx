@@ -31,11 +31,14 @@ interface SubmitKeywordModalType {
 }
 const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, playerTicket }) => {
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   // Address read
   const { data: walletClient } = useWalletClient()
 
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  let ticketStatus = ownedTicket?.status || 0
+
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Contract Write
@@ -125,7 +128,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
         toast({
           variant: 'destructive',
           title: 'Invalid keyword',
-          description: <p className="text-base">Keyword is not match.</p>,
+          description: <p className="text-base">Keyword does not match.</p>,
         })
 
         return
@@ -240,7 +243,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                       <a
                         href={DOCS_URL_submit}
                         target="_blank"
-                        className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                        className="link text-xs sm:text-sm md:text-base leading-tight"
                       >
                         Learn more
                       </a>
@@ -279,8 +282,11 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                     flex flex-col items-center mx-auto mb-4
                       py-2"
                     >
-                      <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">
-                        Submit
+                      <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-center text-zinc-500 dark:text-zinc-400">
+                        {ticketStatusString === 'submitted' && (
+                          <span>You have already submitted. Submit again?</span>
+                        )}
+                        {ticketStatusString !== 'submitted' && <span>Submit keyword</span>}
                       </div>
                       <div
                         className="
@@ -315,6 +321,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                           size="lg"
                           onClick={() => submitKeyword(otpInput)}
                           disabled={(!active && ticketStatusString !== 'safe') || !svgKeyword}
+                          // disabled={!active && ticketStatusString !== 'safe'}
                         >
                           Submit
                         </Button>

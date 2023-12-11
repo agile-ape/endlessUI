@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from './button'
 import { HelpCircle } from 'lucide-react'
-import SafehouseAction from './_SafehouseAction'
 import SubmitKeywordModal from './SubmitKeywordModal'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import CheckIn from './CheckIn'
@@ -10,7 +9,7 @@ import SplitIt from './SplitIt'
 import ExitGame from './ExitGame'
 import Inspect from './Attack'
 import KickOut from './KickOut'
-import ChangePhase from './_ChangePhase'
+
 import { Send, Home } from 'lucide-react'
 import OnSignal from './OnSignal'
 import Image from 'next/image'
@@ -18,6 +17,7 @@ import {
   useAccount,
   useContractRead,
   useContractWrite,
+  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -29,25 +29,65 @@ const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const toggle = () => setShowModal((prevState) => !prevState)
   const phase = useStoreState((state) => state.phase)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   // Address read
-  const { address, isConnected } = useAccount()
+  // const { address, isConnected } = useAccount()
 
-  const { data: playerTicket } = useContractRead({
-    ...defaultContractObj,
-    functionName: 'playerTicket',
-    args: [address as `0x${string}`],
-    cacheTime: 3_000,
-  })
+  // const { data: playerTicket, refetch } = useContractRead({
+  //   ...defaultContractObj,
+  //   functionName: 'playerTicket',
+  //   args: [address as `0x${string}`],
+  //   cacheTime: 3_000,
+  // })
 
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  // let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+
+  const ticketStatus = ownedTicket?.status || 0
+  const ticketIsInPlay = ownedTicket?.isInPlay || false
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
   // const ticketStatusString = 'safe'
 
   // Active condition
   const submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
+
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'KeywordSubmitted',
+  //   listener: (event) => {
+  //     refetch()
+  //   },
+  // })
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'CheckIntoSafehouse',
+  //   listener: (event) => {
+  //     refetch()
+  //   },
+  // })
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'CheckOutFromSafehouse',
+  //   listener: (event) => {
+  //     refetch()
+  //   },
+  // })
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'VoteYes',
+  //   listener: (event) => {
+  //     refetch()
+  //   },
+  // })
+  // useContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'VoteNo',
+  //   listener: (event) => {
+  //     refetch()
+  //   },
+  // })
 
   return (
     <div
@@ -60,12 +100,10 @@ const UserActions = () => {
         Submit Keyword
       </Button>
 
-      <CheckIn playerTicket={playerTicket} />
-      <SplitIt playerTicket={playerTicket} />
+      <CheckIn playerTicket={''} />
+      <SplitIt playerTicket={''} />
 
-      {showModal && (
-        <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={playerTicket} />
-      )}
+      {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={''} />}
     </div>
   )
 }

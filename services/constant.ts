@@ -27,21 +27,18 @@ export const whitelistContractObj = {
 }
 
 export const DOCS_URL = 'https://docs.lastman.xyz'
-export const DOCS_URL_stages = 'https://docs.lastman.xyz/more-info/more-on-stages'
+export const DOCS_URL_stages = `${DOCS_URL}/stages`
+export const DOCS_URL_buy = `${DOCS_URL}/start`
+export const DOCS_URL_start = `${DOCS_URL}/start`
+export const DOCS_URL_exit = `${DOCS_URL}/day#7a1575b9c3ef4632a8336be33faa90e9`
+export const DOCS_URL_submit = `${DOCS_URL}/day`
+export const DOCS_URL_attack = `${DOCS_URL}/night`
+export const DOCS_URL_safehouse = `${DOCS_URL}/safehouse`
+export const DOCS_URL_checkout = `${DOCS_URL}/safehouse#eb59b65bb02845e894fdc55400c7d6ab`
+export const DOCS_URL_kickout = `${DOCS_URL}/safehouse#93cd2d661c9b4bd8b42daacbce9ce24c`
+export const DOCS_URL_split = `${DOCS_URL}/stages#cb029b4005c94699b1d7eb8856321ea6`
+export const DOCS_URL_phases = `${DOCS_URL}/cheat-sheet#d6ba862cb0a348e0806e3630e8fa5ec1`
 
-export const DOCS_URL_buy = 'https://docs.lastman.xyz/more-info/more-on-start'
-export const DOCS_URL_exit =
-  'https://docs.lastman.xyz/more-info/more-on-submit#7a1575b9c3ef4632a8336be33faa90e9'
-export const DOCS_URL_submit = 'https://docs.lastman.xyz/more-info/more-on-submit'
-export const DOCS_URL_safehouse = 'https://docs.lastman.xyz/more-info/more-on-safehouse'
-export const DOCS_URL_attack = 'https://docs.lastman.xyz/more-info/more-on-attack'
-export const DOCS_URL_checkout =
-  'https://docs.lastman.xyz/more-info/more-on-safehouse#eb59b65bb02845e894fdc55400c7d6ab'
-export const DOCS_URL_kickout =
-  'https://docs.lastman.xyz/more-info/more-on-safehouse#93cd2d661c9b4bd8b42daacbce9ce24c'
-export const DOCS_URL_split = 'https://docs.lastman.xyz/more-info/more-on-stages'
-
-export const DOCS_URL_phases = 'https://docs.lastman.xyz/guide/phases'
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
 export const BLOG_URL = 'https://blog.lastman.xyz'
 

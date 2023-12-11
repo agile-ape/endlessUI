@@ -22,6 +22,7 @@ import {
   useContractReads,
   useContractWrite,
   useWaitForTransaction,
+  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -50,6 +51,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
   const phase = useStoreState((state) => state.phase)
   // const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -80,17 +82,20 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
   })
 
   // const playerTicket = data?.[0].result || null
-  const safehouseCostPerNight = data?.[1].result || BigInt(0)
+  const safehouseCostPerNight = data?.[0].result || BigInt(0)
   const balanceOf = data?.[1].result || BigInt(0)
 
-  const ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  const ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  const ticketSafehouseNights = Number(playerTicket?.[15] || 0)
+  // const ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  // const ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  // const ticketSafehouseNights = Number(playerTicket?.[15] || 0)
+
+  const ticketStatus = ownedTicket?.status || 0
+  const ticketIsInPlay = ownedTicket?.isInPlay || false
+  const ticketSafehouseNights = ownedTicket?.safehouseNights || 0
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   const stayCost = formatUnits(safehouseCostPerNight, 3)
-
   const tokenBalance = formatUnits(balanceOf, 18)
 
   // Token contract read
@@ -155,6 +160,17 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
         refetch()
       }
       console.log({ data })
+    },
+  })
+
+  // Safehouse price
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'SafehousePrice',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { price, time } = args
+      refetch()
     },
   })
 
@@ -234,7 +250,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
                   <a
                     href={DOCS_URL_safehouse}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="link text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>
@@ -267,7 +283,6 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
                       <p className="text-right"> {stayCost} $LAST </p>
                     </div>
                   </div>
-
                   {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
                   <div className="flex justify-center">
                     <div className="text-2xl flex justify-between items-center p-2 gap-3">
@@ -291,7 +306,6 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
                       </div>
                     </div>
                   </div>
-
                   {checkInActive && (
                     <Button
                       variant="checkIn"
@@ -303,7 +317,6 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
                       Check In
                     </Button>
                   )}
-
                   {!checkInActive && ticketStatusString === 'safe' && (
                     <>
                       <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
@@ -313,7 +326,6 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
                       <Prompt docLink={DOCS_URL_safehouse} />
                     </>
                   )}
-
                   {!checkInActive && ticketStatusString !== 'safe' && (
                     <>
                       <Button variant="checkIn" size="lg" className="w-[100%]" disabled>

@@ -24,7 +24,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Link from 'next/link'
 import Prompt from './Prompt'
 import { tokenConversion, formatNumber } from '@/lib/utils'
-import { defaultContractObj, DOCS_URL_split } from '../../../services/constant'
+import { defaultContractObj, DOCS_URL_split, TWITTER_URL } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
 import { statusPayload } from '@/lib/utils'
@@ -33,6 +33,7 @@ import {
   useContractRead,
   useContractReads,
   useContractWrite,
+  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -43,8 +44,10 @@ import { formatUnits, parseUnits } from 'viem'
 function SplitIt({ playerTicket }: { playerTicket: any }) {
   // State variables
   const phase = useStoreState((state) => state.phase)
-  const round = useStoreState((state) => state.round)
+  // const round = useStoreState((state) => state.round)
+  const stage = useStoreState((state) => state.stage)
   const ticketCount = useStoreState((state) => state.ticketCount)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   const { data, refetch } = useContractReads({
     contracts: [
@@ -107,8 +110,9 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
   const amountDrained = data?.[9].result || BigInt(0)
   const drainPot = data?.[10].result || BigInt(0)
 
-  const drainShare = formatUnits(drainRate, 3)
-  const minPot = formatUnits(minPotSize, 3)
+  console.log(amountDrained)
+  const drainShare = formatUnits(drainRate, 1)
+  const minPot = formatUnits(minPotSize, 1)
   const drainFromPot = formatUnits(amountDrained, 18)
   const amountInPot = formatUnits(currentPot, 18)
   const potToDrain = formatUnits(drainPot, 18)
@@ -121,12 +125,15 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
   // const drainStart = useStoreState((state) => state.drainStart)
   // const drainSwitch = useStoreState((state) => state.drainSwitch)
 
+  const drainAmount = (Number(drainShare) / 100) * Number(potToDrain)
+  const potToEnd = (Number(minPot) / 100) * Number(potToDrain)
+
   const splitAmountPerPlayer = Number(amountInPot) / ticketCount
 
   const thresholdCount = Math.floor((voteThreshold * ticketCount) / 100) + 1
 
-  if (drainSwitch === true) {
-  }
+  // if (drainSwitch === true) {
+  // }
 
   // const voteShare = voteCount / ticketCount
   // const amountDrainedConverted = amountDrained / tokenConversion
@@ -142,26 +149,30 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
   //   args: [address as `0x${string}`],
   // })
 
-  let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  let ticketVote = Boolean(playerTicket?.[6] || 0)
+  // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
+  // let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  // let ticketVote = Boolean(playerTicket?.[6] || 0)
+
+  const ticketStatus = ownedTicket?.status || 0
+  const ticketIsInPlay = ownedTicket?.isInPlay || false
+  const ticketVote = ownedTicket?.vote || false
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Active condition
-  let stage: number
+  // let stage: number
 
-  if (round === 0) {
-    stage = 0
-  } else if (round < suddenDeath) {
-    stage = 1
-  } else if (round >= suddenDeath && round < drainStart && drainSwitch === false) {
-    stage = 2
-  } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
-    stage = 3
-  } else {
-    stage = 0
-  }
+  // if (round === 0) {
+  //   stage = 0
+  // } else if (round < suddenDeath) {
+  //   stage = 1
+  // } else if (round >= suddenDeath && drainSwitch === false) {
+  //   stage = 2
+  // } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
+  //   stage = 3
+  // } else {
+  //   stage = 0
+  // }
 
   let splitActive: boolean
   splitActive =
@@ -194,7 +205,8 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
 
       updateCompletionModal({
         isOpen: true,
-        state: ticketVote ? 'voteYes' : 'voteNo',
+        // references initial ticketVote.
+        state: ticketVote ? 'voteNo' : 'voteYes',
       })
     } catch (error: any) {
       const errorMsg =
@@ -207,6 +219,32 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
       })
     }
   }
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'DrainTriggered',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { drainRound, drainRate, time } = args
+      refetch()
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'VoteYes',
+    listener: (event) => {
+      refetch()
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'VoteNo',
+    listener: (event) => {
+      refetch()
+    },
+  })
 
   return (
     <Dialog>
@@ -271,10 +309,11 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                   <p className="mb-2 leading-tight">
                     Players can change their mind and vote back No.
                   </p>
+
                   <a
                     href={DOCS_URL_split}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="link mb-2 text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>
@@ -299,13 +338,38 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                     </div>
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left leading-tight"> Stage 2 starts on</p>
-                      <p className="text-right underline"> Round {suddenDeath}</p>
+                      <p className="text-right">
+                        {' '}
+                        Round <span className="round-last">{suddenDeath}</span>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 text-lg gap-1">
+                      <p className="text-left leading-tight"> Stage 3 starts on</p>
+                      <p className="text-right">
+                        {stage !== 3 && (
+                          <p>
+                            {' '}
+                            <a href={TWITTER_URL} className="link">
+                              {' '}
+                              Follow for update
+                            </a>{' '}
+                          </p>
+                        )}
+                        {stage === 3 && (
+                          <p>
+                            {' '}
+                            Round <span className="round-last">{drainStart}</span>
+                          </p>
+                        )}
+                      </p>
                     </div>
 
                     <Accordion type="multiple">
                       <AccordionItem value="item-1">
                         <AccordionTrigger>
-                          <div className="text-xl border-b border-black">Stage 2 and 3 info</div>
+                          <div className="text-xl text-zinc-500 dark:text-zinc-400">
+                            Stage 2 and 3
+                          </div>
                         </AccordionTrigger>
                         <AccordionContent className="gap-1">
                           <div className="grid grid-cols-2 text-lg gap-1">
@@ -320,40 +384,41 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                             </p>
                           </div>
                           <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Yes count</p>
-                            <p className="text-right"> {voteCount}</p>
+                            <p className="text-left leading-tight"> Yes / Split pot count</p>
+                            <p className="text-right">
+                              <TooltipProvider delayDuration={10}>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    {voteCount} / {thresholdCount}
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" align="center">
+                                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                      {voteThreshold}% of tickets that are in play
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </p>
                           </div>
-                          <div className="grid grid-cols-2 text-lg gap-1">
+                          {/* <div className="grid grid-cols-2 text-lg gap-1">
                             <p className="text-left leading-tight"> Count to split pot </p>
                             <p className="text-right"> {thresholdCount}</p>
-                          </div>
-                          <div className="grid grid-cols-2 text-lg gap-1">
+                          </div> */}
+                          {/* <div className="grid grid-cols-2 text-lg gap-1">
                             <p className="text-left leading-tight"> Stage 3 starts on</p>{' '}
                             {drainSwitch === true && (
                               <p className="text-right underline">Round {drainStart}</p>
                             )}
-                          </div>
+                          </div> */}
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="item-2">
                         <AccordionTrigger>
-                          <div className="text-xl border-b border-black">Stage 3 info</div>
+                          <div className="text-xl text-zinc-500 dark:text-zinc-400">Stage 3</div>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight">% pot drain per round</p>
-
-                            <p className="text-right">
-                              {' '}
-                              {formatNumber(drainShare, {
-                                maximumFractionDigits: 3,
-                                minimumFractionDigits: 0,
-                              })}
-                              %
-                            </p>
-                          </div>
-                          <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight">Stage 3's pot</p>
+                          {/* <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">Stage 3 pot size</p>
                             {drainSwitch === true && (
                               <p className="text-right">
                                 {' '}
@@ -361,30 +426,79 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                                   maximumFractionDigits: 3,
                                   minimumFractionDigits: 0,
                                 })}
+                                ETH
                               </p>
                             )}{' '}
+                          </div> */}
+                          <div className="grid grid-cols-2 text-lg gap-1">
+                            <p className="text-left leading-tight">Drain per round</p>
+                            <p className="text-right">
+                              <TooltipProvider delayDuration={10}>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    {formatNumber(drainAmount, {
+                                      maximumFractionDigits: 6,
+                                      minimumFractionDigits: 0,
+                                    })}{' '}
+                                    ETH
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" align="center">
+                                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                      {formatNumber(drainShare, {
+                                        maximumFractionDigits: 6,
+                                        minimumFractionDigits: 0,
+                                      })}
+                                      % of{' '}
+                                      {formatNumber(potToDrain, {
+                                        maximumFractionDigits: 6,
+                                        minimumFractionDigits: 0,
+                                      })}{' '}
+                                      ETH (Stage 3 pot size)
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </p>
                           </div>
 
                           <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight">
-                              Game ends once Stage 3's pot reach
-                            </p>
+                            <p className="text-left leading-tight">Game ends once pot</p>
                             <p className="text-right">
-                              {' '}
-                              {formatNumber(minPot, {
-                                maximumFractionDigits: 3,
-                                minimumFractionDigits: 0,
-                              })}
-                              % of pot
+                              <TooltipProvider delayDuration={10}>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    {'<'}
+                                    {formatNumber(potToEnd, {
+                                      maximumFractionDigits: 6,
+                                      minimumFractionDigits: 0,
+                                    })}{' '}
+                                    ETH
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" align="center">
+                                    <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                      {formatNumber(minPot, {
+                                        maximumFractionDigits: 3,
+                                        minimumFractionDigits: 0,
+                                      })}
+                                      % of{' '}
+                                      {formatNumber(potToDrain, {
+                                        maximumFractionDigits: 6,
+                                        minimumFractionDigits: 0,
+                                      })}{' '}
+                                      ETH (Stage 3 pot size)
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </p>
                           </div>
                           <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Amount drained (so far) </p>
-                            {drainSwitch === true && (
+                            <p className="text-left leading-tight"> Amount drained so far </p>
+                            {stage === 3 && (
                               <p className="text-right">
                                 {' '}
                                 {formatNumber(drainFromPot, {
-                                  maximumFractionDigits: 3,
+                                  maximumFractionDigits: 6,
                                   minimumFractionDigits: 0,
                                 })}{' '}
                                 ETH

@@ -210,7 +210,7 @@ function BuyTicket() {
                     <a
                       href={DOCS_URL_buy}
                       target="_blank"
-                      className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                      className="link text-xs sm:text-sm md:text-base leading-tight"
                     >
                       Learn more
                     </a>

@@ -116,7 +116,8 @@ const Attack: FC<AttackType> = ({ id }) => {
   const defenderAddress = defenderTicket?.[1] || ''
 
   const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
-  const submitOrNot = defenderStatusString === 'submitted' ? 'Yes' : 'No'
+  const submitOrNot =
+    defenderStatusString === 'submitted' || ('checked' && defenderLastSeen === round) ? 'Yes' : 'No'
 
   // Active condition
   const attackActive: boolean =
@@ -334,7 +335,7 @@ const Attack: FC<AttackType> = ({ id }) => {
                   <a
                     href={DOCS_URL_attack}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="link text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>
@@ -349,7 +350,11 @@ const Attack: FC<AttackType> = ({ id }) => {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">$LAST per attack</p>
-                      <p className="text-right"> {tokensFarmed}</p>
+
+                      <p className="text-right">
+                        {/* {stage} */}
+                        {tokensFarmed}
+                      </p>
                     </div>
 
                     <div className="flex text-lg justify-between gap-4">

@@ -18,6 +18,7 @@ import {
 import { Button } from './button'
 import {
   useAccount,
+  useEnsName,
   useContractRead,
   useContractReads,
   useContractWrite,
@@ -32,12 +33,13 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import { formatNumber } from '@/lib/utils'
+import { formatAddress, formatNumber } from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
   LAST_MAN_STANDING_ADDRESS,
   defaultContractObj,
   tokenContractObj,
+  BLOCK_EXPLORER,
   LIQUIDITY_POOL,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
@@ -62,6 +64,11 @@ function Token() {
   // Address read
   const { address, isConnected } = useAccount()
 
+  const { data: ensName } = useEnsName({
+    address: address,
+    chainId: 1,
+  })
+
   const { data, refetch } = useContractReads({
     contracts: [
       {
@@ -75,6 +82,11 @@ function Token() {
         args: [address as `0x${string}`, LAST_MAN_STANDING_ADDRESS],
       },
       {
+        ...tokenContractObj,
+        functionName: 'playCount',
+        args: [address as `0x${string}`],
+      },
+      {
         ...defaultContractObj,
         functionName: 'playerTicket',
         args: [(address || '') as `0x${string}`],
@@ -85,7 +97,8 @@ function Token() {
   // assign to variables
   const balanceOf = data?.[0].result || BigInt(0)
   const allowance = data?.[1].result || BigInt(0)
-  const playerTicket = data?.[2].result || null
+  const playCount = data?.[2].result || BigInt(0)
+  const playerTicket = data?.[3].result || null
 
   // reduces it by 18 decimals
   const tokenBalance = formatUnits(balanceOf, 18)
@@ -241,9 +254,7 @@ function Token() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">
-              Buy or Transfer $LAST tokens
-            </DialogTitle>
+            <DialogTitle className="text-3xl text-center font-normal">Dashboard</DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
@@ -257,52 +268,100 @@ function Token() {
                   alt="enter-into-the-pepe"
                 />
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
+                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                    Profile
+                  </div>
+                  <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                    <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                      <div className="flex text-lg justify-between gap-4 text-xl">
+                        <p className="text-left">Player address</p>
+                        <p className="text-right">
+                          <a href={`${BLOCK_EXPLORER}address/${address}`} target="_blank">
+                            {ensName ? ensName : formatAddress(String(address))}
+                          </a>
+                        </p>
+                      </div>
+
+                      <div className="flex text-lg justify-between gap-4 text-xl">
+                        <p className="text-left">Game play count</p>
+                        <p className="text-right">
+                          {Number(playCount)}
+                          {/* {' '}
+                          {formatNumber(allowanceBalance, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 0,
+                          })} */}
+                        </p>
+                      </div>
+
+                      <div className="flex text-lg justify-between gap-4 text-xl">
+                        <p className="text-left">Side quest count</p>
+                        <p className="text-right">
+                          {/* {Number(sideQuestCount)} */}
+                          {/* {' '}
+                          {formatNumber(allowanceBalance, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 0,
+                          })} */}
+                        </p>
+                      </div>
+
+                      <br />
+
+                      <div className="flex text-lg justify-between gap-4 text-xl">
+                        <p className="text-left">$LAST holdings</p>
+                        <p className="text-right">
+                          {' '}
+                          {formatNumber(tokenBalance, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 0,
+                          })}
+                        </p>
+                      </div>
+                      <div className="flex text-lg justify-between gap-4 text-xl">
+                        <p className="text-left">Tokens allowance left</p>
+                        <p className="text-right">
+                          {' '}
+                          {formatNumber(allowanceBalance, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 0,
+                          })}
+                        </p>
+                      </div>
+
+                      <div className="flex text-lg justify-center mt-2">
+                        <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
+                          <Button variant="primary" className="w-full text-xl">
+                            Buy on Uniswap{' '}
+                            <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+                          </Button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <p className="mb-2">
                     Buy $LAST tokens, or transfer $LAST tokens to another in-game player
-                  </p>
+                  </p> */}
                 </div>
 
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  $LAST info
+                {/* <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                  $LAST
                 </div>
 
                 <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">$LAST tokens in wallet</p>
-                      <p className="text-right">
-                        {' '}
-                        {formatNumber(tokenBalance, {
-                          maximumFractionDigits: 2,
-                          minimumFractionDigits: 0,
-                        })}
-                      </p>
-                    </div>
-
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">Tokens allowance left</p>
-                      <p className="text-right">
-                        {' '}
-                        {formatNumber(allowanceBalance, {
-                          maximumFractionDigits: 2,
-                          minimumFractionDigits: 0,
-                        })}
-                      </p>
-                    </div>
-
-                    <div className="flex text-lg justify-center mt-2">
-                      <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-                        <Button variant="primary" className="w-full text-xl">
-                          Buy on Uniswap{' '}
-                          <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200"></div>
+                </div> */}
 
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                   Send $LAST to player
+                </div>
+
+                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2 leading-tight">Anyone, including spectators can send $LAST.</p>
+                  <p className="mb-2 leading-tight">
+                    Approve an amount that you want to send to players,
+                  </p>
+                  <p className="mb-2 leading-tight">Then send by indicating player # and amount.</p>
                 </div>
 
                 {/* 2 columns */}
@@ -319,8 +378,8 @@ function Token() {
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <p className="px-3 py-1.5 max-w-[240px] cursor-default whitespace-normal text-sm">
-                              Set an allowance so that the game can send $LAST on your behalf to the
-                              player{' '}
+                              Set an allowance amount for the game to send $LAST to another player
+                              for you{' '}
                             </p>
                           </TooltipContent>
                         </Tooltip>
@@ -350,7 +409,7 @@ function Token() {
                   </div>
                   <div>
                     <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 capitalize flex justify-start text-zinc-500 dark:text-zinc-400">
-                      Transfer
+                      Send
                     </div>
                     <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
                       <div className="flex md:flex-row flex-col justify-center items-center md:justify-between my-2">
@@ -385,7 +444,7 @@ function Token() {
                         isLoading={transferLoad}
                         onClick={transferToken}
                       >
-                        Transfer
+                        Send
                       </Button>
                     </div>
                   </div>

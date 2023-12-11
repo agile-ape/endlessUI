@@ -209,7 +209,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                   <a
                     href={DOCS_URL_kickout}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="link text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>

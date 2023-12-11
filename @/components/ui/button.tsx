@@ -33,7 +33,7 @@ const buttonVariants = cva(
         /*-------------------- HEADER ---------------------*/
 
         // link: 'text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
-        link: 'text-gray-600 dark:text-gray-200 whitespace-nowrap bg-transparent transition-opacity duration-[400ms] ease-in-out active:underline hover:underline font-medium focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4',
+        link: 'text-gray-600 dark:text-gray-200 whitespace-nowrap bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4',
 
         // buy: 'dark:bg-blue-800 bg-lime-500 whitespace-nowrap hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
 

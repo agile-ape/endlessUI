@@ -192,7 +192,7 @@ export default function Countdown({ phase }: { phase: string }) {
                       <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
                     )}
                     <div>
-                      <a href={DOCS_URL} target="_blank" className="text-xs underline">
+                      <a href={DOCS_URL} target="_blank" className="text-xs link">
                         Learn more
                       </a>
                     </div>

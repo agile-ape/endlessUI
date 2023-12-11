@@ -138,6 +138,14 @@
     @apply background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
   } */
 
+  .link {
+    @apply italic text-gray-500 dark:text-gray-200 whitespace-nowrap bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4;
+  }
+
+  .round-last {
+    @apply underline decoration-double;
+  }
+
   .start-last {
     @apply text-blue-100;
   }

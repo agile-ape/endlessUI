@@ -95,7 +95,7 @@ function ExitGame() {
 
   if (ticketIsInPlay) {
     if (phase === 'peacefound' || phase === 'drain') {
-      exitRank = Number(rankShare)
+      exitRank = Number(rankShare) // rank not assigned to ticket before they exit. hence must reference separately.
     } else {
       exitRank = ticketCount
     }
@@ -103,6 +103,7 @@ function ExitGame() {
     exitRank = Number(ticketRank)
   }
 
+  // have a ticket rank only if you are killed when you exit. if alive, no ticket rank
   const { data: claimIfKilled } = useContractRead({
     ...defaultContractObj,
     functionName: 'rankClaim',
@@ -233,7 +234,7 @@ function ExitGame() {
                   <a
                     href={DOCS_URL_exit}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="link text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>
@@ -241,13 +242,14 @@ function ExitGame() {
 
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Saying Goodbye?
+                  Amount you can claim
                 </div>
 
                 <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Claim (if you are killed)</p>
+                      <p className="text-left">If you are killed/game ended</p>
+
                       <p className="text-right">
                         {/* {`${rankClaim} ETH`}  */}
                         {formatNumber(killClaim, {
@@ -257,9 +259,8 @@ function ExitGame() {
                         ETH
                       </p>
                     </div>
-
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Claim if lasted till now</p>
+                      <p className="text-left">If you are alive but gives up now</p>
                       <p className="text-right">
                         {/* {`${rankClaim} ETH`}  */}
                         {formatNumber(exitClaim, {
@@ -270,30 +271,36 @@ function ExitGame() {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Exit rank</p>
-                      <p className="text-right"> {exitRank}</p>
+                    <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                      Saying Goodbye?
                     </div>
 
-                    {/* <div className="flex text-lg justify-between gap-4">
+                    <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                      <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                          <p className="text-left">Exit rank</p>
+                          <p className="text-right"> {exitRank}</p>
+                        </div>
+
+                        {/* <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Rank if exit now</p>
                       <p className="text-right">  </p>
                     </div> */}
 
-                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Players left</p>
-                      <p className="text-right"> {ticketCount} </p>
-                    </div>
+                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                          <p className="text-left">Players left</p>
+                          <p className="text-right"> {ticketCount} </p>
+                        </div>
 
-                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Give up/Killed </p>
-                      <p className="text-right">
-                        {' '}
-                        {Number(giveUpCount)} / {Number(killedCount)}{' '}
-                      </p>
-                    </div>
+                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                          <p className="text-left">Give up/Killed </p>
+                          <p className="text-right">
+                            {' '}
+                            {Number(giveUpCount)} / {Number(killedCount)}{' '}
+                          </p>
+                        </div>
 
-                    {/* <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                        {/* <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                       <p className="text-left leading-tight">Not in play (give up/killed) </p>
                       <p className="text-right">
                         {' '}
@@ -301,16 +308,18 @@ function ExitGame() {
                       </p>
                     </div> */}
 
-                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">Last Man can claim</p>
-                      <p className="text-right">
-                        {/* {Number(lastManClaim)} ETH  */}
-                        {formatNumber(lastManClaim, {
-                          maximumFractionDigits: 3,
-                          minimumFractionDigits: 3,
-                        })}{' '}
-                        ETH
-                      </p>
+                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                          <p className="text-left">Last Man can claim</p>
+                          <p className="text-right">
+                            {/* {Number(lastManClaim)} ETH  */}
+                            {formatNumber(lastManClaim, {
+                              maximumFractionDigits: 3,
+                              minimumFractionDigits: 3,
+                            })}{' '}
+                            ETH
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
 

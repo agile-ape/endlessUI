@@ -38,6 +38,8 @@ interface IApp {
   game: string
 
   round: number
+  stage: number
+  voteCount: number
   // keyword
   randNumber: number
   isAttackTime: boolean
@@ -64,7 +66,6 @@ interface IApp {
   // lastMan
   // feePool
   nextPot: number
-  voteCount: number
   rankShare: number
 
   countdownTime: number

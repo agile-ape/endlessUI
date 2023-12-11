@@ -20,14 +20,14 @@ export default function Indicator({ phase }: { phase: string }) {
                   src={`/indicator/${indicator}`}
                   height={300}
                   width={100}
-                  className=""
+                  className="h-auto"
                   alt={`${indicator}`}
                 />
               </TooltipTrigger>
               <TooltipContent side="top" align="center">
                 <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                   Current game phase
-                  <a href={DOCS_URL_phases} target="_blank" className="text-xs underline block">
+                  <a href={DOCS_URL_phases} target="_blank" className="text-xs link block">
                     Learn more
                   </a>
                 </p>

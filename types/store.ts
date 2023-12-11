@@ -5,6 +5,8 @@ interface StoreModel {
   phase: IApp['phase']
   ticketState: IApp['ticketStatus']
   round: IApp['round']
+  stage: IApp['stage']
+  voteCount: IApp['voteCount']
 
   isAttackTime: IApp['isAttackTime']
 
@@ -23,7 +25,6 @@ interface StoreModel {
   totalPot: IApp['totalPot']
   currentPot: IApp['currentPot']
   prizeFactor: IApp['prizeFactor'] // what last man gets
-  voteCount: IApp['voteCount']
   rankShare: IApp['rankShare']
 
   countdownTime: IApp['countdownTime']
@@ -49,6 +50,8 @@ interface StoreModel {
 
   updatePhase: Action<StoreModel, number>
   updateRound: Action<StoreModel, number>
+  updateStage: Action<StoreModel, number>
+
   updateIsAttackTime: Action<StoreModel, boolean>
   updateTicketId: Action<StoreModel, number>
   updateTicketCount: Action<StoreModel, number>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 import { Button } from './button'
-import { Gem, Users } from 'lucide-react'
+import { Gem, Users, Vote } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useAccount, useContractWrite, useContractReads, useContractEvent } from 'wagmi'
@@ -20,6 +20,7 @@ import type { Ticket } from 'types/app'
 const TicketList = () => {
   const phase = useStoreState((state) => state.phase)
   const playerTickets = useStoreState((state) => state.tickets)
+  const voteCount = useStoreState((state) => state.voteCount)
 
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
@@ -144,13 +145,30 @@ const TicketList = () => {
                         maximumFractionDigits: 3,
                         minimumFractionDigits: 3,
                       })}
-                      <span className="text-xl text-end">ETH</span>
+                      {/* <span className="text-xl text-end">ETH</span> */}
                     </div>
                     {/* {phase !== 'start' && <span className="text-md">/{totalETH}</span>} */}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
                   <p className="px-3 py-1 max-w-[240px] text-sm">Value in Pot</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider delayDuration={10}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+                    <Vote size={24} className="mr-1" />
+                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
+                      {Number(voteCount)}
+                    </div>
+                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  <p className="px-3 py-1 max-w-[240px] text-sm">Yes votes.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

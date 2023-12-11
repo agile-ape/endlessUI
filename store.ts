@@ -8,6 +8,8 @@ export const appStore = createStore<StoreModel>({
   ticketState: 'new',
   // game:,
   round: 0,
+  stage: 0,
+  voteCount: 0,
 
   // randNumber:,
   isAttackTime: false,
@@ -34,7 +36,6 @@ export const appStore = createStore<StoreModel>({
   // lastMan
   // feePool
   // nextPot: 0,
-  voteCount: 0,
   rankShare: 0,
 
   /*-- time is seconds ----*/
@@ -78,6 +79,14 @@ export const appStore = createStore<StoreModel>({
 
   updateRound: action((state, payload) => {
     state.round = payload
+  }),
+
+  updateStage: action((state, payload) => {
+    state.stage = payload
+  }),
+
+  updateVoteCount: action((state, payload) => {
+    state.voteCount = payload
   }),
 
   updateIsAttackTime: action((state, payload) => {
@@ -148,10 +157,6 @@ export const appStore = createStore<StoreModel>({
   // updateNextPot: action((state, payload) => {
   //   state.nextPot = payload
   // }),
-
-  updateVoteCount: action((state, payload) => {
-    state.voteCount = payload
-  }),
 
   // rankShare
 

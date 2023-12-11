@@ -102,7 +102,7 @@ const getAlertLook = (alertLookTest: string) => {
     case 'voteNo':
       return {
         bgImage: 'rainbow',
-        face: 'watchitburn',
+        face: 'smoke',
         title: 'You voted back No!',
         message: 'Awww. We appreciate you fighting the good fight.',
       }

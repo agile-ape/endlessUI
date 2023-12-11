@@ -52,6 +52,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const playerTickets = useStoreState((state) => state.tickets)
+  const stage = useStoreState((state) => state.stage)
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -98,19 +99,19 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     chainId: 1,
   })
 
-  const { data, refetch } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'suddenDeath',
-      },
-    ],
-    cacheTime: 2_000,
-  })
+  // const { data, refetch } = useContractReads({
+  //   contracts: [
+  //     {
+  //       ...defaultContractObj,
+  //       functionName: 'suddenDeath',
+  //     },
+  //   ],
+  //   cacheTime: 2_000,
+  // })
 
   // const playerTicket = data?.[0].result || BigInt(0)
   const nextTicketId = ticket?.id || 0
-  const suddenDeath = data?.[0].result || 0
+  // const suddenDeath = data?.[0].result || 0
 
   let ticketId = ticket?.id
   let ticketAddress = ticket?.user
@@ -153,7 +154,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   if (quartile < 25) {
     rankColor = 'bg-black'
   } else if (quartile < 50) {
-    rankColor = 'bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600'
+    // rankColor = 'bg-gradient-to-r from-orange-800 via-amber-900 to-yellow-950'
+    rankColor = 'bg-gradient-to-r from-orange-500 via-amber-600 to-yellow-700'
   } else if (quartile < 75) {
     rankColor = 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-500'
   } else if (quartile <= 100) {
@@ -246,6 +248,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     }
   }
 
+  if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
+    ticketLook = 'spectator'
+  }
+
   if (ticketIsInPlay) {
     if (phase == 'day') {
       if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
@@ -253,11 +259,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
       } else if (ticketVote === true) {
         ticketLook = 'makePeace'
       } else {
-        if (round < suddenDeath) {
+        if (stage === 1) {
           ticketLook = 'stage1New'
-        } else if (round >= suddenDeath && round) {
+        } else if (stage === 2) {
           ticketLook = 'stage2New'
-        } else if (round >= suddenDeath && round) {
+        } else if (stage === 3) {
           ticketLook = 'stage3New'
         }
       }
@@ -266,7 +272,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     if (phase == 'night') {
       if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
         ticketLook = 'submittedNight'
-      } else if (ticketStatusString == 'checked') {
+      } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
         ticketLook = 'attackedButSafu'
       } else {
         ticketLook = 'neverSubmit'
@@ -330,6 +336,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
       status: 'ticket claimed',
       label: 'value',
       value: ticketValue + ' ETH',
+    },
+    spectator: {
+      bgImage: '',
+      header: 'bg-zinc-200/20',
+      face: 'eatchips',
+      id: '',
+      status: 'sitting this one out',
+      label: 'do what',
+      value: 'Eat Chips',
     },
     submittedDay: {
       bgImage: 'motif',
@@ -499,10 +514,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
           </div>
 
           <div className="flex justify-between gap-6">
-            <p className="text-left">Last Seen/Vote</p>
+            <p className="text-left">Seen/Vote</p>
             <p className="text-right">
               {' '}
-              <span className="underline">{formatCount(ticketLastSeen)}</span>/{ticketVoteString}{' '}
+              <span className="underline decoration-double">{formatCount(ticketLastSeen)}</span>/
+              {ticketVoteString}{' '}
             </p>
           </div>
 
@@ -582,18 +598,23 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
         <>
           {/* top header */}
           {!ownTicket && address?.toLowerCase() === ticket?.user && (
-            <p className="rounded border border-black w-max mx-auto px-1 py-0.5 bg-red-400">
-              Your ticket
-            </p>
+            <div className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 rounded-full motion-safe:animate-bounce w-max mx-auto px-3 absolute inset-x-0 -top-3 h-5">
+              Hello there
+            </div>
           )}
 
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
-              Player{' '}
-              <span className="font-whitrabt">
-                {' '}
-                <span className={h2}>#{String(id)}</span>
-              </span>
+              {ticketLookFinal === 'spectator' && <p>Spectator</p>}
+              {ticketLookFinal !== 'spectator' && (
+                <p>
+                  Player{' '}
+                  <span className="font-whitrabt">
+                    {' '}
+                    <span className={h2}>#{String(id)}</span>
+                  </span>
+                </p>
+              )}
             </p>
             <p className={`lowercase ${h3} italic text-zinc-700 dark:text-zinc-800`}>{status}</p>
           </div>
@@ -604,8 +625,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
               src={`/faces/${face}.png`}
               height={imgh}
               width={imgw}
-              className={mt}
-              layout="fixed"
+              className={`h-auto ${mt}`}
+              // layout="fixed"
               alt={`${face} pepe`}
             />
           </div>
