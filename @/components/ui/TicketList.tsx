@@ -97,24 +97,6 @@ const TicketList = () => {
         <div className="flex flex-col items-center md:flex-row">
           <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-2">
             {/* <span className=""> Players</span> */}
-
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Users size={24} className="mr-1" />
-                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
-                      {Number(ticketCount)}
-                    </div>
-                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Players left</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
             <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
@@ -133,14 +115,14 @@ const TicketList = () => {
                     ) : (
                       <Image
                         priority
-                        src="/logo/eth-light.png"
+                        src="/logo/eth-gradient.png"
                         className="mr-1"
                         height={14}
                         width={14}
                         alt="eth"
                       />
                     )}
-                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
+                    <div className="text-3xl flash text-purple-900 dark:text-purple-300 tracking-wide">
                       {formatNumber(ethLeft, {
                         maximumFractionDigits: 3,
                         minimumFractionDigits: 3,
@@ -160,10 +142,23 @@ const TicketList = () => {
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+                    <Users size={24} className="mr-1" />
+                    <div className="text-3xl flash tracking-wide">{Number(ticketCount)}</div>
+                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  <p className="px-3 py-1 max-w-[240px] text-sm">Players left</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider delayDuration={10}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Vote size={24} className="mr-1" />
-                    <div className="text-3xl flash text-amber-600 dark:text-amber-300 tracking-wide">
-                      {Number(voteCount)}
-                    </div>
+                    <div className="text-3xl flash tracking-wide">{Number(voteCount)}</div>
                     {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
                   </div>
                 </TooltipTrigger>
@@ -252,7 +247,7 @@ const TicketList = () => {
             gap-y-6
             flex-wrap
             px-6 py-6
-            overflow-y-scroll max-h-[750px]
+            overflow-y-scroll
           "
         >
           {ticketListState

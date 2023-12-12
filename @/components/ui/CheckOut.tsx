@@ -153,7 +153,7 @@ function CheckOut() {
                   <a
                     href={DOCS_URL_checkout}
                     target="_blank"
-                    className="mb-2 underline text-xs sm:text-sm md:text-base leading-tight"
+                    className="mb-2 link text-xs sm:text-sm md:text-base leading-tight"
                   >
                     Learn more
                   </a>
@@ -163,7 +163,7 @@ function CheckOut() {
                   How long do you have with us?
                 </div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Checked in on</p>
@@ -175,10 +175,34 @@ function CheckOut() {
                       <p className="text-right underline"> {ticketCheckOutRound} </p>
                     </div>
 
-                    <div className="grid grid-cols-2 text-lg justify-between mt-2 gap-1">
+                    <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Current round</p>
                       <p className="text-right underline"> {round} </p>
                     </div>
+
+                    {ticketCheckOutRound > round && (
+                      <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
+                        You still have time to chill
+                      </p>
+                    )}
+
+                    {ticketCheckOutRound === round && phase === 'day' && (
+                      <p className="text-xl text-amber-600 mt-2 text-center">
+                        You have to check out now
+                      </p>
+                    )}
+
+                    {ticketCheckOutRound === round && phase === 'night' && (
+                      <p className="text-xl text-red-600 mt-2 text-center">
+                        You are overstaying...
+                      </p>
+                    )}
+
+                    {ticketCheckOutRound <= round && (
+                      <p className="text-xl text-red-600 mt-2 text-center">
+                        You are overstaying...
+                      </p>
+                    )}
                   </div>
 
                   {checkOutActive && (

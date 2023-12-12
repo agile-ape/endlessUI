@@ -61,9 +61,9 @@ const getAlertLook = (alertLookTest: string) => {
     case 'attackButFail':
       return {
         bgImage: 'rainbow',
-        face: 'missed',
+        face: 'sad',
         title: 'Player is safe!',
-        message: 'Player defended your attack as his keyword is valid. Try another player?',
+        message: 'Sorry. Player defended your attack (valid keyword). Try another player?',
       }
     //used
     case 'kickedOut':

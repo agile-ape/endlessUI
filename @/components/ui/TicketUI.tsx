@@ -536,7 +536,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
           </div>
 
           {ticketLookFinal == 'inSafehouse' && (
-            <div className="flex justify-between text-lg text-amber-600  gap-6">
+            <div className="flex justify-between text-lg text-amber-600 gap-6">
               <p className="text-left">Check out by</p>
               <p className="text-right underline"> {ticketcheckOutRound}</p>
             </div>

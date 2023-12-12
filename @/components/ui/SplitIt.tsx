@@ -232,6 +232,14 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
 
   useContractEvent({
     ...defaultContractObj,
+    eventName: 'PhaseChange',
+    listener: (event) => {
+      refetch()
+    },
+  })
+
+  useContractEvent({
+    ...defaultContractObj,
     eventName: 'VoteYes',
     listener: (event) => {
       refetch()

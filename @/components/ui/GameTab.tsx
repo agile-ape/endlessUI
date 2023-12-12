@@ -98,15 +98,24 @@ const GameTab = () => {
           <>
             {!isConnected && (
               <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
-                <div className="">Connect wallet to see more </div>
+                <div className="">Don't hide. Come. Join us</div>
                 <Image
+                  priority
+                  src="/faces/hide.png"
+                  className="place-self-center"
+                  height={150}
+                  width={110}
+                  alt="pepe-hiding"
+                />
+
+                {/* <Image
                   priority
                   src="/pepe/pepe-lost.svg"
                   className="place-self-center"
                   height={150}
                   width={110}
                   alt="pepe-in-thoughts"
-                />
+                /> */}
                 {/* <div className="text-center text-lg underline">
                   <a href={TWITTER_URL} target="_blank">
                     Follow us for updates

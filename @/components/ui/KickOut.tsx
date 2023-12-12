@@ -23,7 +23,11 @@ import Link from 'next/link'
 import Prompt from './Prompt'
 import OnSignal from './OnSignal'
 import { toast } from './use-toast'
-import { defaultContractObj, DOCS_URL_kickout } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_kickout,
+  DOCS_URL_waterfall,
+} from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
   useAccount,
@@ -203,9 +207,15 @@ const KickOut: FC<KickOutType> = ({ id }) => {
 
                   <div className="flex mb-2 border border-zinc-800 dark:border-zinc-200 rounded-lg py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-                    Killed ticket value does not go to the kicker. It goes to the player ticket
-                    before him - if #4 is killed, all his value goes to #3
+                    <p>
+                      Killed ticket value does not go to the killer. It follows the{' '}
+                      <a href={DOCS_URL_waterfall} target="_blank" className="link">
+                        value waterfall
+                      </a>{' '}
+                      rule.
+                    </p>
                   </div>
+
                   <a
                     href={DOCS_URL_kickout}
                     target="_blank"
@@ -236,6 +246,26 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                       <p className="text-left">Current round</p>
                       <p className="text-right underline"> {round} </p>
                     </div>
+
+                    {defenderCheckOutRound > round && (
+                      <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
+                        Not yet. He can still chill
+                      </p>
+                    )}
+
+                    {defenderCheckOutRound === round && phase === 'day' && (
+                      <p className="text-xl text-amber-600 mt-2 text-center">
+                        Watch him. He got to check out now
+                      </p>
+                    )}
+
+                    {defenderCheckOutRound === round && phase === 'night' && (
+                      <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
+                    )}
+
+                    {defenderCheckOutRound <= round && (
+                      <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
+                    )}
                   </div>
 
                   {kickOutActive && (

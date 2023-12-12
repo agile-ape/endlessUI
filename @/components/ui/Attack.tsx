@@ -31,7 +31,7 @@ import {
   useContractEvent,
   useWaitForTransaction,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_attack } from '../../../services/constant'
+import { defaultContractObj, DOCS_URL_attack, DOCS_URL_waterfall } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
 
@@ -313,11 +313,9 @@ const Attack: FC<AttackType> = ({ id }) => {
                 />
 
                 <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
+                  <p className="mb-2 leading-tight">You kill the player if his keyword is wrong.</p>
                   <p className="mb-2 leading-tight">
-                    You kill the player if he did not submit keyword/ submitted keyword is wrong.
-                  </p>
-                  <p className="mb-2 leading-tight">
-                    Each attack earns you some $LAST during{' '}
+                    Attacker receives $LAST for each attack during{' '}
                     <span className="font-semibold">Stage 1</span>.
                   </p>
                   <p className="mb-2 leading-tight">
@@ -329,8 +327,13 @@ const Attack: FC<AttackType> = ({ id }) => {
                   </p>
                   <div className="flex mb-2 border rounded-lg border-zinc-800 dark:border-zinc-200 py-2 px-3">
                     <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-                    Killed ticket value does not go to the killer. It goes to the player ticket
-                    before him - if #4 is killed, all his value goes to #3
+                    <p>
+                      Killed ticket value does not go to the killer. It follows the{' '}
+                      <a href={DOCS_URL_waterfall} target="_blank" className="link">
+                        value waterfall
+                      </a>{' '}
+                      rule.
+                    </p>
                   </div>
                   <a
                     href={DOCS_URL_attack}
@@ -357,10 +360,10 @@ const Attack: FC<AttackType> = ({ id }) => {
                       </p>
                     </div>
 
-                    <div className="flex text-lg justify-between gap-4">
+                    {/* <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Submitted?</p>
                       <p className="text-right capitalize"> {submitOrNot}</p>
-                    </div>
+                    </div> */}
 
                     <div className="flex text-lg justify-between gap-4">
                       <p className="text-left">Player value</p>

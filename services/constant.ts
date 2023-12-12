@@ -38,6 +38,7 @@ export const DOCS_URL_checkout = `${DOCS_URL}/safehouse#eb59b65bb02845e894fdc554
 export const DOCS_URL_kickout = `${DOCS_URL}/safehouse#93cd2d661c9b4bd8b42daacbce9ce24c`
 export const DOCS_URL_split = `${DOCS_URL}/stages#cb029b4005c94699b1d7eb8856321ea6`
 export const DOCS_URL_phases = `${DOCS_URL}/cheat-sheet#d6ba862cb0a348e0806e3630e8fa5ec1`
+export const DOCS_URL_waterfall = `${DOCS_URL}/night#398cd030ed654d3e8cf50299c7a7c1e1`
 
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
 export const BLOG_URL = 'https://blog.lastman.xyz'

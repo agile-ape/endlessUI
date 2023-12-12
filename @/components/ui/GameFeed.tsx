@@ -31,7 +31,7 @@ const GameFeed = () => {
         args: Record<string, string>
       }
     }[]
-  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=30`, fetcher)
+  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=100`, fetcher)
 
   const [feeds, setFeeds] = useState<Feeds[]>([])
 
@@ -55,7 +55,7 @@ const GameFeed = () => {
   }, [])
 
   return (
-    <div className="overflow-auto max-h-[80vh] container-last rounded-xl px-5">
+    <div className="overflow-auto max-h-[70vh] container-last rounded-xl px-5">
       {feeds?.map((item, index) => (
         <div
           key={item.block_number}

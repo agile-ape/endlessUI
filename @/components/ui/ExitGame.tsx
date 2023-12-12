@@ -74,6 +74,10 @@ function ExitGame() {
         ...defaultContractObj,
         functionName: 'prizeFactor',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketId',
+      },
     ],
   })
 
@@ -82,6 +86,7 @@ function ExitGame() {
   const killedCount = data?.[2].result || BigInt(0)
   const rankShare = data?.[3].result || BigInt(0)
   const prizeFactor = data?.[4].result || BigInt(0)
+  const totalJoined = data?.[5].result || BigInt(0)
 
   const exitClaim = formatUnits(rankClaim, 18)
   // const ifSplit = formatUnits(rankShare, 18)
@@ -90,6 +95,8 @@ function ExitGame() {
   let ticketStatus = ownedTicket?.status || 0
   let ticketIsInPlay = ownedTicket?.isInPlay || false
   let ticketRank = ownedTicket?.rank || 0
+  let ticketPotClaim = ownedTicket?.potClaim || 0
+  const ticketClaimed = formatUnits(BigInt(ticketPotClaim), 18)
 
   let exitRank: number
 
@@ -112,7 +119,7 @@ function ExitGame() {
   })
 
   const killClaim = formatUnits(claimIfKilled || BigInt(0), 18)
-
+  console.log(killClaim)
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Active condition
@@ -242,25 +249,80 @@ function ExitGame() {
 
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Amount you can claim
+                  {ticketStatusString === 'exited'
+                    ? 'Amount you have claimed'
+                    : 'Amount you can claim'}
                 </div>
 
                 <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">If you are killed/game ended</p>
-
-                      <p className="text-right">
-                        {/* {`${rankClaim} ETH`}  */}
-                        {formatNumber(killClaim, {
-                          maximumFractionDigits: 5,
+                  {/* <div className="w-[100%] text-zinc-800 dark:text-zinc-200"> */}
+                  <div className="text-2xl text-center text-purple-800 dark:text-purple-300 border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
+                    {ticketStatusString === 'exited' && (
+                      <p>
+                        {formatNumber(ticketClaimed, {
+                          maximumFractionDigits: 6,
                           minimumFractionDigits: 3,
                         })}{' '}
                         ETH
                       </p>
+                    )}
+
+                    {ticketStatusString === 'dead' && (
+                      <p>
+                        {formatNumber(killClaim, {
+                          maximumFractionDigits: 6,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
+                      </p>
+                    )}
+                    {ticketIsInPlay && (
+                      <p>
+                        {formatNumber(exitClaim, {
+                          maximumFractionDigits: 6,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Killed?</p>
+                      <p className="text-right"> {!ticketIsInPlay ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left">If you are alive but gives up now</p>
+                      <p className="text-left">Current rank</p>
+                      <p className="text-right">{exitRank}</p>
+                    </div>
+
+                    <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                      Game stats
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Total joined</p>
+                      <p className="text-right"> {Number(totalJoined)} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left ml-2">Give up </p>
+                      <p className="text-right"> {Number(giveUpCount)} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left ml-2">Killed </p>
+                      <p className="text-right"> {Number(killedCount)} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Players left</p>
+                      <p className="text-right"> {ticketCount} </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">If last till now</p>
                       <p className="text-right">
                         {/* {`${rankClaim} ETH`}  */}
                         {formatNumber(exitClaim, {
@@ -270,56 +332,16 @@ function ExitGame() {
                         ETH
                       </p>
                     </div>
-
-                    <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                      Saying Goodbye?
-                    </div>
-
-                    <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                      <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                          <p className="text-left">Exit rank</p>
-                          <p className="text-right"> {exitRank}</p>
-                        </div>
-
-                        {/* <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Rank if exit now</p>
-                      <p className="text-right">  </p>
-                    </div> */}
-
-                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                          <p className="text-left">Players left</p>
-                          <p className="text-right"> {ticketCount} </p>
-                        </div>
-
-                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                          <p className="text-left">Give up/Killed </p>
-                          <p className="text-right">
-                            {' '}
-                            {Number(giveUpCount)} / {Number(killedCount)}{' '}
-                          </p>
-                        </div>
-
-                        {/* <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                      <p className="text-left leading-tight">Not in play (give up/killed) </p>
+                    <div className="grid grid-cols-2 text-lg gap-1 mb-2">
+                      <p className="text-left">Last Man can claim</p>
                       <p className="text-right">
-                        {' '}
-                        {ticketCount} ({giveUpCount}/{killedCount})
+                        {/* {Number(lastManClaim)} ETH  */}
+                        {formatNumber(lastManClaim, {
+                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 3,
+                        })}{' '}
+                        ETH
                       </p>
-                    </div> */}
-
-                        <div className="grid grid-cols-2 text-lg gap-1 mb-2">
-                          <p className="text-left">Last Man can claim</p>
-                          <p className="text-right">
-                            {/* {Number(lastManClaim)} ETH  */}
-                            {formatNumber(lastManClaim, {
-                              maximumFractionDigits: 3,
-                              minimumFractionDigits: 3,
-                            })}{' '}
-                            ETH
-                          </p>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -328,7 +350,6 @@ function ExitGame() {
                       You have exited
                     </Button>
                   )}
-
                   {ticketStatusString !== 'exited' && exitGameActive && (
                     <Button
                       variant="exit"
@@ -343,7 +364,6 @@ function ExitGame() {
                       })} ETH`}
                     </Button>
                   )}
-
                   {ticketStatusString !== 'exited' && !exitGameActive && (
                     <>
                       <Button variant="exit" size="lg" className="w-[100%]" disabled>
