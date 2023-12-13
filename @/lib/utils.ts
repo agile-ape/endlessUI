@@ -32,9 +32,9 @@ export const calculateTimeLeft = () => {
 }
 
 // To delete
-export const tokenConversion = 1e18
-export const shareConversion = 1000
-export const priceConversion = 1000
+// export const tokenConversion = 1e18
+// export const shareConversion = 1000
+// export const priceConversion = 1000
 
 export const transformToTicket = (ticket: Ticket[]): IApp['tickets'] => {
   return ticket.map((t) => ({

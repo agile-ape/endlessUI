@@ -153,6 +153,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
     }
   }
 
+  // update once txn is done
   const {} = useWaitForTransaction({
     hash: checkInData?.hash,
     onSuccess(data) {
@@ -163,7 +164,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
     },
   })
 
-  // Safehouse price
+  // Change in safehouse price
   useContractEvent({
     ...defaultContractObj,
     eventName: 'SafehousePrice',

@@ -20,16 +20,10 @@ import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
 
 type TimeLeftType = {
-  // days: number;
   hours: number
   minutes: number
   seconds: number
 }
-
-// type Props = {
-//   timeFlag: number
-//   countdownTime: number
-// }
 
 const formatTime = (timeInSeconds: number): TimeLeftType => {
   let hours = Math.floor(timeInSeconds / 3600)
@@ -43,7 +37,9 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
-export default function Countdown({ phase }: { phase: string }) {
+export default function Countdown() {
+  const phase = useStoreState((state) => state.phase)
+
   const [timeLeft, setTimeLeft] = useState<number>()
   const [timeFlag, setTimeFlag] = useState<number>()
 

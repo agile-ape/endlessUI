@@ -7,25 +7,23 @@ import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useAccount, useContractWrite, useContractReads, useContractEvent } from 'wagmi'
 import { LAST_MAN_STANDING_ADDRESS, defaultContractObj } from '../../../services/constant'
-import { fetcher, formatNumber, tokenConversion, transformToTicket } from '@/lib/utils'
+import { fetcher, formatNumber, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
 import useSWR from 'swr'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import type { Ticket } from 'types/app'
-// type TicketListType = {
-//   stage: string
-// }
 
 const TicketList = () => {
-  const phase = useStoreState((state) => state.phase)
-  const playerTickets = useStoreState((state) => state.tickets)
+  const currentPot = useStoreState((state) => state.currentPot)
+  const ticketCount = useStoreState((state) => state.ticketCount)
   const voteCount = useStoreState((state) => state.voteCount)
 
+  const playerTickets = useStoreState((state) => state.tickets)
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
 
-  const { address, isConnected } = useAccount()
+  const { forcedTheme } = useTheme()
 
   useEffect(() => {
     if (playerTickets.length) {
@@ -34,41 +32,6 @@ const TicketList = () => {
   }, [playerTickets])
 
   const totalTicketCount = ticketListState.length
-
-  const { data, refetch } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'currentPot',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'totalPot',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketCount',
-      },
-    ],
-  })
-
-  const currentPot = data?.[0].result || BigInt(0)
-  const totalPot = data?.[1].result || BigInt(0)
-  const ticketCount = data?.[2].result || BigInt(0)
-
-  const ethLeft = formatUnits(currentPot, 18)
-  const totalETH = formatUnits(totalPot, 18)
-
-  const { theme, forcedTheme } = useTheme()
-
-  // new ticket bought
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'NewTicketBought',
-    listener: (event) => {
-      refetch()
-    },
-  })
 
   function toggleTab(tab: string) {
     setTicketState(tab)
@@ -96,13 +59,10 @@ const TicketList = () => {
       >
         <div className="flex flex-col items-center md:flex-row">
           <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-2">
-            {/* <span className=""> Players</span> */}
             <TooltipProvider delayDuration={10}>
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    {/* <Gem size={18} className="mr-1" /> */}
-
                     {forcedTheme === 'dark' ? (
                       <Image
                         priority
@@ -123,13 +83,8 @@ const TicketList = () => {
                       />
                     )}
                     <div className="text-3xl flash text-purple-900 dark:text-purple-300 tracking-wide">
-                      {formatNumber(ethLeft, {
-                        maximumFractionDigits: 3,
-                        minimumFractionDigits: 3,
-                      })}
-                      {/* <span className="text-xl text-end">ETH</span> */}
+                      {currentPot}
                     </div>
-                    {/* {phase !== 'start' && <span className="text-md">/{totalETH}</span>} */}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
@@ -143,8 +98,7 @@ const TicketList = () => {
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Users size={24} className="mr-1" />
-                    <div className="text-3xl flash tracking-wide">{Number(ticketCount)}</div>
-                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
+                    <div className="text-3xl flash tracking-wide">{ticketCount}</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
@@ -158,8 +112,7 @@ const TicketList = () => {
                 <TooltipTrigger>
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Vote size={24} className="mr-1" />
-                    <div className="text-3xl flash tracking-wide">{Number(voteCount)}</div>
-                    {/* {phase !== 'start' && <span className="text-md">/{totalTicketCount}</span>} */}
+                    <div className="text-3xl flash tracking-wide">{voteCount}</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
@@ -187,7 +140,6 @@ const TicketList = () => {
               In Play
             </Button>
 
-            {/* exit or dead */}
             <Button
               onClick={() => toggleTab('mostValue')}
               variant="filter"
@@ -253,14 +205,7 @@ const TicketList = () => {
           {ticketListState
             .sort((a, b) => a.id - b.id)
             .map((item, i) => (
-              <TicketUI
-                key={item.id}
-                ownTicket={false}
-                ticketNumber={item.id}
-                ticket={item}
-                // ticketLength={ticketListState.length}
-                // ticketLookInput={'afterPurchase'}
-              />
+              <TicketUI key={item.id} ownTicket={false} ticketNumber={item.id} ticket={item} />
             ))}
         </div>
       )}

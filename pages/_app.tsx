@@ -22,8 +22,8 @@ const chainsConfig = [
 ]
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
-  // infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
-  publicProvider(),
+  infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
+  // publicProvider(),
 ])
 
 const { connectors } = getDefaultWallets({

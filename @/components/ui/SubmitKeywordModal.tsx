@@ -38,7 +38,6 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
 
   // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   let ticketStatus = ownedTicket?.status || 0
-
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Contract Write
@@ -135,7 +134,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
       }
 
       const hashedMessage = keccak256(encodePacked(['string'], [input.toLowerCase()]))
-      console.log(hashedMessage)
+      // console.log(hashedMessage)
 
       const signature = await walletClient?.signMessage({
         message: { raw: hashedMessage },
@@ -144,7 +143,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
         args: [signature as `0x${string}`],
       })
 
-      console.log({ hashedMessage, signature, result })
+      // console.log({ hashedMessage, signature, result })
       // toast({
       //   title: 'Check in success!',
       //   description: <p className="text-base">You have successfully checked in.</p>,

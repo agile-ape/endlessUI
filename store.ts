@@ -4,31 +4,97 @@ import type { IApp } from 'types/app'
 import { phasePayload, statusPayload } from '@/lib/utils'
 
 export const appStore = createStore<StoreModel>({
-  phase: 'start',
+  round: 0,
+  phase: 'deployed',
+  stage: 0,
+  suddenDeath: 0,
+  currentPot: 0,
+  ticketCount: 0,
+  voteCount: 0,
+  tickets: [],
+  ownedTicket: null,
+  gameTab: 'game',
+  triggerCompletionModal: {
+    isOpen: false,
+    state: '',
+  },
+
+  updateRound: action((state, payload) => {
+    state.round = payload
+  }),
+
+  updatePhase: action((state, payload) => {
+    state.phase = phasePayload[payload]
+  }),
+
+  updateStage: action((state, payload) => {
+    state.stage = payload
+  }),
+
+  updateSuddenDeath: action((state, payload) => {
+    state.suddenDeath = payload
+  }),
+
+  updateCurrentPot: action((state, payload) => {
+    state.currentPot = payload
+  }),
+
+  updateTicketCount: action((state, payload) => {
+    state.ticketCount = payload
+  }),
+
+  updateVoteCount: action((state, payload) => {
+    state.voteCount = payload
+  }),
+
+  updateTickets: action((state, payload) => {
+    state.tickets = payload
+  }),
+
+  modifyTicket: action((state, payload) => {
+    const existingTicket = state.tickets.find((ticket) => ticket.id === payload.id)
+
+    if (existingTicket) {
+      const index = state.tickets.indexOf(existingTicket)
+      state.tickets[index] = payload.ticket
+    } else {
+      state.tickets.push(payload.ticket)
+    }
+  }),
+
+  updateOwnedTicket: action((state, payload) => {
+    state.ownedTicket = payload
+  }),
+
+  updateGameTab: action((state, payload) => {
+    state.gameTab = payload
+  }),
+
+  updateTriggerCompletionModal: action((state, payload) => {
+    state.triggerCompletionModal = payload
+  }),
+
+  /*--- DELETE FROM HERE -----*/
+
+  addTicket: action((state, payload) => {
+    state.tickets.push(payload)
+  }),
   ticketState: 'new',
   // game:,
-  round: 0,
-  stage: 0,
-  voteCount: 0,
-
   // randNumber:,
   isAttackTime: false,
-
   ticketId: 0,
-  ticketCount: 0,
   giveUpCount: 0,
   killedCount: 0,
   // leaderboard
-
   nextTicketPrice: 0,
   increaseInPrice: 1 * 1e16,
   ticketsAvailableAtCurrentPrice: 10,
   // ticketsIncreaseMultiple: 2,
   ticketsCounter: 1,
-
   voteThreshold: 50,
   totalPot: 0,
-  currentPot: 0,
+  // currentPot: 0,
   // drainPot: 0,
   // potToSplit: 0,
   // sumReciprocal
@@ -45,7 +111,7 @@ export const appStore = createStore<StoreModel>({
   // dayShare
   // nightShare
   // levelUp
-  suddenDeath: 3,
+  // suddenDeath: 3,
   gameCloseTime: 3600,
   timeFlag: 0,
   dayTime: 1800,
@@ -72,22 +138,7 @@ export const appStore = createStore<StoreModel>({
   // insertKeyword: action((state, payload) => {
   //   console.log('insertKeyword', payload)
   // }),
-
-  updatePhase: action((state, payload) => {
-    state.phase = phasePayload[payload]
-  }),
-
-  updateRound: action((state, payload) => {
-    state.round = payload
-  }),
-
-  updateStage: action((state, payload) => {
-    state.stage = payload
-  }),
-
-  updateVoteCount: action((state, payload) => {
-    state.voteCount = payload
-  }),
+  /*--- DELETE FROM HERE -----*/
 
   updateIsAttackTime: action((state, payload) => {
     state.isAttackTime = payload
@@ -95,10 +146,6 @@ export const appStore = createStore<StoreModel>({
 
   updateTicketId: action((state, payload) => {
     state.ticketId = payload
-  }),
-
-  updateTicketCount: action((state, payload) => {
-    state.ticketCount = payload
   }),
 
   updateGiveUpCount: action((state, payload) => {
@@ -135,9 +182,9 @@ export const appStore = createStore<StoreModel>({
     state.totalPot = payload
   }),
 
-  updateCurrentPot: action((state, payload) => {
-    state.currentPot = payload
-  }),
+  // updateCurrentPot: action((state, payload) => {
+  //   state.currentPot = payload
+  // }),
 
   // updateDrainPot: action((state, payload) => {
   //   state.drainPot = payload
@@ -175,9 +222,9 @@ export const appStore = createStore<StoreModel>({
   // dayShare
   // nightShare
   // levelUp
-  updateSuddenDeath: action((state, payload) => {
-    state.suddenDeath = payload
-  }),
+  // updateSuddenDeath: action((state, payload) => {
+  //   state.suddenDeath = payload
+  // }),
 
   updateGameCloseTime: action((state, payload) => {
     state.gameCloseTime = payload
@@ -249,40 +296,6 @@ export const appStore = createStore<StoreModel>({
   // updateSuddenDeath: action((state, payload) => {
   //   state.suddenDeath = payload
   // }),
-
-  tickets: [],
-  updateTickets: action((state, payload) => {
-    state.tickets = payload
-  }),
-  addTicket: action((state, payload) => {
-    state.tickets.push(payload)
-  }),
-  modifyTicket: action((state, payload) => {
-    const existingTicket = state.tickets.find((ticket) => ticket.id === payload.id)
-
-    if (existingTicket) {
-      const index = state.tickets.indexOf(existingTicket)
-      state.tickets[index] = payload.ticket
-    } else {
-      state.tickets.push(payload.ticket)
-    }
-  }),
-  gameTab: 'game',
-  updateGameTab: action((state, payload) => {
-    state.gameTab = payload
-  }),
-  triggerCompletionModal: {
-    isOpen: false,
-    state: '',
-  },
-  updateTriggerCompletionModal: action((state, payload) => {
-    state.triggerCompletionModal = payload
-  }),
-
-  ownedTicket: null,
-  updateOwnedTicket: action((state, payload) => {
-    state.ownedTicket = payload
-  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()

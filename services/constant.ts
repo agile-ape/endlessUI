@@ -43,7 +43,9 @@ export const DOCS_URL_waterfall = `${DOCS_URL}/night#398cd030ed654d3e8cf50299c7a
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
 export const BLOG_URL = 'https://blog.lastman.xyz'
 
-export const BLOCK_EXPLORER = 'https://testnet.arbiscan.io/'
+export const BLOCK_EXPLORER = isDevelopment
+  ? 'https://testnet.arbiscan.io/'
+  : 'https://testnet.arbiscan.io/'
 
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
 export const TELEGRAM_URL = 'https://t.me/lastmangame'

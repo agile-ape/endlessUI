@@ -5,6 +5,7 @@ interface StoreModel {
   phase: IApp['phase']
   ticketState: IApp['ticketStatus']
   round: IApp['round']
+  currentPot: IApp['currentPot']
   stage: IApp['stage']
   voteCount: IApp['voteCount']
 
@@ -23,7 +24,6 @@ interface StoreModel {
 
   voteThreshold: IApp['voteThreshold']
   totalPot: IApp['totalPot']
-  currentPot: IApp['currentPot']
   prizeFactor: IApp['prizeFactor'] // what last man gets
   rankShare: IApp['rankShare']
 

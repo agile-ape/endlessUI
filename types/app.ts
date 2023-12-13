@@ -39,6 +39,7 @@ interface IApp {
 
   round: number
   stage: number
+  currentPot: number
   voteCount: number
   // keyword
   randNumber: number
@@ -58,7 +59,6 @@ interface IApp {
 
   voteThreshold: number
   totalPot: number
-  currentPot: number
   drainPot: number
   potToSplit: number
   // sumReciprocal
