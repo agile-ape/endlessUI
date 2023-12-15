@@ -70,11 +70,9 @@ const Round = ({ phase }: { phase: string }) => {
           <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
             1 round = 1 Day + 1 Night. Time halves every {levelUp} rounds. Stage 2 starts on Round{' '}
             {suddenDeath}
-            <div>
-              <a href={DOCS_URL_stages} target="_blank" className="text-xs link">
-                Learn more
-              </a>
-            </div>
+            <a href={DOCS_URL_stages} target="_blank" className="text-xs link block">
+              Learn more
+            </a>
           </p>
         </TooltipContent>
       </Tooltip>

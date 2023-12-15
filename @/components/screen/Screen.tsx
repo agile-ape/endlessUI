@@ -15,30 +15,6 @@ export default function Screen() {
   const { isConnected } = useAccount()
   const phase = useStoreState((state) => state.phase)
 
-  // const { data } = useContractReads({
-  //   contracts: [
-  //     {
-  //       ...defaultContractObj,
-  //       functionName: 'timeFlag',
-  //     },
-  //     {
-  //       ...defaultContractObj,
-  //       functionName: 'dayTime',
-  //     },
-  //   ],
-  //   enabled: isConnected,
-  // })
-
-  // let timeFlag = 0
-  // let countdownTime = 0
-
-  // if (data && data?.length > 0) {
-  //   timeFlag = Number(data[0]?.result)
-  //   countdownTime = Number(data[1]?.result) || 0
-
-  //   console.log('countdownTime', countdownTime)
-  // }
-
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">

@@ -3,7 +3,7 @@ import React from 'react'
 import type { FC } from 'react'
 import type { IApp, Ticket } from 'types/app'
 import Image from 'next/image'
-import { useAccount, useContractEvent, useContractReads, useEnsName } from 'wagmi'
+import { useAccount, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreState } from '../../../store'
@@ -53,6 +53,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const playerTickets = useStoreState((state) => state.tickets)
   const stage = useStoreState((state) => state.stage)
+  const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -64,50 +65,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
 
   const { address } = useAccount()
 
-  /*------ Update TicketUI once action is done --------------*/
-  // // update to safehouse
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'CheckIntoSafehouse',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { caller, checkOutDate, time } = args
-
-  //     if (Number(caller) === ticketNumber) {
-  //       refetch()
-  //     }
-  //     // console.log({ args })
-  //   },
-  // })
-
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'CheckOutFromSafehouse',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { caller, time } = args
-
-  //     if (Number(caller) === ticketNumber) {
-  //       refetch()
-  //     }
-  //     // console.log({ args })
-  //   },
-  // })
-
   const { data: ensName } = useEnsName({
     address: ticket?.user,
     chainId: 1,
   })
-
-  // const { data, refetch } = useContractReads({
-  //   contracts: [
-  //     {
-  //       ...defaultContractObj,
-  //       functionName: 'suddenDeath',
-  //     },
-  //   ],
-  //   cacheTime: 2_000,
-  // })
 
   // const playerTicket = data?.[0].result || BigInt(0)
   const nextTicketId = ticket?.id || 0
@@ -482,7 +443,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
 
   return (
     <div
-      className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge}`}
+      className={`flex flex-col wiggle  mx-auto relative justify-center shadow-xl ${size} ${edge} ${
+        ticket.id === lastChangedTicket ? 'triggered-wiggle' : ''
+      }`}
       style={{
         backgroundImage: bgImage ? `url('/ticket/${bgImage}.svg')` : 'none', // different for true
         backgroundRepeat: 'no-repeat',
@@ -605,15 +568,15 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
 
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
-              {ticketLookFinal === 'spectator' && <p>Spectator</p>}
+              {ticketLookFinal === 'spectator' && <span className="block"> Spectator </span>}
               {ticketLookFinal !== 'spectator' && (
-                <p>
+                <>
                   Player{' '}
                   <span className="font-whitrabt">
                     {' '}
                     <span className={h2}>#{String(id)}</span>
                   </span>
-                </p>
+                </>
               )}
             </p>
             <p className={`lowercase ${h3} italic text-zinc-700 dark:text-zinc-800`}>{status}</p>

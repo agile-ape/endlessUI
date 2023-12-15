@@ -109,6 +109,9 @@ interface StoreModel {
 
   ownedTicket: Ticket | null
   updateOwnedTicket: Action<StoreModel, Ticket | null>
+
+  lastChangedTicket: number
+  updateLastChangedTicket: Action<StoreModel, number>
 }
 
 type CompletionModal = {

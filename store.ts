@@ -283,6 +283,11 @@ export const appStore = createStore<StoreModel>({
   updateOwnedTicket: action((state, payload) => {
     state.ownedTicket = payload
   }),
+
+  lastChangedTicket: 0,
+  updateLastChangedTicket: action((state, payload) => {
+    state.lastChangedTicket = payload
+  }),
 })
 
 const typedAppStoreHooks = createTypedHooks<StoreModel>()
