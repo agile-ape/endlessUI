@@ -19,7 +19,7 @@ import {
 } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 
-const Round = ({ phase }: { phase: string }) => {
+const Round = () => {
   const round = useStoreState((state) => state.round)
   const stage = useStoreState((state) => state.stage)
   const suddenDeath = useStoreState((state) => state.suddenDeath)

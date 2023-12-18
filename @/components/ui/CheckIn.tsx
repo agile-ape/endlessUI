@@ -32,7 +32,7 @@ import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucid
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { priceConversion, formatNumber } from '@/lib/utils'
+import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
 import OnSignal from './OnSignal'

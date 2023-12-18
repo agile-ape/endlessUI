@@ -98,7 +98,7 @@ const GameTab = () => {
           <>
             {!isConnected && (
               <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
-                <div className="">Don't hide. Come. Join us</div>
+                <div className="">Never hide. Join us</div>
                 <Image
                   priority
                   src="/faces/hide.png"

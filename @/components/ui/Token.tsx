@@ -64,11 +64,6 @@ function Token() {
   // Address read
   const { address, isConnected } = useAccount()
 
-  const { data: ensName } = useEnsName({
-    address: address,
-    chainId: 1,
-  })
-
   const { data, refetch } = useContractReads({
     contracts: [
       {
@@ -254,7 +249,7 @@ function Token() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-3xl text-center font-normal">Dashboard</DialogTitle>
+            <DialogTitle className="text-3xl text-center font-normal">$LAST Token</DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
@@ -269,45 +264,10 @@ function Token() {
                 />
                 <div className="w-[100%] text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                   <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                    Profile
+                    Holdings
                   </div>
                   <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                     <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                      <div className="flex text-lg justify-between gap-4 text-xl">
-                        <p className="text-left">Player address</p>
-                        <p className="text-right">
-                          <a href={`${BLOCK_EXPLORER}address/${address}`} target="_blank">
-                            {ensName ? ensName : formatAddress(String(address))}
-                          </a>
-                        </p>
-                      </div>
-
-                      <div className="flex text-lg justify-between gap-4 text-xl">
-                        <p className="text-left">Game play count</p>
-                        <p className="text-right">
-                          {Number(playCount)}
-                          {/* {' '}
-                          {formatNumber(allowanceBalance, {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 0,
-                          })} */}
-                        </p>
-                      </div>
-
-                      <div className="flex text-lg justify-between gap-4 text-xl">
-                        <p className="text-left">Side quest count</p>
-                        <p className="text-right">
-                          {/* {Number(sideQuestCount)} */}
-                          {/* {' '}
-                          {formatNumber(allowanceBalance, {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 0,
-                          })} */}
-                        </p>
-                      </div>
-
-                      <br />
-
                       <div className="flex text-lg justify-between gap-4 text-xl">
                         <p className="text-left">$LAST holdings</p>
                         <p className="text-right">

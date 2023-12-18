@@ -1,32 +1,29 @@
-import Countdown from '../ui/Countdown'
-import Image from 'next/image'
-
-import GameTab from '../ui/GameTab'
-import Round from '../ui/Round'
-// import Ticket from '../ui/Ticket'
-import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import { useAccount, useContractReads } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import Round from '../ui/Round'
+import Countdown from '../ui/Countdown'
 import Indicator from '../ui/Indicator'
+import GameTab from '../ui/GameTab'
+import TicketList from '../ui/TicketList'
+import { useAccount } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
+import Image from 'next/image'
 import { useStoreState } from '../../../store'
 
 export default function Screen() {
   const { isConnected } = useAccount()
-  const phase = useStoreState((state) => state.phase)
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
-        <Title stageType={'day'} />
+        <Title />
       </div>
 
       {/* top container */}
       {isConnected && (
         <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
-          <Round phase={phase} />
+          <Round />
           <Countdown />
-          <Indicator phase={phase} />
+          <Indicator />
         </div>
       )}
 

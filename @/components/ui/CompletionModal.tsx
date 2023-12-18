@@ -25,6 +25,14 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'We thank you for your service',
       }
 
+    case 'betMade':
+      return {
+        bgImage: 'rainbow',
+        face: 'salute',
+        title: 'Bet Placed!',
+        message: 'Ooo. Good luck and enjoy the game!',
+      }
+
     //used
     case 'sentTokens':
       return {

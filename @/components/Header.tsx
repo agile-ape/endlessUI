@@ -9,6 +9,7 @@ import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Token from './ui/Token'
+import Profile from './ui/Profile'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -110,6 +111,7 @@ function Header() {
         </div>
 
         {isConnected ? <Token /> : null}
+        {isConnected ? <Profile /> : null}
 
         <div className="hidden xl:flex">
           <CustomConnectButton />
