@@ -58,6 +58,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
   const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
 
   const { mutate: globalMutate } = useSWRConfig()
 
@@ -111,6 +112,9 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
     socket.on('tickets', (data) => {
       if (!data?.id) return
+
+      updateLastChangedTicket(data.id)
+      setTimeout(() => updateLastChangedTicket(0), 3000)
 
       if (data?.user?.toLowerCase() === address?.toLowerCase()) {
         updateOwnedTicket(data)

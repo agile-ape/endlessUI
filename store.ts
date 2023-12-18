@@ -18,6 +18,7 @@ export const appStore = createStore<StoreModel>({
     isOpen: false,
     state: '',
   },
+  lastChangedTicket: 0,
 
   updateRound: action((state, payload) => {
     state.round = payload
@@ -74,57 +75,60 @@ export const appStore = createStore<StoreModel>({
     state.triggerCompletionModal = payload
   }),
 
+  updateLastChangedTicket: action((state, payload) => {
+    state.lastChangedTicket = payload
+  }),
+
   /*--- DELETE FROM HERE -----*/
 
-  addTicket: action((state, payload) => {
-    state.tickets.push(payload)
-  }),
-  ticketState: 'new',
+  // addTicket: action((state, payload) => {
+  //   state.tickets.push(payload)
+  // }),
+  // ticketState: 'new',
   // game:,
   // randNumber:,
-  isAttackTime: false,
-  ticketId: 0,
-  giveUpCount: 0,
-  killedCount: 0,
+  // isAttackTime: false,
+  // ticketId: 0,
+  // giveUpCount: 0,
+  // killedCount: 0,
   // leaderboard
-  nextTicketPrice: 0,
-  increaseInPrice: 1 * 1e16,
-  ticketsAvailableAtCurrentPrice: 10,
+  // nextTicketPrice: 0,
+  // increaseInPrice: 1 * 1e16,
+  // ticketsAvailableAtCurrentPrice: 10,
   // ticketsIncreaseMultiple: 2,
-  ticketsCounter: 1,
-  voteThreshold: 50,
-  totalPot: 0,
+  // ticketsCounter: 1,
+  // voteThreshold: 50,
+  // totalPot: 0,
   // currentPot: 0,
   // drainPot: 0,
   // potToSplit: 0,
   // sumReciprocal
-  prizeFactor: 0, // what last man gets
+  // prizeFactor: 0, // what last man gets
   // lastMan
   // feePool
   // nextPot: 0,
-  rankShare: 0,
-
+  // rankShare: 0,
   /*-- time is seconds ----*/
-  countdownTime: 216000,
-  timeAddon: 60,
-  roundTime: 3600,
+  // countdownTime: 216000,
+  // timeAddon: 60,
+  // roundTime: 3600,
   // dayShare
   // nightShare
   // levelUp
   // suddenDeath: 3,
-  gameCloseTime: 3600,
-  timeFlag: 0,
-  dayTime: 1800,
-  nightTime: 1800,
+  // gameCloseTime: 3600,
+  // timeFlag: 0,
+  // dayTime: 1800,
+  // nightTime: 1800,
 
-  safehouseCostPerNight: 2000,
-  tokensPerAttack: 1000,
+  // safehouseCostPerNight: 2000,
+  // tokensPerAttack: 1000,
 
-  drainRate: 100,
-  minPotSize: 200,
-  drainSwitch: false,
-  amountDrained: 0,
-  drainStart: 0,
+  // drainRate: 100,
+  // minPotSize: 200,
+  // drainSwitch: false,
+  // amountDrained: 0,
+  // drainStart: 0,
   // drainPerRound: 0,
 
   // totalPrizePool: 0,
@@ -140,84 +144,84 @@ export const appStore = createStore<StoreModel>({
   // }),
   /*--- DELETE FROM HERE -----*/
 
-  updateIsAttackTime: action((state, payload) => {
-    state.isAttackTime = payload
-  }),
-
-  updateTicketId: action((state, payload) => {
-    state.ticketId = payload
-  }),
-
-  updateGiveUpCount: action((state, payload) => {
-    state.giveUpCount = payload
-  }),
-
-  updateKilledCount: action((state, payload) => {
-    state.killedCount = payload
-  }),
-
-  // leaderboard
-
-  updateNextTicketPrice: action((state, payload) => {
-    state.nextTicketPrice = payload
-  }),
-
-  updateIncreaseInPrice: action((state, payload) => {
-    state.increaseInPrice = payload
-  }),
-
-  updateTicketsAvailableAtCurrentPrice: action((state, payload) => {
-    state.ticketsAvailableAtCurrentPrice = payload
-  }),
-
-  // updateTicketsIncreaseMultiple: action((state, payload) => {
-  //   state.ticketsIncreaseMultiple = payload
+  // updateIsAttackTime: action((state, payload) => {
+  //   state.isAttackTime = payload
   // }),
 
-  updateVoteThreshold: action((state, payload) => {
-    state.voteThreshold = payload
-  }),
-
-  updateTotalPot: action((state, payload) => {
-    state.totalPot = payload
-  }),
-
-  // updateCurrentPot: action((state, payload) => {
-  //   state.currentPot = payload
+  // updateTicketId: action((state, payload) => {
+  //   state.ticketId = payload
   // }),
 
-  // updateDrainPot: action((state, payload) => {
-  //   state.drainPot = payload
+  // updateGiveUpCount: action((state, payload) => {
+  //   state.giveUpCount = payload
   // }),
 
-  // updatePotToSplit: action((state, payload) => {
-  //   state.potToSplit = payload
+  // updateKilledCount: action((state, payload) => {
+  //   state.killedCount = payload
   // }),
 
-  // sumReciprocal
-  updatePrizeFactor: action((state, payload) => {
-    state.prizeFactor = payload
-  }),
-  // what last man gets
-  // lastMan
-  // feePool
-  // updateNextPot: action((state, payload) => {
-  //   state.nextPot = payload
+  // // leaderboard
+
+  // updateNextTicketPrice: action((state, payload) => {
+  //   state.nextTicketPrice = payload
   // }),
 
-  // rankShare
+  // updateIncreaseInPrice: action((state, payload) => {
+  //   state.increaseInPrice = payload
+  // }),
 
-  updateCountdownTime: action((state, payload) => {
-    state.countdownTime = payload
-  }),
+  // updateTicketsAvailableAtCurrentPrice: action((state, payload) => {
+  //   state.ticketsAvailableAtCurrentPrice = payload
+  // }),
 
-  updateTimeAddon: action((state, payload) => {
-    state.timeAddon = payload
-  }),
+  // // updateTicketsIncreaseMultiple: action((state, payload) => {
+  // //   state.ticketsIncreaseMultiple = payload
+  // // }),
 
-  updateRoundTime: action((state, payload) => {
-    state.roundTime = payload
-  }),
+  // updateVoteThreshold: action((state, payload) => {
+  //   state.voteThreshold = payload
+  // }),
+
+  // updateTotalPot: action((state, payload) => {
+  //   state.totalPot = payload
+  // }),
+
+  // // updateCurrentPot: action((state, payload) => {
+  // //   state.currentPot = payload
+  // // }),
+
+  // // updateDrainPot: action((state, payload) => {
+  // //   state.drainPot = payload
+  // // }),
+
+  // // updatePotToSplit: action((state, payload) => {
+  // //   state.potToSplit = payload
+  // // }),
+
+  // // sumReciprocal
+  // updatePrizeFactor: action((state, payload) => {
+  //   state.prizeFactor = payload
+  // }),
+  // // what last man gets
+  // // lastMan
+  // // feePool
+  // // updateNextPot: action((state, payload) => {
+  // //   state.nextPot = payload
+  // // }),
+
+  // // rankShare
+
+  // updateCountdownTime: action((state, payload) => {
+  //   state.countdownTime = payload
+  // }),
+
+  // updateTimeAddon: action((state, payload) => {
+  //   state.timeAddon = payload
+  // }),
+
+  // updateRoundTime: action((state, payload) => {
+  //   state.roundTime = payload
+  // }),
 
   // dayShare
   // nightShare
@@ -226,49 +230,49 @@ export const appStore = createStore<StoreModel>({
   //   state.suddenDeath = payload
   // }),
 
-  updateGameCloseTime: action((state, payload) => {
-    state.gameCloseTime = payload
-  }),
+  // updateGameCloseTime: action((state, payload) => {
+  //   state.gameCloseTime = payload
+  // }),
 
-  updateTimeFlag: action((state, payload) => {
-    state.timeFlag = payload
-  }),
+  // updateTimeFlag: action((state, payload) => {
+  //   state.timeFlag = payload
+  // }),
 
-  updateDayTime: action((state, payload) => {
-    state.dayTime = payload
-  }),
+  // updateDayTime: action((state, payload) => {
+  //   state.dayTime = payload
+  // }),
 
-  updateNightTime: action((state, payload) => {
-    state.nightTime = payload
-  }),
+  // updateNightTime: action((state, payload) => {
+  //   state.nightTime = payload
+  // }),
 
-  updateSafehouseCostPerNight: action((state, payload) => {
-    state.safehouseCostPerNight = payload
-  }),
+  // updateSafehouseCostPerNight: action((state, payload) => {
+  //   state.safehouseCostPerNight = payload
+  // }),
 
-  updateTokensPerAttack: action((state, payload) => {
-    state.tokensPerAttack = payload
-  }),
+  // updateTokensPerAttack: action((state, payload) => {
+  //   state.tokensPerAttack = payload
+  // }),
 
-  updateDrainRate: action((state, payload) => {
-    state.drainRate = payload
-  }),
+  // updateDrainRate: action((state, payload) => {
+  //   state.drainRate = payload
+  // }),
 
-  updateMinPotSize: action((state, payload) => {
-    state.minPotSize = payload
-  }),
+  // updateMinPotSize: action((state, payload) => {
+  //   state.minPotSize = payload
+  // }),
 
-  updateDrainSwitch: action((state, payload) => {
-    state.drainSwitch = payload
-  }),
+  // updateDrainSwitch: action((state, payload) => {
+  //   state.drainSwitch = payload
+  // }),
 
-  updateAmountDrained: action((state, payload) => {
-    state.amountDrained = payload
-  }),
+  // updateAmountDrained: action((state, payload) => {
+  //   state.amountDrained = payload
+  // }),
 
-  updateDrainStart: action((state, payload) => {
-    state.drainStart = payload
-  }),
+  // updateDrainStart: action((state, payload) => {
+  //   state.drainStart = payload
+  // }),
 
   // updateDrainPerRound: action((state, payload) => {
   //   state.drainPerRound = payload
@@ -295,6 +299,40 @@ export const appStore = createStore<StoreModel>({
   // }),
   // updateSuddenDeath: action((state, payload) => {
   //   state.suddenDeath = payload
+  // }),
+
+  // tickets: [],
+  // updateTickets: action((state, payload) => {
+  //   state.tickets = payload
+  // }),
+  // addTicket: action((state, payload) => {
+  //   state.tickets.push(payload)
+  // }),
+  // modifyTicket: action((state, payload) => {
+  //   const existingTicket = state.tickets.find((ticket) => ticket.id === payload.id)
+
+  //   if (existingTicket) {
+  //     const index = state.tickets.indexOf(existingTicket)
+  //     state.tickets[index] = payload.ticket
+  //   } else {
+  //     state.tickets.push(payload.ticket)
+  //   }
+  // }),
+  // gameTab: 'game',
+  // updateGameTab: action((state, payload) => {
+  //   state.gameTab = payload
+  // }),
+  // triggerCompletionModal: {
+  //   isOpen: false,
+  //   state: '',
+  // },
+  // updateTriggerCompletionModal: action((state, payload) => {
+  //   state.triggerCompletionModal = payload
+  // }),
+
+  // ownedTicket: null,
+  // updateOwnedTicket: action((state, payload) => {
+  //   state.ownedTicket = payload
   // }),
 })
 
