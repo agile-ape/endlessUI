@@ -87,7 +87,7 @@ const Title = () => {
   }, [phase])
 
   return (
-    <p className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
+    <div className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
       {!isConnected && <p>Connect Wallet to See More</p>}
 
       {isConnected && (
@@ -96,7 +96,7 @@ const Title = () => {
           {!completedTyping && <CursorSVG />}
         </p>
       )}
-    </p>
+    </div>
   )
 }
 
