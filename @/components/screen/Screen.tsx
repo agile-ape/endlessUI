@@ -1,43 +1,76 @@
-import Countdown from '../ui/Countdown'
-import Image from 'next/image'
-
-import GameTab from '../ui/GameTab'
-import Round from '../ui/Round'
-// import Ticket from '../ui/Ticket'
-import TicketList from '../ui/TicketList'
 import Title from '../ui/Title'
-import { useAccount, useContractReads } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import Round from '../ui/Round'
+import Countdown from '../ui/Countdown'
 import Indicator from '../ui/Indicator'
+import GameTab from '../ui/GameTab'
+import TicketList from '../ui/TicketList'
+import { useAccount } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
+import Image from 'next/image'
 import { useStoreState } from '../../../store'
+import CustomConnectButton from '@/components/ui/connect-button'
+import GameFeed from '@/components/ui/GameFeed'
 
 export default function Screen() {
   const { isConnected } = useAccount()
-  const phase = useStoreState((state) => state.phase)
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
-        <Title stageType={'day'} />
+        <Title />
       </div>
 
-      {/* top container */}
-      <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
-        <Round phase={phase} />
-        <Countdown phase={phase} />
-        <Indicator phase={phase} />
-      </div>
+      {!isConnected && (
+        <>
+          <div className="flex my-4 place-content-center">
+            <div className="relative">
+              <Image
+                priority
+                src="/pepe/sun.svg"
+                className="place-self-center animate-pulse"
+                height={300}
+                width={300}
+                alt="sneak-a-peek-pepe"
+              />
 
-      {/* bottom container */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
-          <GameTab />
-        </div>
+              <div className="absolute top-[50px]">
+                <Image
+                  priority
+                  src="/pepe/pepe-robe.svg"
+                  className="place-self-center"
+                  height={300}
+                  width={300}
+                  alt="sneak-a-peek-pepe"
+                />
+              </div>
+            </div>
+          </div>
 
-        <div className="grow rounded-xl py-2 container-last">
-          <TicketList />
-        </div>
-      </div>
+          <div className="flex flex-col mb-4 justify-center items-center z-10">
+            <CustomConnectButton />
+          </div>
+        </>
+      )}
+
+      {isConnected && (
+        <>
+          <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
+            <Round />
+            <Countdown />
+            <Indicator />
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
+              <GameTab />
+            </div>
+
+            <div className="grow rounded-xl py-2 container-last">
+              <TicketList />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

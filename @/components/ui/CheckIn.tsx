@@ -32,7 +32,7 @@ import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucid
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { priceConversion, formatNumber } from '@/lib/utils'
+import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
 import OnSignal from './OnSignal'
@@ -153,6 +153,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
     }
   }
 
+  // update once txn is done
   const {} = useWaitForTransaction({
     hash: checkInData?.hash,
     onSuccess(data) {
@@ -163,7 +164,7 @@ function CheckIn({ playerTicket }: { playerTicket: any }) {
     },
   })
 
-  // Safehouse price
+  // Change in safehouse price
   useContractEvent({
     ...defaultContractObj,
     eventName: 'SafehousePrice',

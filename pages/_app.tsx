@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-
 import '@rainbow-me/rainbowkit/styles.css'
 import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import type { AppProps } from 'next/app'

@@ -36,7 +36,6 @@ import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import { priceConversion } from '@/lib/utils'
 import OnSignal from './OnSignal'
 import { statusPayload } from '@/lib/utils'
 import { formatUnits } from 'viem'

@@ -7,7 +7,6 @@ import { Badge } from './badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Triangle } from 'lucide-react'
 import Image from 'next/image'
-import { shareConversion } from '@/lib/utils'
 import { defaultContractObj, tokenContractObj, DOCS_URL_stages } from '../../../services/constant'
 import {
   useAccount,
@@ -20,16 +19,13 @@ import {
 } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 
-const Round = ({ phase }: { phase: string }) => {
+const Round = () => {
   const round = useStoreState((state) => state.round)
   const stage = useStoreState((state) => state.stage)
+  const suddenDeath = useStoreState((state) => state.suddenDeath)
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'suddenDeath',
-      },
       {
         ...defaultContractObj,
         functionName: 'levelUp',
@@ -37,8 +33,7 @@ const Round = ({ phase }: { phase: string }) => {
     ],
   })
 
-  const suddenDeath = Number(data?.[0].result || BigInt(0))
-  const levelUp = Number(data?.[1].result || 0)
+  const levelUp = Number(data?.[0].result || 0)
 
   const On = 'font-medium tracking-wider'
   const Off = 'text-zinc-400 dark:text-zinc-400 tracking-tight'

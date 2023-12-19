@@ -12,7 +12,7 @@ import { Button } from './button'
 import Image from 'next/image'
 import { LogOut } from 'lucide-react'
 import Prompt from './Prompt'
-import { formatNumber, tokenConversion } from '@/lib/utils'
+import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import {
   useAccount,

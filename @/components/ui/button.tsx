@@ -62,6 +62,12 @@ const buttonVariants = cva(
         checkOut:
           'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
+        wager:
+          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+
+        claim:
+          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+
         // does not use size
         splitPot:
           'text-white whitespace-nowrap border-2 border-pink-800 bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',

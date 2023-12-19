@@ -119,7 +119,7 @@ function ExitGame() {
   })
 
   const killClaim = formatUnits(claimIfKilled || BigInt(0), 18)
-  console.log(killClaim)
+  // console.log(killClaim)
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   // Active condition

@@ -23,6 +23,7 @@ interface Ticket {
 }
 
 interface IApp {
+  round: number
   phase:
     | 'deployed'
     | 'start'
@@ -32,72 +33,13 @@ interface IApp {
     | 'peacefound'
     | 'drain'
     | 'gameclosed'
-
-  ticketStatus: 'new' | 'submitted' | 'checked' | 'safe' | 'dead' | 'exited'
-
-  game: string
-
-  round: number
   stage: number
-  voteCount: number
-  // keyword
-  randNumber: number
-  isAttackTime: boolean
-
-  ticketId: number
-  ticketCount: number
-  giveUpCount: number
-  killedCount: number
-  // leaderboard
-
-  nextTicketPrice: number
-  increaseInPrice: number
-  ticketsAvailableAtCurrentPrice: number
-  ticketsIncreaseMultiple: number
-  ticketsCounter: number
-
-  voteThreshold: number
-  totalPot: number
-  currentPot: number
-  drainPot: number
-  potToSplit: number
-  // sumReciprocal
-  prizeFactor: number // what last man gets
-  // lastMan
-  // feePool
-  nextPot: number
-  rankShare: number
-
-  countdownTime: number
-  timeAddon: number
-  roundTime: number
-  // dayShare
-  // nightShare
-  // levelUp
   suddenDeath: number
-  gameCloseTime: number
-  timeFlag: number
-  dayTime: number
-  nightTime: number
+  currentPot: number
+  ticketCount: number
+  voteCount: number
 
-  safehouseCostPerNight: number
-  tokensPerAttack: number
-
-  drainRate: number
-  minPotSize: number
-  drainSwitch: boolean
-  amountDrained: number
-  drainStart: number
-  drainPerRound: number
-
-  // PREVIOUS
-  // totalPrizePool: number
-  // nextPrizeAmount: number
-  // topPrize: number
-  // bounty: number
-  // totalTicketCount: number
   tickets: Ticket[]
-  // disabled: boolean
 }
 
 export type { IApp, Ticket }

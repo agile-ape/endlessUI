@@ -23,7 +23,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import { tokenConversion, formatNumber } from '@/lib/utils'
+import { formatNumber } from '@/lib/utils'
 import { defaultContractObj, DOCS_URL_split, TWITTER_URL } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
@@ -42,27 +42,19 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 
 function SplitIt({ playerTicket }: { playerTicket: any }) {
-  // State variables
   const phase = useStoreState((state) => state.phase)
-  // const round = useStoreState((state) => state.round)
   const stage = useStoreState((state) => state.stage)
+  const suddenDeath = useStoreState((state) => state.suddenDeath)
+  const currentPot = useStoreState((state) => state.currentPot)
   const ticketCount = useStoreState((state) => state.ticketCount)
+  const voteCount = useStoreState((state) => state.voteCount)
+
   const ownedTicket = useStoreState((state) => state.ownedTicket)
+
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'suddenDeath',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'currentPot',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'voteCount',
-      },
       {
         ...defaultContractObj,
         functionName: 'voteThreshold',
@@ -74,10 +66,6 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
       {
         ...defaultContractObj,
         functionName: 'drainStart',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'drainSwitch',
       },
       {
         ...defaultContractObj,
@@ -95,63 +83,33 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
         ...defaultContractObj,
         functionName: 'drainPot',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'nextPotWallet',
+      },
     ],
   })
 
-  const suddenDeath = Number(data?.[0].result || BigInt(0))
-  const currentPot = data?.[1].result || BigInt(0)
-  const voteCount = Number(data?.[2].result || BigInt(0))
-  const voteThreshold = Number(data?.[3].result || BigInt(0))
-  const minPotSize = data?.[4].result || BigInt(0)
-  const drainStart = Number(data?.[5].result || 0)
-  const drainSwitch = Boolean(data?.[6].result || 0)
-  const drainRate = data?.[7].result || BigInt(0)
-  const drainPerRound = data?.[8].result || BigInt(0)
-  const amountDrained = data?.[9].result || BigInt(0)
-  const drainPot = data?.[10].result || BigInt(0)
+  const voteThreshold = Number(data?.[0].result || BigInt(0))
+  const minPotSize = data?.[1].result || BigInt(0)
+  const drainStart = Number(data?.[2].result || 0)
+  const drainRate = data?.[3].result || BigInt(0)
+  const drainPerRound = data?.[4].result || BigInt(0)
+  const amountDrained = data?.[5].result || BigInt(0)
+  const drainPot = data?.[6].result || BigInt(0)
+  const nextPotWallet = data?.[7].result || BigInt(0)
 
-  console.log(amountDrained)
-  const drainShare = formatUnits(drainRate, 1)
+  // const drainShare = formatUnits(drainRate, 1)
+  // const drainFromPot = formatUnits(amountDrained, 18)
   const minPot = formatUnits(minPotSize, 1)
-  const drainFromPot = formatUnits(amountDrained, 18)
-  const amountInPot = formatUnits(currentPot, 18)
   const potToDrain = formatUnits(drainPot, 18)
 
-  // const suddenDeath = useStoreState((state) => state.suddenDeath)
-  // const currentPot = useStoreState((state) => state.currentPot)
-  // const voteCount = useStoreState((state) => state.voteCount)
-  // const voteThreshold = useStoreState((state) => state.voteThreshold)
-  // const amountDrained = useStoreState((state) => state.amountDrained)
-  // const drainStart = useStoreState((state) => state.drainStart)
-  // const drainSwitch = useStoreState((state) => state.drainSwitch)
-
-  const drainAmount = (Number(drainShare) / 100) * Number(potToDrain)
+  // const drainAmount2 = (Number(drainShare) / 100) * Number(potToDrain)
+  const drainAmount = formatUnits(drainPerRound, 18)
   const potToEnd = (Number(minPot) / 100) * Number(potToDrain)
 
-  const splitAmountPerPlayer = Number(amountInPot) / ticketCount
-
+  const splitAmountPerPlayer = currentPot / ticketCount
   const thresholdCount = Math.floor((voteThreshold * ticketCount) / 100) + 1
-
-  // if (drainSwitch === true) {
-  // }
-
-  // const voteShare = voteCount / ticketCount
-  // const amountDrainedConverted = amountDrained / tokenConversion
-
-  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-
-  // Address read
-  const { address, isConnected } = useAccount()
-
-  // const { data: playerTicket } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'playerTicket',
-  //   args: [address as `0x${string}`],
-  // })
-
-  // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  // let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
-  // let ticketVote = Boolean(playerTicket?.[6] || 0)
 
   const ticketStatus = ownedTicket?.status || 0
   const ticketIsInPlay = ownedTicket?.isInPlay || false
@@ -159,30 +117,13 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
 
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
-  // Active condition
-  // let stage: number
-
-  // if (round === 0) {
-  //   stage = 0
-  // } else if (round < suddenDeath) {
-  //   stage = 1
-  // } else if (round >= suddenDeath && drainSwitch === false) {
-  //   stage = 2
-  // } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
-  //   stage = 3
-  // } else {
-  //   stage = 0
-  // }
-
   let splitActive: boolean
   splitActive =
     phase === 'day' &&
     (stage === 2 || stage === 3) &&
     ticketStatusString !== 'safe' &&
     ticketIsInPlay === true
-  // splitActive = true
 
-  // Contract write
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -195,8 +136,6 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
 
   const splitHandler = async () => {
     try {
-      // const originalVote = ticketVote
-
       const tx = await writeAsync()
 
       const hash = tx.hash
@@ -205,7 +144,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
 
       updateCompletionModal({
         isOpen: true,
-        // references initial ticketVote.
+        // references initial ticketVote - hence opposite
         state: ticketVote ? 'voteNo' : 'voteYes',
       })
     } catch (error: any) {
@@ -220,6 +159,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
     }
   }
 
+  // track Stage 3
   useContractEvent({
     ...defaultContractObj,
     eventName: 'DrainTriggered',
@@ -230,6 +170,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
     },
   })
 
+  // changes amount drained (when Day comes)
   useContractEvent({
     ...defaultContractObj,
     eventName: 'PhaseChange',
@@ -238,30 +179,12 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
     },
   })
 
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'VoteYes',
-    listener: (event) => {
-      refetch()
-    },
-  })
-
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'VoteNo',
-    listener: (event) => {
-      refetch()
-    },
-  })
-
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {/* Button to click on */}
         <Button variant="splitPot" className="w-full text-xl flex justify-start">
           <OnSignal active={splitActive} own={true} />
           Split Pot
-          {/* <Split size={16} className="text-sm ml-1"></Split> */}
         </Button>
       </DialogTrigger>
 
@@ -271,30 +194,21 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
             <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
               <div>
                 <span>Vote to split pot</span>
-                {/* <span className="text-md sm:text-lg md:text-xl ">(Stage 2 and 3)</span> */}
               </div>
               <Image
                 priority
                 src={`/indicator/dayIndicator.svg`}
                 height={300}
                 width={60}
-                // fill={true}
-                // sizes="max-width:150px"
                 className=""
-                // layout="fixed"
                 alt={`dayIndicator`}
               />
-              {/* <div className="day-last">
-                <span className="font-headline">Day</span> Action (Stage 2 and 3)
-              </div> */}
             </DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/SplitPot.png"
-                  // layout="fill"
-                  // objectFit='cover'
+                  src="/lore/InsertCoin.png"
                   className="place-self-center rounded-xl"
                   height={400}
                   width={650}
@@ -335,14 +249,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left leading-tight">Current pot</p>
-                      <p className="text-right">
-                        {' '}
-                        {formatNumber(amountInPot, {
-                          maximumFractionDigits: 3,
-                          minimumFractionDigits: 0,
-                        })}{' '}
-                        ETH
-                      </p>
+                      <p className="text-right"> {currentPot} ETH</p>
                     </div>
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left leading-tight"> Stage 2 starts on</p>
@@ -408,16 +315,6 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                               </TooltipProvider>
                             </p>
                           </div>
-                          {/* <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Count to split pot </p>
-                            <p className="text-right"> {thresholdCount}</p>
-                          </div> */}
-                          {/* <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Stage 3 starts on</p>{' '}
-                            {drainSwitch === true && (
-                              <p className="text-right underline">Round {drainStart}</p>
-                            )}
-                          </div> */}
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="item-2">
@@ -425,19 +322,6 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                           <div className="text-xl text-zinc-500 dark:text-zinc-400">Stage 3</div>
                         </AccordionTrigger>
                         <AccordionContent>
-                          {/* <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight">Stage 3 pot size</p>
-                            {drainSwitch === true && (
-                              <p className="text-right">
-                                {' '}
-                                {formatNumber(potToDrain, {
-                                  maximumFractionDigits: 3,
-                                  minimumFractionDigits: 0,
-                                })}
-                                ETH
-                              </p>
-                            )}{' '}
-                          </div> */}
                           <div className="grid grid-cols-2 text-lg gap-1">
                             <p className="text-left leading-tight">Drain per round</p>
                             <p className="text-right">
@@ -452,7 +336,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                                   </TooltipTrigger>
                                   <TooltipContent side="top" align="center">
                                     <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                                      {formatNumber(drainShare, {
+                                      {formatNumber(formatUnits(drainRate, 1), {
                                         maximumFractionDigits: 6,
                                         minimumFractionDigits: 0,
                                       })}
@@ -501,11 +385,14 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                             </p>
                           </div>
                           <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Amount drained so far </p>
+                            <p className="text-left leading-tight">
+                              {' '}
+                              Amount drained (to next game){' '}
+                            </p>
                             {stage === 3 && (
                               <p className="text-right">
                                 {' '}
-                                {formatNumber(drainFromPot, {
+                                {formatNumber(formatUnits(amountDrained, 18), {
                                   maximumFractionDigits: 6,
                                   minimumFractionDigits: 0,
                                 })}{' '}

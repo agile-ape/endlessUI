@@ -14,8 +14,6 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
-import HowToPlay from './ui/_HowToPlay'
-import GameHeader from './ui/_GameHeader'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { DOCS_URL, TWITTER_URL, TELEGRAM_URL, BLOG_URL } from '../../services/constant'
@@ -65,7 +63,7 @@ export default function SideMenu() {
           {/* <Link
             className="px-2
             text-xl text-zinc-700 dark:text-zinc-200
-            hover:text-neutral-900 hover:underline 
+            hover:text-neutral-900 hover:underline
             dark:hover:text-neutral-200 dark:hover:text-neutral-200 flex items-center"
             href="/quickstart"
           >

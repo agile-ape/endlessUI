@@ -4,6 +4,7 @@ import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
+import { useAccount } from 'wagmi'
 
 type TitleType = {
   stageType: IApp['phase']
@@ -32,7 +33,7 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
-  deployed: 'stand by to buy tickets',
+  deployed: 'contract deployed. stand by to buy tickets',
   start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
@@ -57,16 +58,19 @@ const CursorSVG = () => (
   </svg>
 )
 
-const Title: FC<TitleType> = ({ stageType }) => {
+// Title: FC<TitleType> = () => {
+const Title = () => {
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
   const phase = useStoreState((state) => state.phase)
+
+  const { isConnected } = useAccount()
 
   useEffect(() => {
     setCompletedTyping(false)
 
     let i = 0
-    const stringResponse = title[stageType]
+    let stringResponse = title[phase]
 
     const intervalId = setInterval(() => {
       setDisplayResponse(stringResponse.slice(0, i))
@@ -80,13 +84,19 @@ const Title: FC<TitleType> = ({ stageType }) => {
     }, 60)
 
     return () => clearInterval(intervalId)
-  }, [stageType])
+  }, [phase])
 
   return (
-    <p className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
-      {displayResponse}
-      {!completedTyping && <CursorSVG />}
-    </p>
+    <div className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
+      {!isConnected && <p>Connect Wallet to See More</p>}
+
+      {isConnected && (
+        <p>
+          {displayResponse}
+          {!completedTyping && <CursorSVG />}
+        </p>
+      )}
+    </div>
   )
 }
 

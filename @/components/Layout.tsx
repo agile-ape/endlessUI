@@ -21,7 +21,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
-import { fetcher, isJson, transformToTicket } from '@/lib/utils'
+import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
 import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
@@ -47,15 +47,17 @@ type LayoutProps = {
 }
 
 const Layout = ({ children, metadata, phase }: LayoutProps) => {
-  const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateStage = useStoreActions((actions) => actions.updateStage)
+  const updateSuddenDeath = useStoreActions((actions) => actions.updateSuddenDeath)
+  const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
+  const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
   const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
-  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
-  const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
+  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
 
   const { mutate: globalMutate } = useSWRConfig()
@@ -129,7 +131,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     }
   }, [])
 
-  // Safehouse price
+  /*---------------- OWNER FUNCTIONS ------------------*/
+  // Change safehouse price
   useContractEvent({
     ...defaultContractObj,
     eventName: 'SafehousePrice',
@@ -145,7 +148,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     },
   })
 
-  // tokens emission
+  // Change tokens emission rate
   useContractEvent({
     ...defaultContractObj,
     eventName: 'TokenEmission',
@@ -161,7 +164,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     },
   })
 
-  // trigger drain
+  // Trigger drain
   useContractEvent({
     ...defaultContractObj,
     eventName: 'DrainTriggered',
@@ -197,6 +200,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       refetchInitData()
     },
   })
+
+  // need to add Kick Out, AttackAndKilled, Exit - refresh
 
   // phase change
   useContractEvent({
@@ -268,58 +273,14 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     },
   })
 
-  // ticket bought
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'NewTicketBought',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { caller, player, purchasePrice, time } = args
-  //     console.log(recipient)
-
-  //     if (recipient === ticketId) {
-  //       triggerCompletionModal({
-  //         isOpen: true,
-  //         state: 'receivedTokens',
-  //       })
-  //     }
-  //     console.log({ args })
-  //   },
-  // })
-
-  // alerts tokens sender
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'TokensTransferred',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { caller, recipient, amount, time } = args
-  //     if (caller === ticketId) {
-  //       updateCompletionModal({
-  //         isOpen: true,
-  //         state: 'sentTokens',
-  //       })
-  //     }
-  //     console.log({ args })
-  //   },
-  // })
-
-  // alerts ticket that got killed
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'AttackAndKilled',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { caller, defendingTicket, ticketValue, time } = args
-  //     if (defendingTicket === ticketId) {
-  //       triggerCompletionModal({
-  //         isOpen: true,
-  //         state: 'killed',
-  //       })
-  //     }
-  //     console.log({ args })
-  //   },
-  // })
+  // new ticket bought
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    listener: (event) => {
+      refetchInitData()
+    },
+  })
 
   const { data, refetch: refetchInitData } = useContractReads({
     contracts: [
@@ -333,7 +294,15 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
+        functionName: 'currentPot',
+      },
+      {
+        ...defaultContractObj,
         functionName: 'ticketCount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'voteCount',
       },
       {
         ...defaultContractObj,
@@ -347,14 +316,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'drainSwitch',
       },
-      {
-        ...defaultContractObj,
-        functionName: 'voteCount',
-      },
-      // {
-      //   ...defaultContractObj,
-      //   functionName: 'ticketId',
-      // },
     ],
     enabled: isConnected,
   })
@@ -362,13 +323,14 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   if (data && data?.length > 0) {
     const round = data[0]?.result || 0
     const phase = data[1]?.result || 0
-    const ticketCount = data[2]?.result || 0
-    const suddenDeath = data[3]?.result || 0
-    const drainStart = data[4]?.result || 0
-    const drainSwitch = Boolean(data[5]?.result || 0)
-    const voteCount = data[6]?.result || 0
+    const currentPot = data[2]?.result || BigInt(0)
+    const ticketCount = data[3]?.result || 0
+    const voteCount = data[4]?.result || 0
+    const suddenDeath = data[5]?.result || 0
+    const drainStart = data[6]?.result || 0
+    const drainSwitch = Boolean(data[7]?.result || 0)
 
-    // Active condition
+    // compute stage
     let stage: number
 
     if (round === 0) {
@@ -383,13 +345,18 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       stage = 0
     }
 
+    const currentPotInEth = formatNumber(formatUnits(currentPot, 18), {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 3,
+    })
+
     updateRound(Number(round))
     updatePhase(Number(phase))
-    updateTicketCount(Number(ticketCount))
     updateStage(Number(stage))
+    updateSuddenDeath(Number(suddenDeath))
+    updateCurrentPot(Number(currentPotInEth))
+    updateTicketCount(Number(ticketCount))
     updateVoteCount(Number(voteCount))
-    // updatePhase(Number(2))
-    // updateNextTicketPrice(Number(nextTicketPrice))
   }
 
   const refreshData = () => {
@@ -397,7 +364,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   }
 
   const background = router.pathname.includes('404') ? 'Default.svg' : typeStage[phase]
-  // const background = typeStage[phase]
 
   return (
     <main
@@ -406,19 +372,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         backgroundImage: `url(/background/${background})`,
       }}
     >
-      {/* width of header */}
-      {/* <div className="absolute bottom-10 left-40 h-[10vw] w-[10vw]">
-        <Image
-          priority
-          src="/background/portal.svg"
-          className="animate-pulse"
-          // height={100}
-          // width={50}
-          fill
-          // sizes="5vw"
-          alt="sneak-a-peek-pepe"
-        />
-      </div> */}
       <div className="container mx-auto">
         {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
         <Header />
