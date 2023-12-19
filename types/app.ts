@@ -33,6 +33,8 @@ interface IApp {
     | 'peacefound'
     | 'drain'
     | 'gameclosed'
+  ticketStatus: 'new' | 'submitted' | 'checked' | 'safe' | 'dead' | 'exited'
+
   stage: number
   suddenDeath: number
   currentPot: number

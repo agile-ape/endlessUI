@@ -137,41 +137,35 @@ function BuyTicket() {
     <>
       <Dialog open={isModalOpen}>
         <DialogTrigger asChild>
-          {isConnected ? (
-            <Button
-              variant="enter"
-              className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-              onClick={() => setIsModalOpen(true)}
-            >
-              {buyTicketActive && (
-                <div className="flex justify-start items-center">
-                  <OnSignal active={buyTicketActive} own={true} />
-                  Join for{' '}
-                  {formatNumber(ticketPrice, {
-                    maximumFractionDigits: 3,
-                    minimumFractionDigits: 3,
-                  })}{' '}
-                  ETH
-                </div>
-              )}
+          <Button
+            variant="enter"
+            className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+            onClick={() => setIsModalOpen(true)}
+          >
+            {buyTicketActive && (
+              <div className="flex justify-start items-center">
+                <OnSignal active={buyTicketActive} own={true} />
+                Join for{' '}
+                {formatNumber(ticketPrice, {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })}{' '}
+                ETH
+              </div>
+            )}
 
-              {!buyTicketActive && (
-                <div className="flex justify-start items-center">
-                  <OnSignal active={buyTicketActive} own={true} />
-                  Starts at:{' '}
-                  {formatNumber(ticketPrice, {
-                    maximumFractionDigits: 3,
-                    minimumFractionDigits: 3,
-                  })}{' '}
-                  ETH
-                </div>
-              )}
-            </Button>
-          ) : (
-            <div className="flex mt-4 justify-center">
-              <CustomConnectButton />
-            </div>
-          )}
+            {!buyTicketActive && (
+              <div className="flex justify-start items-center">
+                <OnSignal active={buyTicketActive} own={true} />
+                Starts at:{' '}
+                {formatNumber(ticketPrice, {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })}{' '}
+                ETH
+              </div>
+            )}
+          </Button>
         </DialogTrigger>
 
         <DialogContent ref={modalRef}>
@@ -192,7 +186,7 @@ function BuyTicket() {
                 <div className="w-[85%] mx-auto flex flex-col gap-3">
                   <Image
                     priority
-                    src="/lore/EnterGame.png"
+                    src="/lore/InsertCoin.png"
                     className="place-self-center rounded-xl"
                     height={400}
                     width={650}

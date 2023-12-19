@@ -62,16 +62,15 @@ const buttonVariants = cva(
         checkOut:
           'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
+        // does not use size
+        splitPot:
+          'text-white whitespace-nowrap border-2 border-pink-800 bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+
         wager:
           'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
 
         claim:
           'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-
-        // does not use size
-        splitPot:
-          'text-white whitespace-nowrap border-2 border-pink-800 bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size
         filter:
@@ -91,22 +90,24 @@ const buttonVariants = cva(
         //   'bg-neutral-400 dark:bg-neutral-600 whitespace-nowrap hover:bg-neutral-500 dark:hover:bg-neutral-700 focus: outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-90',
 
         // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
-        primary:
-          'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:border-2 hover:border-black dark:hover:text-white hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+        // buy: 'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:border-2 hover:border-black dark:hover:text-white hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
 
-        // secondary:
-        //   'text-blue-950 dark:text-white whitespace-nowrap border-2 border-blue-950 dark:border-2 dark:border-white bg-transparent hover:bg-sky-800 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+        primary:
+          'text-white border whitespace-nowrap bg-blue-800 hover:bg-blue-700 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
+
         // used to be whitelist
         /*-------------------- CONNECT BUTTON ---------------------*/
-        connect:
+        // used by connect wallet
+        secondary:
           // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white bg-transparent hover:text-white hover:bg-blue-950 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
-        connected:
-          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white hover:bg-zinc-200/50 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
+          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white bg-transparent hover:text-white hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 disabled:text-black',
 
-        wrong:
-          // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-          'text-red-800 whitespace-nowrap border border-red-800 bg-transparent hover:text-white hover:bg-red-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-red-200 disabled:text-black',
+        // connected:
+        //   'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white hover:bg-zinc-200/50 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
+
+        // wrong:
+        //   // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
+        //   'text-red-800 whitespace-nowrap border border-red-800 bg-transparent hover:text-white hover:bg-red-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-red-200 disabled:text-black',
       },
       size: {
         default: 'h-10 px-4 py-2',

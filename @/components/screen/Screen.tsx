@@ -10,9 +10,13 @@ import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import CustomConnectButton from '@/components/ui/connect-button'
 import GameFeed from '@/components/ui/GameFeed'
+import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
+import { Button } from '@/components/ui/button'
+import { disconnect } from 'process'
 
 export default function Screen() {
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
+  const { login, user, connectWallet, ready, authenticated } = usePrivy()
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
@@ -20,7 +24,7 @@ export default function Screen() {
         <Title />
       </div>
 
-      {!isConnected && (
+      {!authenticated && (
         <>
           <div className="flex my-4 place-content-center">
             <div className="relative">
@@ -47,12 +51,18 @@ export default function Screen() {
           </div>
 
           <div className="flex flex-col mb-4 justify-center items-center z-10">
-            <CustomConnectButton />
+            <Button
+              onClick={login}
+              variant="secondary"
+              className="h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+            >
+              Connect and Login
+            </Button>
           </div>
         </>
       )}
 
-      {isConnected && (
+      {authenticated && (
         <>
           <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
             <Round />

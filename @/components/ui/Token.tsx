@@ -227,14 +227,14 @@ function Token() {
   return (
     <Dialog>
       <DialogTrigger asChild className="shrink-0">
-        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 hover:border-zinc-300 hover:bg-zinc-200/50 hover:cursor-pointer">
+        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/logo/token.svg"
-            height={30}
-            width={30}
+            height={25}
+            width={25}
             alt="last token"
-            className="shrink-0 mr-2"
+            className="shrink-0 mr-1"
           />
 
           <span className="text-lg sm:text-xl font-whitrabt">
@@ -291,7 +291,7 @@ function Token() {
 
                       <div className="flex text-lg justify-center mt-2">
                         <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-                          <Button variant="primary" className="w-full text-xl">
+                          <Button variant="enter" className="w-full text-xl">
                             Buy on Uniswap{' '}
                             <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
                           </Button>
@@ -358,7 +358,7 @@ function Token() {
                         />
                       </div>
                       <Button
-                        variant="filter"
+                        variant="secondary"
                         className="w-full h-8 px-4 py-2 text-xl"
                         onClick={approveToken}
                         isLoading={approveLoad}
@@ -398,7 +398,7 @@ function Token() {
                         />
                       </div>
                       <Button
-                        variant="exit"
+                        variant="secondary"
                         disabled={Number(allowance) <= Number(tokenValue)}
                         className="w-full h-8 px-4 mt-2 py-2 text-xl"
                         isLoading={transferLoad}

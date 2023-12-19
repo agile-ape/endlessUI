@@ -208,7 +208,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/InsertCoin.png"
+                  src="/lore/SplitPot.png"
                   className="place-self-center rounded-xl"
                   height={400}
                   width={650}

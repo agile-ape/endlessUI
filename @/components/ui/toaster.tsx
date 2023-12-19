@@ -17,6 +17,48 @@ const ToastIcon = {
   info: <Info size={20} className="mx-2 stroke-blue-500" />,
 }
 
+const ToastFace = {
+  destructive: (
+    <Image
+      priority
+      src={`/faces/moody.png`}
+      height={50}
+      width={50}
+      // fill={true}
+      // sizes="max-width:150px"
+      className=""
+      // layout="fixed"
+      alt={`moody-pepe`}
+    />
+  ),
+  success: (
+    <Image
+      priority
+      src={`/faces/peep.png`}
+      height={50}
+      width={50}
+      // fill={true}
+      // sizes="max-width:150px"
+      className=""
+      // layout="fixed"
+      alt={`peep-pepe`}
+    />
+  ),
+  info: (
+    <Image
+      priority
+      src={`/faces/exclaim.png`}
+      height={50}
+      width={50}
+      // fill={true}
+      // sizes="max-width:150px"
+      className=""
+      // layout="fixed"
+      alt={`exclaim-pepe`}
+    />
+  ),
+}
+
 export function Toaster() {
   const { toasts } = useToast()
 
@@ -28,17 +70,7 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="flex text-xl items-center">
-              <Image
-                priority
-                src={`/faces/duckface.png`}
-                height={50}
-                width={50}
-                // fill={true}
-                // sizes="max-width:150px"
-                className=""
-                // layout="fixed"
-                alt={`duck face`}
-              />
+              {ToastFace[variant as keyof typeof ToastIcon]}
               <div>{ToastIcon[variant as keyof typeof ToastIcon]}</div>
               <div className="flex flex-col text-black font-vt323 mr-7">
                 {/* {title && <ToastTitle>{title}</ToastTitle>} */}

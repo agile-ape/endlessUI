@@ -28,16 +28,44 @@ import { cn } from '@/lib/utils'
 import { DOCS_URL, TWITTER_URL, TELEGRAM_URL, BLOG_URL } from '../../services/constant'
 import { useRouter } from 'next/router'
 import Admin from './ui/Admin'
+import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
+import { toast } from '../components/ui/use-toast'
 
 function Header() {
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
   const [hoveredLink, setHoveredLink] = useState<null | number>(null)
   const [hoveredHeader, setHoveredHeader] = useState<null | boolean>(false)
   const router = useRouter()
+  const { ready, authenticated, user, createWallet } = usePrivy()
+
+  const { wallets } = useWallets()
+  const wallet = wallets.find((wallet) => wallet.address === address)
 
   const handleLinkHover = (index: number) => {
     setHoveredLink(index)
   }
+
+  const { logout } = useLogout({
+    onSuccess: () => {
+      console.log('User logged out')
+      toast({
+        variant: 'destructive',
+        // title: 'Keyword updated',
+        description: <p>You are logged out.</p>,
+      })
+    },
+  })
+
+  const { login } = useLogin({
+    onComplete: () => {
+      console.log('User logged in')
+      toast({
+        variant: 'success',
+        // title: 'Keyword updated',
+        description: <p>You are logged in.</p>,
+      })
+    },
+  })
 
   // const handleHeaderHover = (index: boolean) => {
   //   setHoveredHeader(index)
@@ -99,22 +127,11 @@ function Header() {
               {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
-          <div className="ml-2">
+          {/* <div className="ml-2">
             <Admin />
-          </div>
-
-          {/* <a href="https://twitter.com/fachryadhitya" target="_blank">
-            <Button variant="link" className="px-2 text-lg" size="sm">
-              Learn <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
-            </Button>
-          </a> */}
-        </div>
-
-        {isConnected ? <Token /> : null}
-        {isConnected ? <Profile /> : null}
-
-        <div className="hidden xl:flex">
-          <CustomConnectButton />
+          </div> */}
+          <Token />
+          <Profile />
         </div>
       </div>
     </div>
