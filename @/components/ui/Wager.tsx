@@ -260,6 +260,7 @@ function Wager() {
                     <div className="flex flex-col gap-1 items-center">
                       <label htmlFor="bet">Bet Amount (ETH) </label>
                       <input
+                        name="bet"
                         type="text"
                         id="buddy"
                         className="w-[3rem] border-[2px] border-slate-400 rounded-md px-1 text-center"

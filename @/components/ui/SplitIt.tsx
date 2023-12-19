@@ -83,6 +83,10 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
         ...defaultContractObj,
         functionName: 'drainPot',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'nextPotWallet',
+      },
     ],
   })
 
@@ -93,6 +97,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
   const drainPerRound = data?.[4].result || BigInt(0)
   const amountDrained = data?.[5].result || BigInt(0)
   const drainPot = data?.[6].result || BigInt(0)
+  const nextPotWallet = data?.[7].result || BigInt(0)
 
   // const drainShare = formatUnits(drainRate, 1)
   // const drainFromPot = formatUnits(amountDrained, 18)
@@ -203,7 +208,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
-                  src="/lore/SplitPot.png"
+                  src="/lore/InsertCoin.png"
                   className="place-self-center rounded-xl"
                   height={400}
                   width={650}
@@ -380,7 +385,10 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                             </p>
                           </div>
                           <div className="grid grid-cols-2 text-lg gap-1">
-                            <p className="text-left leading-tight"> Amount drained so far </p>
+                            <p className="text-left leading-tight">
+                              {' '}
+                              Amount drained (to next game){' '}
+                            </p>
                             {stage === 3 && (
                               <p className="text-right">
                                 {' '}

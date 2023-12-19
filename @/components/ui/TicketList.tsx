@@ -161,30 +161,16 @@ const TicketList = () => {
       </summary>
 
       {!totalTicketCount && (
-        <div className="flex flex-col justify-center">
-          <div className="flex items-center place-content-center">
-            <div className="relative">
-              <Image
-                priority
-                src="/pepe/sun.svg"
-                className="place-self-center animate-pulse"
-                height={300}
-                width={300}
-                alt="sneak-a-peek-pepe"
-              />
-
-              <div className="absolute top-[50px]">
-                <Image
-                  priority
-                  src="/pepe/pepe-robe.svg"
-                  className="place-self-center"
-                  height={300}
-                  width={300}
-                  alt="sneak-a-peek-pepe"
-                />
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col justify-center items-center my-8">
+          <Image
+            priority
+            src="/pepe/waiting.png"
+            className=""
+            height={400}
+            width={250}
+            alt="waiting-for-players"
+          />
+          <div className="text-center my-2 text-3xl">We await our first challenger...</div>
         </div>
       )}
 
