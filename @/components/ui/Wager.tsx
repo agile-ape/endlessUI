@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,6 @@ import {
   useContractReads,
   useContractWrite,
   useWaitForTransaction,
-  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -42,11 +41,13 @@ import {
   wagerContractObj,
   DOCS_URL_safehouse,
   DOCS_URL,
+  WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
+import { io } from 'socket.io-client'
 
 function Wager() {
   const phase = useStoreState((state) => state.phase)
@@ -182,18 +183,27 @@ function Wager() {
     },
   })
 
-  // Change in safehouse price
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'SafehousePrice',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { price, time } = args
-      refetch()
-    },
-  })
+  
+
 
   */
+
+  // useEffect(() => {
+
+  //   socket.on('events', (data) => {
+  //     const { event, dataJson } = data
+
+  //     if (!Object.keys(dataJson).length) return
+
+  //     if (event === 'SafehousePrice') {
+  //       refetch()
+  //     }
+  //   })
+
+  //   return () => {
+  //     socket.disconnect()
+  //   }
+  // }, [])
 
   return (
     <Dialog>

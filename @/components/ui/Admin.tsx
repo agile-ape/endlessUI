@@ -11,7 +11,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import { Button } from './button'
-import { useAccount, useContractEvent, useContractReads } from 'wagmi'
+import { useAccount, useContractReads } from 'wagmi'
 import {
   defaultContractObj,
   tokenContractObj,

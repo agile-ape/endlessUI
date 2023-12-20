@@ -23,7 +23,6 @@ import {
   useContractRead,
   useContractReads,
   useContractWrite,
-  useContractEvent,
   useWaitForTransaction,
   useSignMessage,
   useWalletClient,

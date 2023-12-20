@@ -22,7 +22,6 @@ import {
   useContractRead,
   useContractReads,
   useContractWrite,
-  useContractEvent,
   useWaitForTransaction,
   useSignMessage,
   useWalletClient,
@@ -41,11 +40,13 @@ import {
   tokenContractObj,
   BLOCK_EXPLORER,
   LIQUIDITY_POOL,
+  WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-
+import { io } from 'socket.io-client'
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 function Token() {
   // const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
@@ -100,25 +101,30 @@ function Token() {
   const allowanceBalance = formatUnits(allowance, 18)
   let playerId = playerTicket?.[0] || 0
 
-  // receiver of tokens
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'TokensTransferred',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, recipient, amount, time } = args
-      console.log(recipient)
+  const events: Event[] = [
+    {
+      name: 'events',
+      handler(data) {
+        const { event, dataJson } = data
 
-      if (recipient === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'receivedTokens',
-        })
-        refetch()
-      }
-      console.log({ args })
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'TokensTransferred') {
+          const { caller, recipient, amount, time } = dataJson
+
+          if (recipient === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'receivedTokens',
+            })
+            refetch()
+          }
+        }
+      },
     },
-  })
+  ]
+
+  useSocketEvents(events)
 
   // Contract write
   const {

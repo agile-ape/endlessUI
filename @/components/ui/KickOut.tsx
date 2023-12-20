@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -27,20 +27,21 @@ import {
   defaultContractObj,
   DOCS_URL_kickout,
   DOCS_URL_waterfall,
+  WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
   useAccount,
   useContractRead,
   useContractWrite,
-  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
 import { useStoreActions, useStoreState } from '../../../store'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits } from 'viem'
-
+import { io } from 'socket.io-client'
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 type KickOutType = {
   id: number
 }
@@ -136,23 +137,29 @@ const KickOut: FC<KickOutType> = ({ id }) => {
     }
   }
 
-  // got kicked out
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'KickedOutFromSafehouse',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, kickedOut, time } = args
+  const events: Event[] = [
+    {
+      name: 'events',
+      handler(data) {
+        const { event, dataJson } = data
 
-      if (kickedOut === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'killed',
-        })
-      }
-      console.log({ args })
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'KickedOutFromSafehouse') {
+          const { caller, kickedOut, time } = dataJson
+
+          if (kickedOut === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'killed',
+            })
+          }
+        }
+      },
     },
-  })
+  ]
+
+  useSocketEvents(events)
 
   return (
     <Dialog>

@@ -13,7 +13,6 @@ import { HelpCircle } from 'lucide-react'
 import {
   useAccount,
   useContractRead,
-  useContractEvent,
   useContractWrite,
   useSignMessage,
   useWalletClient,
