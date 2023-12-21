@@ -8,13 +8,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog-unblur'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import OtpInput from 'react-otp-input'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import { Button } from './button'
 import {
   useAccount,
@@ -44,8 +37,6 @@ import {
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
-import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import { io } from 'socket.io-client'
 import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 function Token() {
   // const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
@@ -58,9 +49,6 @@ function Token() {
   const [tokenValue, setTokenValue] = useState<string>('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   // const [approved, setApproved] = useState(false)
-
-  const modalRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -230,8 +218,23 @@ function Token() {
     }
   }
 
+  function resetState() {
+    setApproveValue('')
+    setTokenValue('')
+    setReceiverId('')
+  }
+
   return (
-    <Dialog>
+    <Dialog
+      open={isModalOpen}
+      onOpenChange={(val) => {
+        setIsModalOpen(val)
+
+        if (!val) {
+          resetState()
+        }
+      }}
+    >
       <DialogTrigger asChild className="shrink-0">
         <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 hover:border-zinc-300 hover:bg-zinc-200/50 hover:cursor-pointer">
           <Image
@@ -257,7 +260,7 @@ function Token() {
           <DialogHeader className="items-center">
             <DialogTitle className="text-3xl text-center font-normal">$LAST Token</DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/TokenImage.png"
@@ -415,7 +418,7 @@ function Token() {
                     </div>
                   </div>
                 </div>
-              </DialogDescription>
+              </div>
             </ScrollArea>
           </DialogHeader>
         </div>
