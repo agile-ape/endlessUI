@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,20 +11,47 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
+import { ScrollArea } from '@/components/ui/scroll-area'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog-unblur'
+import {
+  useAccount,
+  useBalance,
+  useEnsName,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useContractEvent,
+  useWaitForTransaction,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi'
 import { Button } from './button'
-import { useAccount, useContractEvent, useContractReads } from 'wagmi'
+import Image from 'next/image'
+
 import {
   defaultContractObj,
   tokenContractObj,
   LAST_MAN_STANDING_ADDRESS,
+  AGOR_RELAYER_ADDRESS,
+  TEAM_WALLET_ADDRESS,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { formatNumber } from '@/lib/utils'
+import { toast } from './use-toast'
+import { ChefHat } from 'lucide-react'
 
 export default function Admin() {
   const { isConnected } = useAccount()
 
-  const { data } = useContractReads({
+  const { data, refetch } = useContractReads({
     contracts: [
       {
         ...defaultContractObj,
@@ -54,6 +82,18 @@ export default function Admin() {
         ...defaultContractObj,
         functionName: 'isAttackTime',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'randNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'feePool',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'checkTimeLeft',
+      },
     ],
     enabled: isConnected,
   })
@@ -65,8 +105,12 @@ export default function Admin() {
   const safehouseCostPerNight = Number(data?.[4]?.result || 0)
   const tokensPerAttack = Number(data?.[5]?.result || 0)
   const isAttackTime = Number(data?.[6]?.result || 0)
+  const randNumber = Number(data?.[7]?.result || 0)
+  const feePool = data?.[8]?.result || BigInt(0)
+  const checkTimeLeft = Number(data?.[9]?.result || BigInt(0))
 
   const tokensInContract = formatUnits(balanceOf, 18)
+  const feesEarned = formatUnits(feePool, 18)
 
   const timeFlagInDate = new Date(timeFlag * 1000)
 
@@ -89,74 +133,488 @@ export default function Admin() {
     }
   }
 
-  // let timeFlagInDate = formatTime(new Date(timeFlag).getTime())
-  // console.log(timeFlag)
-  // let timeFlagInDate = new Date(timeFlag)
+  useContractEvent({
+    ...defaultContractObj,
+    eventName: 'PhaseChange',
+    listener: (event) => {
+      const args = event[0]?.args
+      const { caller, previousPhase, newPhase, time } = args
+      refetch()
+    },
+  })
 
-  /*------THINGS TO MONITOR
+  /*-------------------- TEAM WALLET --------------------*/
+  const { data: teamWalletData } = useBalance({
+    address: TEAM_WALLET_ADDRESS,
+  })
 
-  OZ relayer ETH balance
-  
+  /*-------------------- RELAYER --------------------*/
+  const { data: relayerData } = useBalance({
+    address: AGOR_RELAYER_ADDRESS,
+  })
 
+  /*-------------------- CHECK TIME LEFT --------------------*/
 
-  ----------*/
+  // const {
+  //   data: checkTimeLeftData,
+  //   writeAsync: checkTimeLeft,
+  //   isLoading: checkTimeLeftLoad,
+  // } = useContractWrite({
+  //   ...defaultContractObj,
+  //   functionName: 'startGame',
+  // })
+
+  // const checkTime = async () => {
+  //   try {
+  //     const doStartGame = await startGame()
+
+  //     const hash = doStartGame.hash
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Let the games begin',
+  //       description: <p>Let the games begin</p>,
+  //     })
+  //   } catch (error: any) {
+  //     console.log({ error })
+  //     const errorMsg =
+  //       error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'start fail',
+  //       description: <p>{errorMsg}</p>,
+  //     })
+  //   }
+  // }
+
+  /*-------------------- START GAME --------------------*/
+
+  const {
+    data: startGameData,
+    writeAsync: startGame,
+    isLoading: startGameLoad,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'startGame',
+  })
+
+  const beginGame = async () => {
+    try {
+      const doStartGame = await startGame()
+
+      const hash = doStartGame.hash
+      toast({
+        variant: 'success',
+        title: 'Let the games begin',
+        description: <p>Let the games begin</p>,
+      })
+    } catch (error: any) {
+      console.log({ error })
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+      toast({
+        variant: 'destructive',
+        title: 'start fail',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  /*-------------------- TRIGGER DRAIN --------------------*/
+
+  const [drainRound, setDrainRound] = useState<string>('')
+
+  const {
+    data: triggerDrainData,
+    writeAsync: triggerDrain,
+    isLoading: triggerDrainLoad,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'triggerDrain',
+  })
+
+  const startDrainRound = async () => {
+    try {
+      const doTriggerDrain = await triggerDrain({
+        args: [BigInt(drainRound)],
+      })
+
+      const hash = doTriggerDrain.hash
+      setDrainRound('')
+      // setApproved(true)
+    } catch (error: any) {
+      console.log({ error })
+      setDrainRound('')
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Set Drain Round Fail',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  // update once txn is done
+  const {} = useWaitForTransaction({
+    hash: triggerDrainData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
+  /*-------------------- SAFEHOUSE PRICE --------------------*/
+
+  const [safehousePrice, setSafehousePrice] = useState<string>('')
+
+  const {
+    data: adjustSafehouseCostData,
+    writeAsync: adjustSafehouseCost,
+    isLoading: adjustSafehouseCostLoad,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'adjustSafehouseCost',
+  })
+
+  const changePrice = async () => {
+    try {
+      const doAdjustCost = await adjustSafehouseCost({
+        args: [BigInt(safehousePrice)],
+      })
+
+      const hash = doAdjustCost.hash
+      setSafehousePrice('')
+      // setApproved(true)
+    } catch (error: any) {
+      console.log({ error })
+      setSafehousePrice('')
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Adjust Safehouse Cost failed',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  // update once txn is done
+  const {} = useWaitForTransaction({
+    hash: adjustSafehouseCostData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
+  /*-------------------- TOKEN EMISSION --------------------*/
+
+  const [tokenEmission, setTokenEmission] = useState<string>('')
+
+  const {
+    data: adjustTokenEmissionData,
+    writeAsync: adjustTokenEmission,
+    isLoading: adjustTokenEmissionLoad,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'adjustTokenEmission',
+  })
+
+  const changeEmission = async () => {
+    try {
+      const doAdjustEmission = await adjustTokenEmission({
+        args: [BigInt(tokenEmission)],
+      })
+
+      const hash = doAdjustEmission.hash
+      setTokenEmission('')
+      // setApproved(true)
+    } catch (error: any) {
+      console.log({ error })
+      setTokenEmission('')
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Adjust Token Emission failed',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  // update once txn is done
+  const {} = useWaitForTransaction({
+    hash: adjustTokenEmissionData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <p className="text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-10 border rounded-xl px-4 py-2 text-md font-whitrabt">
+    <Dialog>
+      <DialogTrigger asChild className="shrink-0">
+        {/* <p className="text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-10 border rounded-xl px-4 py-2 text-md font-whitrabt">
           Admin
-        </p>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent
-        align="end"
-        className="bg-opacity-100 dark:bg-opacity-100 mt-2 container-last flex flex-col justify-center w-[30rem] p-5 bg-white"
-      >
-        <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-          Contract token balance
+        </p> */}
+        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+          <Image
+            priority
+            src="/faces/duckface.png"
+            height={25}
+            width={25}
+            alt="gamemaster-dashboard"
+            className="shrink-0 mr-1"
+          />
+          <ChefHat size={28} className="mr-1" />
         </div>
-        <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-          <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-            <p className="text-left">$LAST in contract</p>
-            <p className="text-right">
-              <p>
-                {formatNumber(tokensInContract, {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 0,
-                })}
-              </p>
-            </p>
-          </div>
+      </DialogTrigger>
 
-          <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-            <p className="text-left">Time Flag</p>
-            <p className="text-right">
-              <p>Current Date: {timeFlagInDate.toDateString()}</p>
-              <p>Current Time: {timeFlagInDate.toLocaleTimeString()}</p>
-            </p>
-          </div>
-          <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-            <p className="text-left">Countdown Time</p>
-            {/* <p className="text-right"> {countdownTime} </p> */}
-          </div>
+      <DialogContent>
+        <div className="overflow-auto">
+          <DialogHeader className="items-center">
+            <DialogTitle className="text-3xl text-center font-normal">Game Master</DialogTitle>
+            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+                <Image
+                  priority
+                  src="/lore/TokenImage.png"
+                  // layout="fill"
+                  // objectFit='cover'
+                  className="place-self-center rounded-xl"
+                  height={400}
+                  width={650}
+                  alt="enter-into-the-pepe"
+                />
+                <div className="flex flex-col gap-4 justify-center items-center my-4">
+                  <Button
+                    onClick={beginGame}
+                    variant="secondary"
+                    className="w-full h-8 rounded-xl px-4 py-2 text-md font-whitrabt"
+                  >
+                    Start Game
+                  </Button>
+                </div>
 
-          <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-            <p className="text-left">$LAST tokens on contract</p>
-            <p className="text-right"> 100 </p>
-          </div>
+                {/* Game */}
+                <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 text-zinc-500 dark:text-zinc-400">
+                  Game Info
+                  <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Time Flag</p>
+                      <p className="text-right">
+                        <p>
+                          {timeFlagInDate.toDateString()} {timeFlagInDate.toLocaleTimeString()}
+                        </p>
+                      </p>
+                    </div>
 
-          <div className="grid grid-cols-2 text-lg justify-between gap-1">
-            <p className="text-left">Price per night</p>
-            <p className="text-right"> 100 $LAST </p>
-          </div>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Random Number</p>
+                      <p className="text-right">{randNumber}</p>
+                    </div>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Time Left (in seconds)</p>
+                      <p className="text-right">
+                        <p>{checkTimeLeft}</p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fund Management */}
+                <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                  Funds
+                  <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">$LAST in contract</p>
+                      <p className="text-right">
+                        <p>
+                          {formatNumber(tokensInContract, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 0,
+                          })}
+                        </p>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Relayer Funds</p>
+                      <p className="text-right">
+                        <p>
+                          {formatNumber(relayerData?.formatted, {
+                            maximumFractionDigits: 4,
+                            minimumFractionDigits: 2,
+                          })}{' '}
+                          ETH
+                        </p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Team Wallet */}
+                <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                  Team Wallet
+                  <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Fees Earned</p>
+                      <p className="text-right">
+                        <p>
+                          {formatNumber(feesEarned, {
+                            maximumFractionDigits: 4,
+                            minimumFractionDigits: 3,
+                          })}{' '}
+                          ETH
+                        </p>
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Amount in Wallet</p>
+                      <p className="text-right">
+                        <p>
+                          {formatNumber(teamWalletData?.formatted, {
+                            maximumFractionDigits: 4,
+                            minimumFractionDigits: 3,
+                          })}{' '}
+                          ETH
+                        </p>
+                      </p>
+                    </div>
+
+                    <Button
+                      variant="secondary"
+                      className="w-full h-8 px-4 py-2 my-2 text-xl"
+                      onClick={changePrice}
+                      isLoading={adjustSafehouseCostLoad}
+                    >
+                      Withdraw fees
+                    </Button>
+                  </div>
+                </div>
+
+                {/* <div className="grid grid-cols-2 gap-2">
+                   <div className="w-[240px] mx-auto flex flex-col justify-center items-center text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                    Check Time Left
+                    <div className="rounded-lg text-lg flex flex-col justify-center items-center md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                      <Button
+                        variant="secondary"
+                        className="w-full h-8 px-4 py-2 text-xl"
+                        onClick={checkTime}
+                        isLoading={triggerDrainLoad}
+                      >
+                        Trigger Drain
+                      </Button>
+                    </div>
+                  </div> */}
+
+                <div className="w-[240px] mx-auto flex flex-col justify-center items-center text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                  Trigger Drain
+                  {/* <div className="w-[240px] flex flex-col justify-center items-center my-2"> */}
+                  <div className="rounded-lg text-lg flex flex-col justify-center items-center md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <label htmlFor="triggerDrain">Set Stage 3 Round Number</label>
+                    <input
+                      type="text"
+                      id="triggerDrain"
+                      required
+                      className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                      value={drainRound}
+                      onChange={(e) => setDrainRound(e.target.value)}
+                    />
+                    <Button
+                      variant="secondary"
+                      className="w-full h-8 px-4 py-2 text-xl"
+                      onClick={startDrainRound}
+                      isLoading={triggerDrainLoad}
+                    >
+                      Trigger Drain
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                    Safehouse Cost
+                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                        <p className="text-left">Input</p>
+                        <p className="text-right"> {safehouseCostPerNight}</p>
+                      </div>
+                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                        <p className="text-left">Price in tokens</p>
+                        <p className="text-right"> {Number(safehouseCostPerNight) / 1000}</p>
+                      </div>
+
+                      <div className="flex flex-col justify-center items-center my-2">
+                        <label htmlFor="adjustSafehousePrice">Change Safehouse Price</label>
+                        <input
+                          type="text"
+                          id="adjustSafehousePrice"
+                          required
+                          className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                          value={safehousePrice}
+                          onChange={(e) => setSafehousePrice(e.target.value)}
+                        />
+                      </div>
+                      <Button
+                        variant="secondary"
+                        className="w-full h-8 px-4 py-2 text-xl"
+                        onClick={changePrice}
+                        isLoading={adjustSafehouseCostLoad}
+                      >
+                        Adjust Price
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Token Emissions */}
+                  <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                    Token Emission
+                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                        <p className="text-left">Input</p>
+                        <p className="text-right"> {tokensPerAttack}</p>
+                      </div>
+                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                        <p className="text-left">Emission in tokens</p>
+                        <p className="text-right"> {tokensPerAttack / 1000}</p>
+                      </div>
+                      <div className="flex flex-col justify-center items-center my-2">
+                        <label htmlFor="adjustTokenEmission">Change Token Emissions</label>
+                        <input
+                          type="text"
+                          id="adjustTokenEmission"
+                          required
+                          className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                          value={tokenEmission}
+                          onChange={(e) => setTokenEmission(e.target.value)}
+                        />
+                      </div>
+                      <Button
+                        variant="secondary"
+                        className="w-full h-8 px-4 py-2 text-xl"
+                        onClick={changeEmission}
+                        isLoading={adjustTokenEmissionLoad}
+                      >
+                        Adjust Emission
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </DialogDescription>
+            </ScrollArea>
+          </DialogHeader>
         </div>
-        <div className="text-center">Gamemaster functions</div>
-        <Button variant="primary" className="px-4 py-2 text-md rounded-xl">
-          Start game
-        </Button>
-        Transfer tokens to address
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DialogContent>
+    </Dialog>
   )
 }

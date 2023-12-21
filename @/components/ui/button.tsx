@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-75',
+  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none focus:ring-1 focus:ring-white disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -57,7 +57,7 @@ const buttonVariants = cva(
 
         // does not use size
         checkIn:
-          'text-white whitespace-nowrap border-2 border-sky-800 bg-sky-600 hover:bg-sky-800 hover:border-2 hover:border-sky-300 active:bg-sky-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-white whitespace-nowrap border-2 border-sky-800 bg-sky-600 hover:bg-sky-800 hover:border-2 hover:border-sky-300 active:bg-sky-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none',
         // does not use size
         checkOut:
           'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',

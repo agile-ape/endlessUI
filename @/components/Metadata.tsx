@@ -34,9 +34,9 @@ export interface MetaProps {
  * @constructor
  */
 const Metadata = ({
-  title = 'Last Man',
+  title = 'Lastman',
   description = 'Outlast everyone and earn magic internet money',
-  ogTitle = 'Last Man - How Long Can You Last',
+  ogTitle = 'Lastman - How Long Can You Last',
   ogDescription = 'Outlast everyone and earn magic internet money',
   ogType = 'website',
   ogUrl = 'https://lastman.xyz',

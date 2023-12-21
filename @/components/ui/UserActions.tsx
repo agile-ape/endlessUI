@@ -9,6 +9,7 @@ import SplitIt from './SplitIt'
 import ExitGame from './ExitGame'
 import Inspect from './Attack'
 import KickOut from './KickOut'
+import Wager from './Wager'
 
 import { Send, Home } from 'lucide-react'
 import OnSignal from './OnSignal'
@@ -100,8 +101,9 @@ const UserActions = () => {
         Submit Keyword
       </Button>
 
-      <CheckIn playerTicket={''} />
-      <SplitIt playerTicket={''} />
+      <CheckIn />
+      <SplitIt />
+      <Wager />
 
       {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={''} />}
     </div>

@@ -9,7 +9,7 @@ import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Token from './ui/Token'
-import Profile from './ui/Profile'
+import Profile from './ui/Dashboard'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -127,9 +127,9 @@ function Header() {
               {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
             </Button>
           </a>
-          {/* <div className="ml-2">
+          <div className="ml-2">
             <Admin />
-          </div> */}
+          </div>
           <Token />
           <Profile />
         </div>

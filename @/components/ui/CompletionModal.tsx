@@ -28,7 +28,7 @@ const getAlertLook = (alertLookTest: string) => {
     case 'betMade':
       return {
         bgImage: 'rainbow',
-        face: 'salute',
+        face: 'scheming',
         title: 'Bet Placed!',
         message: 'Ooo. Good luck and enjoy the game!',
       }

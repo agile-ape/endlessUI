@@ -59,7 +59,12 @@ function Token() {
   // const [approved, setApproved] = useState(false)
 
   const modalRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(modalRef, () => setIsModalOpen(false))
+  useOutsideClick(modalRef, () => {
+    setIsModalOpen(false)
+    setApproveValue('')
+    setReceiverId('')
+    setTokenValue('')
+  })
 
   // Address read
   const { address, isConnected } = useAccount()

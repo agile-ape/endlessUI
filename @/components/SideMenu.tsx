@@ -2,7 +2,7 @@ import { Menu } from 'lucide-react'
 import { ExternalLink } from 'lucide-react'
 import CustomConnectButton from '@/components/ui/connect-button'
 import Token from './ui/Token'
-import Profile from './ui/Profile'
+import Profile from './ui/Dashboard'
 
 import {
   DropdownMenu,

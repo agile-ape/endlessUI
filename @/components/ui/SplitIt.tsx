@@ -41,7 +41,7 @@ import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 
-function SplitIt({ playerTicket }: { playerTicket: any }) {
+function SplitIt() {
   const phase = useStoreState((state) => state.phase)
   const stage = useStoreState((state) => state.stage)
   const suddenDeath = useStoreState((state) => state.suddenDeath)

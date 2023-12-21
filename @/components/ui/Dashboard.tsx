@@ -53,7 +53,7 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 
 import { connect } from 'http2'
 
-function Profile() {
+function Dashboard() {
   // Address read
   const { address, isConnected } = useAccount()
 
@@ -167,7 +167,7 @@ function Profile() {
             src="/faces/stare.png"
             height={25}
             width={25}
-            alt="last token"
+            alt="player-dashboard"
             className="shrink-0 mr-1"
           />
           <User size={28} className="mr-1" />
@@ -219,10 +219,13 @@ function Profile() {
                           <ul className="flex flex-col lg:flex-row gap-2 justify-center items-center">
                             {wallets.map((wallet) => (
                               <li key={wallet.address}>
-                                <button
+                                <Button
+                                  variant="primary"
                                   className={cn(
                                     'flex justify-center items-center gap-4 border border-black p-2 rounded-sm',
-                                    activeWallet?.address === wallet.address ? 'bg-green-200' : '',
+                                    activeWallet?.address === wallet.address
+                                      ? 'bg-green-200 dark:bg-green-600'
+                                      : '',
                                   )}
                                   onClick={() => setActiveWallet(wallet)}
                                 >
@@ -239,7 +242,7 @@ function Profile() {
                                   >
                                     {wallet.connectorType === 'embedded' ? 'embedded' : 'external'}
                                   </span>
-                                </button>
+                                </Button>
                               </li>
                             ))}
                           </ul>
@@ -293,7 +296,7 @@ function Profile() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="flex flex-col gap-2">
-                            <div className="flex text-lg justify-between gap-4">
+                            <div className="flex justify-between gap-4 text-xl">
                               <p className="text-left">Create embedded wallet</p>
 
                               {embeddedWallet && (
@@ -316,7 +319,7 @@ function Profile() {
                               )}
                             </div>
 
-                            <div className="flex text-lg justify-between gap-4 text-xl">
+                            <div className="flex justify-between gap-4 text-xl">
                               <p className="text-left">Set wallet password</p>
                               <p className="text-right">
                                 {!embeddedWallet && (
@@ -338,7 +341,7 @@ function Profile() {
                               </p>
                             </div>
 
-                            <div className="flex text-lg justify-between gap-4 text-xl">
+                            <div className="flex justify-between gap-4 text-xl">
                               <p className="text-left">Export wallet key</p>
                               <p className="text-right">
                                 {!embeddedWallet && (
@@ -397,4 +400,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default Dashboard

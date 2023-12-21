@@ -46,7 +46,7 @@ import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 
-function CheckIn({ playerTicket }: { playerTicket: any }) {
+function CheckIn() {
   // State variables
   const phase = useStoreState((state) => state.phase)
   // const safehouseCostPerNight = useStoreState((state) => state.safehouseCostPerNight)

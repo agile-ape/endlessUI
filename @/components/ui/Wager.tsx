@@ -47,6 +47,8 @@ import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 function Wager() {
   const phase = useStoreState((state) => state.phase)
@@ -129,51 +131,54 @@ function Wager() {
 
   wagerStatus === 1 || wagerStatus === 2 ? (wagerActive = true) : (wagerActive = false)
 
-  // Contract write
-  const [betAmount, setBetAmount] = useState<number>(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  /*
 
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
+  /*-------------------- BET AMOUNT --------------------*/
+
+  const [betAmount, setBetAmount] = useState<string>('')
+
   const {
-    data: checkInData,
-    writeAsync,
-    isLoading,
+    data: betEndingData,
+    writeAsync: betEnding,
+    isLoading: betEndingLoad,
   } = useContractWrite({
-    ...defaultContractObj,
-    functionName: 'checkIntoSafehouse',
+    ...wagerContractObj,
+    functionName: 'bet',
+    value: parseUnits(String(betAmount), 18),
   })
 
-  const checkInHandler = async () => {
+  const placeBet = async () => {
     try {
-      const tx = await writeAsync({
-        args: [BigInt(amountTicket)],
-      })
-      const hash = tx.hash
+      const doBetEnding = await betEnding()
+
+      const hash = doBetEnding.hash
+      setBetAmount('')
 
       setIsModalOpen(false)
 
       updateCompletionModal({
         isOpen: true,
-        state: 'checkedIn',
+        state: 'betMade',
       })
     } catch (error: any) {
+      console.log({ error })
+      setBetAmount('')
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
 
       toast({
         variant: 'destructive',
-        title: 'Check into Safehouse failed',
+        title: 'Bet failed',
         description: <p>{errorMsg}</p>,
       })
     }
   }
 
-  // update once txn is done
   const {} = useWaitForTransaction({
-    hash: checkInData?.hash,
+    hash: betEndingData?.hash,
     onSuccess(data) {
       if (data.status === 'success') {
         refetch()
@@ -181,19 +186,6 @@ function Wager() {
       console.log({ data })
     },
   })
-
-  // Change in safehouse price
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'SafehousePrice',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { price, time } = args
-      refetch()
-    },
-  })
-
-  */
 
   return (
     <Dialog>
@@ -251,33 +243,95 @@ function Wager() {
                   Place your bet
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                      {/* Add the 3 bet options */}
+                <div className="mx-auto flex flex-col gap-4 justify-center items-center">
+                  {/* <div className="w-[100%] "> */}
+                  {/* <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl"> */}
+                  {/* Add the 3 bet options */}
+                  <RadioGroup
+                    defaultValue="option-one"
+                    className="flex flex-col md:grid md:grid-cols-3 gap-4 text-zinc-800 dark:text-zinc-200"
+                  >
+                    <div className="flex flex-col items-center space-x-2">
+                      <Label
+                        htmlFor="option-one"
+                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
+                      >
+                        <Image
+                          priority
+                          src="/indicator/lastmanfoundIndicator.svg"
+                          height={300}
+                          width={100}
+                          alt="last-man-found-ending"
+                          className="shrink-0 mr-1 mb-1"
+                        />
+                        <div>Last Man Standing</div>
+                        <div>Only 1 player is left. Everyone gives up or is killed.</div>
+                      </Label>
+                      <RadioGroupItem value="option-one" id="option-one" />
+                      <div>Payoff</div>
                     </div>
-                    {/* Bet amount component */}
-                    <div className="flex flex-col gap-1 items-center">
-                      <label htmlFor="bet">Bet Amount (ETH) </label>
-                      <input
-                        name="bet"
-                        type="text"
-                        id="buddy"
-                        className="w-[3rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
-                        placeholder={String(betAmount)}
-                        onChange={(e) => setBetAmount(e.target.value)}
-                      />
+                    <div className="flex flex-col items-center space-x-2">
+                      <Label
+                        htmlFor="option-two"
+                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
+                      >
+                        <Image
+                          priority
+                          src="/indicator/peacefoundIndicator.svg"
+                          height={300}
+                          width={100}
+                          alt="peace-found-ending"
+                          className="shrink-0 mr-1 mb-1"
+                        />
+                        <div>Peace found.</div>
+                        <div>Majority of players that are remaining vote to split pot.</div>
+                      </Label>
+                      <RadioGroupItem value="option-two" id="option-two" />
+                      <div>Payoff</div>
                     </div>
+                    <div className="flex flex-col items-center space-x-2">
+                      <Label
+                        htmlFor="option-three"
+                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
+                      >
+                        <Image
+                          priority
+                          src="/indicator/drainIndicator.svg"
+                          height={300}
+                          width={100}
+                          alt="drain-ending"
+                          className="shrink-0 mr-1 mb-1"
+                        />
+                        <div>Pot drained.</div>
+                        <div>Players play till the end without splitting the pot.</div>
+                      </Label>
+                      <RadioGroupItem value="option-three" id="option-three" />
+                      <div>Payoff</div>
+                    </div>
+                  </RadioGroup>
+                  {/* </div> */}
+
+                  {/* Bet amount component */}
+                  <div className="w-[240px] flex flex-col gap-2 items-center text-2xl">
+                    <label htmlFor="bet">Bet Amount (ETH) </label>
+                    <input
+                      type="text"
+                      id="bet"
+                      required
+                      className="w-[6rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
+                      value={betAmount}
+                      onChange={(e) => setBetAmount(e.target.value)}
+                    />
 
                     {wagerActive && wagerStatus === 1 && (
                       <Button
                         variant="wager"
                         size="lg"
                         className="w-[100%]"
-                        onClick={wagerInHandler}
-                        isLoading={isLoading}
+                        onClick={placeBet}
+                        isLoading={betEndingLoad}
                       >
-                        Check In
+                        Bet
                       </Button>
                     )}
 
@@ -289,29 +343,37 @@ function Wager() {
                         <Prompt docLink={DOCS_URL_safehouse} />
                       </>
                     )}
-
-                    {wagerActive && wagerStatus === 2 && (
-                      <>
-                        <Button
-                          variant="claim"
-                          size="lg"
-                          className="w-[100%]"
-                          onClick={claimHandler}
-                          isLoading={isLoading}
-                        >
-                          Claim
-                        </Button>
-                      </>
-                    )}
-                    {!(wagerActive && wagerStatus === 2) && (
-                      <>
-                        <Button variant="claim" size="lg" className="w-[100%]" disabled>
-                          Claim
-                        </Button>
-                        <Prompt docLink={DOCS_URL} />
-                      </>
-                    )}
                   </div>
+
+                  {/* Claim */}
+                  <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
+                    Claim your winnings
+                  </div>
+
+                  {/* If win. If lose */}
+
+                  {wagerActive && wagerStatus === 2 && (
+                    <>
+                      <Button
+                        variant="claim"
+                        size="lg"
+                        className="w-[100%]"
+                        onClick={claimHandler}
+                        isLoading={isLoading}
+                      >
+                        Claim
+                      </Button>
+                    </>
+                  )}
+                  {!(wagerActive && wagerStatus === 2) && (
+                    <>
+                      <Button variant="claim" size="lg" className="w-[100%]" disabled>
+                        Claim
+                      </Button>
+                      <Prompt docLink={DOCS_URL} />
+                    </>
+                  )}
+                  {/* </div> */}
                 </div>
               </div>
             </ScrollArea>
