@@ -134,7 +134,7 @@ const PhaseChange = () => {
             <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
               Trigger the phase change
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] sm:h-[650px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority

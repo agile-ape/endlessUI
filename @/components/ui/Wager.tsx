@@ -103,10 +103,14 @@ function Wager() {
         functionName: 'betSize',
         args: [6],
       },
+      {
+        ...wagerContractObj,
+        functionName: 'endingPhase',
+      },
     ],
   })
 
-  const playerBet = data?.[0].result || BigInt(0)
+  const playerBet = Number(data?.[0].result || BigInt(0))
   const playerBetSize = data?.[1].result || BigInt(0)
   const lmfBetCount = data?.[2].result || BigInt(0)
   const pfBetCount = data?.[3].result || BigInt(0)
@@ -114,6 +118,7 @@ function Wager() {
   const lmfBetSize = data?.[5].result || BigInt(0)
   const pfBetSize = data?.[6].result || BigInt(0)
   const dBetSize = data?.[7].result || BigInt(0)
+  const endingPhase = data?.[8].result || BigInt(0)
 
   // Compute payoff - before fees?
 
@@ -190,11 +195,13 @@ function Wager() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="wager" className={`w-full text-xl flex justify-start`}>
-          <OnSignal active={wagerActive} own={true} />
-          {wagerStatus != 2 && <p>Place Bets</p>}
-          {wagerStatus === 2 && <p>Claim Wins</p>}
-        </Button>
+        <div className="rounded-xl p-0.5">
+          <Button variant="wager" className={`w-full text-xl flex justify-start`}>
+            <OnSignal active={wagerActive} own={true} />
+            {wagerStatus != 2 && <p>Which Ending?</p>}
+            {wagerStatus === 2 && <p>Claim Wins!</p>}
+          </Button>
+        </div>
       </DialogTrigger>
 
       <DialogContent>
@@ -251,60 +258,90 @@ function Wager() {
                     defaultValue="option-one"
                     className="flex flex-col md:grid md:grid-cols-3 gap-4 text-zinc-800 dark:text-zinc-200"
                   >
-                    <div className="flex flex-col items-center space-x-2">
-                      <Label
-                        htmlFor="option-one"
-                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
-                      >
-                        <Image
-                          priority
-                          src="/indicator/lastmanfoundIndicator.svg"
-                          height={300}
-                          width={100}
-                          alt="last-man-found-ending"
-                          className="shrink-0 mr-1 mb-1"
-                        />
-                        <div>Last Man Standing</div>
-                        <div>Only 1 player is left. Everyone gives up or is killed.</div>
-                      </Label>
+                    <div className="flex flex-col items-center border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                      <TooltipProvider delayDuration={10}>
+                        <Tooltip>
+                          <TooltipTrigger className="flex flex-col items-center justify-center">
+                            <Label
+                              htmlFor="option-one"
+                              className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
+                            >
+                              <Image
+                                priority
+                                src="/indicator/lastmanfoundIndicator.svg"
+                                height={300}
+                                width={100}
+                                alt="last-man-found-ending"
+                                className="shrink-0 mb-1"
+                              />
+                              <div>Last Man Standing</div>
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="start">
+                            <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                              Only 1 player is left. Everyone gives up or is killed.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                       <RadioGroupItem value="option-one" id="option-one" />
                       <div>Payoff</div>
                     </div>
-                    <div className="flex flex-col items-center space-x-2">
-                      <Label
-                        htmlFor="option-two"
-                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
-                      >
-                        <Image
-                          priority
-                          src="/indicator/peacefoundIndicator.svg"
-                          height={300}
-                          width={100}
-                          alt="peace-found-ending"
-                          className="shrink-0 mr-1 mb-1"
-                        />
-                        <div>Peace found.</div>
-                        <div>Majority of players that are remaining vote to split pot.</div>
-                      </Label>
+                    <div className="flex flex-col items-center  border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                      <TooltipProvider delayDuration={10}>
+                        <Tooltip>
+                          <TooltipTrigger className="flex flex-col items-center justify-center">
+                            <Label
+                              htmlFor="option-two"
+                              className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
+                            >
+                              <Image
+                                priority
+                                src="/indicator/peacefoundIndicator.svg"
+                                height={300}
+                                width={100}
+                                alt="peace-found-ending"
+                                className="shrink-0 mb-1"
+                              />
+                              <div>Peace found.</div>
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="start">
+                            <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                              Majority of players that are remaining vote to split pot.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                       <RadioGroupItem value="option-two" id="option-two" />
                       <div>Payoff</div>
                     </div>
-                    <div className="flex flex-col items-center space-x-2">
-                      <Label
-                        htmlFor="option-three"
-                        className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center mb-2"
-                      >
-                        <Image
-                          priority
-                          src="/indicator/drainIndicator.svg"
-                          height={300}
-                          width={100}
-                          alt="drain-ending"
-                          className="shrink-0 mr-1 mb-1"
-                        />
-                        <div>Pot drained.</div>
-                        <div>Players play till the end without splitting the pot.</div>
-                      </Label>
+                    <div className="flex flex-col items-center  border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                      <TooltipProvider delayDuration={10}>
+                        <Tooltip>
+                          <TooltipTrigger className="flex flex-col items-center justify-center">
+                            <Label
+                              htmlFor="option-three"
+                              className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
+                            >
+                              <Image
+                                priority
+                                src="/indicator/drainIndicator.svg"
+                                height={300}
+                                width={100}
+                                alt="drain-ending"
+                                className="shrink-0 mb-1"
+                              />
+                              <div>Pot drained.</div>
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="start">
+                            <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                              Players play till the end without splitting the pot.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                       <RadioGroupItem value="option-three" id="option-three" />
                       <div>Payoff</div>
                     </div>
@@ -355,7 +392,7 @@ function Wager() {
                   {wagerActive && wagerStatus === 2 && (
                     <>
                       <Button
-                        variant="claim"
+                        variant="wager"
                         size="lg"
                         className="w-[100%]"
                         onClick={claimHandler}
@@ -367,7 +404,7 @@ function Wager() {
                   )}
                   {!(wagerActive && wagerStatus === 2) && (
                     <>
-                      <Button variant="claim" size="lg" className="w-[100%]" disabled>
+                      <Button variant="wager" size="lg" className="w-[100%]" disabled>
                         Claim
                       </Button>
                       <Prompt docLink={DOCS_URL} />

@@ -5,109 +5,67 @@ import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none focus:ring-1 focus:ring-white disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex whitespace-nowrap focus:outline-none focus:ring-1 focus:ring-white focus:ring disabled:pointer-events-none items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
-        // destructive: 'text-black dark:text-white whitespace-nowrap bg-transparent hover:border hover:border-neutral-500 dark:hover:border dark:hover:bg-neutral-700 focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
-
         // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         // outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         // secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         // ghost: 'hover:bg-accent hover:text-accent-foreground',
 
-        // uses size
-        // page: 'text-zinc-600 dark:text-zinc-400 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
-
-        // uses size. used to be for PhaseChange
-        // change:
-        //   'text-white hover:text-black bg-fuchsia-700 hover:bg-gradient-to-br from-orange-600 to-yellow-400 active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus:outline-none focus:ring-1 focus:ring-white disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-
-        // uses size
-        // howToPlay:
-        //   'text-lime-800 dark:text-lime-300 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-300 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-300',
-
-        default:
-          'whitespace-nowrap focus:outline-none focus:ring disabled:pointer-events-none disabled:opacity-50',
+        default: '',
 
         /*-------------------- HEADER ---------------------*/
-
-        // link: 'text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline',
-        link: 'text-gray-600 dark:text-gray-200 whitespace-nowrap bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4',
-
-        // buy: 'dark:bg-blue-800 bg-lime-500 whitespace-nowrap hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
-
-        // transfer:
-        //   'text-lime-800 dark:text-lime-200 whitespace-nowrap bg-transparent hover:bg-lime-800 hover:text-white dark:hover:text-black dark:hover:bg-lime-200 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 border border-lime-800 dark:border-lime-200',
-
-        transfer:
-          'text-blue-200 whitespace-nowrap bg-blue-700 hover:bg-blue-600 active:bg-blue-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+        // style text only. no bg. underline
+        link: 'text-gray-600 dark:text-gray-200 bg-transparent active:underline hover:underline underline-offset-4',
 
         /*-------------------- GAME TAB ---------------------*/
-        // does not use size
+        // fixed bg. dark mode
         enter:
-          'text-white whitespace-nowrap bg-purple-900 border-2 border-transparent hover:bg-purple-700 hover:border-2 hover:border-purple-300 active:bg-purple-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 border-2 border-transparent hover:border-purple-300',
 
-        // does not use size
-        exit: 'text-purple-900 dark:text-purple-100 dark:hover:text-white whitespace-nowrap border-2 border-purple-900 dark:border-purple-100 bg-transparent hover:text-white hover:bg-purple-600 active:bg-purple-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-
-        // does not use size
-        submit:
-          'text-white whitespace-nowrap bg-green-600 hover:bg-green-800 border-2 border-green-800 hover:border-2 hover:border-green-300 active:bg-green-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-
-        // does not use size
-        checkIn:
-          'text-white whitespace-nowrap border-2 border-sky-800 bg-sky-600 hover:bg-sky-800 hover:border-2 hover:border-sky-300 active:bg-sky-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none',
-        // does not use size
+        // fixed bg. light and dark mode
+        exit: 'text-purple-900 dark:text-purple-100 hover:text-white bg-transparent hover:bg-purple-600 active:bg-purple-500 border-2 border-purple-900 dark:border-purple-100',
+        // fixed bg. light and dark mode
         checkOut:
-          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
 
-        // does not use size
+        // fixed bg. light mode
+        submit:
+          'text-white bg-green-600 hover:bg-green-800 active:bg-green-700 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
+        // fixed bg. light mode
         splitPot:
-          'text-white whitespace-nowrap border-2 border-pink-800 bg-pink-500 hover:bg-pink-600 hover:border-2 hover:border-pink-300 active:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-white bg-pink-500 hover:bg-pink-600 active:bg-pink-500 border-2 border-pink-800 hover:border-pink-300 active:bg-pink-600',
+        // fixed bg. light mode
+        checkIn:
+          'text-white bg-sky-600 hover:bg-sky-800 active:bg-sky-700 border-2 border-sky-800 hover:border-sky-300',
 
+        // gradient bg. 1 mode.
         wager:
-          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'rounded-full text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700 border-4 border-orange-800 hover:border-orange-300',
 
-        claim:
-          'text-indigo-800 dark:hover:text-white whitespace-nowrap border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+        // gradient bg.
+        secondary:
+          'text-blue-950 dark:text-white hover:text-white bg-transparent hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 border border-blue-950 dark:border-white',
+
+        // claim:
+        //   'text-indigo-800 dark:hover:text-white  border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800',
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size
         filter:
-          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 whitespace-nowrap hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-1 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800 disabled:opacity-100',
+          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800',
 
         // does not uses size
         attack:
-          'text-black dark:text-amber-700 bg-transparent border-2 border-amber-700 hover:text-white dark:hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-black dark:text-amber-700 bg-transparent border-2 border-amber-700 hover:text-white dark:hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500',
 
         // does not uses size
         kickOut:
-          'text-rose-800 whitespace-nowrap border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50',
-        // 'text-red-800 dark:text-red-300 whitespace-nowrap border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50',
+          'text-rose-800 border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500',
+        // 'text-red-800 dark:text-red-300  border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500   ',
 
-        // does not uses size
-        // dropdown:
-        //   'bg-neutral-400 dark:bg-neutral-600 whitespace-nowrap hover:bg-neutral-500 dark:hover:bg-neutral-700 focus: outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-90',
-
-        // menu: 'text-white whitespace-nowrap bg-indigo-950 hover:bg-indigo-800 active:bg-indigo-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 dark:border dark:border-white',
-        // buy: 'text-white dark:border-2 dark:border-white whitespace-nowrap bg-blue-950 hover:border-2 hover:border-black dark:hover:text-white hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
-
-        primary:
-          'text-white border whitespace-nowrap bg-blue-800 hover:bg-blue-700 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90',
-
-        // used to be whitelist
-        /*-------------------- CONNECT BUTTON ---------------------*/
-        // used by connect wallet
-        secondary:
-          // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-          'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white bg-transparent hover:text-white hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-50 disabled:text-black',
-
-        // connected:
-        //   'text-blue-950 dark:text-white whitespace-nowrap border border-blue-950 dark:border-white hover:bg-zinc-200/50 focus:outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-blue-200 disabled:text-black',
-
-        // wrong:
-        //   // 'text-white hover:text-black bg-blue-950 hover:bg-gradient-to-br from-orange-600 to-yellow-400  active:hover:bg-gradient-to-br from-orange-600 to-yellow-400 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-gradient-to-br from-orange-600 to-yellow-400 disabled:text-black',
-        //   'text-red-800 whitespace-nowrap border border-red-800 bg-transparent hover:text-white hover:bg-red-700 focus: outline-none focus:ring focus:ring-white disabled:pointer-events-none disabled:opacity-90 disabled:bg-red-200 disabled:text-black',
+        primary: 'text-white border bg-blue-800 hover:bg-blue-700',
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -115,11 +73,7 @@ const buttonVariants = cva(
         md: 'h-10 rounded-md px-3 text-base leading-6',
         lg: 'h-12 rounded-xl px-5 py-1 text-xl leading-10',
         icon: 'h-10 w-10',
-        // main:
-        // primary:
         secondary: 'w-full text-xl',
-        // filter: 'rounded-full text-lg'
-        // tertiary:
       },
     },
     defaultVariants: {

@@ -216,7 +216,7 @@ function ExitGame() {
                 <span className="font-headline">Day</span> Action, or when Game Ends
               </div> */}
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -254,7 +254,7 @@ function ExitGame() {
                     : 'Amount you can claim'}
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   {/* <div className="w-[100%] text-zinc-800 dark:text-zinc-200"> */}
                   <div className="text-2xl text-center text-purple-800 dark:text-purple-300 border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
                     {ticketStatusString === 'exited' && (

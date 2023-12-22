@@ -91,19 +91,35 @@ const UserActions = () => {
   // })
 
   return (
-    <div
-      className="w-[240px] rounded-xl p-3 pt-5 pb-5
+    <div>
+      <div
+        className="w-[240px] rounded-xl p-3 pt-5 pb-5
     container-last
-    flex flex-col gap-3 mb-5"
-    >
-      <Button variant="submit" className="w-full text-2xl flex justify-start" onClick={toggle}>
-        <OnSignal active={submitActive} own={true} />
-        Submit Keyword
-      </Button>
+    flex flex-col gap-2 mb-5 relative"
+      >
+        <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+          Only players
+        </div>
+        <Button variant="submit" className="w-full text-2xl flex justify-start" onClick={toggle}>
+          <OnSignal active={submitActive} own={true} />
+          Submit Keyword
+        </Button>
 
-      <CheckIn />
-      <SplitIt />
-      <Wager />
+        <CheckIn />
+        <CheckOut />
+        <SplitIt />
+      </div>
+
+      <div
+        className="w-[240px] rounded-xl p-3 pt-5 pb-5
+    container-last
+    flex flex-col gap-2 mb-5 relative"
+      >
+        <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+          All
+        </div>
+        <Wager />
+      </div>
 
       {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={''} />}
     </div>

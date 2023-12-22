@@ -10,7 +10,11 @@ type Props = {
 }
 
 const Home = ({ phase, theme }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  return <Screen />
+  return (
+    <div>
+      <Screen />
+    </div>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({

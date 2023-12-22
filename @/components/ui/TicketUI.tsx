@@ -552,7 +552,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
           {ownTicket == false && ticketLookFinal == 'inSafehouse' && (
             <KickOut id={Number(ticketId)} />
           )}
-          {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />}
+          {/* {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />} */}
         </div>
       )}
 

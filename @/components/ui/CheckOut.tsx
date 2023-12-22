@@ -93,7 +93,7 @@ function CheckOut() {
     <Dialog>
       <DialogTrigger asChild>
         {/* Button to click on */}
-        <Button variant="checkOut" className="w-full text-xl">
+        <Button variant="checkOut" className="w-full text-xl flex justify-start">
           <OnSignal active={checkOutActive} own={true} />
           Check Out
           {/* <LogOut size={16} className="text-sm ml-1"></LogOut> */}
@@ -120,7 +120,7 @@ function CheckOut() {
                 <span className="font-headline">Day</span> Action
               </div> */}
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -160,10 +160,10 @@ function CheckOut() {
                 </div>
                 {/* Pay for stay */}
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  How long do you have with us?
+                  Is it time to go?
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Checked in on</p>
@@ -180,25 +180,29 @@ function CheckOut() {
                       <p className="text-right underline"> {round} </p>
                     </div>
 
-                    {ticketCheckOutRound > round && (
+                    {ticketStatusString === 'safe' && ticketCheckOutRound > round && (
                       <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
                         You still have time to chill
                       </p>
                     )}
 
-                    {ticketCheckOutRound === round && phase === 'day' && (
-                      <p className="text-xl text-amber-600 mt-2 text-center">
-                        You have to check out now
-                      </p>
-                    )}
+                    {ticketStatusString === 'safe' &&
+                      ticketCheckOutRound === round &&
+                      phase === 'day' && (
+                        <p className="text-xl text-amber-600 mt-2 text-center">
+                          You have to check out now
+                        </p>
+                      )}
 
-                    {ticketCheckOutRound === round && phase === 'night' && (
-                      <p className="text-xl text-red-600 mt-2 text-center">
-                        You are overstaying...
-                      </p>
-                    )}
+                    {ticketStatusString === 'safe' &&
+                      ticketCheckOutRound === round &&
+                      phase === 'night' && (
+                        <p className="text-xl text-red-600 mt-2 text-center">
+                          You are overstaying...
+                        </p>
+                      )}
 
-                    {ticketCheckOutRound <= round && (
+                    {ticketStatusString === 'safe' && ticketCheckOutRound <= round && (
                       <p className="text-xl text-red-600 mt-2 text-center">
                         You are overstaying...
                       </p>
