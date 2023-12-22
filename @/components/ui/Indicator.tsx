@@ -26,7 +26,7 @@ export default function Indicator() {
                   alt={`${indicator}`}
                 />
               </TooltipTrigger>
-              <TooltipContent side="top" align="center">
+              <TooltipContent side="top" align="center" className="hidden sm:block">
                 <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
                   Current game phase
                   <a href={DOCS_URL_phases} target="_blank" className="text-xs link block">

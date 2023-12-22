@@ -106,6 +106,7 @@ function Dashboard() {
   const { logout } = useLogout({
     onSuccess: () => {
       console.log('User logged out')
+      setIsModalOpen(false)
       toast({
         variant: 'destructive',
         // title: 'Keyword updated',
@@ -117,6 +118,7 @@ function Dashboard() {
   const { login } = useLogin({
     onComplete: () => {
       console.log('User logged in')
+      setIsModalOpen(false)
       toast({
         variant: 'success',
         // title: 'Keyword updated',
@@ -161,7 +163,7 @@ function Dashboard() {
   return (
     <Dialog>
       <DialogTrigger asChild className="shrink-0">
-        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+        <div className="flex items-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/faces/stare.png"
@@ -170,7 +172,7 @@ function Dashboard() {
             alt="player-dashboard"
             className="shrink-0 mr-1"
           />
-          <User size={28} className="mr-1" />
+          {/* <User size={28} className="mr-1" /> */}
         </div>
       </DialogTrigger>
 

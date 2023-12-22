@@ -15,7 +15,8 @@ export function useWindowSize() {
   }, [])
 
   return {
-    sm: size[0] < 768,
+    xs: size[0] < 640,
+    sm: size[0] >= 640,
     md: size[0] >= 768,
     lg: size[0] >= 1024,
     xl: size[0] >= 1280,

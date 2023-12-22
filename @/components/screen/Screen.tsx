@@ -3,6 +3,8 @@ import Round from '../ui/Round'
 import Countdown from '../ui/Countdown'
 import Indicator from '../ui/Indicator'
 import GameTab from '../ui/GameTab'
+import UserActions from '../ui/UserActions'
+import TicketUI from '../ui/TicketUI'
 import TicketList from '../ui/TicketList'
 import { useAccount } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
@@ -14,18 +16,39 @@ import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 import { Button } from '@/components/ui/button'
 import { disconnect } from 'process'
 import { useWindowSize } from '../../../hooks/useWindowSize'
+import { toast } from '@/components/ui/use-toast'
 
 export default function Screen() {
   const { isConnected, address } = useAccount()
-  const { login, user, connectWallet, ready, authenticated } = usePrivy()
-  const { sm } = useWindowSize()
+  const { user, connectWallet, ready, authenticated } = usePrivy()
+  const { xs } = useWindowSize()
+
+  const { logout } = useLogout({
+    onSuccess: () => {
+      console.log('User logged out')
+      toast({
+        variant: 'destructive',
+        // title: 'Keyword updated',
+        description: <p>You are logged out.</p>,
+      })
+    },
+  })
+
+  const { login } = useLogin({
+    onComplete: () => {
+      console.log('User logged in')
+      toast({
+        variant: 'success',
+        // title: 'Keyword updated',
+        description: <p>You are logged in.</p>,
+      })
+    },
+  })
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
         <Title />
-        {/* only add on mobile */}
-        {sm && <h1>hello world</h1>}
       </div>
 
       {!authenticated && (
@@ -66,7 +89,17 @@ export default function Screen() {
         </>
       )}
 
-      {authenticated && (
+      {/* style a box to hold all the various component renders */}
+      {authenticated && xs && (
+        <>
+          <div className="flex flex-col gap-2 px-5 my-2">
+            <GameTab />
+            {/* <GameFeed /> */}
+          </div>
+        </>
+      )}
+
+      {authenticated && !xs && (
         <>
           <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
             <Round />
@@ -77,6 +110,7 @@ export default function Screen() {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
               <GameTab />
+              <UserActions />
             </div>
 
             <div className="grow rounded-xl py-2 container-last">

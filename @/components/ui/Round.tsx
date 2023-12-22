@@ -18,6 +18,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
+import { spawn } from 'child_process'
 
 const Round = () => {
   const round = useStoreState((state) => state.round)
@@ -44,7 +45,7 @@ const Round = () => {
         <TooltipTrigger className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
           <p
             className={cn(
-              'text-lg sm:text-2xl whitespace-nowrap',
+              'text-xl sm:text-2xl whitespace-nowrap',
               round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
             )}
           >
@@ -53,7 +54,7 @@ const Round = () => {
 
           <div
             className={cn(
-              'flex flex-row items-end gap-4 text-xs sm:text-base whitespace-nowrap cursor-default',
+              'flex flex-row items-end gap-4 text-base whitespace-nowrap cursor-default',
             )}
           >
             <div className={stage === 1 ? On : Off}>Stage 1</div>
@@ -61,7 +62,8 @@ const Round = () => {
             <div className={stage === 3 ? On : Off}>Stage 3</div>
           </div>
         </TooltipTrigger>
-        <TooltipContent side="top" align="start">
+
+        <TooltipContent side="top" align="start" className="hidden sm:block">
           <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
             1 round = 1 Day + 1 Night. Time halves every {levelUp} rounds. Stage 2 starts on Round{' '}
             {suddenDeath}

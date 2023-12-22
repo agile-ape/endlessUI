@@ -31,12 +31,14 @@ import CustomConnectButton from './connect-button'
 import type { Ticket } from 'types/app'
 import { fetcher, transformPlayerTicket } from '@/lib/utils'
 import useSWR from 'swr'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 const GameTab = () => {
   const tabValue = useStoreState((state) => state.gameTab)
   const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
   const phase = useStoreState((state) => state.phase)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const { xs } = useWindowSize()
 
   const { address, isConnected } = useAccount()
 
@@ -80,7 +82,7 @@ const GameTab = () => {
 
   return (
     <Tabs value={tabValue} onValueChange={changeTabValue} className="w-[240px] mx-auto">
-      <div className="flex justify-center">
+      <div className="justify-center hidden sm:flex">
         <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
           <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
             Ticket
@@ -200,10 +202,10 @@ const GameTab = () => {
               </>
             )}
 
-            <UserActions />
+            {/* <UserActions /> */}
           </>
         </TabsContent>
-        <TabsContent value="game">
+        <TabsContent value="game" className="hidden sm:flex">
           <GameFeed />
         </TabsContent>
       </div>

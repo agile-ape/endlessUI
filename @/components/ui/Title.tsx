@@ -5,6 +5,7 @@ import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
 import { useAccount } from 'wagmi'
+import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 
 type TitleType = {
   stageType: IApp['phase']
@@ -63,8 +64,9 @@ const Title = () => {
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
   const phase = useStoreState((state) => state.phase)
+  const { ready, authenticated, user, createWallet } = usePrivy()
 
-  const { isConnected } = useAccount()
+  // const { isConnected } = useAccount()
 
   useEffect(() => {
     setCompletedTyping(false)
@@ -88,9 +90,9 @@ const Title = () => {
 
   return (
     <div className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
-      {!isConnected && <p>Connect Wallet to See More</p>}
+      {!authenticated && <p>Compete and earn ETH. Login to explore Lastman</p>}
 
-      {isConnected && (
+      {authenticated && (
         <p>
           {displayResponse}
           {!completedTyping && <CursorSVG />}

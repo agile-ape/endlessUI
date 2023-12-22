@@ -175,7 +175,7 @@ export default function Countdown() {
                   <TooltipContent
                     side="top"
                     align="center"
-                    className="px-3 py-1 max-w-[240px] text-sm cursor-default"
+                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:inline cursor-default"
                   >
                     {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
                     {phase === 'day' && (

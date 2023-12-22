@@ -22,16 +22,17 @@ import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
+import { useWindowSize } from '../../hooks/useWindowSize'
 
 const typeStage: Record<IApp['phase'], string> = {
-  deployed: 'Default.svg',
-  start: 'Start.svg',
-  day: 'Day.svg',
-  night: 'Night.svg',
-  lastmanfound: 'LastManFound.svg',
-  drain: 'Drain.svg',
-  peacefound: 'PeaceFound.svg',
-  gameclosed: 'Default.svg',
+  deployed: 'Default',
+  start: 'Start',
+  day: 'Day',
+  night: 'Night',
+  lastmanfound: 'LastManFound',
+  drain: 'Drain',
+  peacefound: 'PeaceFound',
+  gameclosed: 'Default',
 }
 
 type LayoutProps = {
@@ -55,6 +56,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
 
   const { mutate: globalMutate } = useSWRConfig()
+  const { xs } = useWindowSize()
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('showWelcomeModal')
@@ -317,22 +319,46 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     router.replace(router.asPath)
   }
 
-  const background = router.pathname.includes('404') ? 'Default.svg' : typeStage[phase]
+  const background = router.pathname.includes('404') ? 'Deployed.svg' : `${typeStage[phase]}.svg`
+  const backgroundMobile = router.pathname.includes('404')
+    ? 'DeployedMobile.svg'
+    : `${typeStage[phase]}Mobile.svg`
 
   return (
-    <main
-      className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
-      style={{
-        backgroundImage: `url(/background/${background})`,
-      }}
-    >
-      <div className="container mx-auto">
-        {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-        <Header />
-        {children}
-        {/* <CompletionModal alertLookTest="afterPurchase" /> */}
-      </div>
-    </main>
+    <>
+      {xs && (
+        <main
+          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+          style={{
+            backgroundImage: `url(/background/${backgroundMobile})`,
+          }}
+        >
+          <div className="container mx-auto p-0">
+            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+            <Header />
+            {children}
+
+            {/* <CompletionModal alertLookTest="afterPurchase" /> */}
+          </div>
+        </main>
+      )}
+
+      {!xs && (
+        <main
+          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+          style={{
+            backgroundImage: `url(/background/${background})`,
+          }}
+        >
+          <div className="container mx-auto">
+            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+            <Header />
+            {children}
+            {/* <CompletionModal alertLookTest="afterPurchase" /> */}
+          </div>
+        </main>
+      )}
+    </>
   )
 }
 

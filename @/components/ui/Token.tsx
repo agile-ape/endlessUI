@@ -236,7 +236,7 @@ function Token() {
       }}
     >
       <DialogTrigger asChild className="shrink-0">
-        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+        <div className="flex items-center border rounded-full px-2 sm:px-3 h-10 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/logo/token.svg"

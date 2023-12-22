@@ -366,7 +366,7 @@ export default function Admin() {
         {/* <p className="text-zinc-600 dark:text-zinc-200 whitespace-nowrap bg-transparent focus: outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-10 border rounded-xl px-4 py-2 text-md font-whitrabt">
           Admin
         </p> */}
-        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+        <div className="flex items-center border rounded-full px-2 sm:px-4 h-10 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/faces/duckface.png"
@@ -375,7 +375,7 @@ export default function Admin() {
             alt="gamemaster-dashboard"
             className="shrink-0 mr-1"
           />
-          <ChefHat size={28} className="mr-1" />
+          {/* <ChefHat size={28} className="mr-1" /> */}
         </div>
       </DialogTrigger>
 
