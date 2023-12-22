@@ -9,15 +9,18 @@ import { defaultContractObj } from '../../../services/constant'
 import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import CustomConnectButton from '@/components/ui/connect-button'
-import GameFeed from '@/components/ui/GameFeed'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 export default function Screen() {
   const { isConnected } = useAccount()
+  const { sm } = useWindowSize()
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
         <Title />
+        {/* only add on mobile */}
+        {sm && <h1>hello world</h1>}
       </div>
 
       {!isConnected && (
