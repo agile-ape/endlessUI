@@ -7,8 +7,7 @@ import {
   WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { formatDistanceToNow } from 'date-fns'
-import { io } from 'socket.io-client'
-
+import { socket } from '@/lib/socket'
 type Feeds = {
   block_timestamp: number
   block_number: number
@@ -42,11 +41,13 @@ const GameFeed = () => {
   }, [data])
 
   useEffect(() => {
-    const socket = io(WEBSOCKET_ENDPOINT)
-
     socket.on('events', (data) => {
       console.log('events', data)
       setFeeds((prev) => [data, ...prev])
+    })
+
+    socket.on('connect', () => {
+      console.log('socket connected')
     })
 
     return () => {

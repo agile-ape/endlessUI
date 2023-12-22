@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-
 import '@rainbow-me/rainbowkit/styles.css'
 import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import type { AppProps } from 'next/app'
@@ -118,7 +117,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
           >
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={...pageProps.metadata} phase={data?.phase || 'night'}>
+            <Layout metadata={pageProps.metadata} phase={data?.phase || 'night'}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>

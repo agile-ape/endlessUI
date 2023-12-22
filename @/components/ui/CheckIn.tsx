@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,6 @@ import {
   useContractReads,
   useContractWrite,
   useWaitForTransaction,
-  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
@@ -40,11 +39,14 @@ import {
   defaultContractObj,
   tokenContractObj,
   DOCS_URL_safehouse,
+  WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
+import { io } from 'socket.io-client'
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 
 function CheckIn() {
   // State variables
@@ -80,6 +82,24 @@ function CheckIn() {
       },
     ],
   })
+
+  const events: Event[] = [
+    {
+      name: 'events',
+      async handler(data) {
+        const { event, dataJson } = data
+
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'SafehousePrice') {
+          const { price, time } = dataJson
+          refetch()
+        }
+      },
+    },
+  ]
+
+  useSocketEvents(events)
 
   // const playerTicket = data?.[0].result || null
   const safehouseCostPerNight = data?.[0].result || BigInt(0)
@@ -161,17 +181,6 @@ function CheckIn() {
         refetch()
       }
       console.log({ data })
-    },
-  })
-
-  // Change in safehouse price
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'SafehousePrice',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { price, time } = args
-      refetch()
     },
   })
 

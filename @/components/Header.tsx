@@ -130,8 +130,12 @@ function Header() {
           <div className="ml-2">
             <Admin />
           </div>
-          <Token />
-          <Profile />
+          {authenticated && (
+            <>
+              <Token />
+              <Profile />
+            </>
+          )}
         </div>
       </div>
     </div>

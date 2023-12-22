@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -42,6 +42,7 @@ import {
   wagerContractObj,
   DOCS_URL_safehouse,
   DOCS_URL,
+  WEBSOCKET_ENDPOINT,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -49,6 +50,7 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { io } from 'socket.io-client'
 
 function Wager() {
   const phase = useStoreState((state) => state.phase)
@@ -136,7 +138,9 @@ function Wager() {
 
   wagerStatus === 1 || wagerStatus === 2 ? (wagerActive = true) : (wagerActive = false)
 
+  // Contract write
   const [isModalOpen, setIsModalOpen] = useState(false)
+  /*
 
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))

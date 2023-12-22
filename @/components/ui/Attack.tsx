@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -28,10 +28,14 @@ import {
   useContractRead,
   useContractReads,
   useContractWrite,
-  useContractEvent,
   useWaitForTransaction,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_attack, DOCS_URL_waterfall } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_attack,
+  DOCS_URL_waterfall,
+  WEBSOCKET_ENDPOINT,
+} from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
 
@@ -39,6 +43,8 @@ import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
 import { statusPayload } from '@/lib/utils'
 import { formatUnits } from 'viem'
+import { io } from 'socket.io-client'
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 
 type AttackType = {
   id: number
@@ -80,6 +86,81 @@ const Attack: FC<AttackType> = ({ id }) => {
       },
     ],
   })
+
+  const events: Event[] = [
+    {
+      name: 'events',
+      async handler(data) {
+        const { event, dataJson } = data
+
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'KeywordUpdated') {
+          const { newKeyword, time } = dataJson
+          toast({
+            variant: 'info',
+            // title: 'Keyword updated',
+            description: <p>Keyword updated. Time to rumble</p>,
+          })
+        }
+
+        if (event === 'AttackAndKilled') {
+          const { caller, defendingTicket, ticketValue, time } = dataJson
+
+          // attacker
+          if (caller === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'attackAndKill',
+            })
+          }
+          // defender
+          if (defendingTicket === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'killed',
+            })
+          }
+        }
+
+        if (event === 'AttackAndSafe') {
+          const { caller, defendingTicket, time } = dataJson
+
+          // attacker
+          if (caller === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'attackButFail',
+            })
+          }
+          // defender
+          if (defendingTicket === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'attackedButSafe',
+            })
+          }
+        }
+
+        if (event === 'ValueWaterfall') {
+          const { receivingTicket, amount, time } = dataJson
+
+          // receiver
+          if (receivingTicket === playerId) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'received',
+            })
+          }
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        refetch()
+      },
+    },
+  ]
+
+  useSocketEvents(events)
 
   const attackerTicket = data?.[0].result || null
   const tokensPerAttack = data?.[1].result || BigInt(0)
@@ -175,96 +256,6 @@ const Attack: FC<AttackType> = ({ id }) => {
       console.log({ data })
     },
   })
-
-  // keyword updated
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'KeywordUpdated',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { newKeyword, time } = args
-      refetch()
-      console.log({ args })
-      toast({
-        variant: 'info',
-        // title: 'Keyword updated',
-        description: <p>Keyword updated. Time to rumble</p>,
-      })
-    },
-  })
-
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'AttackAndKilled',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, defendingTicket, ticketValue, time } = args
-
-      // attacker
-      if (caller === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'attackAndKill',
-        })
-      }
-      // defender
-      if (defendingTicket === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'killed',
-        })
-      }
-      refetch()
-      console.log({ args })
-    },
-  })
-
-  // attack unsuccessful
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'AttackAndSafe',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, defendingTicket, time } = args
-
-      // attacker
-      if (caller === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'attackButFail',
-        })
-      }
-      // defender
-      if (defendingTicket === playerId) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'attackedButSafe',
-        })
-      }
-      refetch()
-      console.log({ args })
-    },
-  })
-
-  // TO TEST ON NEXT ITERATION
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'ValueWaterfall',
-  //   listener: (event) => {
-  //     const args = event[0]?.args
-  //     const { receivingTicket, amount, time } = args
-
-  //     // receiver
-  //     if (receivingTicket === playerId) {
-  //       triggerCompletionModal({
-  //         isOpen: true,
-  //         state: 'received',
-  //       })
-  //     }
-  //     refetch()
-  //     console.log({ args })
-  //   },
-  // })
 
   return (
     <Dialog>

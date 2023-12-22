@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from './button'
 import { HelpCircle } from 'lucide-react'
 import SubmitKeywordModal from './SubmitKeywordModal'
@@ -18,13 +18,13 @@ import {
   useAccount,
   useContractRead,
   useContractWrite,
-  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_exit } from '../../../services/constant'
+import { defaultContractObj, DOCS_URL_exit, WEBSOCKET_ENDPOINT } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
+import { io } from 'socket.io-client'
 
 const UserActions = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
@@ -53,42 +53,6 @@ const UserActions = () => {
 
   // Active condition
   const submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
-
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'KeywordSubmitted',
-  //   listener: (event) => {
-  //     refetch()
-  //   },
-  // })
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'CheckIntoSafehouse',
-  //   listener: (event) => {
-  //     refetch()
-  //   },
-  // })
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'CheckOutFromSafehouse',
-  //   listener: (event) => {
-  //     refetch()
-  //   },
-  // })
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'VoteYes',
-  //   listener: (event) => {
-  //     refetch()
-  //   },
-  // })
-  // useContractEvent({
-  //   ...defaultContractObj,
-  //   eventName: 'VoteNo',
-  //   listener: (event) => {
-  //     refetch()
-  //   },
-  // })
 
   return (
     <div>

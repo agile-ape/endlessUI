@@ -6,19 +6,13 @@ import { Timer } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
-import {
-  useAccount,
-  useContractEvent,
-  useContractRead,
-  useContractReads,
-  useContractWrite,
-} from 'wagmi'
-import { defaultContractObj, DOCS_URL } from '../../../services/constant'
+import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
+import { defaultContractObj, DOCS_URL, WEBSOCKET_ENDPOINT } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import PhaseChange from './PhaseChange'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
-
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 type TimeLeftType = {
   hours: number
   minutes: number
@@ -77,16 +71,24 @@ export default function Countdown() {
     },
   })
 
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'PhaseChange',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, previousPhase, newPhase, time } = args
+  const events: Event[] = [
+    {
+      name: 'events',
+      async handler(data) {
+        const { event, dataJson } = data
 
-      setTimeFlag(Number(time) || 0)
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'PhaseChange') {
+          const { caller, previousPhase, newPhase, time } = dataJson
+
+          setTimeFlag(Number(time) || 0)
+        }
+      },
     },
-  })
+  ]
+
+  useSocketEvents(events)
 
   const countdownTime = data?.[1].result || BigInt(0)
   const dayTime = data?.[2].result || BigInt(0)

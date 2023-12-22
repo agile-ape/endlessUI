@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -24,7 +24,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Link from 'next/link'
 import Prompt from './Prompt'
 import { formatNumber } from '@/lib/utils'
-import { defaultContractObj, DOCS_URL_split, TWITTER_URL } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_split,
+  TWITTER_URL,
+  WEBSOCKET_ENDPOINT,
+} from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
 import { statusPayload } from '@/lib/utils'
@@ -33,15 +38,15 @@ import {
   useContractRead,
   useContractReads,
   useContractWrite,
-  useContractEvent,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
-
-function SplitIt() {
+import { io } from 'socket.io-client'
+import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
+function SplitIt({ playerTicket }: { playerTicket: any }) {
   const phase = useStoreState((state) => state.phase)
   const stage = useStoreState((state) => state.stage)
   const suddenDeath = useStoreState((state) => state.suddenDeath)
@@ -159,25 +164,28 @@ function SplitIt() {
     }
   }
 
-  // track Stage 3
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'DrainTriggered',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { drainRound, drainRate, time } = args
-      refetch()
-    },
-  })
+  const events: Event[] = [
+    {
+      name: 'events',
+      handler(data) {
+        const { event, dataJson } = data
 
-  // changes amount drained (when Day comes)
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'PhaseChange',
-    listener: (event) => {
-      refetch()
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'DrainTriggered') {
+          const { drainRound, drainRate, time } = dataJson
+          refetch()
+        }
+
+        if (event === 'PhaseChange') {
+          const { caller, previousPhase, newPhase, time } = dataJson
+          refetch()
+        }
+      },
     },
-  })
+  ]
+
+  useSocketEvents(events)
 
   return (
     <Dialog>
@@ -262,13 +270,13 @@ function SplitIt() {
                       <p className="text-left leading-tight"> Stage 3 starts on</p>
                       <p className="text-right">
                         {stage !== 3 && (
-                          <p>
+                          <>
                             {' '}
                             <a href={TWITTER_URL} className="link">
                               {' '}
                               Follow for update
                             </a>{' '}
-                          </p>
+                          </>
                         )}
                         {stage === 3 && (
                           <p>
@@ -300,7 +308,7 @@ function SplitIt() {
                           </div>
                           <div className="grid grid-cols-2 text-lg gap-1">
                             <p className="text-left leading-tight"> Yes / Split pot count</p>
-                            <p className="text-right">
+                            <div className="text-right">
                               <TooltipProvider delayDuration={10}>
                                 <Tooltip>
                                   <TooltipTrigger>
@@ -313,7 +321,7 @@ function SplitIt() {
                                   </TooltipContent>
                                 </Tooltip>
                               </TooltipProvider>
-                            </p>
+                            </div>
                           </div>
                         </AccordionContent>
                       </AccordionItem>
@@ -324,7 +332,7 @@ function SplitIt() {
                         <AccordionContent>
                           <div className="grid grid-cols-2 text-lg gap-1">
                             <p className="text-left leading-tight">Drain per round</p>
-                            <p className="text-right">
+                            <div className="text-right">
                               <TooltipProvider delayDuration={10}>
                                 <Tooltip>
                                   <TooltipTrigger>
@@ -350,7 +358,7 @@ function SplitIt() {
                                   </TooltipContent>
                                 </Tooltip>
                               </TooltipProvider>
-                            </p>
+                            </div>
                           </div>
 
                           <div className="grid grid-cols-2 text-lg gap-1">

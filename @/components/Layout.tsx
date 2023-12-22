@@ -2,13 +2,7 @@ import Header from './Header'
 import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import {
-  useAccount,
-  useContractEvent,
-  useContractRead,
-  useContractReads,
-  useWalletClient,
-} from 'wagmi'
+import { useAccount, useContractRead, useContractReads, useWalletClient } from 'wagmi'
 import {
   API_ENDPOINT,
   LAST_MAN_STANDING_ADDRESS,
@@ -26,8 +20,8 @@ import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
-import { io } from 'socket.io-client'
 import { formatUnits, parseUnits } from 'viem'
+import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default.svg',
@@ -103,184 +97,144 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     }
   }
 
-  useEffect(() => {
-    const socket = io(WEBSOCKET_ENDPOINT)
-
-    socket.io.on('open', () => {
-      console.log('connected')
-    })
-
-    socket.on('tickets', (data) => {
-      if (!data?.id) return
-
-      updateLastChangedTicket(data.id)
-      setTimeout(() => updateLastChangedTicket(0), 3000)
-
-      if (data?.user?.toLowerCase() === address?.toLowerCase()) {
-        updateOwnedTicket(data)
-      } else {
-        modifyPlayerTicket({
-          id: data?.id,
-          ticket: data,
+  const events: Event[] = [
+    {
+      name: 'tickets',
+      handler(data) {
+        console.log({
+          ticketData: data,
         })
-      }
-    })
+        if (!data?.id) return
 
-    return () => {
-      socket.close()
-    }
-  }, [])
+        updateLastChangedTicket(data.id)
+        setTimeout(() => updateLastChangedTicket(0), 3000)
 
-  /*---------------- OWNER FUNCTIONS ------------------*/
-  // Change safehouse price
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'SafehousePrice',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { price, time } = args
-      const priceRate = formatUnits(price || BigInt(0), 3)
-      toast({
-        variant: 'info',
-        // title: 'Keyword updated',
-        description: <p>Safehouse price is now {priceRate} $LAST per night </p>,
-      })
+        if (data?.user?.toLowerCase() === address?.toLowerCase()) {
+          updateOwnedTicket(data)
+        } else {
+          modifyPlayerTicket({
+            id: data?.id,
+            ticket: data,
+          })
+        }
+      },
     },
-  })
+    {
+      name: 'events',
+      async handler(data) {
+        const { event, dataJson } = data
 
-  // Change tokens emission rate
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'TokenEmission',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { emission, time } = args
-      const emissionRate = formatUnits(emission || BigInt(0), 3)
-      toast({
-        variant: 'info',
-        // title: 'Keyword updated',
-        description: <p>Tokens are now emitted at {emissionRate} $LAST per attack </p>,
-      })
+        if (!Object.keys(dataJson).length) return
+
+        const refetchedEvents = ['VoteYes', 'VoteNo', 'NewTicketBought', 'PhaseChange']
+
+        if (refetchedEvents.includes(event)) {
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+          refetchInitData()
+        }
+
+        if (event === 'SafehousePrice') {
+          const { price, time } = dataJson
+          const priceRate = formatUnits(price || BigInt(0), 3)
+          toast({
+            variant: 'info',
+            // title: 'Keyword updated',
+            description: <p>Safehouse price is now {priceRate} $LAST per night </p>,
+          })
+        }
+
+        if (event === 'TokenEmission') {
+          const { emission, time } = dataJson
+          const emissionRate = formatUnits(emission || BigInt(0), 3)
+          toast({
+            variant: 'info',
+            // title: 'Keyword updated',
+            description: <p>Tokens are now emitted at {emissionRate} $LAST per attack </p>,
+          })
+        }
+
+        if (event === 'DrainTriggered') {
+          const { drainRound, drainRate, time } = dataJson
+          const drainBegins = formatUnits(drainRound || BigInt(0), 0)
+          toast({
+            variant: 'info',
+            // title: 'Keyword updated',
+            description: (
+              <p>
+                Pot will starting draining on round{' '}
+                <span className="round-last">{drainBegins}</span>.
+              </p>
+            ),
+          })
+        }
+
+        if (event === 'PhaseChange') {
+          const { caller, previousPhase, newPhase, time } = dataJson
+
+          // start
+          if (newPhase === 1) {
+            toast({
+              variant: 'info',
+              title: 'Ticket buying',
+              description: <p>Ticket buying has started.</p>,
+            })
+          }
+
+          // day
+          if (newPhase === 2) {
+            toast({
+              variant: 'info',
+              title: 'Day has come',
+              description: <p>Day has come. Remember to submit keyword.</p>,
+            })
+          }
+
+          // night
+          if (newPhase === 3) {
+            toast({
+              variant: 'info',
+              title: 'Night has come',
+              description: <p>Night has come. Let the attacks begin</p>,
+            })
+          }
+
+          // lastmanfound
+          if (newPhase === 4) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'lastman',
+            })
+          }
+
+          // peacefound
+          if (newPhase === 5) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'peacefound',
+            })
+          }
+          // drain
+          if (newPhase === 6) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'drain',
+            })
+          }
+          // gameclosed
+          if (newPhase === 7) {
+            triggerCompletionModal({
+              isOpen: true,
+              state: 'gameClosed',
+            })
+          }
+
+          globalMutate('phase')
+        }
+      },
     },
-  })
+  ]
 
-  // Trigger drain
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'DrainTriggered',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { drainRound, drainRate, time } = args
-      const drainBegins = formatUnits(drainRound || BigInt(0), 0)
-      toast({
-        variant: 'info',
-        // title: 'Keyword updated',
-        description: (
-          <p>
-            Pot will starting draining on round <span className="round-last">{drainBegins}</span>.
-          </p>
-        ),
-      })
-    },
-  })
-
-  // Vote Yes Vote No - update vote count
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'VoteYes',
-    listener: (event) => {
-      refetchInitData()
-    },
-  })
-
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'VoteNo',
-    listener: (event) => {
-      refetchInitData()
-    },
-  })
-
-  // need to add Kick Out, AttackAndKilled, Exit - refresh
-
-  // phase change
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'PhaseChange',
-    listener: (event) => {
-      const args = event[0]?.args
-      const { caller, previousPhase, newPhase, time } = args
-      refetchInitData()
-
-      // start
-      if (newPhase === 1) {
-        toast({
-          variant: 'info',
-          title: 'Ticket buying',
-          description: <p>Ticket buying has started.</p>,
-        })
-      }
-
-      // day
-      if (newPhase === 2) {
-        toast({
-          variant: 'info',
-          title: 'Day has come',
-          description: <p>Day has come. Remember to submit keyword.</p>,
-        })
-      }
-
-      // night
-      if (newPhase === 3) {
-        toast({
-          variant: 'info',
-          title: 'Night has come',
-          description: <p>Night has come. Let the attacks begin</p>,
-        })
-      }
-
-      // lastmanfound
-      if (newPhase === 4) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'lastman',
-        })
-      }
-
-      // peacefound
-      if (newPhase === 5) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'peacefound',
-        })
-      }
-      // drain
-      if (newPhase === 6) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'drain',
-        })
-      }
-      // gameclosed
-      if (newPhase === 7) {
-        triggerCompletionModal({
-          isOpen: true,
-          state: 'gameClosed',
-        })
-      }
-
-      globalMutate('phase')
-    },
-  })
-
-  // new ticket bought
-  useContractEvent({
-    ...defaultContractObj,
-    eventName: 'NewTicketBought',
-    listener: (event) => {
-      refetchInitData()
-    },
-  })
+  useSocketEvents(events)
 
   const { data, refetch: refetchInitData } = useContractReads({
     contracts: [
