@@ -13,15 +13,19 @@ import GameFeed from '@/components/ui/GameFeed'
 import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 import { Button } from '@/components/ui/button'
 import { disconnect } from 'process'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 export default function Screen() {
   const { isConnected, address } = useAccount()
   const { login, user, connectWallet, ready, authenticated } = usePrivy()
+  const { sm } = useWindowSize()
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       <div className="text-center">
         <Title />
+        {/* only add on mobile */}
+        {sm && <h1>hello world</h1>}
       </div>
 
       {!authenticated && (
