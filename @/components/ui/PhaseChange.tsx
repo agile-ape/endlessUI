@@ -94,26 +94,6 @@ const PhaseChange = () => {
     }
   }
 
-  //   onError(error) {
-  //     // @ts-ignore
-  //     const errorMsg = error?.cause?.shortMessage || error?.message
-  //     toast({
-  //       variant: 'destructive',
-  //       // title: 'Its not time yet 😭',
-  //       description: <p>{errorMsg}</p>,
-  //     })
-  //   },
-  //   onSuccess(data) {
-  //     console.log('Success', data)
-
-  //     toast({
-  //       variant: 'success',
-  //       // title: 'The phase has change',
-  //       description: 'The phase has change!',
-  //     })
-  //   },
-  // })
-
   return (
     <Dialog open={isModalOpen}>
       <DialogTrigger asChild>
@@ -187,7 +167,7 @@ const PhaseChange = () => {
                   </div>
                 </div> */}
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center">
                   {phaseChangeActive && (
                     <Button
                       variant="default"

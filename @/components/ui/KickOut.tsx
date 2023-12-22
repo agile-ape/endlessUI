@@ -191,7 +191,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                 <span className="font-headline">Night</span> Action
               </div> */}
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -237,7 +237,7 @@ const KickOut: FC<KickOutType> = ({ id }) => {
                   Kick Player #{id} Out?
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left"> Player value</p>

@@ -18,7 +18,12 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { API_ENDPOINT, defaultContractObj, DOCS_URL_submit } from '../../../services/constant'
+import {
+  API_ENDPOINT,
+  defaultContractObj,
+  DOCS_URL_submit,
+  HCAPCTCHA_KEY,
+} from '../../../services/constant'
 import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import { toast } from './use-toast'
@@ -206,7 +211,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                     <span className="font-headline">Day</span> Action
                   </div> */}
                 </div>
-                <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+                <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
                   <div className="w-[85%] mx-auto flex flex-col gap-3">
                     <Image
                       priority
@@ -232,6 +237,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                     </AccordionItem>
                   </Accordion> */}
 
+                    {/* <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4"> */}
                     <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                       <p className="mb-2">Solve captcha to reveal keyword of the day.</p>
                       <p className="mb-2">
@@ -249,13 +255,14 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
                     </div>
 
                     {/* Captcha */}
-                    <div className="w-[240px] mx-auto flex flex-col justify-center items-center">
+                    <div className="mx-auto flex flex-col justify-center items-center">
                       <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize text-zinc-500 dark:text-zinc-400">
                         Solve Captcha
                       </div>
 
                       <HCaptcha
-                        sitekey="38e2ff83-f255-4b90-88ff-c65a443e82db"
+                        // sitekey="38e2ff83-f255-4b90-88ff-c65a443e82db"
+                        sitekey={HCAPCTCHA_KEY}
                         onVerify={(token, ekey) => verifyCaptcha(token)}
                         tabIndex={0}
                         size="normal"
@@ -334,6 +341,7 @@ const SubmitKeywordModal: React.FC<SubmitKeywordModalType> = ({ toggle, active, 
 
                       {!active && <Prompt docLink={DOCS_URL_submit} />}
                     </div>
+                    {/* </div> */}
                   </div>
                 </ScrollArea>
               </div>

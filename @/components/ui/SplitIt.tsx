@@ -46,7 +46,8 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'
 import { io } from 'socket.io-client'
 import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
-function SplitIt({ playerTicket }: { playerTicket: any }) {
+
+function SplitIt() {
   const phase = useStoreState((state) => state.phase)
   const stage = useStoreState((state) => state.stage)
   const suddenDeath = useStoreState((state) => state.suddenDeath)
@@ -212,7 +213,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                 alt={`dayIndicator`}
               />
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -253,7 +254,7 @@ function SplitIt({ playerTicket }: { playerTicket: any }) {
                   Do you want to split pot?
                 </div>
 
-                <div className="w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left leading-tight">Current pot</p>

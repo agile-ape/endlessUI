@@ -6,6 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import CheckIn from './CheckIn'
 import CheckOut from './CheckOut'
 import SplitIt from './SplitIt'
+import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
 import Inspect from './Attack'
 import KickOut from './KickOut'

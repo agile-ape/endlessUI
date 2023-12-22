@@ -202,8 +202,8 @@ function Wager() {
         <div className="rounded-xl p-0.5">
           <Button variant="wager" className={`w-full text-xl flex justify-start`}>
             <OnSignal active={wagerActive} own={true} />
-            {wagerStatus != 2 && <p>Which Ending?</p>}
-            {wagerStatus === 2 && <p>Claim Wins!</p>}
+            {wagerStatus != 2 && <p>Ending?</p>}
+            {wagerStatus === 2 && <p>Claim</p>}
           </Button>
         </div>
       </DialogTrigger>
@@ -215,7 +215,7 @@ function Wager() {
               {wagerStatus != 2 && <p>Place Your Bets</p>}
               {wagerStatus === 2 && <p>Claim Your Winnings Now</p>}
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -262,7 +262,7 @@ function Wager() {
                     defaultValue="option-one"
                     className="flex flex-col md:grid md:grid-cols-3 gap-4 text-zinc-800 dark:text-zinc-200"
                   >
-                    <div className="flex flex-col items-center border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                    <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
                       <TooltipProvider delayDuration={10}>
                         <Tooltip>
                           <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -291,7 +291,7 @@ function Wager() {
                       <RadioGroupItem value="option-one" id="option-one" />
                       <div>Payoff</div>
                     </div>
-                    <div className="flex flex-col items-center  border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                    <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
                       <TooltipProvider delayDuration={10}>
                         <Tooltip>
                           <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -320,7 +320,7 @@ function Wager() {
                       <RadioGroupItem value="option-two" id="option-two" />
                       <div>Payoff</div>
                     </div>
-                    <div className="flex flex-col items-center  border rounded-md border-zinc-800 dark:border-zinc-200 space-x-2">
+                    <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
                       <TooltipProvider delayDuration={10}>
                         <Tooltip>
                           <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -353,13 +353,14 @@ function Wager() {
                   {/* </div> */}
 
                   {/* Bet amount component */}
-                  <div className="w-[240px] flex flex-col gap-2 items-center text-2xl">
+                  {/* <div className="w-[220px] flex flex-col gap-2 items-center text-2xl"> */}
+                  <div className="w-[220px] md:w-[320px] rounded-lg flex gap-4 flex flex-col justify-center items-center text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
                     <label htmlFor="bet">Bet Amount (ETH) </label>
                     <input
                       type="text"
                       id="bet"
                       required
-                      className="w-[6rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
+                      className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
                       value={betAmount}
                       onChange={(e) => setBetAmount(e.target.value)}
                     />

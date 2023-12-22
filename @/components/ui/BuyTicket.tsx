@@ -133,9 +133,22 @@ function BuyTicket() {
     },
   })
 
+  function resetState() {
+    setBuddyValue('')
+  }
+
   return (
     <>
-      <Dialog open={isModalOpen}>
+      <Dialog
+        open={isModalOpen}
+        onOpenChange={(val) => {
+          setIsModalOpen(val)
+
+          if (!val) {
+            resetState()
+          }
+        }}
+      >
         <DialogTrigger asChild>
           <Button
             variant="enter"
@@ -182,7 +195,7 @@ function BuyTicket() {
                   alt={`startIndicator`}
                 />
               </DialogTitle>
-              <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+              <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
                 <div className="w-[85%] mx-auto flex flex-col gap-3">
                   <Image
                     priority
@@ -215,7 +228,7 @@ function BuyTicket() {
                     Join us?
                   </div>
 
-                  <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                     <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                       <div className="grid grid-cols-2 text-lg gap-1 mb-2">
                         <p className="text-left leading-tight">ETH in wallet</p>
@@ -245,30 +258,30 @@ function BuyTicket() {
                       </div>
                     </div>
 
-                    <div className="flex mt-4 px-4 items-center w-[100%] text-zinc-800 dark:text-zinc-200 text-lg justify-between">
-                      <div className="flex gap-1 items-center">
-                        <label htmlFor="buddy">(Optional) Buddy #</label>
-                        <input
-                          type="text"
-                          id="buddy"
-                          className="w-[3rem] border-[2px] border-slate-400 rounded-md px-1 text-center"
-                          placeholder={buddyValue}
-                          onChange={(e) => setBuddyValue(e.target.value)}
-                        />
-                      </div>
-                    </div>
+                    {/* <div className="flex mt-4 px-4 items-center w-[100%]"> */}
+                    <div className="w-[100%] rounded-lg flex gap-1 flex flex-col justify-center items-center text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                      <label htmlFor="buddy">(Optional) Buddy #</label>
+                      <input
+                        type="text"
+                        id="buddy"
+                        className="w-[6rem] rounded-md my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                        placeholder={buddyValue}
+                        onChange={(e) => setBuddyValue(e.target.value)}
+                      />
 
-                    <Button
-                      disabled={!buyTicketActive}
-                      variant="enter"
-                      size="lg"
-                      className="rounded-full w-[100%]"
-                      onClick={buyTicketHandler}
-                      isLoading={isLoading}
-                    >
-                      Buy Ticket
-                    </Button>
+                      <Button
+                        disabled={!buyTicketActive}
+                        variant="enter"
+                        size="lg"
+                        className="rounded-full w-[100%]"
+                        onClick={buyTicketHandler}
+                        isLoading={isLoading}
+                      >
+                        Buy Ticket
+                      </Button>
+                    </div>
                   </div>
+                  {/* </div> */}
                 </div>
               </ScrollArea>
             </DialogHeader>

@@ -254,9 +254,9 @@ function ExitGame() {
                     : 'Amount you can claim'}
                 </div>
 
-                <div className="w-[220px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   {/* <div className="w-[100%] text-zinc-800 dark:text-zinc-200"> */}
-                  <div className="text-2xl text-center text-purple-800 dark:text-purple-300 border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
+                  <div className="text-2xl text-center text-purple-800 dark:text-purple-300 shadow-md border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
                     {ticketStatusString === 'exited' && (
                       <p>
                         {formatNumber(ticketClaimed, {

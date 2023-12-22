@@ -526,7 +526,7 @@ export default function Admin() {
                       type="text"
                       id="triggerDrain"
                       required
-                      className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                      className="w-[6rem] rounded-md my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
                       value={drainRound}
                       onChange={(e) => setDrainRound(e.target.value)}
                     />

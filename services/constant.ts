@@ -13,6 +13,8 @@ export const TOKEN_ADDRESS = '0xe6E5Ba2d06ba33882F563e0f75D64F8e89ced9Bb' as con
 export const WHITELIST_DEV_ADDRESS = '0x68EEf6bb643efa224E804a8D604e511d1F8fa032' as const
 export const WHITELIST_PROD_ADDRESS = '0xe3E6133c3930C265757a6429Ab5e53F30c19D70e' as const
 
+export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
+
 export const defaultContractObj = {
   address: LAST_MAN_STANDING_ADDRESS,
   abi: LAST_MAN_STANDING_ABI,

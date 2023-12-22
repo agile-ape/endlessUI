@@ -236,7 +236,7 @@ function Token() {
       }}
     >
       <DialogTrigger asChild className="shrink-0">
-        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 hover:border-zinc-300 hover:bg-zinc-200/50 hover:cursor-pointer">
+        <div className="flex items-center border rounded-full px-2 sm:px-3 py-0 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/logo/token.svg"
@@ -259,8 +259,8 @@ function Token() {
         <div className="overflow-auto">
           <DialogHeader className="items-center">
             <DialogTitle className="text-3xl text-center font-normal">$LAST Token</DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <div className="w-[85%] mx-auto flex flex-col gap-3">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
+              <div className="w-[85%] mx-auto flex flex-col gap-3 mb-2">
                 <Image
                   priority
                   src="/lore/TokenImage.png"
@@ -275,9 +275,9 @@ function Token() {
                   <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                     Holdings
                   </div>
-                  <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                  <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                     <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                      <div className="flex text-lg justify-between gap-4 text-xl">
+                      <div className="flex text-lg justify-between gap-4">
                         <p className="text-left">$LAST holdings</p>
                         <p className="text-right">
                           {' '}
@@ -287,7 +287,7 @@ function Token() {
                           })}
                         </p>
                       </div>
-                      <div className="flex text-lg justify-between gap-4 text-xl">
+                      <div className="flex text-lg justify-between gap-4">
                         <p className="text-left">Tokens allowance left</p>
                         <p className="text-right">
                           {' '}
@@ -300,7 +300,7 @@ function Token() {
 
                       <div className="flex text-lg justify-center mt-2">
                         <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-                          <Button variant="enter" className="w-full text-xl">
+                          <Button variant="primary" className="w-full text-xl">
                             Buy on Uniswap{' '}
                             <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
                           </Button>
@@ -308,18 +308,7 @@ function Token() {
                       </div>
                     </div>
                   </div>
-                  {/* <p className="mb-2">
-                    Buy $LAST tokens, or transfer $LAST tokens to another in-game player
-                  </p> */}
                 </div>
-
-                {/* <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  $LAST
-                </div>
-
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200"></div>
-                </div> */}
 
                 <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
                   Send $LAST to player

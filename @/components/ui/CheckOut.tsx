@@ -130,7 +130,7 @@ function CheckOut() {
                   className="place-self-center rounded-xl"
                   height={400}
                   width={650}
-                  alt="enter-into-the-pepe"
+                  alt="check-out-of-safehouse"
                 />
 
                 {/* <Accordion type="multiple">
@@ -163,7 +163,7 @@ function CheckOut() {
                   Is it time to go?
                 </div>
 
-                <div className="w-[220px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg gap-1">
                       <p className="text-left">Checked in on</p>

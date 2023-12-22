@@ -178,7 +178,7 @@ function Dashboard() {
         <div className="overflow-auto">
           <DialogHeader className="items-center">
             <DialogTitle className="text-3xl text-center font-normal">Player Dashboard</DialogTitle>
-            <ScrollArea className="h-[650px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               {/* <DialogDescription className="w-[100%] mx-auto flex flex-col gap-3"> */}
               <div className="text-xl leading-tight text-zinc-800 dark:text-zinc-200">
                 <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
@@ -186,207 +186,207 @@ function Dashboard() {
                     <div className="flex justify-center rounded-full p-2">
                       <Image
                         priority
-                        // src="eip155:1/erc721:0x282bdd42f4eb70e7a9d9f40c8fea0825b7f68c5d/7959"
-                        src={ensAvatar ? ensAvatar : '/lore/EnterGame.png'}
+                        src={'/lore/EnterGame.png'}
                         className="place-self-center"
-                        // height={150}
-                        // width={110}
                         height={400}
                         width={650}
                         alt="enter-into-the-pepe"
                       />
                     </div>
-
-                    <Accordion type="multiple">
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>
-                          <div className="flex text-lg justify-between gap-4 text-xl">
-                            <p className="text-left">Wallet:</p>
-                            <p className="text-right">
-                              <a
-                                href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`}
-                                target="_blank"
-                              >
-                                {ensName ? ensName : formatAddress(String(activeWallet?.address))}
-                              </a>
-                            </p>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="gap-1">
-                          <div className="text-xl text-center text-zinc-500 dark:text-zinc-400">
-                            Select Wallet
-                          </div>
-                          <ul className="flex flex-col lg:flex-row gap-2 justify-center items-center">
-                            {wallets.map((wallet) => (
-                              <li key={wallet.address}>
-                                <Button
-                                  variant="primary"
-                                  className={cn(
-                                    'flex justify-center items-center gap-4 border border-black p-2 rounded-sm',
-                                    activeWallet?.address === wallet.address
-                                      ? 'bg-green-200 dark:bg-green-600'
-                                      : '',
-                                  )}
-                                  onClick={() => setActiveWallet(wallet)}
+                    <div className="">
+                      <Accordion type="multiple">
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>
+                            <div className="flex text-lg justify-between gap-4 text-lg">
+                              <p className="text-left">Wallet:</p>
+                              <p className="text-right">
+                                <a
+                                  href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`}
+                                  target="_blank"
                                 >
-                                  <span className="text-lg">
-                                    {formatAddress(String(wallet.address))}
-                                  </span>
-                                  <span
+                                  {ensName ? ensName : formatAddress(String(activeWallet?.address))}
+                                </a>
+                              </p>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="gap-1">
+                            <div className="text-xl text-center text-zinc-500 dark:text-zinc-400">
+                              Select Wallet
+                            </div>
+                            <ul className="flex flex-col lg:flex-row gap-2 justify-center items-center">
+                              {wallets.map((wallet) => (
+                                <li key={wallet.address}>
+                                  <Button
+                                    // variant="wallet"
                                     className={cn(
-                                      'text-sm border border-black px-1 rounded-sm',
+                                      'flex justify-center items-center border border-slate-950 gap-4 p-2 rounded-sm',
                                       activeWallet?.address === wallet.address
-                                        ? 'bg-green-800 text-white'
-                                        : '',
+                                        ? 'text-white bg-slate-500 disabled:cursor-not-allowed disabled:pointer-events-none'
+                                        : 'text-black bg-slate-100 hover:bg-slate-300',
                                     )}
+                                    onClick={() => setActiveWallet(wallet)}
                                   >
-                                    {wallet.connectorType === 'embedded' ? 'embedded' : 'external'}
-                                  </span>
-                                </Button>
-                              </li>
-                            ))}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                                    <span className="text-lg">
+                                      {formatAddress(String(wallet.address))}
+                                    </span>
+                                    <span
+                                      className={cn(
+                                        'text-sm border border-black px-1 rounded-sm',
+                                        activeWallet?.address === wallet.address
+                                          ? ' text-white bg-slate-700 border border-white'
+                                          : '',
+                                      )}
+                                    >
+                                      {wallet.connectorType === 'embedded'
+                                        ? 'embedded'
+                                        : 'external'}
+                                    </span>
+                                  </Button>
+                                </li>
+                              ))}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
 
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">Connected Chain</p>
-                      <p className="text-right">{wallet?.chainId}</p>
-                    </div>
+                      <div className="flex text-lg justify-between gap-4 text-lg">
+                        <p className="text-left">Chain</p>
+                        <p className="text-right">{wallet?.chainId}</p>
+                      </div>
 
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">Game play count</p>
-                      <p className="text-right">{Number(playCount)}</p>
-                    </div>
+                      <div className="flex text-lg justify-between gap-4 text-lg">
+                        <p className="text-left">Game play count</p>
+                        <p className="text-right">{Number(playCount)}</p>
+                      </div>
 
-                    <div className="flex text-lg justify-between gap-4 text-xl">
-                      <p className="text-left">Side quest count</p>
-                      <p className="text-right">{Number(sideQuestCount)}</p>
-                    </div>
-                    <a
-                      href={DOCS_URL}
-                      target="_blank"
-                      className="link text-xs sm:text-sm md:text-base leading-tight"
-                    >
-                      Learn more
-                    </a>
+                      <div className="flex text-lg justify-between gap-4 text-lg">
+                        <p className="text-left">Side quest count</p>
+                        <p className="text-right">{Number(sideQuestCount)}</p>
+                      </div>
+                      <a
+                        href={DOCS_URL}
+                        target="_blank"
+                        className="link text-xs sm:text-sm md:text-base leading-tight"
+                      >
+                        Learn more
+                      </a>
 
-                    <Accordion type="multiple">
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>
-                          <div className="text-xl text-zinc-500 dark:text-zinc-400 my-1 flex justify-start">
-                            Embedded Wallet
-                            <TooltipProvider delayDuration={10}>
-                              <Tooltip>
-                                <TooltipTrigger className="ml-1">
-                                  {' '}
-                                  <HelpCircle />
-                                </TooltipTrigger>
-                                <TooltipContent side="top" align="center">
-                                  <p className="px-3 py-1.5 max-w-[240px] cursor-default whitespace-normal text-sm">
-                                    An embedded wallet is automatically created for you if you do
-                                    not have a wallet during login. You can also create an embedded
-                                    wallet if you use an external wallet.
+                      <Accordion type="multiple">
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>
+                            <div className="text-xl text-zinc-500 dark:text-zinc-400 my-1 flex justify-start">
+                              Embedded Wallet
+                              <TooltipProvider delayDuration={10}>
+                                <Tooltip>
+                                  <TooltipTrigger className="ml-1">
+                                    {' '}
+                                    <HelpCircle />
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" align="center">
+                                    <p className="px-3 py-1.5 max-w-[240px] cursor-default whitespace-normal text-sm">
+                                      An embedded wallet is automatically created for you if you do
+                                      not have a wallet during login. You can also create an
+                                      embedded wallet if you use an external wallet.
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex justify-between gap-4 text-lg">
+                                <p className="text-left">Create wallet</p>
+
+                                {embeddedWallet && (
+                                  <p className="text-right text-zinc-500 dark:text-zinc-400">
+                                    {' '}
+                                    You already have one{' '}
                                   </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="flex flex-col gap-2">
-                            <div className="flex justify-between gap-4 text-xl">
-                              <p className="text-left">Create embedded wallet</p>
+                                )}
+                                {!embeddedWallet && (
+                                  <Button
+                                    variant="primary"
+                                    className="w-24 h-8 rounded-xl px-4 text-lg"
+                                    disabled={
+                                      !(ready && authenticated) || Boolean(embeddedWalletAddress)
+                                    }
+                                    onClick={createWallet}
+                                  >
+                                    Create
+                                  </Button>
+                                )}
+                              </div>
 
-                              {embeddedWallet && (
-                                <p className="text-right text-zinc-500 dark:text-zinc-400">
-                                  {' '}
-                                  You already have one{' '}
+                              <div className="flex justify-between gap-4 text-lg">
+                                <p className="text-left">Set password</p>
+                                <p className="text-right">
+                                  {!embeddedWallet && (
+                                    <p className="text-right text-zinc-500 dark:text-zinc-400">
+                                      {' '}
+                                      No embedded wallet{' '}
+                                    </p>
+                                  )}
+                                  {embeddedWallet && (
+                                    <Button
+                                      variant="primary"
+                                      className="w-24 h-8 rounded-xl px-4 text-lg"
+                                      disabled={!(ready && authenticated)}
+                                      onClick={setPasswordHandler}
+                                    >
+                                      Set
+                                    </Button>
+                                  )}
                                 </p>
-                              )}
-                              {!embeddedWallet && (
-                                <Button
-                                  variant="primary"
-                                  className="w-24 h-8 rounded-xl px-4 border border-black text-lg"
-                                  disabled={
-                                    !(ready && authenticated) || Boolean(embeddedWalletAddress)
-                                  }
-                                  onClick={createWallet}
-                                >
-                                  Create
-                                </Button>
-                              )}
-                            </div>
+                              </div>
 
-                            <div className="flex justify-between gap-4 text-xl">
-                              <p className="text-left">Set wallet password</p>
-                              <p className="text-right">
-                                {!embeddedWallet && (
-                                  <p className="text-right text-zinc-500 dark:text-zinc-400">
-                                    {' '}
-                                    No embedded wallet{' '}
-                                  </p>
-                                )}
-                                {embeddedWallet && (
-                                  <Button
-                                    variant="primary"
-                                    className="w-24 h-8 rounded-xl px-4 border border-black text-lg"
-                                    disabled={!(ready && authenticated)}
-                                    onClick={setPasswordHandler}
-                                  >
-                                    Set
-                                  </Button>
-                                )}
-                              </p>
+                              <div className="flex justify-between gap-4 text-lg">
+                                <p className="text-left">Export key</p>
+                                <p className="text-right">
+                                  {!embeddedWallet && (
+                                    <p className="text-right text-zinc-500 dark:text-zinc-400">
+                                      {' '}
+                                      No embedded wallet{' '}
+                                    </p>
+                                  )}
+                                  {embeddedWallet && (
+                                    <Button
+                                      variant="primary"
+                                      className="w-24 h-8 rounded-xl px-4 text-lg"
+                                      disabled={!(ready && authenticated)}
+                                      onClick={exportKeyHandler}
+                                    >
+                                      Export
+                                    </Button>
+                                  )}
+                                </p>
+                              </div>
                             </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
 
-                            <div className="flex justify-between gap-4 text-xl">
-                              <p className="text-left">Export wallet key</p>
-                              <p className="text-right">
-                                {!embeddedWallet && (
-                                  <p className="text-right text-zinc-500 dark:text-zinc-400">
-                                    {' '}
-                                    No embedded wallet{' '}
-                                  </p>
-                                )}
-                                {embeddedWallet && (
-                                  <Button
-                                    variant="primary"
-                                    className="w-24 h-8 rounded-xl px-4 border border-black text-lg"
-                                    disabled={!(ready && authenticated)}
-                                    onClick={exportKeyHandler}
-                                  >
-                                    Export
-                                  </Button>
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-
-                    <div className="flex flex-col gap-4 justify-center items-center my-4">
-                      {authenticated ? (
-                        <>
+                      <div className="flex flex-col gap-4 justify-center items-center my-4">
+                        {authenticated ? (
+                          <>
+                            <Button
+                              onClick={logout}
+                              variant="secondary"
+                              className="w-48 h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+                            >
+                              Log Out
+                            </Button>
+                          </>
+                        ) : (
                           <Button
-                            onClick={logout}
+                            onClick={login}
                             variant="secondary"
                             className="w-48 h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
                           >
-                            Log Out
+                            Log In
                           </Button>
-                        </>
-                      ) : (
-                        <Button
-                          onClick={login}
-                          variant="secondary"
-                          className="w-48 h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
-                        >
-                          Log In
-                        </Button>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

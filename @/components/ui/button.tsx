@@ -21,33 +21,45 @@ const buttonVariants = cva(
         link: 'text-gray-600 dark:text-gray-200 bg-transparent active:underline hover:underline underline-offset-4',
 
         /*-------------------- GAME TAB ---------------------*/
+        // enter and exit - purple
         // fixed bg. dark mode
         enter:
           'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 border-2 border-transparent hover:border-purple-300',
 
-        // fixed bg. light and dark mode
+        // fixed bg. light and dark mode. opposite of enter
         exit: 'text-purple-900 dark:text-purple-100 hover:text-white bg-transparent hover:bg-purple-600 active:bg-purple-500 border-2 border-purple-900 dark:border-purple-100',
-        // fixed bg. light and dark mode
-        checkOut:
-          'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
 
         // fixed bg. light mode
         submit:
           'text-white bg-green-600 hover:bg-green-800 active:bg-green-700 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
+
         // fixed bg. light mode
         splitPot:
           'text-white bg-pink-500 hover:bg-pink-600 active:bg-pink-500 border-2 border-pink-800 hover:border-pink-300 active:bg-pink-600',
+
+        // checkin and checkout - sky
         // fixed bg. light mode
         checkIn:
           'text-white bg-sky-600 hover:bg-sky-800 active:bg-sky-700 border-2 border-sky-800 hover:border-sky-300',
 
+        // fixed bg. opposite but lighter tone than checkIn
+        checkOut:
+          'text-sky-600 dark:text-sky-100 hover:text-white bg-transparent hover:bg-sky-400 active:bg-sky-500 border-2 border-sky-600 dark:border-sky-100',
+
         // gradient bg. 1 mode.
         wager:
-          'rounded-full text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700 border-4 border-orange-800 hover:border-orange-300',
+          'rounded-full text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700 border-2 border-orange-800 hover:border-orange-300',
 
-        // gradient bg.
+        // fixed bg. light and dark mode
+        // checkOutv2:
+        //   'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
+
+        // fixed bg. light and dark mode
+        primary:
+          'text-white bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+
         secondary:
-          'text-blue-950 dark:text-white hover:text-white bg-transparent hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 border border-blue-950 dark:border-white',
+          'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-500 active:bg-indigo-500 border border-indigo-800 hover:border-indigo-300',
 
         // claim:
         //   'text-indigo-800 dark:hover:text-white  border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800',
@@ -65,7 +77,13 @@ const buttonVariants = cva(
           'text-rose-800 border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500',
         // 'text-red-800 dark:text-red-300  border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500   ',
 
-        primary: 'text-white border bg-blue-800 hover:bg-blue-700',
+        // wallet:
+        //   'text-black hover:text-white bg-white hover:bg-blue-400 active-bg-blue-600 border border-blue-950',
+
+        // primary: 'text-white bg-indigo-500 hover:bg-indigo-600',
+        // gradient bg.
+        // connect:
+        //   'text-blue-950 dark:text-white hover:text-white bg-transparent hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 border border-blue-950 dark:border-white',
       },
       size: {
         default: 'h-10 px-4 py-2',

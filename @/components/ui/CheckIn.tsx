@@ -215,7 +215,7 @@ function CheckIn() {
                 <span className="font-headline">Day</span> Action
               </div> */}
             </DialogTitle>
-            <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
+            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
               <div className="w-[85%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
@@ -270,10 +270,10 @@ function CheckIn() {
                   How long would you be staying?
                 </div>
 
-                <div className="w-[280px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                   <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
                     <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                      <p className="text-left">$LAST in wallet</p>
+                      <p className="text-left">$LAST held</p>
                       <p className="text-right">
                         {' '}
                         {formatNumber(tokenBalance, {

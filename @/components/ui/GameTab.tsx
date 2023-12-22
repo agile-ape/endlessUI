@@ -170,6 +170,7 @@ const GameTab = () => {
                       Your Player
                     </div> */}
                     <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
+                    {/* <BuyTicket /> */}
                     <ExitGame />
                   </div>
                 )}
