@@ -12,6 +12,20 @@ import Inspect from './Attack'
 import KickOut from './KickOut'
 import Wager from './Wager'
 
+import Modal from './Modal'
+
+import SubmitNewKeywordModal from './Submit'
+import { SubmitActive } from './Submit'
+
+import CheckInNew from './CheckInNew'
+import { CheckInActive } from './CheckInNew'
+
+import CheckOutNew from './CheckOutNew'
+import { CheckOutActive } from './CheckOutNew'
+
+import SplitPotNew from './SplitPotNew'
+import { SplitPotActive } from './SplitPotNew'
+
 import { Send, Home } from 'lucide-react'
 import OnSignal from './OnSignal'
 import Image from 'next/image'
@@ -28,32 +42,30 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { io } from 'socket.io-client'
 
 const UserActions = () => {
-  const [showModal, setShowModal] = React.useState<boolean>(false)
-  const toggle = () => setShowModal((prevState) => !prevState)
-  const phase = useStoreState((state) => state.phase)
-  const ownedTicket = useStoreState((state) => state.ownedTicket)
+  // const [showModal, setShowModal] = React.useState<boolean>(false)
+  // const toggle = () => setShowModal((prevState) => !prevState)
 
-  // Address read
-  // const { address, isConnected } = useAccount()
+  const submitActive = SubmitActive()
+  const [showSubmitModal, setShowSubmitModal] = React.useState<boolean>(false)
+  const toggleSubmit = () => setShowSubmitModal((prevState) => !prevState)
 
-  // const { data: playerTicket, refetch } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'playerTicket',
-  //   args: [address as `0x${string}`],
-  //   cacheTime: 3_000,
-  // })
+  const checkInActive = CheckInActive()
+  const [showCheckInModal, setShowCheckInModal] = React.useState<boolean>(false)
+  const toggleCheckIn = () => setShowCheckInModal((prevState) => !prevState)
 
-  // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
-  // let ticketIsInPlay = Boolean(playerTicket?.[5] || 0)
+  const checkOutActive = CheckOutActive()
+  const [showCheckOutModal, setShowCheckOutModal] = React.useState<boolean>(false)
+  const toggleCheckOut = () => setShowCheckOutModal((prevState) => !prevState)
 
-  const ticketStatus = ownedTicket?.status || 0
-  const ticketIsInPlay = ownedTicket?.isInPlay || false
+  const splitActive = SplitPotActive()
+  const [showSplitModal, setShowSplitModal] = React.useState<boolean>(false)
+  const toggleSplit = () => setShowSplitModal((prevState) => !prevState)
 
-  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
-  // const ticketStatusString = 'safe'
-
-  // Active condition
-  const submitActive = phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
+  /* Once refactored
+  const wagerActive = WagerActive()
+  const [showWagerModal, setWagerModal] = React.useState<boolean>(false)
+  const toggleWager = () => setShowWagerModal((prevState) => !prevState)
+  */
 
   return (
     <div>
@@ -65,11 +77,43 @@ const UserActions = () => {
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Only players
         </div>
-        <Button variant="submit" className="w-full text-2xl flex justify-start" onClick={toggle}>
+        <Button
+          variant="submit"
+          className="w-full text-2xl flex justify-start"
+          onClick={toggleSubmit}
+        >
           <OnSignal active={submitActive} own={true} />
           Submit Keyword
         </Button>
 
+        <Button
+          variant="checkIn"
+          className="w-full text-xl flex justify-start"
+          onClick={toggleCheckIn}
+        >
+          <OnSignal active={checkInActive} own={true} />
+          Check In
+        </Button>
+
+        <Button
+          variant="checkOut"
+          className="w-full text-2xl flex justify-start"
+          onClick={toggleCheckOut}
+        >
+          <OnSignal active={checkOutActive} own={true} />
+          Check Out
+        </Button>
+
+        <Button
+          variant="splitPot"
+          className="w-full text-2xl flex justify-start"
+          onClick={toggleSplit}
+        >
+          <OnSignal active={splitActive} own={true} />
+          Split Pot
+        </Button>
+        {/* Once refactored
+         */}
         <CheckIn />
         <CheckOut />
         <SplitIt />
@@ -83,10 +127,28 @@ const UserActions = () => {
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           All
         </div>
+
+        {/* Once refactored 
+        <Button
+          variant="wager"
+          className="w-full text-2xl flex justify-start"
+          onClick={toggleWager}
+        >
+          <OnSignal active={wagerActive} own={true} />
+          Ending?
+        </Button>
+        */}
+
         <Wager />
       </div>
 
-      {showModal && <SubmitKeywordModal toggle={toggle} active={submitActive} playerTicket={''} />}
+      {showSubmitModal && <Modal action={'submit'} toggle={toggleSubmit} />}
+      {showCheckInModal && <Modal action={'checkIn'} toggle={toggleCheckIn} />}
+      {showCheckOutModal && <Modal action={'checkOut'} toggle={toggleCheckOut} />}
+      {showSplitModal && <Modal action={'splitIt'} toggle={toggleSplit} />}
+      {/* Once refactored 
+      {showWagerModal && <Modal action={'wager'} toggle={toggleWager} />}
+        */}
     </div>
   )
 }

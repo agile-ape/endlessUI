@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import localFont from 'next/font/local'
-import { useWindowSize } from '../../../hooks/useWindowSize'
 import Round from '../ui/Round'
 import Countdown from '../ui/Countdown'
 import Indicator from '../ui/Indicator'
@@ -25,20 +24,19 @@ const headlineFont = localFont({
   // fallback: ['sans-serif'],
 })
 export default function Logo() {
-  const [buttonText, setButtonText] = useState('last')
-  const { xs } = useWindowSize()
+  // const [buttonText, setButtonText] = useState('last')
 
-  const handleHover = () => {
-    setButtonText('man')
-  }
+  // const handleHover = () => {
+  //   setButtonText('man')
+  // }
 
-  const handleLeave = () => {
-    setButtonText('last')
-  }
+  // const handleLeave = () => {
+  //   setButtonText('last')
+  // }
 
   return (
     <>
-      {xs && (
+      {/* {xs && (
         <DropdownMenu>
           <DropdownMenuTrigger>
             <div className="flex flex-col justify-center items-center relative">
@@ -65,24 +63,31 @@ export default function Logo() {
             <Indicator />
           </DropdownMenuContent>
         </DropdownMenu>
-      )}
+      )} */}
 
-      {!xs && (
-        <Link className="cursor-pointer" href="/">
-          <button
-            onClick={() => console.log('last')}
-            onMouseOver={handleHover}
-            onMouseLeave={handleLeave}
-            className="h-12 w-18 rounded-md 
+      <div
+        className="sm:hidden rounded-md 
+            px-2 text-[26px] font-headline
+            text-white bg-red-800 capitalized
+          "
+      >
+        last
+      </div>
+
+      <Link className="cursor-pointer hidden sm:block" href="/">
+        <div
+          // onClick={() => console.log('last')}
+          // onMouseOver={handleHover}
+          // onMouseLeave={handleLeave}
+          className="h-12 w-18 rounded-md 
               px-2 py-0 text-[34px] font-headline
-              text-white bg-red-800 hover:text-[37px]
+              text-white bg-red-800 hover:bg-red-700
               transition-colors capitalized
             "
-          >
-            {buttonText}
-          </button>
-        </Link>
-      )}
+        >
+          last
+        </div>
+      </Link>
     </>
   )
 }

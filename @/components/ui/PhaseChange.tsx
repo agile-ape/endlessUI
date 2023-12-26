@@ -24,6 +24,7 @@ import OnSignal from './OnSignal'
 //   phaseType: IApp['phase']
 // }
 import { DOCS_URL_phases } from '../../../services/constant'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 const mappedFunction: Record<string, string> = {
   start: 'changeStartToDay',
@@ -46,6 +47,7 @@ const bgColorPhase: Record<string, string> = {
 const PhaseChange = () => {
   const phase = useStoreState((state) => state.phase)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const { xs } = useWindowSize()
 
   const { address, isConnected } = useAccount()
 
@@ -100,7 +102,7 @@ const PhaseChange = () => {
         <Button
           onClick={() => setIsModalOpen(true)}
           variant="default"
-          className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+          className={cn(xs ? 'text-sm h-8 px-2' : 'text-lg h-10 px-3', bgColorPhase[phase])}
         >
           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
           <OnSignal active={phaseChangeActive} own={true} />

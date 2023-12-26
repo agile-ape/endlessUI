@@ -58,6 +58,9 @@ const buttonVariants = cva(
         primary:
           'text-white bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
 
+        wallet:
+          'text-white bg-violet-700 hover:bg-violet-600 active:bg-violet-600 border border-transparent hover:border-violet-300',
+
         secondary:
           'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-500 active:bg-indigo-500 border border-indigo-800 hover:border-indigo-300',
 
@@ -66,7 +69,7 @@ const buttonVariants = cva(
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size
         filter:
-          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800',
+          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800',
 
         // does not uses size
         attack:

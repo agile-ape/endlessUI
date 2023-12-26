@@ -11,6 +11,7 @@ import { Sword } from 'lucide-react'
 import Attack from './Attack'
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 type TicketUIType = {
   ownTicket: boolean
@@ -54,6 +55,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const playerTickets = useStoreState((state) => state.tickets)
   const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
+  // const { xs } = useWindowSize()
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -61,6 +63,10 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
 
   const handleOnMouseLeave: MouseEventHandler = () => {
     setIsOverlayInspect(false)
+  }
+
+  const toggleOverlayInspect = () => {
+    setIsOverlayInspect(!isOverlayInspect)
   }
 
   const { address } = useAccount()
@@ -453,6 +459,11 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
       }}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
+      onClick={() => {
+        if (window.innerWidth < 640) {
+          toggleOverlayInspect()
+        }
+      }}
     >
       {/* overlay */}
       {isOverlayInspect && (

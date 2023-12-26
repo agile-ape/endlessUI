@@ -9,7 +9,11 @@ import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Token from './ui/Token'
+import Indicator from './ui/Indicator'
 import Dashboard from './ui/Dashboard'
+import DashboardNew from './ui/DashboardNew'
+import Modal from '../components/ui/Modal'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +44,9 @@ function Header() {
   const router = useRouter()
   const { ready, authenticated, user, createWallet } = usePrivy()
   const { xs } = useWindowSize()
+
+  const [showDashboardModal, setShowDashboardModal] = React.useState<boolean>(false)
+  const toggleDashboard = () => setShowDashboardModal((prevState) => !prevState)
 
   // const { wallets } = useWallets()
   // const wallet = wallets.find((wallet) => wallet.address === address)
@@ -79,56 +86,55 @@ function Header() {
   }
 
   return (
-    <div className="sm:grid sm:grid-cols-2 gap-2 items-center py-3">
-      <div
-        className="flex flex-col items-center justify-center order-1  
-      sm:flew-row sm:flex-row sm:justify-start"
-      >
-        <Logo />
-      </div>
+    <>
+      {/* 
+      <div className="sm:hidden fixed bottom-0 w-full h-14 container-last border-l-0 border-r-0 border-b-0 bg-opacity-100 dark:bg-opacity-100 px-2 pt-1">
+        <div className="grid grid-cols-5 gap-4">
+          <div className="flex flex-col justify-center items-center">
+            <Link href="/">
+              <User size={24} />
+              <div className="">You</div>
+            </Link>
+          </div>
 
-      {xs && (
-        <div className="fixed bottom-0 w-full container-last bg-opacity-100 dark:bg-opacity-100 px-2 pt-1">
-          <div className="grid grid-cols-5 gap-4">
-            <div className="flex flex-col justify-center items-center">
-              <Link href="/">
-                <User size={24} />
-                <div className="">You</div>
-              </Link>
-            </div>
+          <div className="flex flex-col justify-center items-center">
+            <Move size={24} />
+            <div className="">Actions</div>
+          </div>
 
-            <div className="flex flex-col justify-center items-center">
-              <Move size={24} />
-              <div className="">Actions</div>
-            </div>
+          <div className="flex flex-col justify-center items-center">
+            <Clock size={24} />
+            <div className="">Events</div>
+          </div>
 
-            <div className="flex flex-col justify-center items-center">
-              <Clock size={24} />
-              <div className="">Events</div>
-            </div>
+          <div className="flex flex-col justify-center items-center">
+            <Users size={24} />
+            <div className="">List</div>
+          </div>
 
-            <div className="flex flex-col justify-center items-center">
-              <Users size={24} />
-              <div className="">List</div>
-            </div>
-
-            <div className="flex flex-col justify-center items-center">
-              <Menu size={24} />
-              <div className="">Menu</div>
-            </div>
+          <div className="flex flex-col justify-center items-center">
+            <Menu size={24} />
+            <div className="">Menu</div>
           </div>
         </div>
-      )}
-
-      {!xs && (
-        <div className="flex justify-self-end gap-3 order-3">
-          <div className="flex justify-self-end xl:hidden order-4">
-            <SideMenu />
+      </div>
+    */}
+      <div className="hidden sm:block">
+        <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
+          <div className="flex justify-start order-1">
+            <Link className="cursor-pointer" href="/">
+              <Logo />
+            </Link>
           </div>
-          <div className={`hidden xl:flex items-center space-x-4`}>
-            {/* custom styling */}
-            {/* border border-white/40 rounded-md */}
-            {/* <Link
+
+          <div className="flex justify-self-end gap-3 order-3">
+            <div className="flex justify-self-end xl:hidden order-4">
+              <SideMenu />
+            </div>
+            <div className={`hidden xl:flex items-center space-x-4`}>
+              {/* custom styling */}
+              {/* border border-white/40 rounded-md */}
+              {/* <Link
             className={cn(
               `px-2 text-xl text-zinc-700 dark:text-zinc-200 hover:underline hover:text-neutral-900 dark:hover:text-zinc-50 py-1 px-3 mx-2 flex items-center`,
               isActive('/quickstart') && 'underline', //example of active class link
@@ -137,43 +143,60 @@ function Header() {
               >
               Quickstart
             </Link> */}
-            <a href={DOCS_URL} target="_blank">
-              <Button variant="link" className={`px-2 text-lg`} size="sm">
-                Docs
-                {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
-              </Button>
-            </a>
-            <a href={TWITTER_URL} target="_blank">
-              <Button variant="link" className={`px-2 text-lg`} size="sm">
-                Follow
-                {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
-              </Button>
-            </a>
-            <a href={TELEGRAM_URL} target="_blank">
-              <Button variant="link" className={`px-2 text-lg`} size="sm">
-                Community
-                {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
-              </Button>
-            </a>
-            <a href={BLOG_URL} target="_blank">
-              <Button variant="link" className={`px-2 text-lg`} size="sm">
-                Blog
-                {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
-              </Button>
-            </a>
-            <div className="ml-2">
-              <Admin />
+              <a href={DOCS_URL} target="_blank">
+                <Button variant="link" className={`px-2 text-lg`} size="sm">
+                  Docs
+                  {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
+                </Button>
+              </a>
+              <a href={TWITTER_URL} target="_blank">
+                <Button variant="link" className={`px-2 text-lg`} size="sm">
+                  Follow
+                  {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
+                </Button>
+              </a>
+              <a href={TELEGRAM_URL} target="_blank">
+                <Button variant="link" className={`px-2 text-lg`} size="sm">
+                  Community
+                  {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
+                </Button>
+              </a>
+              <a href={BLOG_URL} target="_blank">
+                <Button variant="link" className={`px-2 text-lg`} size="sm">
+                  Blog
+                  {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
+                </Button>
+              </a>
+              <div className="ml-2">
+                <Admin />
+              </div>
+              {authenticated && (
+                <>
+                  <Token />
+                  {/* <Dashboard /> */}
+
+                  <button onClick={toggleDashboard}>
+                    <div className="flex items-center justify-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+                      <Image
+                        priority
+                        src="/faces/stare.png"
+                        height={25}
+                        width={25}
+                        alt="player-dashboard"
+                        className="shrink-0 mr-1"
+                      />
+                    </div>
+                  </button>
+                  {/* <DashboardNew /> */}
+                </>
+              )}
             </div>
-            {authenticated && (
-              <>
-                <Token />
-                <Dashboard />
-              </>
-            )}
           </div>
         </div>
-      )}
-    </div>
+      </div>
+      {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
+    </>
+    // </div>
   )
 }
 

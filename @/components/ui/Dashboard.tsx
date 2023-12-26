@@ -29,7 +29,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import Image from 'next/image'
-import { Split, AlertTriangle, ExternalLink, HelpCircle, User } from 'lucide-react'
+import { Split, AlertTriangle, ExternalLink, HelpCircle, User, Copy } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
@@ -163,7 +163,7 @@ function Dashboard() {
   return (
     <Dialog>
       <DialogTrigger asChild className="shrink-0">
-        <div className="flex items-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+        <div className="flex items-center justify-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
           <Image
             priority
             src="/faces/stare.png"
@@ -195,26 +195,31 @@ function Dashboard() {
                         alt="enter-into-the-pepe"
                       />
                     </div>
+                    <div className="flex text-lg justify-between gap-4 text-lg">
+                      <p className="text-left">Wallet:</p>
+                      <p className="text-right flex justify-center items-center gap-2">
+                        <span>
+                          <a
+                            href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`}
+                            target="_blank"
+                          >
+                            {ensName ? ensName : String(activeWallet?.address)}
+                          </a>
+                        </span>
+                        <span>
+                          <Copy size={18} />
+                        </span>
+                      </p>
+                    </div>
                     <div className="">
                       <Accordion type="multiple">
                         <AccordionItem value="item-1">
                           <AccordionTrigger>
-                            <div className="flex text-lg justify-between gap-4 text-lg">
-                              <p className="text-left">Wallet:</p>
-                              <p className="text-right">
-                                <a
-                                  href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`}
-                                  target="_blank"
-                                >
-                                  {ensName ? ensName : formatAddress(String(activeWallet?.address))}
-                                </a>
-                              </p>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="gap-1">
                             <div className="text-xl text-center text-zinc-500 dark:text-zinc-400">
                               Select Wallet
                             </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="gap-1">
                             <ul className="flex flex-col lg:flex-row gap-2 justify-center items-center">
                               {wallets.map((wallet) => (
                                 <li key={wallet.address}>
@@ -252,7 +257,7 @@ function Dashboard() {
                       </Accordion>
 
                       <div className="flex text-lg justify-between gap-4 text-lg">
-                        <p className="text-left">Chain</p>
+                        <p className="text-left">Current Chain</p>
                         <p className="text-right">{wallet?.chainId}</p>
                       </div>
 

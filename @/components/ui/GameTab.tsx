@@ -201,8 +201,9 @@ const GameTab = () => {
                 )}
               </>
             )}
-
-            {/* <UserActions /> */}
+            <div className="hidden sm:flex">
+              <UserActions />
+            </div>
           </>
         </TabsContent>
         <TabsContent value="game" className="hidden sm:flex">

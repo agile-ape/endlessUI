@@ -56,12 +56,12 @@ const GameFeed = () => {
   }, [])
 
   return (
-    <div className="overflow-auto max-h-[70vh] container-last rounded-xl px-5">
+    <div className="overflow-auto max-h-screen sm:max-h-[70vh] sm:container-last border-none sm:border-2 rounded-xl sm:mx-0 px-5">
       {feeds?.map((item, index) => (
         <div
           key={item.block_number}
           className="flex flex-col justify-between py-1 tracking-wide
-      text-black dark:text-white border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300"
+      border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300"
         >
           <div className="text-left text-md leading-5">{replacePlaceholders(item.message)}</div>
           <div className="text-xs text-right whitespace-nowrap text-neutral-600 dark:text-neutral-300">

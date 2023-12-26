@@ -225,9 +225,9 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
 
   return (
     <Dialog open={modalState.isOpen}>
-      <DialogContent className="bg-white dark:bg-white p-0 md:w-[20rem] w-[90%] rounded-3xl">
+      <DialogContent className="bg-white dark:bg-white rounded-lg p-0 w-[75%] md:w-[20rem]">
         <div
-          className="rounded-lg h-full w-full shadow-xl"
+          className="rounded-lg shadow-xl"
           style={{
             backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
             backgroundRepeat: 'no-repeat',
@@ -236,7 +236,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
         >
           <div className="rounded-t-sm">
             <div className="flex flex-col justify-center gap-1 items-center pt-5">
-              <p className="w-[90%] text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
+              <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-lg sm:text-2xl font-whitrabt font-semibold">
                 {title}
               </p>
               <Image
@@ -249,13 +249,13 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
             </div>
           </div>
 
-          <div className="flex flex-col w-[70%] px-4 md:w-[18rem] mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
-            <div className="text-black text-xl my-2">{message}</div>
+          <div className="w-[90%] flex flex-col px-4 mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
+            <div className="text-black text-base sm:text-xl my-2">{message}</div>
             <div className="flex justify-center mb-4">
               <div className="flex justify-center w-full" onClick={closeModal}>
                 <Button
                   variant="primary"
-                  className="w-[100%] px-10 py-2 w-full rounded-full mx-auto text-xl"
+                  className="w-[100%] px-10 py-2 rounded-full mx-auto text-xl"
                 >
                   Continue
                 </Button>

@@ -2,10 +2,13 @@ import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { DOCS_URL_phases } from '../../../services/constant'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 // { phase }: { phase: string }
 export default function Indicator() {
   const phase = useStoreState((state) => state.phase)
+  const { xs } = useWindowSize()
+
   const indicator = `${phase}Indicator.svg`
 
   return (
@@ -21,7 +24,7 @@ export default function Indicator() {
                   priority
                   src={`/indicator/${indicator}`}
                   height={300}
-                  width={100}
+                  width={xs ? 75 : 100}
                   className="h-auto"
                   alt={`${indicator}`}
                 />

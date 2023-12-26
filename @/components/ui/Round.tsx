@@ -42,15 +42,15 @@ const Round = () => {
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
-        <TooltipTrigger className="flex flex-col items-center lg:items-end lg:gap-8 lg:flex-row">
-          <p
+        <TooltipTrigger className="flex justify-between px-5 mx-2 sm:mx-0 sm:px-0 sm:justify-start sm:flex-col items-center lg:items-end lg:gap-4 lg:flex-row">
+          <div
             className={cn(
               'text-xl sm:text-2xl whitespace-nowrap',
               round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
             )}
           >
             Round <span className="round-last">{round}</span>
-          </p>
+          </div>
 
           <div
             className={cn(

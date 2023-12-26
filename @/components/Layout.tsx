@@ -23,6 +23,8 @@ import { toast } from '../components/ui/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
+import { usePrivyWagmi } from '@privy-io/wagmi-connector'
+import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Default',
@@ -70,7 +72,12 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   }
 
   const router = useRouter()
+  // const { wallet: activeWallet } = usePrivyWagmi()
+  const { authenticated } = usePrivy()
   const { address, isConnected } = useAccount()
+
+  // console.log(activeWallet)
+  console.log(address)
 
   const {
     data: ticketsData,
@@ -337,8 +344,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
             {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
             <Header />
             {children}
-
-            {/* <CompletionModal alertLookTest="afterPurchase" /> */}
+            <CompletionModal alertLookTest="afterPurchase" />
           </div>
         </main>
       )}
@@ -354,7 +360,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
             {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
             <Header />
             {children}
-            {/* <CompletionModal alertLookTest="afterPurchase" /> */}
+            <CompletionModal alertLookTest="afterPurchase" />
           </div>
         </main>
       )}

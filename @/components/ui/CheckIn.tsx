@@ -154,6 +154,7 @@ function CheckIn() {
         args: [BigInt(amountTicket)],
       })
       const hash = tx.hash
+      console.log(hash)
 
       setIsModalOpen(false)
 
