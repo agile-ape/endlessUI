@@ -1,6 +1,6 @@
+import React, { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from './button'
 import TicketUI from './TicketUI'
@@ -27,9 +27,18 @@ import {
 import { toast } from './use-toast'
 import BuyTicket from './BuyTicket'
 import ExitGame from './ExitGame'
+
+import Modal from './Modal'
+
+import BuyTicketNew from './BuyTicketNew'
+import { BuyTicketActive } from './BuyTicketNew'
+import ExitGameNew from './ExitGameNew'
+import { ExitGameActive } from './ExitGameNew'
+import OnSignal from './OnSignal'
+
 import CustomConnectButton from './connect-button'
 import type { Ticket } from 'types/app'
-import { fetcher, transformPlayerTicket } from '@/lib/utils'
+import { fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
 import useSWR from 'swr'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 
@@ -39,6 +48,14 @@ const GameTab = () => {
   const phase = useStoreState((state) => state.phase)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   const { xs } = useWindowSize()
+
+  const buyActive = BuyTicketActive()
+  const [showBuyModal, setShowBuyModal] = React.useState<boolean>(false)
+  const toggleBuy = () => setShowBuyModal((prevState) => !prevState)
+
+  const exitActive = ExitGameActive()
+  const [showExitModal, setShowExitModal] = React.useState<boolean>(false)
+  const toggleExit = () => setShowExitModal((prevState) => !prevState)
 
   const { address, isConnected } = useAccount()
 
@@ -67,6 +84,9 @@ const GameTab = () => {
   }
 
   const id = ticket?.id || 0
+
+  let ticketStatus = ownedTicket?.status || 0
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   useEffect(() => {
     if (isConnected) {
@@ -97,108 +117,41 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {/* {!isConnected && (
-              <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
-                <div className="">Never hide. Join us</div>
-                <Image
-                  priority
-                  src="/faces/hide.png"
-                  className="place-self-center"
-                  height={150}
-                  width={110}
-                  alt="pepe-hiding"
-                />
-                <div className="flex mt-4 justify-center">
-                  <CustomConnectButton />
-                </div>
-              </div>
-            )} */}
-
             {isConnected && (
               <>
-                {/* deployed phase. buying hasn't started */}
-                {id === 0 && phase === 'deployed' && (
-                  <div className="mb-2">
-                    {/* <div className="text-2xl text-center py-2 leading-7 capitalize">
-                      Buying starting soon
-                    </div> */}
-                    <TicketUI
-                      ownTicket={true}
-                      ticketNumber={id}
-                      ticket={ticket}
-                      // ticketLookInput={'beforePurchase'}
-                    />
-                    <BuyTicket />
-                    {/* <ExitGame /> */}
-                  </div>
-                )}
+                <div className="mb-2">
+                  <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
+                  {id === 0 && (phase === 'deployed' || phase === 'start') && (
+                    <Button
+                      variant="enter"
+                      className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+                      onClick={toggleBuy}
+                    >
+                      <OnSignal active={buyActive} own={true} />
+                      Buy Ticket
+                    </Button>
+                  )}
 
-                {/* start phase. haven't bought ticket */}
-                {id === 0 && phase === 'start' && (
-                  <div className="mb-2">
-                    {/* <div className="text-2xl text-center py-2 leading-7 capitalize">Enter Game</div> */}
-                    <TicketUI
-                      ownTicket={true}
-                      ticketNumber={id}
-                      ticket={ticket}
-                      // ticketLookInput={'beforePurchase'}
-                    />
-                    <BuyTicket />
-                    {/* <ExitGame /> */}
-                  </div>
-                )}
+                  {id !== 0 && (
+                    <Button
+                      variant="exit"
+                      className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+                      onClick={toggleExit}
+                    >
+                      <OnSignal active={exitActive} own={true} />
+                      {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                      {ticketStatusString === 'exited' && <div>You have exited</div>}
+                    </Button>
+                  )}
 
-                {/* start phase. ticket bought */}
-                {id !== 0 && phase === 'start' && (
-                  <div className="mb-2">
-                    {/* <div className="text-2xl text-center py-2 leading-7 capitalize">
-                      Welcome Sire
-                    </div> */}
-                    <TicketUI
-                      ownTicket={true}
-                      ticketNumber={id}
-                      ticket={ticket}
-                      // ticketLookInput={'afterPurchase'}
-                    />
-                    {/* <BuyTicket /> */}
-                    <ExitGame />
-                  </div>
-                )}
-
-                {/* game begins. got ticket */}
-                {id !== 0 && phase !== 'start' && (
-                  <div className="mb-2">
-                    {/* <div className="text-2xl text-center py-2 leading-7 capitalize">
-                      Your Player
-                    </div> */}
-                    <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
-                    {/* <BuyTicket /> */}
-                    <ExitGame />
-                  </div>
-                )}
-
-                {/* game begins. no ticket */}
-                {id === 0 && !(phase === 'start' || phase === 'deployed') && (
-                  // <div className="mb-2 flex justify ">
-                  <div className="flex flex-col gap-2 justify-center text-xl text-center py-2 mb-2 leading-7 capitalize">
-                    {/* <div className="">Want to join us?</div>
-                    <Image
-                      priority
-                      src="/pepe/pepe-lost.svg"
-                      className="place-self-center"
-                      height={150}
-                      width={110}
-                      alt="pepe-in-thoughts"
-                    /> */}
-                    <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
+                  {id === 0 && !(phase === 'start' || phase === 'deployed') && (
                     <div className="text-center text-lg underline">
                       <a href={TWITTER_URL} target="_blank">
                         Follow for updates
                       </a>
                     </div>
-                  </div>
-                  // </div>
-                )}
+                  )}
+                </div>
               </>
             )}
             <div className="hidden sm:flex">
@@ -210,8 +163,10 @@ const GameTab = () => {
           <GameFeed />
         </TabsContent>
       </div>
+
+      {showBuyModal && <Modal action={'buyTicket'} toggle={toggleBuy} />}
+      {showExitModal && <Modal action={'exitGame'} toggle={toggleExit} />}
     </Tabs>
-    // </div>
   )
 }
 

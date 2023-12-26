@@ -35,6 +35,7 @@ function BuyTicket() {
   const phase = useStoreState((state) => state.phase)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
 
   // Address read
   const { address, isConnected } = useAccount()
@@ -47,10 +48,10 @@ function BuyTicket() {
 
   const { data, refetch } = useContractReads({
     contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'nextTicketPrice',
-      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'nextTicketPrice',
+      // },
       {
         ...defaultContractObj,
         functionName: 'increaseInPrice',
@@ -66,15 +67,15 @@ function BuyTicket() {
     ],
   })
 
-  const playerTicket = data?.[0].result || null
-  const nextTicketPrice = data?.[0].result || BigInt(0)
-  const increaseInPrice = data?.[1].result || BigInt(0)
-  const ticketsAvailableAtCurrentPrice = Number(data?.[2].result || BigInt(0))
-  const ticketsCounter = Number(data?.[3].result || BigInt(0))
+  // const playerTicket = data?.[0].result || null
+  // const nextTicketPrice = data?.[0].result || BigInt(0)
+  const increaseInPrice = data?.[0].result || BigInt(0)
+  const ticketsAvailableAtCurrentPrice = Number(data?.[1].result || BigInt(0))
+  const ticketsCounter = Number(data?.[2].result || BigInt(0))
 
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
-  const ticketPrice = formatUnits(nextTicketPrice, 18)
-  const nextPrice = formatUnits(nextTicketPrice + increaseInPrice, 18)
+  const ticketPrice = formatUnits(BigInt(nextTicketPrice), 18)
+  const nextPrice = formatUnits(BigInt(nextTicketPrice) + increaseInPrice, 18)
 
   // Active condition
   const buyTicketActive = phase === 'start' && !ownedTicket

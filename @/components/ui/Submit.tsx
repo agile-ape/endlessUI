@@ -245,49 +245,52 @@ const Submit = () => {
         </a>
       </div>
 
-      {/* Captcha */}
-      <div className="mx-auto flex flex-col justify-center items-center">
-        <div className="m-1 capitalize h2-last">Solve Captcha</div>
+      <div
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+                gap-4 justify-center items-center h3-last
+                "
+      >
+        <div className="m-1 capitalize h2-last">Solve and Submit</div>
+        <div className="mx-auto flex flex-col justify-center items-center">
+          <div className="text-center h3-last">Solve Captcha</div>
 
-        <HCaptcha
-          sitekey={HCAPCTCHA_KEY}
-          onVerify={(token, ekey) => verifyCaptcha(token)}
-          tabIndex={0}
-          size="normal"
-          id={crypto.randomUUID()}
-          // onError={onError}
-          // onExpire={onExpire}
-        />
-      </div>
-
-      {svgKeyword && (
-        <div className="flex justify-center">
-          <Image
-            alt="keyword that will be used to submit"
-            src={encodeSvg(svgKeyword)}
-            height={200}
-            width={300}
+          <HCaptcha
+            sitekey={HCAPCTCHA_KEY}
+            onVerify={(token, ekey) => verifyCaptcha(token)}
+            tabIndex={0}
+            size="normal"
+            id={crypto.randomUUID()}
+            // onError={onError}
+            // onExpire={onExpire}
           />
         </div>
-      )}
 
-      <div className="w-[240px] rounded-xl flex flex-col items-center mx-auto mb-4 py-2">
-        <div className="m-1 capitalize text-center h2-last">
-          {ticketStatusString === 'submitted' && ticketLastSeen === round && (
-            <span>You have already submitted. Submit again?</span>
-          )}
-          {ticketStatusString !== 'submitted' && <span>Submit keyword</span>}
-        </div>
+        {svgKeyword && (
+          <div className="flex justify-center">
+            <Image
+              alt="keyword that will be used to submit"
+              src={encodeSvg(svgKeyword)}
+              height={200}
+              width={300}
+            />
+          </div>
+        )}
+
         <div
-          className="
-                        m-4 mt-0
-                        rounded-xl py-3 px-3
-                        bg-green-700
-                        capitalize text-center text-white
-                        flex flex-col gap-5
-                        "
+          className="w-[220px]
+          m-4 mt-4
+          rounded-xl py-3 px-3
+          bg-green-700
+          capitalize text-center mx-auto text-white
+          flex flex-col gap-5 border border-zinc-400 dark:border-zinc-200 
+          "
         >
-          <p className="text-xl">keyword of the day</p>
+          <div className="text-center text-white h3-last">
+            {ticketStatusString === 'submitted' && ticketLastSeen === round && (
+              <span>You have already submitted. Submit again?</span>
+            )}
+            {ticketStatusString !== 'submitted' && <span>Submit keyword</span>}
+          </div>
 
           <OtpInput
             value={otpInput}

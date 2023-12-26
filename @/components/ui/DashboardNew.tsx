@@ -61,7 +61,6 @@ export default function DashboardNew() {
 
   const { ready, authenticated, user, createWallet, setWalletPassword, exportWallet } = usePrivy()
   const { wallets } = useWallets()
-  console.log(wallets)
 
   const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
 
@@ -138,9 +137,6 @@ export default function DashboardNew() {
     name: ensName,
     chainId: 1,
   })
-
-  console.log(ensName)
-  console.log(ensAvatar)
 
   const { data, refetch } = useContractReads({
     contracts: [

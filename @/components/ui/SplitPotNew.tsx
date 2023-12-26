@@ -263,175 +263,197 @@ export const SplitPotNew = () => {
         </a>
       </div>
       {/* Voting information */}
-      <div className="m-1 capitalize text-center h2-last">Do you want to split pot?</div>
+      <div
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+                gap-4 justify-center items-center h3-last
+                "
+      >
+        <div className="m-1 capitalize text-center h2-last">Do you want to split pot?</div>
 
-      <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-        <div className="">
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Current pot</p>
-            <p className="text-right"> {currentPot} ETH</p>
-          </div>
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left"> Stage 2 starts on</p>
-            <p className="text-right">
-              {' '}
-              Round <span className="round-last">{suddenDeath}</span>
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left"> Stage 3 starts on</p>
-            <p className="text-right">
-              {stage !== 3 && (
-                <>
-                  {' '}
-                  <a href={TWITTER_URL} className="link">
+        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+          <div className="">
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Current pot</p>
+              <p className="text-right"> {currentPot} ETH</p>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left"> Stage 2 starts on</p>
+              <p className="text-right">
+                {' '}
+                Round <span className="round-last">{suddenDeath}</span>
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left"> Stage 3 starts on</p>
+              <p className="text-right">
+                {stage !== 3 && (
+                  <>
                     {' '}
-                    Follow for update
-                  </a>{' '}
-                </>
-              )}
-              {stage === 3 && (
-                <p>
-                  {' '}
-                  Round <span className="round-last">{drainStart}</span>
-                </p>
-              )}
-            </p>
-          </div>
+                    <a href={TWITTER_URL} className="link">
+                      {' '}
+                      Follow for update
+                    </a>{' '}
+                  </>
+                )}
+                {stage === 3 && (
+                  <p>
+                    {' '}
+                    Round <span className="round-last">{drainStart}</span>
+                  </p>
+                )}
+              </p>
+            </div>
 
-          <Accordion type="multiple">
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <div className="h3-last">Stage 2 and 3</div>
-              </AccordionTrigger>
-              <AccordionContent className="gap-1">
-                <div className="grid grid-cols-2 gap-1">
-                  <p className="text-left">Split and get </p>
-                  {stage === 2 ||
-                    (stage === 3 && (
-                      <p className="text-right">
-                        {' '}
-                        {formatNumber(splitAmountPerPlayer, {
-                          maximumFractionDigits: 3,
-                          minimumFractionDigits: 0,
-                        })}{' '}
-                        ETH each
-                      </p>
-                    ))}
-                </div>
-                <div className="grid grid-cols-2 gap-1">
-                  <p className="text-left"> Yes / Threshold</p>
-                  <div className="text-right">
-                    <TooltipProvider delayDuration={10}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          {voteCount} / {thresholdCount}
-                        </TooltipTrigger>
-                        <TooltipContent side="top" align="center">
-                          <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                            {voteThreshold}% of tickets that are in play
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>
-                <div className="h3-last">Stage 3</div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-2 gap-1">
-                  <p className="text-left">Drain per round</p>
-                  <div className="text-right">
-                    <TooltipProvider delayDuration={10}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          {formatNumber(drainAmount, {
-                            maximumFractionDigits: 6,
-                            minimumFractionDigits: 0,
-                          })}{' '}
-                          ETH
-                        </TooltipTrigger>
-                        <TooltipContent side="top" align="center">
-                          <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                            {formatNumber(formatUnits(drainRate, 1), {
-                              maximumFractionDigits: 6,
-                              minimumFractionDigits: 0,
-                            })}
-                            % of{' '}
-                            {formatNumber(potToDrain, {
-                              maximumFractionDigits: 6,
-                              minimumFractionDigits: 0,
-                            })}{' '}
-                            ETH (Stage 3 pot size)
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1">
-                  <p className="text-left">Game ends once pot</p>
-                  <p className="text-right">
-                    <TooltipProvider delayDuration={10}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          {'<'}
-                          {formatNumber(potToEnd, {
-                            maximumFractionDigits: 6,
-                            minimumFractionDigits: 0,
-                          })}{' '}
-                          ETH
-                        </TooltipTrigger>
-                        <TooltipContent side="top" align="center">
-                          <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                            {formatNumber(minPot, {
+            <Accordion type="multiple">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <div className="h3-last">Stage 2 and 3</div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="body-last">
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Split and get </p>
+                      {stage === 2 ||
+                        (stage === 3 && (
+                          <p className="text-right">
+                            {' '}
+                            {formatNumber(splitAmountPerPlayer, {
                               maximumFractionDigits: 3,
                               minimumFractionDigits: 0,
-                            })}
-                            % of{' '}
-                            {formatNumber(potToDrain, {
-                              maximumFractionDigits: 6,
-                              minimumFractionDigits: 0,
                             })}{' '}
-                            ETH (Stage 3 pot size)
+                            ETH each
                           </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-1">
-                  <p className="text-left"> Amount drained (to next game) </p>
-                  {stage === 3 && (
-                    <p className="text-right">
-                      {' '}
-                      {formatNumber(formatUnits(amountDrained, 18), {
-                        maximumFractionDigits: 6,
-                        minimumFractionDigits: 0,
-                      })}{' '}
-                      ETH
-                    </p>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                        ))}
+                    </div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left"> Yes votes</p>
+                      <div className="text-right">
+                        <TooltipProvider delayDuration={10}>
+                          <Tooltip>
+                            <TooltipTrigger>{voteCount}</TooltipTrigger>
+                            <TooltipContent side="top" align="center">
+                              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                {voteThreshold}% of tickets that are in play
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left"> Threshold to hit</p>
+                      <div className="text-right">
+                        <TooltipProvider delayDuration={10}>
+                          <Tooltip>
+                            <TooltipTrigger>{thresholdCount}</TooltipTrigger>
+                            <TooltipContent side="top" align="center">
+                              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                {voteThreshold}% of tickets that are in play
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>
+                  <div className="h3-last">Stage 3</div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="body-last">
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Drain per round</p>
+                      <div className="text-right">
+                        <TooltipProvider delayDuration={10}>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              {formatNumber(drainAmount, {
+                                maximumFractionDigits: 6,
+                                minimumFractionDigits: 0,
+                              })}{' '}
+                              ETH
+                            </TooltipTrigger>
+                            <TooltipContent side="top" align="center">
+                              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                {formatNumber(formatUnits(drainRate, 1), {
+                                  maximumFractionDigits: 6,
+                                  minimumFractionDigits: 0,
+                                })}
+                                % of{' '}
+                                {formatNumber(potToDrain, {
+                                  maximumFractionDigits: 6,
+                                  minimumFractionDigits: 0,
+                                })}{' '}
+                                ETH (Stage 3 pot size)
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </div>
 
-          <div className="h2-last m-1 mt-4 capitalize flex justify-center">Your Vote</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Game ends once pot drops below</p>
+                      <p className="text-right">
+                        <TooltipProvider delayDuration={10}>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              {formatNumber(potToEnd, {
+                                maximumFractionDigits: 6,
+                                minimumFractionDigits: 0,
+                              })}{' '}
+                              ETH
+                            </TooltipTrigger>
+                            <TooltipContent side="top" align="center">
+                              <p className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                                {formatNumber(minPot, {
+                                  maximumFractionDigits: 3,
+                                  minimumFractionDigits: 0,
+                                })}
+                                % of{' '}
+                                {formatNumber(potToDrain, {
+                                  maximumFractionDigits: 6,
+                                  minimumFractionDigits: 0,
+                                })}{' '}
+                                ETH (Stage 3 pot size)
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left"> Amount drained so far (to next game) </p>
+                      {stage === 3 && (
+                        <p className="text-right">
+                          {' '}
+                          {formatNumber(formatUnits(amountDrained, 18), {
+                            maximumFractionDigits: 6,
+                            minimumFractionDigits: 0,
+                          })}{' '}
+                          ETH
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
 
-          <div className="flex justify-center text-2xl gap-4">
-            <span>No</span>
-            {active && <Switch defaultChecked={ticketVote} onCheckedChange={splitHandler} />}
-            {!active && <Switch defaultChecked={ticketVote} disabled />}
+            <div className="h2-last m-1 mt-4 capitalize flex justify-center">Your Vote</div>
 
-            <span>Yes</span>
+            <div className="flex justify-center text-2xl gap-4">
+              <span>No</span>
+              {active && <Switch defaultChecked={ticketVote} onCheckedChange={splitHandler} />}
+              {!active && <Switch defaultChecked={ticketVote} disabled />}
+
+              <span>Yes</span>
+            </div>
+            {!active && <Prompt docLink={DOCS_URL_split} />}
           </div>
-          {!active && <Prompt docLink={DOCS_URL_split} />}
         </div>
       </div>
     </div>

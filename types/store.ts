@@ -9,6 +9,8 @@ interface StoreModel {
   currentPot: IApp['currentPot']
   ticketCount: IApp['ticketCount']
   voteCount: IApp['voteCount']
+  nextTicketPrice: IApp['nextTicketPrice']
+
   tickets: IApp['tickets']
   ownedTicket: Ticket | null
   gameTab: 'ticket' | 'game'
@@ -22,6 +24,8 @@ interface StoreModel {
   updateCurrentPot: Action<StoreModel, number>
   updateTicketCount: Action<StoreModel, number>
   updateVoteCount: Action<StoreModel, number>
+  updateNextTicketPrice: Action<StoreModel, number>
+
   updateTickets: Action<StoreModel, IApp['tickets']>
   modifyTicket: Action<StoreModel, { id: number; ticket: Ticket }>
   updateOwnedTicket: Action<StoreModel, Ticket | null>

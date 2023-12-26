@@ -26,6 +26,9 @@ import { CheckOutActive } from './CheckOutNew'
 import SplitPotNew from './SplitPotNew'
 import { SplitPotActive } from './SplitPotNew'
 
+import WagerNew from './WagerNew'
+import { WagerActive } from './WagerNew'
+
 import { Send, Home } from 'lucide-react'
 import OnSignal from './OnSignal'
 import Image from 'next/image'
@@ -61,11 +64,9 @@ const UserActions = () => {
   const [showSplitModal, setShowSplitModal] = React.useState<boolean>(false)
   const toggleSplit = () => setShowSplitModal((prevState) => !prevState)
 
-  /* Once refactored
-  const wagerActive = WagerActive()
-  const [showWagerModal, setWagerModal] = React.useState<boolean>(false)
+  const { wagerActive, wagerStatus } = WagerActive()
+  const [showWagerModal, setShowWagerModal] = React.useState<boolean>(false)
   const toggleWager = () => setShowWagerModal((prevState) => !prevState)
-  */
 
   return (
     <div>
@@ -79,7 +80,7 @@ const UserActions = () => {
         </div>
         <Button
           variant="submit"
-          className="w-full text-2xl flex justify-start"
+          className="w-full text-xl flex justify-start"
           onClick={toggleSubmit}
         >
           <OnSignal active={submitActive} own={true} />
@@ -97,7 +98,7 @@ const UserActions = () => {
 
         <Button
           variant="checkOut"
-          className="w-full text-2xl flex justify-start"
+          className="w-full text-xl flex justify-start"
           onClick={toggleCheckOut}
         >
           <OnSignal active={checkOutActive} own={true} />
@@ -106,49 +107,34 @@ const UserActions = () => {
 
         <Button
           variant="splitPot"
-          className="w-full text-2xl flex justify-start"
+          className="w-full text-xl flex justify-start"
           onClick={toggleSplit}
         >
           <OnSignal active={splitActive} own={true} />
           Split Pot
         </Button>
-        {/* Once refactored
-         */}
-        <CheckIn />
-        <CheckOut />
-        <SplitIt />
       </div>
 
       <div
         className="w-[240px] rounded-xl p-3 pt-5 pb-5
-    container-last
-    flex flex-col gap-2 mb-5 relative"
+        container-last
+        flex flex-col gap-2 mb-5 relative"
       >
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           All
         </div>
 
-        {/* Once refactored 
-        <Button
-          variant="wager"
-          className="w-full text-2xl flex justify-start"
-          onClick={toggleWager}
-        >
+        <Button variant="wager" className="w-full text-xl flex justify-start" onClick={toggleWager}>
           <OnSignal active={wagerActive} own={true} />
           Ending?
         </Button>
-        */}
-
-        <Wager />
       </div>
 
       {showSubmitModal && <Modal action={'submit'} toggle={toggleSubmit} />}
       {showCheckInModal && <Modal action={'checkIn'} toggle={toggleCheckIn} />}
       {showCheckOutModal && <Modal action={'checkOut'} toggle={toggleCheckOut} />}
       {showSplitModal && <Modal action={'splitIt'} toggle={toggleSplit} />}
-      {/* Once refactored 
       {showWagerModal && <Modal action={'wager'} toggle={toggleWager} />}
-        */}
     </div>
   )
 }

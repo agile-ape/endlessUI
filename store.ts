@@ -11,6 +11,7 @@ export const appStore = createStore<StoreModel>({
   currentPot: 0,
   ticketCount: 0,
   voteCount: 0,
+  nextTicketPrice: 0,
   tickets: [],
   ownedTicket: null,
   gameTab: 'game',
@@ -46,6 +47,10 @@ export const appStore = createStore<StoreModel>({
 
   updateVoteCount: action((state, payload) => {
     state.voteCount = payload
+  }),
+
+  updateNextTicketPrice: action((state, payload) => {
+    state.nextTicketPrice = payload
   }),
 
   updateTickets: action((state, payload) => {

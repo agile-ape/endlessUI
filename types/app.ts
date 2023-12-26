@@ -40,6 +40,7 @@ interface IApp {
   currentPot: number
   ticketCount: number
   voteCount: number
+  nextTicketPrice: number
 
   tickets: Ticket[]
 }

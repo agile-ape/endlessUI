@@ -51,6 +51,8 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
   const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
+  const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
+
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
   const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
@@ -75,9 +77,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   // const { wallet: activeWallet } = usePrivyWagmi()
   const { authenticated } = usePrivy()
   const { address, isConnected } = useAccount()
-
-  // console.log(activeWallet)
-  console.log(address)
 
   const {
     data: ticketsData,
@@ -279,6 +278,10 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'drainSwitch',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'nextTicketPrice',
+      },
     ],
     enabled: isConnected,
   })
@@ -292,6 +295,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const suddenDeath = data[5]?.result || 0
     const drainStart = data[6]?.result || 0
     const drainSwitch = Boolean(data[7]?.result || 0)
+    const nextTicketPrice = data[8]?.result || BigInt(0)
 
     // compute stage
     let stage: number
@@ -313,6 +317,11 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       minimumFractionDigits: 3,
     })
 
+    const nextTicketPriceInEth = formatNumber(formatUnits(nextTicketPrice, 18), {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 3,
+    })
+
     updateRound(Number(round))
     updatePhase(Number(phase))
     updateStage(Number(stage))
@@ -320,6 +329,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     updateCurrentPot(Number(currentPotInEth))
     updateTicketCount(Number(ticketCount))
     updateVoteCount(Number(voteCount))
+    updateNextTicketPrice(Number(nextTicketPriceInEth))
   }
 
   const refreshData = () => {

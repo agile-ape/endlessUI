@@ -172,7 +172,6 @@ function Dashboard() {
             alt="player-dashboard"
             className="shrink-0 mr-1"
           />
-          {/* <User size={28} className="mr-1" /> */}
         </div>
       </DialogTrigger>
 

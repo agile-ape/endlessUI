@@ -147,73 +147,81 @@ const CheckOutNew = () => {
           Learn more
         </a>
       </div>
-      {/* Pay for stay */}
-      <div className="m-1 capitalize text-center h2-last">Is it time to go?</div>
 
-      <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-        <div className="">
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Checked in on</p>
-            {ticketStatusString === 'safe' ? (
-              <p className="text-right round-last">{ticketLastSeen}</p>
-            ) : (
-              <p className="text-right">Not in safehouse</p>
-            )}{' '}
+      <div
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+                gap-4 justify-center items-center h3-last
+                "
+      >
+        <div className="m-1 capitalize text-center h2-last">Is it time to go?</div>
+
+        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+          <div className="">
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Checked in on</p>
+              {ticketStatusString === 'safe' ? (
+                <p className="text-right round-last">{ticketLastSeen}</p>
+              ) : (
+                <p className="text-right">Not in safehouse</p>
+              )}{' '}
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left"> Check out round </p>
+              {ticketStatusString === 'safe' ? (
+                <p className="text-right round-last">{ticketCheckOutRound}</p>
+              ) : (
+                <p className="text-right">Not in safehouse</p>
+              )}{' '}
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Current round</p>
+              <p className="text-right round-last"> {round} </p>
+            </div>
+
+            {ticketStatusString === 'safe' && ticketCheckOutRound > round && (
+              <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
+                .....Chill out.....
+              </p>
+            )}
+
+            {ticketStatusString === 'safe' && ticketCheckOutRound === round && phase === 'day' && (
+              <p className="text-xl text-amber-600 mt-2 text-center">Today is check out day</p>
+            )}
+
+            {ticketStatusString === 'safe' &&
+              ticketCheckOutRound === round &&
+              phase === 'night' && (
+                <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
+              )}
+
+            {ticketStatusString === 'safe' && ticketCheckOutRound <= round && (
+              <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
+            )}
           </div>
-
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left"> Check out round </p>
-            {ticketStatusString === 'safe' ? (
-              <p className="text-right round-last">{ticketCheckOutRound}</p>
-            ) : (
-              <p className="text-right">Not in safehouse</p>
-            )}{' '}
-          </div>
-
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Current round</p>
-            <p className="text-right round-last"> {round} </p>
-          </div>
-
-          {ticketStatusString === 'safe' && ticketCheckOutRound > round && (
-            <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
-              .....Chill out.....
-            </p>
-          )}
-
-          {ticketStatusString === 'safe' && ticketCheckOutRound === round && phase === 'day' && (
-            <p className="text-xl text-amber-600 mt-2 text-center">Today is check out day</p>
-          )}
-
-          {ticketStatusString === 'safe' && ticketCheckOutRound === round && phase === 'night' && (
-            <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
-          )}
-
-          {ticketStatusString === 'safe' && ticketCheckOutRound <= round && (
-            <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
-          )}
         </div>
-      </div>
-      {active && (
-        <Button
-          variant="checkOut"
-          size="lg"
-          className="w-[100%]"
-          onClick={checkOutHandler}
-          isLoading={isLoading}
-        >
-          Check Out
-        </Button>
-      )}
-
-      {!active && (
-        <div className="flex flex-col justify-center items-center">
-          <Button variant="checkOut" size="lg" className="w-[100%]" disabled>
+        {active && (
+          <Button
+            variant="checkOut"
+            size="lg"
+            className="w-[220px] sm:w-[100%]"
+            onClick={checkOutHandler}
+            isLoading={isLoading}
+          >
             Check Out
           </Button>
-          <Prompt docLink={DOCS_URL_checkout} />
-        </div>
-      )}
+        )}
+
+        {!active && (
+          <div className="flex flex-col justify-center items-center">
+            <Button variant="checkOut" size="lg" className="w-[220px] sm:w-[100%]" disabled>
+              Check Out
+            </Button>
+            <Prompt docLink={DOCS_URL_checkout} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

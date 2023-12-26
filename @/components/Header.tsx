@@ -122,9 +122,7 @@ function Header() {
       <div className="hidden sm:block">
         <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
           <div className="flex justify-start order-1">
-            <Link className="cursor-pointer" href="/">
-              <Logo />
-            </Link>
+            <Logo />
           </div>
 
           <div className="flex justify-self-end gap-3 order-3">

@@ -21,6 +21,10 @@ import DashboardNew from './DashboardNew'
 import CheckInNew from './CheckInNew'
 import CheckOutNew from './CheckOutNew'
 import SplitPotNew from './SplitPotNew'
+import WagerNew from './WagerNew'
+import AttackNew from './AttackNew'
+import BuyTicketNew from './BuyTicketNew'
+import ExitGameNew from './ExitGameNew'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -30,45 +34,45 @@ type ModalType = {
 }
 
 const titleMapping: string = {
-  buyTicket: '',
-  exitGame: '',
+  buyTicket: 'Join Game',
+  exitGame: 'Exit Game',
   phaseChange: '',
   submit: 'Submit keyword of the day',
   checkIn: 'Check into Safehouse',
   checkOut: 'Check out from Safehouse',
   splitIt: 'Vote to Split Pot',
-  wager: '',
-  attack: '',
+  wager: 'Place Your Bets',
+  attack: 'Attack Player',
   kickOut: '',
   token: '',
   dashboard: 'Dashboard',
 }
 
 const indicatorMapping: string = {
-  buyTicket: '',
-  exitGame: '',
+  buyTicket: 'start',
+  exitGame: 'day',
   phaseChange: '',
   submit: 'day',
   checkIn: 'day',
   checkOut: 'day',
   splitIt: 'day',
   wager: '',
-  attack: '',
+  attack: 'night',
   kickOut: '',
   token: '',
   dashboard: '',
 }
 
 const modalMapping = {
-  buyTicket: <Submit />,
-  exitGame: <Submit />,
+  buyTicket: <BuyTicketNew />,
+  exitGame: <ExitGameNew />,
   phaseChange: <Submit />,
   submit: <Submit />,
   checkIn: <CheckInNew />,
   checkOut: <CheckOutNew />,
   splitIt: <SplitPotNew />,
-  wager: <Submit />,
-  attack: <Submit />,
+  wager: <WagerNew />,
+  attack: <AttackNew />,
   kickOut: <Submit />,
   token: <Submit />,
   dashboard: <DashboardNew />,

@@ -55,7 +55,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const playerTickets = useStoreState((state) => state.tickets)
   const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
-  // const { xs } = useWindowSize()
+  const { xs } = useWindowSize()
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -557,12 +557,12 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             ownTicket == true ||
             ticketLookFinal == 'inSafehouse' ||
             ticketLookFinal == 'killed' ||
-            ticketLookFinal == 'exitGame'
+            ticketLookFinal == 'exitGame' ||
+            xs
           ) && <Attack id={Number(ticketId)} />}
 
-          {ownTicket == false && ticketLookFinal == 'inSafehouse' && (
-            <KickOut id={Number(ticketId)} />
-          )}
+          {(ownTicket == false && ticketLookFinal == 'inSafehouse') ||
+            (xs && <KickOut id={Number(ticketId)} />)}
           {/* {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />} */}
         </div>
       )}

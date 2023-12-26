@@ -8,11 +8,16 @@ import Indicator from '../ui/Indicator'
 import GameTab from '../ui/GameTab'
 import UserActions from '../ui/UserActions'
 import Submit from '../ui/Submit'
+import AttackNew from '../ui/AttackNew'
+import KickOutNew from '../ui/KickOutNew'
 import CheckInNew from '../ui/CheckInNew'
 import CheckOutNew from '../ui/CheckOutNew'
 import SplitPotNew from '../ui/SplitPotNew'
+import WagerNew from '../ui/WagerNew'
+import BuyTicketNew from '../ui/BuyTicketNew'
 
 import DashboardNew from '../ui/DashboardNew'
+import ExitGameNew from '../ui/ExitGameNew'
 import ActionsMobile from '../ui/ActionsMobile'
 import KeyTrackers from '../ui/KeyTrackers'
 
@@ -318,11 +323,11 @@ export default function Screen() {
               {actionView === 'checkIn' && <CheckInNew />}
               {actionView === 'checkOut' && <CheckOutNew />}
               {actionView === 'splitIt' && <SplitPotNew />}
-              {actionView === 'wager' && <Submit />}
-              {actionView === 'attack' && <Submit />}
-              {actionView === 'kickOut' && <Submit />}
-              {actionView === 'buyTicket' && <Submit />}
-              {actionView === 'exitGame' && <Submit />}
+              {actionView === 'wager' && <WagerNew />}
+              {actionView === 'attack' && <AttackNew id={''} />}
+              {actionView === 'kickOut' && <KickOutNew id={''} />}
+              {actionView === 'buyTicket' && <BuyTicketNew />}
+              {actionView === 'exitGame' && <ExitGameNew />}
             </div>
 
             {/* <div className="flex flex-col px-5">
@@ -376,13 +381,6 @@ export default function Screen() {
                   {/* <div className="">List</div> */}
                 </button>
                 <div></div>
-                {/* <button
-                className="flex flex-col justify-center items-center"
-                onClick={toggleCarousel}
-                >
-                <Move size={32} />
-                <div className="">Actions</div>
-              </button> */}
                 <button
                   className="flex flex-col justify-center items-center"
                   onClick={() => selectMenuComponent('events')}
@@ -437,7 +435,7 @@ export default function Screen() {
                   <User size={24} />
                   <div className="">Check In</div>
                 </button>
-                <button
+                {/* <button
                   className="flex flex-col justify-center items-center"
                   onClick={() => selectAction('checkOut')}
                 >
@@ -449,7 +447,42 @@ export default function Screen() {
                   onClick={() => selectAction('splitIt')}
                 >
                   <User size={24} />
-                  <div className="">Split Pot</div>
+                  <div className="">Split</div>
+                </button> */}
+                <button
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => selectAction('wager')}
+                >
+                  <User size={24} />
+                  <div className="">Wager</div>
+                </button>
+                <button
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => selectAction('buyTicket')}
+                >
+                  <User size={24} />
+                  <div className="">Buy</div>
+                </button>
+                <button
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => selectAction('exitGame')}
+                >
+                  <User size={24} />
+                  <div className="">Exit</div>
+                </button>
+                <button
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => selectAction('attack')}
+                >
+                  <User size={24} />
+                  <div className="">Attack</div>
+                </button>
+                <button
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => selectAction('kickOut')}
+                >
+                  <User size={24} />
+                  <div className="">Kick Out</div>
                 </button>
               </div>
             </div>

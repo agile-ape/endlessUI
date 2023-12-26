@@ -215,82 +215,88 @@ const CheckInNew = () => {
           Learn more
         </a>
       </div>
-      <div className="m-1 capitalize text-center h2-last">How long will you stay?</div>
+      <div
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+                gap-4 justify-center items-center h3-last
+                "
+      >
+        <div className="m-1 capitalize text-center h2-last">How long will you stay?</div>
 
-      <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-        <div className="">
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">$LAST held</p>
-            <p className="text-right">
-              {' '}
-              {formatNumber(tokenBalance, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 0,
-              })}{' '}
-            </p>
-          </div>
+        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+          <div className="">
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">$LAST held</p>
+              <p className="text-right">
+                {' '}
+                {formatNumber(tokenBalance, {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 0,
+                })}{' '}
+              </p>
+            </div>
 
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Nights stayed</p>
-            <p className="text-right"> {ticketSafehouseNights} </p>
-          </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Nights stayed</p>
+              <p className="text-right"> {ticketSafehouseNights} </p>
+            </div>
 
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Price per night</p>
-            <p className="text-right"> {stayCost} $LAST </p>
-          </div>
-        </div>
-        {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
-        <div className="flex justify-center">
-          <div className="text-2xl flex justify-between items-center p-2 gap-3">Nights:</div>
-          <div className="text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3">
-            <p>{amountTicket}</p>
-            <div className="flex flex-col">
-              <button
-                className="w-[20px] h-[20px] flex justify-center items-center"
-                onClick={() => setAmountTicket(amountTicket + 1)}
-              >
-                <ChevronUp />
-              </button>
-              <button
-                className="w-[20px] h-[20px] flex justify-center items-center"
-                onClick={() => amountTicket > 0 && setAmountTicket(amountTicket - 1)}
-              >
-                <ChevronDown />
-              </button>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Price per night</p>
+              <p className="text-right"> {stayCost} $LAST </p>
             </div>
           </div>
+          {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
+          <div className="flex justify-center">
+            <div className="text-2xl flex justify-between items-center p-2 gap-3">Nights:</div>
+            <div className="text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3">
+              <p>{amountTicket}</p>
+              <div className="flex flex-col">
+                <button
+                  className="w-[20px] h-[20px] flex justify-center items-center"
+                  onClick={() => setAmountTicket(amountTicket + 1)}
+                >
+                  <ChevronUp />
+                </button>
+                <button
+                  className="w-[20px] h-[20px] flex justify-center items-center"
+                  onClick={() => amountTicket > 0 && setAmountTicket(amountTicket - 1)}
+                >
+                  <ChevronDown />
+                </button>
+              </div>
+            </div>
+          </div>
+          {active && (
+            <Button
+              variant="checkIn"
+              size="lg"
+              className="w-[100%]"
+              onClick={checkInHandler}
+              isLoading={isLoading}
+            >
+              Check In
+            </Button>
+          )}
+          {!active && ticketStatusString === 'safe' && (
+            <>
+              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                In Safehouse
+              </Button>
+
+              <Prompt docLink={DOCS_URL_safehouse} />
+            </>
+          )}
+          {!active && ticketStatusString !== 'safe' && (
+            <>
+              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                Check In
+              </Button>
+
+              <Prompt docLink={DOCS_URL_safehouse} />
+            </>
+          )}
         </div>
       </div>
-      {active && (
-        <Button
-          variant="checkIn"
-          size="lg"
-          className="w-[100%]"
-          onClick={checkInHandler}
-          isLoading={isLoading}
-        >
-          Check In
-        </Button>
-      )}
-      {!active && ticketStatusString === 'safe' && (
-        <>
-          <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-            In Safehouse
-          </Button>
-
-          <Prompt docLink={DOCS_URL_safehouse} />
-        </>
-      )}
-      {!active && ticketStatusString !== 'safe' && (
-        <>
-          <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-            Check In
-          </Button>
-
-          <Prompt docLink={DOCS_URL_safehouse} />
-        </>
-      )}
     </div>
   )
 }
