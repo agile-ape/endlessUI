@@ -50,28 +50,36 @@ import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 
 type AttackType = {
-  id: number
+  idList?: number
 }
 
-const AttackNew: FC<AttackType> = ({ id }) => {
-  // State variables
+const useStore = () => {
   const phase = useStoreState((state) => state.phase)
   const round = useStoreState((state) => state.round)
-  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const { xs } = useWindowSize()
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const ticketStatus = ownedTicket?.status || 0
+  const ticketIsInPlay = ownedTicket?.isInPlay || false
+  const ticketSafehouseNights = ownedTicket?.safehouseNights || 0
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
-  // const tokensPerAttack = useStoreState((state) => state.tokensPerAttack)
-  // const isAttackTime = useStoreState((state) => state.isAttackTime)
+  return {
+    phase,
+    round,
+    updateCompletionModal,
+    ownedTicket,
+    ticketStatus,
+    ticketIsInPlay,
+    ticketSafehouseNights,
+    ticketStatusString,
+  }
+}
 
-  // Address read
-  // Attacker
+/*
+function pullPlayers(id: number) {
+  const { phase, round, ticketStatusString, ticketIsInPlay } = useStore()
+
   const { address, isConnected } = useAccount()
-
-  // const { data: attackerTicket } = useContractRead({
-  //   ...defaultContractObj,
-  //   functionName: 'playerTicket',
-  //   args: [address as `0x${string}`],
-  // })
 
   const { data, refetch } = useContractReads({
     contracts: [
@@ -91,81 +99,6 @@ const AttackNew: FC<AttackType> = ({ id }) => {
     ],
   })
 
-  const events: Event[] = [
-    {
-      name: 'events',
-      async handler(data) {
-        const { event, dataJson } = data
-
-        if (!Object.keys(dataJson).length) return
-
-        if (event === 'KeywordUpdated') {
-          const { newKeyword, time } = dataJson
-          toast({
-            variant: 'info',
-            // title: 'Keyword updated',
-            description: <p>Keyword updated. Time to rumble</p>,
-          })
-        }
-
-        if (event === 'AttackAndKilled') {
-          const { caller, defendingTicket, ticketValue, time } = dataJson
-
-          // attacker
-          if (caller === playerId) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'attackAndKill',
-            })
-          }
-          // defender
-          if (defendingTicket === playerId) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'killed',
-            })
-          }
-        }
-
-        if (event === 'AttackAndSafe') {
-          const { caller, defendingTicket, time } = dataJson
-
-          // attacker
-          if (caller === playerId) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'attackButFail',
-            })
-          }
-          // defender
-          if (defendingTicket === playerId) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'attackedButSafe',
-            })
-          }
-        }
-
-        if (event === 'ValueWaterfall') {
-          const { receivingTicket, amount, time } = dataJson
-
-          // receiver
-          if (receivingTicket === playerId) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'received',
-            })
-          }
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        refetch()
-      },
-    },
-  ]
-
-  useSocketEvents(events)
-
   const attackerTicket = data?.[0].result || null
   const tokensPerAttack = data?.[1].result || BigInt(0)
   const isAttackTime = Boolean(data?.[2].result || BigInt(0))
@@ -174,9 +107,6 @@ const AttackNew: FC<AttackType> = ({ id }) => {
   const attackerStatus = attackerTicket?.[3] || 0
   const attackerIsInPlay = Boolean(attackerTicket?.[5] || 0)
   const attackerAttacks = Number(attackerTicket?.[11]) || 0
-
-  // const tokensPerAttackConverted = tokensPerAttack / priceConversion
-
   const tokensFarmed = formatUnits(tokensPerAttack, 3)
   const attackerStatusString = statusPayload[attackerStatus] || 'unknown'
 
@@ -203,28 +133,231 @@ const AttackNew: FC<AttackType> = ({ id }) => {
   const submitOrNot =
     defenderStatusString === 'submitted' || ('checked' && defenderLastSeen === round) ? 'Yes' : 'No'
 
-  // Active condition
-  const attackActive: boolean =
-    phase === 'night' &&
-    isAttackTime === true &&
-    attackerIsInPlay === true &&
-    attackerStatusString !== 'safe' &&
-    attackerAttacks > 0 &&
-    defenderIsInPlay === true &&
-    defenderStatusString !== 'safe' &&
-    !(defenderLastSeen === round && defenderStatusString === 'checked')
+  return {
+    phase,
+    round,
+    tokensPerAttack,
+    isAttackTime,
+    playerId,
+    attackerStatus,
+    attackerIsInPlay,
+    attackerAttacks,
+    tokensFarmed,
+    attackerStatusString,
+    defenderStatus,
+    defenderLastSeen,
+    defenderIsInPlay,
+    defenderValue,
+    defenderAddress,
+    defenderStatusString,
+    submitOrNot,
+  }
+}
+*/
 
-  // Contract write
+export const AttackActive = () => {
+  const { phase, ticketStatusString, ticketIsInPlay } = useStore()
+
+  const attackActive: boolean =
+    phase === 'night' && ticketStatusString !== 'safe' && ticketIsInPlay === true
+
+  return attackActive
+}
+
+const AttackNew: FC<AttackType> = ({ idList }) => {
+  const { phase, round, updateCompletionModal, ownedTicket, ticketStatusString, ticketIsInPlay } =
+    useStore()
+  const active = AttackActive()
+  const { address, isConnected } = useAccount()
+  const { data, refetch } = useContractReads({
+    contracts: [
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'playerTicket',
+      //   args: [address as `0x${string}`],
+      // },
+      {
+        ...defaultContractObj,
+        functionName: 'tokensPerAttack',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'isAttackTime',
+      },
+    ],
+  })
+
+  // const attackerTicket = data?.[0].result || null
+  const tokensPerAttack = data?.[0].result || BigInt(0)
+  const isAttackTime = Boolean(data?.[1].result || BigInt(0))
+
+  // const playerId = attackerTicket?.[0] || 0
+  // const attackerStatus = attackerTicket?.[3] || 0
+  // const attackerIsInPlay = Boolean(attackerTicket?.[5] || 0)
+  // const attackerAttacks = Number(attackerTicket?.[11]) || 0
+
+  const playerId = ownedTicket?.id || 0
+  const playerStatus = ownedTicket?.status || 0
+  const playerIsInPlay = ownedTicket?.isInPlay
+  const playerStatusString = statusPayload[playerStatus] || 'unknown'
+
+  const playerAttacks = ownedTicket?.attacks || 0
+  const tokensFarmed = formatUnits(tokensPerAttack, 3)
+
+  // Defender
+  const { data: idAddress } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'idToPlayer',
+    args: [BigInt(idList || 0)],
+  })
+
+  const { data: defenderTicket } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerTicket',
+    args: [idAddress as `0x${string}`],
+  })
+
+  const defenderAddress = defenderTicket?.[1] || ''
+  const defenderStatus = defenderTicket?.[3] || 0
+  const defenderLastSeen = Number(defenderTicket?.[4] || 0)
+  const defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
+  const defenderValue = Number(defenderTicket?.[7]) || 0
+  const defenderStatusString = statusPayload[defenderStatus] || 'unknown'
+
+  const events: Event[] = [
+    {
+      name: 'events',
+      async handler(data) {
+        const { event, dataJson } = data
+
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'KeywordUpdated') {
+          const { newKeyword, time } = dataJson
+          toast({
+            variant: 'info',
+            // title: 'Keyword updated',
+            description: <p>Keyword updated. Time to rumble</p>,
+          })
+        }
+
+        if (event === 'AttackAndKilled') {
+          const { caller, defendingTicket, ticketValue, time } = dataJson
+
+          // attacker
+          if (caller === playerId) {
+            updateCompletionModal({
+              isOpen: true,
+              state: 'attackAndKill',
+            })
+          }
+          // defender
+          if (defendingTicket === playerId) {
+            updateCompletionModal({
+              isOpen: true,
+              state: 'killed',
+            })
+          }
+        }
+
+        if (event === 'AttackAndSafe') {
+          const { caller, defendingTicket, time } = dataJson
+
+          // attacker
+          if (caller === playerId) {
+            updateCompletionModal({
+              isOpen: true,
+              state: 'attackButFail',
+            })
+          }
+          // defender
+          if (defendingTicket === playerId) {
+            updateCompletionModal({
+              isOpen: true,
+              state: 'attackedButSafe',
+            })
+          }
+        }
+
+        if (event === 'ValueWaterfall') {
+          const { receivingTicket, amount, time } = dataJson
+
+          // receiver
+          if (receivingTicket === playerId) {
+            updateCompletionModal({
+              isOpen: true,
+              state: 'received',
+            })
+          }
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        refetch()
+      },
+    },
+  ]
+
+  useSocketEvents(events)
+
+  /*------------ Attack from carousel input - mobile ------------*/
+  const attackInputActive: boolean = active && isAttackTime == true && playerAttacks > 0
+
   const {
-    data: attackData,
-    writeAsync,
-    isLoading,
+    data: attackInputData,
+    writeAsync: attackFromInput,
+    isLoading: attackInputIsLoading,
   } = useContractWrite({
     ...defaultContractObj,
     functionName: 'attackTicket',
   })
 
-  const attackTicketHandler = async () => {
+  const attackInputHandler = async () => {
+    try {
+      if (defenderAddress.toLowerCase() === address?.toLowerCase()) {
+        throw new Error('You cannot attack yourself!')
+      }
+
+      const tx = await attackFromInput({
+        args: [BigInt(defenderIdInput)],
+      })
+      const hash = tx.hash
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason ||
+        error?.cause?.shortMessage ||
+        error?.message ||
+        'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Attack ticket failed',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  const [defenderIdInput, setDefenderIdInput] = useState<string>('')
+
+  /*------------ Attack from TicketList - full screen ------------*/
+
+  const attackListActive: boolean =
+    active &&
+    isAttackTime == true &&
+    playerAttacks > 0 &&
+    defenderIsInPlay === true &&
+    defenderStatusString !== 'safe' &&
+    !(defenderLastSeen === round && defenderStatusString === 'checked')
+
+  const {
+    data: attackListData,
+    writeAsync: attackFromList,
+    isLoading: attackListIsLoading,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'attackTicket',
+  })
+
+  const attackListHandler = async () => {
     try {
       // const nextPrice = parseUnits(String(nextTicketPriceConverted), 18)
 
@@ -232,8 +365,8 @@ const AttackNew: FC<AttackType> = ({ id }) => {
         throw new Error('You cannot attack yourself!')
       }
 
-      const tx = await writeAsync({
-        args: [BigInt(id)],
+      const tx = await attackFromList({
+        args: [BigInt(idList || 0)],
       })
       const hash = tx.hash
     } catch (error: any) {
@@ -252,7 +385,7 @@ const AttackNew: FC<AttackType> = ({ id }) => {
   }
 
   const {} = useWaitForTransaction({
-    hash: attackData?.hash,
+    hash: attackListData?.hash,
     onSuccess(data) {
       if (data.status === 'success') {
         refetch()
@@ -263,107 +396,145 @@ const AttackNew: FC<AttackType> = ({ id }) => {
 
   return (
     <>
-      <div className="w-[85%] mx-auto flex flex-col gap-3">
+      <div className="w-[85%] mx-auto flex flex-col gap-3 m-16 body-last">
+        <div className="sm:hidden block flex flex-col">
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <div className="h1-last text-center">Attack</div>
+            <Image
+              priority
+              src={`/indicator/nightIndicator.svg`}
+              height={300}
+              width={60}
+              className=""
+              alt="nightIndicator"
+            />
+          </div>
+          <Image
+            priority
+            src="/lore/AttackPlayerMobile.png"
+            className="place-self-center rounded-xl"
+            height={400}
+            width={650}
+            alt="attack-player"
+          />
+        </div>
         <Image
           priority
           src="/lore/AttackPlayer.png"
-          // layout="fill"
-          // objectFit='cover'
-          className="place-self-center rounded-xl"
+          className="hidden sm:block place-self-center rounded-xl"
           height={400}
           width={650}
-          alt="enter-into-the-pepe"
+          alt="attack-player"
         />
 
-        <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
-          <p className="mb-2 leading-tight">You kill the player if his keyword is wrong.</p>
-          <p className="mb-2 leading-tight">
-            Attacker receives $LAST for each attack during{' '}
-            <span className="font-semibold">Stage 1</span>.
+        <div className="text-center">
+          <p className="mb-2">Players dies if he did not submit keyword.</p>
+          <p className="mb-2">
+            Each attack gets $LAST token
+            <span className="font-semibold">(Stage 1)</span>.
           </p>
-          <p className="mb-2 leading-tight">You cannot attack if you or player is in safehouse.</p>
-          <p className="mb-2 leading-tight">
-            Each player can only be attacked once per{' '}
+          <p className="mb-2">
+            Player can only be attacked once per{' '}
             <span className="font-headline night-last">Night</span>.
           </p>
+
           <div className="flex mb-2 border rounded-lg border-zinc-800 dark:border-zinc-200 py-2 px-3">
             <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
             <p>
-              Killed ticket value does not go to the killer. It follows the{' '}
+              Ticket value of killed ticket does not go to killer.
               <a href={DOCS_URL_waterfall} target="_blank" className="link">
-                value waterfall
+                See value waterfall.
               </a>{' '}
-              rule.
             </p>
           </div>
-          <a
-            href={DOCS_URL_attack}
-            target="_blank"
-            className="link text-xs sm:text-sm md:text-base leading-tight"
-          >
+          <a href={DOCS_URL_attack} target="_blank" className="link h6-last align-top">
             Learn more
           </a>
         </div>
 
-        {/* Pay for stay */}
-        <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-          Attack Player #{id}?
-        </div>
+        <div
+          className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
+                gap-4 justify-center items-center h3-last
+                "
+        >
+          <div className="m-1 capitalize text-center h2-last">Attack Player?</div>
 
-        <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-            <div className="flex text-lg justify-between gap-4">
-              <p className="text-left">$LAST per attack</p>
+          <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+            <div className="">
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">$LAST per attack</p>
+                <p className="text-right">
+                  {/* {stage} */}
+                  {tokensFarmed}
+                </p>
+              </div>
 
-              <p className="text-right">
-                {/* {stage} */}
-                {tokensFarmed}
-              </p>
+              {idList && (
+                <>
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left">Player value</p>
+                    <p className="text-right"> {formatUnits(BigInt(defenderValue), 18)} ETH</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left">Player last seen at</p>
+                    <p className="text-right round-last"> {defenderLastSeen} </p>
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Submitted?</p>
-                      <p className="text-right capitalize"> {submitOrNot}</p>
-                    </div> */}
+            {phase === 'night' && isAttackTime === false && (
+              <div className="h-12 rounded-xl px-5 py-1 text-xl leading-10">
+                Keyword updating...
+              </div>
+            )}
 
-            <div className="flex text-lg justify-between gap-4">
-              <p className="text-left">Player value</p>
-              <p className="text-right"> {formatUnits(BigInt(defenderValue), 18)} ETH</p>
-            </div>
+            {idList && (
+              <>
+                <Button
+                  variant="attack"
+                  size="lg"
+                  className="w-[100%]"
+                  onClick={attackListHandler}
+                  isLoading={attackListIsLoading}
+                  disabled={!attackListActive}
+                >
+                  Attack Player #{idList}
+                </Button>
+                {!attackListActive && <Prompt docLink={DOCS_URL_attack} />}
+              </>
+            )}
 
-            <div className="flex text-lg justify-between gap-4">
-              <p className="text-left">Player last seen at</p>
-              <p className="text-right underline"> {defenderLastSeen} </p>
-            </div>
-
-            {/* <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Last action </p>
-                      <p className="text-right"> Entered game </p>
-                    </div> */}
+            {!idList && (
+              <div
+                className="rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
+              gap-4 justify-center items-center h3-last
+              "
+              >
+                <label htmlFor="attack">Who you attacking?</label>
+                <input
+                  type="text"
+                  id="attack"
+                  required
+                  className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                  value={defenderIdInput}
+                  onChange={(e) => setDefenderIdInput(e.target.value)}
+                />
+                <Button
+                  variant="attack"
+                  size="lg"
+                  className="w-[100%]"
+                  onClick={attackInputHandler}
+                  isLoading={attackInputIsLoading}
+                  disabled={!attackInputActive}
+                >
+                  Attack
+                </Button>
+                {!attackInputActive && <Prompt docLink={DOCS_URL_attack} />}
+              </div>
+            )}
           </div>
-
-          {phase === 'night' && isAttackTime === false && (
-            <div className="h-12 rounded-xl px-5 py-1 text-xl leading-10">Keyword updating...</div>
-          )}
-
-          {!xs && (
-            <Button
-              variant="attack"
-              size="lg"
-              className="w-[100%]"
-              onClick={attackTicketHandler}
-              isLoading={isLoading}
-              disabled={!attackActive}
-            >
-              Attack Player #{id}
-            </Button>
-          )}
-
-          {/* {xs && (
-            // code input box
-        )} */}
-
-          {!attackActive && <Prompt docLink={DOCS_URL_attack} />}
         </div>
       </div>
     </>

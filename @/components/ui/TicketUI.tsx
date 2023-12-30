@@ -9,9 +9,19 @@ import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/l
 import { useStoreState } from '../../../store'
 import { Sword } from 'lucide-react'
 import Attack from './Attack'
+
+import AttackNew from './AttackNew'
+import { AttackActive } from './AttackNew'
+
+import KickOutNew from './KickOutNew'
+import { KickOutActive } from './KickOutNew'
+
 import CheckOut from './CheckOut'
 import KickOut from './KickOut'
 import { useWindowSize } from '../../../hooks/useWindowSize'
+import Modal from './Modal'
+import { Button } from './button'
+import OnSignal from './OnSignal'
 
 type TicketUIType = {
   ownTicket: boolean
@@ -56,6 +66,16 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
   const { xs } = useWindowSize()
+
+  const activeAttack = AttackActive()
+  const activeKickOut = KickOutActive()
+
+  // const attackActive = AttackActive()
+  const [showAttackModal, setShowAttackModal] = React.useState<boolean>(false)
+  const toggleAttack = () => setShowAttackModal((prevState) => !prevState)
+
+  const [showKickOutModal, setShowKickOutModal] = React.useState<boolean>(false)
+  const toggleKickOut = () => setShowKickOutModal((prevState) => !prevState)
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -146,7 +166,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   // console.log(ticketId)
   // console.log(ticketIsInPlay)
 
-  /* CHATGPT 
+  /* CHATGPT
   // Your main logic
   if (phase === 'deployed') {
     // handleDeployedPhase()
@@ -559,10 +579,28 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             ticketLookFinal == 'killed' ||
             ticketLookFinal == 'exitGame' ||
             xs
-          ) && <Attack id={Number(ticketId)} />}
+          ) && (
+            <Button
+              variant="attack"
+              className="w-full py-1 text-lg h-8 mt-2"
+              onClick={toggleAttack}
+            >
+              <OnSignal active={activeAttack} own={false} />
+              Attack
+            </Button>
+          )}
 
           {(ownTicket == false && ticketLookFinal == 'inSafehouse') ||
-            (xs && <KickOut id={Number(ticketId)} />)}
+            (xs && (
+              <Button
+                variant="kickOut"
+                className="w-full py-1 text-lg h-8 rounded-md"
+                onClick={toggleKickOut}
+              >
+                <OnSignal active={activeKickOut} own={false} />
+                Kick Out
+              </Button>
+            ))}
           {/* {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />} */}
         </div>
       )}
@@ -629,6 +667,13 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             </div>
           )}
         </>
+      )}
+
+      {showAttackModal && (
+        <Modal action={'attack'} toggle={toggleAttack} idList={Number(ticketId)} />
+      )}
+      {showKickOutModal && (
+        <Modal action={'kickOut'} toggle={toggleKickOut} idList={Number(ticketId)} />
       )}
     </div>
   )

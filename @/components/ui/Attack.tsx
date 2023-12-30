@@ -202,9 +202,9 @@ const Attack: FC<AttackType> = ({ id }) => {
   // Active condition
   const attackActive: boolean =
     phase === 'night' &&
-    isAttackTime === true &&
-    attackerIsInPlay === true &&
     attackerStatusString !== 'safe' &&
+    attackerIsInPlay === true &&
+    isAttackTime === true &&
     attackerAttacks > 0 &&
     defenderIsInPlay === true &&
     defenderStatusString !== 'safe' &&

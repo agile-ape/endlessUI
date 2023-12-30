@@ -23,6 +23,7 @@ import CheckOutNew from './CheckOutNew'
 import SplitPotNew from './SplitPotNew'
 import WagerNew from './WagerNew'
 import AttackNew from './AttackNew'
+import KickOutNew from './KickOutNew'
 import BuyTicketNew from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
 
@@ -31,56 +32,53 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 type ModalType = {
   action: string
   toggle: () => void
+  id?: number
 }
 
-const titleMapping: string = {
+const titleMapping: { [key: string]: string } = {
+  phaseChange: '',
   buyTicket: 'Join Game',
   exitGame: 'Exit Game',
-  phaseChange: '',
   submit: 'Submit keyword of the day',
   checkIn: 'Check into Safehouse',
   checkOut: 'Check out from Safehouse',
   splitIt: 'Vote to Split Pot',
   wager: 'Place Your Bets',
   attack: 'Attack Player',
-  kickOut: '',
+  kickOut: 'Kick Out Player',
   token: '',
   dashboard: 'Dashboard',
 }
 
-const indicatorMapping: string = {
+const indicatorMapping: { [key: string]: string } = {
+  phaseChange: '',
   buyTicket: 'start',
   exitGame: 'day',
-  phaseChange: '',
   submit: 'day',
   checkIn: 'day',
   checkOut: 'day',
   splitIt: 'day',
   wager: '',
   attack: 'night',
-  kickOut: '',
+  kickOut: 'night',
   token: '',
   dashboard: '',
 }
 
-const modalMapping = {
+const modalMapping: { [key: string]: JSX.Element } = {
+  phaseChange: <Submit />,
   buyTicket: <BuyTicketNew />,
   exitGame: <ExitGameNew />,
-  phaseChange: <Submit />,
   submit: <Submit />,
   checkIn: <CheckInNew />,
   checkOut: <CheckOutNew />,
   splitIt: <SplitPotNew />,
   wager: <WagerNew />,
-  attack: <AttackNew />,
-  kickOut: <Submit />,
   token: <Submit />,
   dashboard: <DashboardNew />,
 }
 
-const Modal: FC<ModalType> = ({ action, toggle }) => {
-  // const [isModalOpen, setIsModalOpen] = useState(false)
-
+const Modal: FC<ModalType> = ({ action, toggle, id }) => {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => toggle())
 
@@ -116,7 +114,11 @@ const Modal: FC<ModalType> = ({ action, toggle }) => {
                   )}
                 </div>
                 <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
-                  {modalMapping[action]}
+                  {action === 'attack' && <AttackNew idList={id} />}
+
+                  {action === 'kickOut' && <KickOutNew idList={id} />}
+
+                  {!(action === 'attack' || action === 'kickOut') && modalMapping[action]}
                 </ScrollArea>
               </div>
             </div>

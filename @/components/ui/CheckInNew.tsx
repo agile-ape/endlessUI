@@ -209,14 +209,14 @@ const CheckInNew = () => {
         <p className="mb-2">You cannot be killed.</p>
         <p className="mb-2">Actions are limited.</p>
         <p className="mb-2">Rates are $LAST per night.</p>
-        <p className="mb-2">Don't overstay,</p>
+        <p className="mb-2">Dont overstay,</p>
         <p className="mb-2">Others can kick you out.</p>
         <a href={DOCS_URL_safehouse} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
       </div>
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
       >
