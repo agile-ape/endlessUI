@@ -71,6 +71,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+
 type ComponentType = 'you' | 'list' | 'actions' | 'events' | 'menu'
 type ActionType =
   | 'submit'
@@ -83,6 +91,41 @@ type ActionType =
   | 'buyTicket'
   | 'exitGame'
 import type { Ticket } from 'types/app'
+
+type MobileActionType = {
+  label: string
+  action: ActionType
+}
+const arrayMobileAction: MobileActionType[] = [
+  {
+    label: 'Submit',
+    action: 'submit',
+  },
+  {
+    label: 'Check In',
+    action: 'checkIn',
+  },
+  {
+    label: 'Wager',
+    action: 'wager',
+  },
+  {
+    label: 'Buy',
+    action: 'buyTicket',
+  },
+  {
+    label: 'Exit',
+    action: 'exitGame',
+  },
+  {
+    label: 'Attack',
+    action: 'attack',
+  },
+  {
+    label: 'Kick Out',
+    action: 'kickOut',
+  },
+]
 
 export default function Screen() {
   const { isConnected, address } = useAccount()
@@ -420,71 +463,27 @@ export default function Screen() {
 
           {isCarouselVisible && (
             <div className="fixed bottom-10 w-full bg-slate-100 dark:bg-slate-600 container-last border-none bg-opacity-100 dark:bg-opacity-100 px-2 pt-1">
-              <div className="flex gap-4">
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('submit')}
-                >
-                  <User size={24} />
-                  <div className="">Submit</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('checkIn')}
-                >
-                  <User size={24} />
-                  <div className="">Check In</div>
-                </button>
-                {/* <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('checkOut')}
-                >
-                  <User size={24} />
-                  <div className="">Check Out</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('splitIt')}
-                >
-                  <User size={24} />
-                  <div className="">Split</div>
-                </button> */}
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('wager')}
-                >
-                  <User size={24} />
-                  <div className="">Wager</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('buyTicket')}
-                >
-                  <User size={24} />
-                  <div className="">Buy</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('exitGame')}
-                >
-                  <User size={24} />
-                  <div className="">Exit</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('attack')}
-                >
-                  <User size={24} />
-                  <div className="">Attack</div>
-                </button>
-                <button
-                  className="flex flex-col justify-center items-center"
-                  onClick={() => selectAction('kickOut')}
-                >
-                  <User size={24} />
-                  <div className="">Kick Out</div>
-                </button>
-              </div>
+              <Carousel className="w-full max-w-xs mx-auto px-5">
+                <CarouselContent className="-ml-1 items-center">
+                  {arrayMobileAction.map((action, index) => (
+                    <CarouselItem key={index} className="pl-1 basis-1/3 justify-items-center">
+                      <div className="p-1 mx-auto">
+                        <div className="flex justify-center">
+                          <button
+                            className="flex flex-col justify-center items-center"
+                            onClick={() => selectAction(arrayMobileAction[index].action)}
+                          >
+                            <User size={20} />
+                            <div className="">{action.label}</div>
+                          </button>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-2" />
+                <CarouselNext className="-right-2" />
+              </Carousel>
             </div>
           )}
         </>
