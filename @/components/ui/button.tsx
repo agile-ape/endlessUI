@@ -63,7 +63,6 @@ const buttonVariants = cva(
 
         secondary:
           'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-500 active:bg-indigo-500 border border-indigo-800 hover:border-indigo-300',
-
         // claim:
         //   'text-indigo-800 dark:hover:text-white  border-2 border-indigo-800 bg-transparent hover:text-white hover:bg-indigo-600 active:bg-indigo-800',
         /*-------------------- TICKET LIST ---------------------*/

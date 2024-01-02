@@ -120,6 +120,7 @@ const CheckInNew = () => {
   useSocketEvents(events)
 
   const [amountTicket, setAmountTicket] = React.useState<number>(0)
+  const totalCost = Number(stayCost) * amountTicket
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -172,7 +173,7 @@ const CheckInNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
       <div className="sm:hidden block flex flex-col">
         <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Check in</div>
@@ -205,11 +206,9 @@ const CheckInNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">You are safe in the Safehouse.</p>
-        <p className="mb-2">You cannot be killed.</p>
-        <p className="mb-2">Actions are limited.</p>
-        <p className="mb-2">Rates are $LAST per night.</p>
-        <p className="mb-2">Dont overstay,</p>
+        <p className="mb-2">You cannot be killed in the Safehouse.</p>
+        <p className="mb-2">But actions are limited.</p>
+        <p className="mb-2">Dont overstay.</p>
         <p className="mb-2">Others can kick you out.</p>
         <a href={DOCS_URL_safehouse} target="_blank" className="link h6-last align-top">
           Learn more
@@ -265,6 +264,20 @@ const CheckInNew = () => {
                 </button>
               </div>
             </div>
+          </div>
+          <div>
+            <div className="flex justify-center">
+              <div className="text-2xl flex justify-between items-center p-2 gap-3">
+                Cost to stay:
+              </div>
+              <div className="text-2xl flex justify-between items-center p-2 gap-3">
+                {totalCost} LAST
+              </div>
+            </div>
+
+            {totalCost > Number(tokenBalance) && (
+              <p className="text-xl text-red-600 mt-2 text-center">You can't afford to stay</p>
+            )}
           </div>
           {active && (
             <Button

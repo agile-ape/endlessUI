@@ -48,6 +48,8 @@ function Header() {
   const [showDashboardModal, setShowDashboardModal] = React.useState<boolean>(false)
   const toggleDashboard = () => setShowDashboardModal((prevState) => !prevState)
 
+  const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
+  const toggleToken = () => setShowTokenModal((prevState) => !prevState)
   // const { wallets } = useWallets()
   // const wallet = wallets.find((wallet) => wallet.address === address)
 
@@ -173,6 +175,25 @@ function Header() {
                   <Token />
                   {/* <Dashboard /> */}
 
+                  <button onClick={toggleToken}>
+                    <div className="flex items-center justify-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
+                      <Image
+                        priority
+                        src="/logo/token.svg"
+                        height={25}
+                        width={25}
+                        alt="last-token"
+                        className="shrink-0 mr-1"
+                      />
+                      {/* <span className="text-lg sm:text-xl font-whitrabt">
+                        {formatNumber(tokenBalance, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}
+                      </span> */}
+                    </div>
+                  </button>
+
                   <button onClick={toggleDashboard}>
                     <div className="flex items-center justify-center border rounded-full px-2 sm:px-4 h-10 sm:py-1 border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
                       <Image
@@ -193,6 +214,7 @@ function Header() {
         </div>
       </div>
       {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
+      {showTokenModal && <Modal action={'token'} toggle={toggleToken} />}
     </>
     // </div>
   )

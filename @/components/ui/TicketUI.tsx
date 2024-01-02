@@ -590,17 +590,16 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             </Button>
           )}
 
-          {(ownTicket == false && ticketLookFinal == 'inSafehouse') ||
-            (xs && (
-              <Button
-                variant="kickOut"
-                className="w-full py-1 text-lg h-8 rounded-md"
-                onClick={toggleKickOut}
-              >
-                <OnSignal active={activeKickOut} own={false} />
-                Kick Out
-              </Button>
-            ))}
+          {ownTicket == false && ticketLookFinal == 'inSafehouse' && !xs && (
+            <Button
+              variant="kickOut"
+              className="w-full py-1 text-lg h-8 rounded-md"
+              onClick={toggleKickOut}
+            >
+              <OnSignal active={activeKickOut} own={false} />
+              Kick Out
+            </Button>
+          )}
           {/* {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />} */}
         </div>
       )}
@@ -669,11 +668,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
         </>
       )}
 
-      {showAttackModal && (
-        <Modal action={'attack'} toggle={toggleAttack} idList={Number(ticketId)} />
-      )}
+      {showAttackModal && <Modal action={'attack'} toggle={toggleAttack} id={Number(ticketId)} />}
       {showKickOutModal && (
-        <Modal action={'kickOut'} toggle={toggleKickOut} idList={Number(ticketId)} />
+        <Modal action={'kickOut'} toggle={toggleKickOut} id={Number(ticketId)} />
       )}
     </div>
   )

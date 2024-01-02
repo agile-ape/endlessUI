@@ -199,7 +199,7 @@ const Submit = () => {
   }
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
       <div className="sm:hidden block flex flex-col">
         <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Submit keyword</div>
@@ -237,9 +237,8 @@ const Submit = () => {
           Submit word in the <span className="font-headline day-last">Day</span>.
         </p>
         <p className="mb-2">
-          Others can't kill you in the <span className="font-headline night-last">Night</span>.
+          So others can't kill you in the <span className="font-headline night-last">Night</span>.
         </p>
-        <p className="mb-2">If don't submit. Others can kill.</p>
         <a href={DOCS_URL_submit} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
@@ -278,14 +277,14 @@ const Submit = () => {
 
         <div
           className="w-[220px]
-          m-4 mt-4
+          m-4 mt-4 mb-0
           rounded-xl py-3 px-3
           bg-green-700
           capitalize text-center mx-auto text-white
           flex flex-col gap-5 border border-zinc-400 dark:border-zinc-200 
           "
         >
-          <div className="text-center text-white h3-last">
+          <div className="text-center text-white h2-last">
             {ticketStatusString === 'submitted' && ticketLastSeen === round && (
               <span>You have already submitted. Submit again?</span>
             )}
@@ -329,6 +328,7 @@ const Submit = () => {
             </Button>
           )}
         </div>
+        {!active && <Prompt docLink={DOCS_URL_submit} />}
       </div>
     </div>
   )

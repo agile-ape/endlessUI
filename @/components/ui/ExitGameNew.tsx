@@ -45,6 +45,7 @@ const useStore = () => {
   const phase = useStoreState((state) => state.phase)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const ticketId = ownedTicket?.id || 0
   const ticketStatus = ownedTicket?.status || 0
   const ticketCount = useStoreState((state) => state.ticketCount)
   const ticketIsInPlay = ownedTicket?.isInPlay || false
@@ -57,6 +58,7 @@ const useStore = () => {
     phase,
     updateCompletionModal,
     ownedTicket,
+    ticketId,
     ticketStatus,
     ticketCount,
     ticketIsInPlay,
@@ -68,11 +70,12 @@ const useStore = () => {
 }
 
 export const ExitGameActive = () => {
-  const { phase, ticketStatusString } = useStore()
+  const { phase, ticketStatusString, ticketId } = useStore()
 
   const exitGameActive: boolean =
     (phase === 'day' || phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') &&
-    ticketStatusString !== 'exited'
+    ticketStatusString !== 'exited' &&
+    ticketId > 0
 
   return exitGameActive
 }
@@ -205,7 +208,7 @@ const ExitGameNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
       <div className="sm:hidden block flex flex-col">
         <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Exit game</div>
@@ -292,8 +295,8 @@ const ExitGameNew = () => {
 
           <div className="">
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Killed?</p>
-              <p className="text-right"> {!ticketIsInPlay ? 'Yes' : 'No'}</p>
+              <p className="text-left">Still in game?</p>
+              <p className="text-right"> {ticketIsInPlay ? 'Yes' : 'No'}</p>
             </div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Current rank</p>
@@ -322,7 +325,7 @@ const ExitGameNew = () => {
               <p className="text-right"> {ticketCount} </p>
             </div>
 
-            <div className="text-center h3-last">Claim</div>
+            <div className="text-center h3-last">Claim stats</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">If last till now</p>
               <p className="text-right">

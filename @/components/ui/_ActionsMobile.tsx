@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { User, Menu, Users, Clock, Move } from 'lucide-react'
-import CheckInNew from '../ui/CheckInNew'
-import Submit from '../ui/Submit'
+import CheckInNew from './CheckInNew'
+import Submit from './Submit'
 
 type ComponentType =
   | 'submit'

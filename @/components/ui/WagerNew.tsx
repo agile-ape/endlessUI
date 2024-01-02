@@ -146,12 +146,16 @@ const WagerNew = () => {
   const lmfBetCount = data?.[2].result || BigInt(0)
   const pfBetCount = data?.[3].result || BigInt(0)
   const dBetCount = data?.[4].result || BigInt(0)
-  const lmfBetSize = data?.[5].result || BigInt(0)
-  const pfBetSize = data?.[6].result || BigInt(0)
-  const dBetSize = data?.[7].result || BigInt(0)
+  const lmfBetSize = Number(data?.[5].result || BigInt(0))
+  const pfBetSize = Number(data?.[6].result || BigInt(0))
+  const dBetSize = Number(data?.[7].result || BigInt(0))
   const endingPhase = data?.[8].result || BigInt(0)
 
   // Compute payoff - before or after fees?
+  const totalBetSize = lmfBetSize + pfBetSize + dBetSize
+  const lmfOdds = totalBetSize / lmfBetSize
+  const pfOdds = totalBetSize / pfBetSize
+  const dOdds = totalBetSize / dBetSize
 
   // Contract write
   // const [isModalOpen, setIsModalOpen] = useState(false)
@@ -160,6 +164,8 @@ const WagerNew = () => {
 
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => setIsModalOpen(false))
+
+  /*---------------------- place bet ----------------------*/
 
   const {
     data: betEndingData,
@@ -219,8 +225,56 @@ const WagerNew = () => {
     const param = radioParam[radioValue]
   }
 
+  /*---------------------- claim ----------------------*/
+
+  const {
+    data: claimWinningsData,
+    writeAsync: claimWinnings,
+    isLoading: claimWinningsLoad,
+  } = useContractWrite({
+    ...wagerContractObj,
+    functionName: 'claimWinnings',
+  })
+
+  const claimWin = async () => {
+    try {
+      const doClaim = await claimWinnings()
+
+      const hash = doClaim.hash
+
+      // setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'claimWin',
+      })
+    } catch (error: any) {
+      console.log({ error })
+      setBetAmount('')
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        title: 'Claim failed',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  // update once txn is done
+  const {} = useWaitForTransaction({
+    hash: claimWinningsData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
       <div className="sm:hidden block flex flex-col">
         <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Place Bet</div>
@@ -245,185 +299,235 @@ const WagerNew = () => {
 
       <div className="text-center">
         <p className="mb-2">Everyone can bet on how the game ends.</p>
-        <p className="mb-2">1 address = 1 chance</p>
-        <p className="mb-2">Bet fee increases every round.</p>
+        <p className="mb-2">1 address 1 bet.</p>
+        <p className="mb-2">Bet early. Fee increases every round.</p>
         <p className="mb-2">Place bets before Stage 2 comes.</p>
         <a href={DOCS_URL} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
       </div>
       {/* Pay for stay */}
-      <div className="m-1 capitalize text-center h2-last">Place your bet</div>
-
-      <div className="mx-auto flex flex-col gap-4 justify-center items-center">
-        <RadioGroup
-          defaultValue="option-one"
-          className="flex flex-col md:grid md:grid-cols-3 gap-4"
-          onValueChange={(value) => setRadioValue(value)}
-        >
-          <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger className="flex flex-col items-center justify-center">
-                  <Label
-                    htmlFor="option-one"
-                    className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
-                  >
-                    <Image
-                      priority
-                      src="/indicator/lastmanfoundIndicator.svg"
-                      height={300}
-                      width={100}
-                      alt="last-man-found-ending"
-                      className="shrink-0 mb-1"
-                    />
-                    <div>Last Man Standing</div>
-                  </Label>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="start">
-                  <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
-                    Only 1 player is left. Everyone gives up or is killed.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <RadioGroupItem value="option-one" id="option-one" />
-            <div>Payoff</div>
-          </div>
-          <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger className="flex flex-col items-center justify-center">
-                  <Label
-                    htmlFor="option-two"
-                    className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
-                  >
-                    <Image
-                      priority
-                      src="/indicator/peacefoundIndicator.svg"
-                      height={300}
-                      width={100}
-                      alt="peace-found-ending"
-                      className="shrink-0 mb-1"
-                    />
-                    <div>Peace found.</div>
-                  </Label>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="start">
-                  <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
-                    Majority of players that are remaining vote to split pot.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <RadioGroupItem value="option-two" id="option-two" />
-            <div>Payoff</div>
-          </div>
-          <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger className="flex flex-col items-center justify-center">
-                  <Label
-                    htmlFor="option-three"
-                    className="my-2 cursor-pointer border p-2 rounded-md flex flex-col justify-center items-center text-center text-base mb-2"
-                  >
-                    <Image
-                      priority
-                      src="/indicator/drainIndicator.svg"
-                      height={300}
-                      width={100}
-                      alt="drain-ending"
-                      className="shrink-0 mb-1"
-                    />
-                    <div>Pot drained.</div>
-                  </Label>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="start">
-                  <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
-                    Players play till the end without splitting the pot.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <RadioGroupItem value="option-three" id="option-three" />
-            <div>Payoff</div>
-          </div>
-        </RadioGroup>
-        {/* </div> */}
-
-        {/* Bet amount component */}
-        <div
-          className="rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+      <div
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
           gap-4 justify-center items-center h3-last
           "
-        >
-          <label htmlFor="bet">Bet Amount (ETH) </label>
-          <input
-            type="text"
-            id="bet"
-            required
-            className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
-            value={betAmount}
-            onChange={(e) => setBetAmount(e.target.value)}
-          />
+      >
+        <div className="m-1 capitalize text-center h2-last">Place your bet</div>
 
-          <Button
-            variant="wager"
-            size="lg"
-            className="w-[220px]"
-            onClick={placeBet}
-            isLoading={betEndingLoad}
-            disabled={!active && status !== 1}
+        <div className="mx-auto flex flex-col gap-4 justify-center items-center">
+          <RadioGroup
+            defaultValue="option-one"
+            className="flex flex-col md:grid md:grid-cols-3 gap-4"
+            onValueChange={(value) => setRadioValue(value)}
           >
-            Bet
-          </Button>
-        </div>
+            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+              <TooltipProvider delayDuration={10}>
+                <Tooltip>
+                  <TooltipTrigger className="flex flex-col items-center justify-center">
+                    <Label
+                      htmlFor="option-one"
+                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                    >
+                      <Image
+                        priority
+                        src="/indicator/lastmanfoundIndicator.svg"
+                        height={300}
+                        width={100}
+                        alt="last-man-found-ending"
+                        className="shrink-0 mb-1"
+                      />
+                      <div>Lastman</div>
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="start">
+                    <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                      Only 1 player is left. Everyone gives up or is killed.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <RadioGroupItem value="option-one" id="option-one" />
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Bets(#) </p>
+                <p className=""> {Number(lmfBetCount)}</p>
+              </div>
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Odds </p>
+                <p className="">
+                  {' '}
+                  {formatNumber(lmfOdds, {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  })}
+                  : 1
+                </p>
+              </div>
+            </div>
 
-        {/* Claim */}
-        <div className="m-1 capitalize text-center h2-last">Claim your winnings</div>
+            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+              <TooltipProvider delayDuration={10}>
+                <Tooltip>
+                  <TooltipTrigger className="flex flex-col items-center justify-center">
+                    <Label
+                      htmlFor="option-two"
+                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                    >
+                      <Image
+                        priority
+                        src="/indicator/peacefoundIndicator.svg"
+                        height={300}
+                        width={100}
+                        alt="peace-found-ending"
+                        className="shrink-0 mb-1"
+                      />
+                      <div>Peace</div>
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="start">
+                    <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                      Majority of players that are remaining vote to split pot.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <RadioGroupItem value="option-two" id="option-two" />
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Bets(#) </p>
+                <p className=""> {Number(pfBetCount)}</p>
+              </div>
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Odds </p>
+                <p className="">
+                  {' '}
+                  {formatNumber(pfOdds, {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  })}
+                  : 1
+                </p>
+              </div>
+            </div>
 
-        <div
-          className="rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
-          gap-4 justify-center items-center h3-last
+            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+              <TooltipProvider delayDuration={10}>
+                <Tooltip>
+                  <TooltipTrigger className="flex flex-col items-center justify-center">
+                    <Label
+                      htmlFor="option-three"
+                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                    >
+                      <Image
+                        priority
+                        src="/indicator/drainIndicator.svg"
+                        height={300}
+                        width={100}
+                        alt="drain-ending"
+                        className="shrink-0 mb-1"
+                      />
+                      <div>Drained</div>
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="start">
+                    <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
+                      Players play till the end without splitting the pot.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <RadioGroupItem value="option-three" id="option-three" />
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Bets(#) </p>
+                <p className=""> {Number(dBetCount)}</p>
+              </div>
+              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+                <p className="">Odds </p>
+                <p className="">
+                  {' '}
+                  {formatNumber(dOdds, {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  })}
+                  : 1
+                </p>
+              </div>
+            </div>
+          </RadioGroup>
+          {/* </div> */}
+
+          {/* Bet amount component */}
+          <div
+            className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col 
+          gap-4 justify-center items-center h2-last
           "
-        >
-          <label htmlFor="bet">You won </label>
-          {/* If win. If lose */}
+          >
+            <label htmlFor="bet">Bet Amount (ETH) </label>
+            <input
+              type="text"
+              id="bet"
+              required
+              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
+              value={betAmount}
+              onChange={(e) => setBetAmount(e.target.value)}
+            />
 
-          <div className="text-2xl text-center text-purple-800 dark:text-purple-300 shadow-md border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
-            <p>
-              {formatNumber(0.1, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
+            {active && status === 1 && (
+              <Button
+                variant="wager"
+                size="lg"
+                className="w-[220px]"
+                onClick={placeBet}
+                isLoading={betEndingLoad}
+              >
+                Bet
+              </Button>
+            )}
+
+            {!(active && status === 1) && (
+              <>
+                <Button variant="wager" size="lg" className="w-[220px]" disabled>
+                  Bet
+                </Button>
+                <Prompt docLink={DOCS_URL_safehouse} />
+              </>
+            )}
           </div>
 
-          {!(active && status === 1) && (
-            <>
-              <Button variant="wager" size="lg" className="w-[220px]" disabled>
+          {/* Claim */}
+          <div className="m-1 capitalize text-center h2-last">Claim your winnings</div>
+          {status === 2 && (
+            <div
+              className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col 
+          gap-4 justify-center items-center h2-last
+          "
+            >
+              <label htmlFor="bet">You won </label>
+              {/* If win. If lose */}
+
+              <div className="text-2xl text-center text-purple-800 dark:text-purple-300 shadow-md border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
+                <p>
+                  {formatNumber(0.1, {
+                    maximumFractionDigits: 6,
+                    minimumFractionDigits: 3,
+                  })}{' '}
+                  ETH
+                </p>
+              </div>
+
+              <Button
+                variant="wager"
+                size="lg"
+                className="w-[220px]"
+                onClick={claimWin}
+                isLoading={claimWinningsLoad}
+              >
                 Claim
               </Button>
               <Prompt docLink={DOCS_URL_safehouse} />
-            </>
+            </div>
           )}
-        </div>
 
-        {active && status === 2 && (
-          <>
-            <Button
-              variant="wager"
-              size="lg"
-              className="w-[220px]"
-              onClick={claimHandler}
-              isLoading={isLoading}
-            >
-              Claim
-            </Button>
-          </>
-        )}
-        {/* </div> */}
+          {status !== 2 && <div>It's not time to claim winnings yet</div>}
+        </div>
       </div>
     </div>
   )

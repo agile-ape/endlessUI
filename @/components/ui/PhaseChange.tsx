@@ -113,86 +113,72 @@ const PhaseChange = () => {
       <DialogContent>
         <div className="overflow-auto" ref={modalRef}>
           <DialogHeader className="items-center">
-            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
+            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 h2-last text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
               Trigger the phase change
             </DialogTitle>
             <ScrollArea className="h-[450px] sm:h-[650px] rounded-md p-2">
-              <div className="w-[85%] mx-auto flex flex-col gap-3">
+              <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+                <div className="sm:hidden block flex flex-col">
+                  <Image
+                    priority
+                    src="/lore/ChangePhaseMobile.png"
+                    className="place-self-center rounded-xl"
+                    height={400}
+                    width={650}
+                    alt="change-phase"
+                  />
+                </div>
                 <Image
                   priority
                   src="/lore/ChangePhase.png"
-                  // layout="fill"
-                  // objectFit='cover'
-                  className="place-self-center rounded-xl"
+                  className="hidden sm:block place-self-center rounded-xl"
                   height={400}
                   width={650}
-                  alt="enter-into-the-pepe"
+                  alt="change-phase"
                 />
-
-                {/* <Accordion type="multiple">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>
-                      Notes
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p>Ticket price increases as more tickets are bought.</p>
-                    <p>Price is split to wallet (30%), pot(60%), and treasury(10%).</p>
-                    <p>Players can no longer join the game once it begins.</p>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion> */}
-                <div className="w-[100%] text-base sm:text-lg md:text-xl leading-tight text-zinc-800 dark:text-zinc-200">
-                  <p className="mb-2">
-                    Every phase change needs to be called by one of the players, dead or alive.
-                  </p>
-                  <p className="mb-2">Would you help us usher in the new phase?</p>
-                  <a
-                    href={DOCS_URL_phases}
-                    target="_blank"
-                    className="link text-xs sm:text-sm md:text-base leading-tight"
-                  >
+                <div className="text-center">
+                  <p className="mb-2">Phase change needs to be triggered.</p>
+                  <p className="mb-2">Any player, dead or alive, can do it.</p>
+                  <p className="mb-2">Would you help usher in the new phase?</p>
+                  <a href={DOCS_URL_phases} target="_blank" className="link h6-last align-top">
                     Learn more
                   </a>
                 </div>
 
-                {/* Pay for stay */}
-                {/* <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Join us?
-                </div>
+                <div
+                  className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
+                gap-4 justify-center items-center h3-last
+                "
+                >
+                  <div className="m-1 capitalize text-center h2-last">Do us a favor?</div>
 
-                <div className="w-[240px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="flex text-lg justify-between gap-4">
-                      <p className="text-left">Current phase</p>
-                      <p className="text-right capitalize"> {phase} </p>
+                  <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+                    <div className="w-[100%] mx-auto flex flex-col justify-center">
+                      {phaseChangeActive && (
+                        <Button
+                          variant="default"
+                          onClick={phaseChangeHandler}
+                          isLoading={isLoading}
+                          className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                        >
+                          {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+                          Change phase
+                        </Button>
+                      )}
+
+                      {!phaseChangeActive && (
+                        <Button
+                          disabled
+                          variant="default"
+                          className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                        >
+                          Change phase
+                        </Button>
+                      )}
                     </div>
+                    {!phaseChangeActive && <Prompt docLink={DOCS_URL_phases} />}
                   </div>
-                </div> */}
-
-                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center">
-                  {phaseChangeActive && (
-                    <Button
-                      variant="default"
-                      onClick={phaseChangeHandler}
-                      isLoading={isLoading}
-                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                    >
-                      {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                      Change phase
-                    </Button>
-                  )}
-
-                  {!phaseChangeActive && (
-                    <Button
-                      disabled
-                      variant="default"
-                      className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                    >
-                      Change phase
-                    </Button>
-                  )}
                 </div>
-                {!phaseChangeActive && <Prompt docLink={DOCS_URL_phases} />}
               </div>
             </ScrollArea>
           </DialogHeader>

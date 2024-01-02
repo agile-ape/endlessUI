@@ -13,6 +13,8 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin[]
   orientation?: 'horizontal' | 'vertical'
+  loop?: boolean
+  dragFree?: boolean
   setApi?: (api: CarouselApi) => void
 }
 
@@ -45,6 +47,8 @@ const Carousel = React.forwardRef<
     {
       ...opts,
       axis: orientation === 'horizontal' ? 'x' : 'y',
+      loop: true,
+      dragFree: true,
     },
     plugins,
   )
@@ -110,6 +114,7 @@ const Carousel = React.forwardRef<
         api: api,
         opts,
         orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+        loop: true,
         scrollPrev,
         scrollNext,
         canScrollPrev,

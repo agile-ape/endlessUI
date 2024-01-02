@@ -33,6 +33,14 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'Ooo. Good luck and enjoy the game!',
       }
 
+    case 'claimWin':
+      return {
+        bgImage: 'rainbow',
+        face: 'wine',
+        title: 'Winnings Claimed!',
+        message: 'Congrats on the win sire!',
+      }
+
     //used
     case 'sentTokens':
       return {

@@ -146,7 +146,7 @@ const BuyTicketNew = () => {
   }
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
       <div className="sm:hidden block flex flex-col">
         <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Join game</div>
@@ -179,12 +179,13 @@ const BuyTicketNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">Buy a ticket = Join game.</p>
+        <p className="mb-2">Buy a ticket to join.</p>
         <p className="mb-2">
-          <span className="font-headline day-last">Day</span> comes = Can no longer join.
+          {/* <span className="font-headline day-last">Day</span> comes = Can no longer join. */}
+          Once timer ends, can no longer join.
         </p>
-        <p className="mb-2">More joiners = increasing entry price.</p>
-        <p className="mb-2">Join with a buddy = both increase $LAST earn.</p>
+        <p className="mb-2">Entry price increase slowly as more people joins.</p>
+        <p className="mb-2">Join with buddy to increase $LAST earn.</p>
         <a href={DOCS_URL_buy} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
@@ -238,7 +239,7 @@ const BuyTicketNew = () => {
             <input
               type="text"
               id="buddy"
-              className="w-[6rem] rounded-md my-1 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+              className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
               placeholder={buddyValue}
               onChange={(e) => setBuddyValue(e.target.value)}
             />

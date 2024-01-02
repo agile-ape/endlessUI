@@ -250,10 +250,10 @@ export const SplitPotNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">Vote to split once we reach Stage 2.</p>
-        <p className="mb-2">Games ends once threshold is hit.</p>
+        <p className="mb-2">Vote to split once Stage 2 comes.</p>
+        <p className="mb-2">Games ends once Yes hits threshold.</p>
         <p className="mb-2">Remaining players share remaining pot.</p>
-        <p className="mb-2">Change your mind and vote back No if you want.</p>
+        <p className="mb-2">You can change your mind.</p>
         <a
           href={DOCS_URL_split}
           target="_blank"

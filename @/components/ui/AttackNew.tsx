@@ -336,6 +336,16 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
     }
   }
 
+  const {} = useWaitForTransaction({
+    hash: attackInputData?.hash,
+    onSuccess(data) {
+      if (data.status === 'success') {
+        refetch()
+      }
+      console.log({ data })
+    },
+  })
+
   const [defenderIdInput, setDefenderIdInput] = useState<string>('')
 
   /*------------ Attack from TicketList - full screen ------------*/
@@ -396,7 +406,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
 
   return (
     <>
-      <div className="w-[85%] mx-auto flex flex-col gap-3 m-16 body-last">
+      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
         <div className="sm:hidden block flex flex-col">
           <div className="flex items-center justify-center gap-2 mt-2">
             <div className="h1-last text-center">Attack</div>
@@ -418,6 +428,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
             alt="attack-player"
           />
         </div>
+
         <Image
           priority
           src="/lore/AttackPlayer.png"
@@ -428,25 +439,15 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Players dies if he did not submit keyword.</p>
+          <p className="mb-2">Players dies if never submit keyword.</p>
+          <p className="mb-2">Attacks get $LAST tokens (Stage 1).</p>
           <p className="mb-2">
-            Each attack gets $LAST token
-            <span className="font-semibold">(Stage 1)</span>.
-          </p>
-          <p className="mb-2">
-            Player can only be attacked once per{' '}
+            Each player can only be attacked once per{' '}
             <span className="font-headline night-last">Night</span>.
           </p>
-
-          <div className="flex mb-2 border rounded-lg border-zinc-800 dark:border-zinc-200 py-2 px-3">
-            <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-            <p>
-              Ticket value of killed ticket does not go to killer.
-              <a href={DOCS_URL_waterfall} target="_blank" className="link">
-                See value waterfall.
-              </a>{' '}
-            </p>
-          </div>
+          <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
+            <p className="mb-2">Ticket value of killed ticket does not go to killer.</p>
+          </a>{' '}
           <a href={DOCS_URL_attack} target="_blank" className="link h6-last align-top">
             Learn more
           </a>
@@ -457,31 +458,42 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
                 gap-4 justify-center items-center h3-last
                 "
         >
-          <div className="m-1 capitalize text-center h2-last">Attack Player?</div>
+          <div className="m-1 capitalize text-center h2-last">Attacking?</div>
 
           <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
             <div className="">
               <div className="grid grid-cols-2 gap-1">
                 <p className="text-left">$LAST per attack</p>
-                <p className="text-right">
-                  {/* {stage} */}
-                  {tokensFarmed}
-                </p>
+                <p className="text-right">{tokensFarmed}</p>
               </div>
 
-              {idList && (
-                <>
-                  <div className="grid grid-cols-2 gap-1">
-                    <p className="text-left">Player value</p>
-                    <p className="text-right"> {formatUnits(BigInt(defenderValue), 18)} ETH</p>
-                  </div>
+              <div>
+                {idList && (
+                  <>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Player value</p>
+                      <p className="text-right"> {formatUnits(BigInt(defenderValue), 18)} ETH</p>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-1">
-                    <p className="text-left">Player last seen at</p>
-                    <p className="text-right round-last"> {defenderLastSeen} </p>
-                  </div>
-                </>
-              )}
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Player last seen at</p>
+                      <p className="text-right round-last"> {defenderLastSeen} </p>
+                    </div>
+
+                    <Button
+                      variant="attack"
+                      size="lg"
+                      className="w-[100%] mt-4"
+                      onClick={attackListHandler}
+                      isLoading={attackListIsLoading}
+                      disabled={!attackListActive}
+                    >
+                      Attack Player #{idList}
+                    </Button>
+                    {!attackListActive && <Prompt docLink={DOCS_URL_attack} />}
+                  </>
+                )}
+              </div>
             </div>
 
             {phase === 'night' && isAttackTime === false && (
@@ -490,34 +502,14 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
               </div>
             )}
 
-            {idList && (
-              <>
-                <Button
-                  variant="attack"
-                  size="lg"
-                  className="w-[100%]"
-                  onClick={attackListHandler}
-                  isLoading={attackListIsLoading}
-                  disabled={!attackListActive}
-                >
-                  Attack Player #{idList}
-                </Button>
-                {!attackListActive && <Prompt docLink={DOCS_URL_attack} />}
-              </>
-            )}
-
             {!idList && (
-              <div
-                className="rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
-              gap-4 justify-center items-center h3-last
-              "
-              >
-                <label htmlFor="attack">Who you attacking?</label>
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <label htmlFor="attack">Player #</label>
                 <input
                   type="text"
                   id="attack"
                   required
-                  className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />

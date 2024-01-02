@@ -142,22 +142,22 @@
 
   /* links */
   .link {
-    @apply italic whitespace-nowrap bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4;
+    @apply italic bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4;
   }
 
   /* titles */
   .h1-last {
-    @apply text-2xl text-zinc-700 dark:text-zinc-400;
+    @apply text-3xl text-zinc-700 dark:text-zinc-400;
   }
 
   /* modal sections */
   .h2-last {
-    @apply text-xl md:text-2xl lg:text-3xl text-zinc-700 dark:text-zinc-400;
+    @apply text-2xl md:text-2xl lg:text-3xl text-zinc-700 dark:text-zinc-400;
   }
 
   /* modal subsections */
   .h3-last {
-    @apply text-lg md:text-xl lg:text-2xl text-zinc-600 dark:text-zinc-200;
+    @apply text-xl md:text-xl lg:text-2xl text-zinc-600 dark:text-zinc-200;
   }
 
   /* key trackers */
@@ -165,7 +165,7 @@
     @apply text-xl sm:text-2xl text-zinc-500 dark:text-zinc-200;
   }
   .body-last {
-    @apply text-base sm:text-lg md:text-xl leading-tight text-zinc-600 dark:text-zinc-200;
+    @apply text-xl sm:text-lg md:text-xl leading-tight text-zinc-600 dark:text-zinc-200;
   }
 
   /* .h5-last {

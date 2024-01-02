@@ -56,8 +56,10 @@ const KeyTrackers = () => {
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" align="center" className="hidden sm:block">
-              <p className="px-3 py-1 max-w-[240px] text-sm">
-                Value in Pot | Players Left | Next Ticket Price or Yes Votes
+              <p className="px-3 py-1 max-w-[260px] text-sm">
+                {`Value in Pot | Players Left | ${
+                  phase === 'start' ? 'Next Ticket Price' : 'Yes Votes'
+                } `}
               </p>
             </TooltipContent>
           </Tooltip>

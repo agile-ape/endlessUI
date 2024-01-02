@@ -26,6 +26,7 @@ import AttackNew from './AttackNew'
 import KickOutNew from './KickOutNew'
 import BuyTicketNew from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
+import TokenNew from './TokenNew'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -46,7 +47,7 @@ const titleMapping: { [key: string]: string } = {
   wager: 'Place Your Bets',
   attack: 'Attack Player',
   kickOut: 'Kick Out Player',
-  token: '',
+  token: 'Send Tokens',
   dashboard: 'Dashboard',
 }
 
@@ -66,7 +67,6 @@ const indicatorMapping: { [key: string]: string } = {
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
-  phaseChange: <Submit />,
   buyTicket: <BuyTicketNew />,
   exitGame: <ExitGameNew />,
   submit: <Submit />,
@@ -74,7 +74,7 @@ const modalMapping: { [key: string]: JSX.Element } = {
   checkOut: <CheckOutNew />,
   splitIt: <SplitPotNew />,
   wager: <WagerNew />,
-  token: <Submit />,
+  token: <TokenNew />,
   dashboard: <DashboardNew />,
 }
 
@@ -100,7 +100,7 @@ const Modal: FC<ModalType> = ({ action, toggle, id }) => {
                 </span>
               </button>
               <div className="items-center pt-10">
-                <div className="w-[85%] mx-auto flex justify-between p-2 h2-last items-center text-center font-normal">
+                <div className="w-[85%] mx-auto flex justify-between p-2 h2-last items-center text-center h2-last">
                   <div className="">{titleMapping[action]}</div>
                   {indicatorMapping[action] && (
                     <Image

@@ -119,6 +119,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
     args: [idAddress as `0x${string}`],
   })
 
+  const defenderAddress = defenderTicket?.[1] || ''
   const defenderStatus = defenderTicket?.[3] || 0
   const defenderIsInPlay = Boolean(defenderTicket?.[5] || 0)
   const defenderValue = defenderTicket?.[7] || BigInt(0)
@@ -152,30 +153,77 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
   /*------------ Kick out from carousel input - mobile ------------*/
 
   // Active condition
-  const kickOutInputActive: boolean =
-    active &&
-    defenderIsInPlay === true &&
-    defenderStatusString === 'safe' &&
-    defenderCheckOutRound <= round
+  const kickOutInputActive: boolean = active
 
   // Contract write
-  // const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const {
-    data: kickOutData,
-    writeAsync,
-    isLoading,
+    data: kickOutInputData,
+    writeAsync: kickOutFromInput,
+    isLoading: kickOutInputIsLoading,
   } = useContractWrite({
     ...defaultContractObj,
     functionName: 'kickOutFromSafehouse',
   })
 
-  const kickOutHandler = async () => {
+  const kickOutInputHandler = async () => {
     try {
-      const tx = await writeAsync({
+      if (defenderAddress.toLowerCase() === address?.toLowerCase()) {
+        throw new Error('You cannot kick out yourself!')
+      }
+
+      const tx = await kickOutFromInput({
+        args: [BigInt(defenderIdInput)],
+      })
+      const hash = tx.hash
+
+      setIsModalOpen(false)
+
+      updateCompletionModal({
+        isOpen: true,
+        state: 'kickedOut',
+      })
+    } catch (error: any) {
+      const errorMsg =
+        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+
+      toast({
+        variant: 'destructive',
+        // title: 'Kick out failed',
+        description: <p>{errorMsg}</p>,
+      })
+    }
+  }
+
+  const [defenderIdInput, setDefenderIdInput] = useState<string>('')
+
+  /*------------ Kick out from TicketList - full screen  ------------*/
+  const kickOutListActive: boolean =
+    active &&
+    defenderIsInPlay === true &&
+    defenderStatusString === 'safe' &&
+    defenderCheckOutRound <= round
+
+  const {
+    data: kickOutListData,
+    writeAsync: kickOutFromList,
+    isLoading: kickOutListIsLoading,
+  } = useContractWrite({
+    ...defaultContractObj,
+    functionName: 'kickOutFromSafehouse',
+  })
+
+  const kickOutListHandler = async () => {
+    try {
+      if (defenderAddress.toLowerCase() === address?.toLowerCase()) {
+        throw new Error('You cannot kick out yourself!')
+      }
+
+      const tx = await kickOutFromInput({
         args: [BigInt(idList || 0)],
       })
       const hash = tx.hash
@@ -197,155 +245,144 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
       })
     }
   }
-  /*------------ Kick out from TicketList - full screen  ------------*/
-  const kickOutListActive: boolean =
-    active &&
-    defenderIsInPlay === true &&
-    defenderStatusString === 'safe' &&
-    defenderCheckOutRound <= round
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {/* Button to click on */}
-        <Button variant="kickOut" className="w-full py-1 text-lg h-8 rounded-md">
-          <OnSignal active={kickOutActive} own={false} />
-          Kick Out
-        </Button>
-      </DialogTrigger>
-
-      <DialogContent>
-        <div className="overflow-auto">
-          <DialogHeader className="items-center">
-            <DialogTitle className="w-[85%] mx-auto flex justify-between p-2 text-xl sm:text-2xl md:text-3xl items-center text-center font-normal">
-              Kick player out
-              <Image
-                priority
-                src={`/indicator/nightIndicator.svg`}
-                height={300}
-                width={60}
-                // fill={true}
-                // sizes="max-width:150px"
-                className=""
-                // layout="fixed"
-                alt={`nightIndicator`}
-              />
-              {/* <div className="night-last">
-                <span className="font-headline">Night</span> Action
-              </div> */}
-            </DialogTitle>
-            <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
-                <Image
-                  priority
-                  src="/lore/KickOut.png"
-                  // layout="fill"
-                  // objectFit='cover'
-                  className="place-self-center rounded-xl"
-                  height={400}
-                  width={650}
-                  alt="enter-into-the-pepe"
-                />
-
-                <div className="w-[100%] text-base sm:text-lg md:text-xl text-zinc-800 dark:text-zinc-200">
-                  <p className="leading-tight mb-2">Kick out players that overstay in Safehouse.</p>
-                  <p className="leading-tight mb-2">
-                    Track their check out round: Once it is the{' '}
-                    <span className="font-headline night-last">Night</span> of their check out
-                    round, you can kick them out.
-                  </p>
-
-                  <div className="flex mb-2 border border-zinc-800 dark:border-zinc-200 rounded-lg py-2 px-3">
-                    <AlertCircle size={48} className="align-top mr-2"></AlertCircle>
-                    <p>
-                      Killed ticket value does not go to the killer. It follows the{' '}
-                      <a href={DOCS_URL_waterfall} target="_blank" className="link">
-                        value waterfall
-                      </a>{' '}
-                      rule.
-                    </p>
-                  </div>
-
-                  <a
-                    href={DOCS_URL_kickout}
-                    target="_blank"
-                    className="link text-xs sm:text-sm md:text-base leading-tight"
-                  >
-                    Learn more
-                  </a>
-                </div>
-
-                {/* Pay for stay */}
-                <div className="text-xl md:text-2xl lg:text-3xl m-1 capitalize flex justify-center text-zinc-500 dark:text-zinc-400">
-                  Kick Player #{id} Out?
-                </div>
-
-                <div className="w-[220px] md:w-[320px] mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-                  <div className="w-[100%] text-zinc-800 dark:text-zinc-200">
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left"> Player value</p>
-                      <p className="text-right">{formatUnits(defenderValue, 18)}ETH</p>
-                    </div>
-
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left"> Check out round</p>
-                      <p className="text-right underline"> {defenderCheckOutRound} </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 text-lg gap-1">
-                      <p className="text-left">Current round</p>
-                      <p className="text-right underline"> {round} </p>
-                    </div>
-
-                    {defenderCheckOutRound > round && (
-                      <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
-                        Not yet. He can still chill
-                      </p>
-                    )}
-
-                    {defenderCheckOutRound === round && phase === 'day' && (
-                      <p className="text-xl text-amber-600 mt-2 text-center">
-                        Watch him. He got to check out now
-                      </p>
-                    )}
-
-                    {defenderCheckOutRound === round && phase === 'night' && (
-                      <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
-                    )}
-
-                    {defenderCheckOutRound <= round && (
-                      <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
-                    )}
-                  </div>
-
-                  {kickOutActive && (
-                    <Button
-                      variant="kickOut"
-                      size="lg"
-                      className="w-[100%]"
-                      onClick={kickOutHandler}
-                      isLoading={isLoading}
-                    >
-                      {/* {IsCurrentRound>=CheckOutDay ? 'Kick out' : 'Not yet'} */}
-                      Kick Out Player #{id}
-                    </Button>
-                  )}
-
-                  {!kickOutActive && (
-                    <>
-                      <Button variant="kickOut" size="lg" className="w-[100%]" disabled>
-                        Kick Out
-                      </Button>
-                      <Prompt docLink={DOCS_URL_kickout} />
-                    </>
-                  )}
-                </div>
-              </DialogDescription>
-            </ScrollArea>
-          </DialogHeader>
+    <>
+      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+        <div className="sm:hidden block flex flex-col">
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <div className="h1-last text-center">Kick Out</div>
+            <Image
+              priority
+              src={`/indicator/nightIndicator.svg`}
+              height={300}
+              width={60}
+              className=""
+              alt="nightIndicator"
+            />
+          </div>
+          <Image
+            priority
+            src="/lore/KickOutMobile.png"
+            className="place-self-center rounded-xl"
+            height={400}
+            width={650}
+            alt="kick-out-player"
+          />
         </div>
-      </DialogContent>
-    </Dialog>
+        <Image
+          priority
+          src="/lore/KickOut.png"
+          className="hidden sm:block place-self-center rounded-xl"
+          height={400}
+          width={650}
+          alt="kick-out-player"
+        />
+
+        <div className="text-center">
+          <p className="mb-2">Kick players out that overstay.</p>
+          <p className="mb-2">Kicked out = Killed</p>
+          <p className="mb-2">
+            Kick once it is <span className="font-headline night-last">Night</span> of their check
+            out round
+          </p>
+          <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
+            <p className="mb-2">Ticket value of killed ticket does not go to killer.</p>
+          </a>{' '}
+          <a href={DOCS_URL_kickout} target="_blank" className="link h6-last align-top">
+            Learn more
+          </a>
+        </div>
+
+        <div
+          className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
+                gap-4 justify-center items-center h3-last
+                "
+        >
+          <div className="m-1 capitalize text-center h2-last">Kick Some Ass</div>
+
+          <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+            {idList && (
+              <>
+                <div className="">
+                  <div className="grid grid-cols-2 text-lg gap-1">
+                    <p className="text-left"> Player value</p>
+                    <p className="text-right">{formatUnits(defenderValue, 18)}ETH</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 text-lg gap-1">
+                    <p className="text-left"> Check out round</p>
+                    <p className="text-right underline"> {defenderCheckOutRound} </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 text-lg gap-1">
+                    <p className="text-left">Current round</p>
+                    <p className="text-right underline"> {round} </p>
+                  </div>
+
+                  {defenderCheckOutRound > round && (
+                    <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
+                      Not yet. He can still chill
+                    </p>
+                  )}
+
+                  {defenderCheckOutRound === round && phase === 'day' && (
+                    <p className="text-xl text-amber-600 mt-2 text-center">
+                      Watch him. He got to check out now
+                    </p>
+                  )}
+
+                  {defenderCheckOutRound === round && phase === 'night' && (
+                    <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
+                  )}
+
+                  {defenderCheckOutRound <= round && (
+                    <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
+                  )}
+                </div>
+
+                <Button
+                  variant="kickOut"
+                  size="lg"
+                  className="w-[100%] mt-4"
+                  onClick={kickOutListHandler}
+                  isLoading={kickOutListIsLoading}
+                  disabled={!kickOutListActive}
+                >
+                  Kick Out Player #{idList}
+                </Button>
+                {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />}
+              </>
+            )}
+
+            {!idList && (
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <label htmlFor="kickOut">Player #</label>
+                <input
+                  type="text"
+                  id="kickOut"
+                  required
+                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
+                  value={defenderIdInput}
+                  onChange={(e) => setDefenderIdInput(e.target.value)}
+                />
+                <Button
+                  variant="kickOut"
+                  size="lg"
+                  className="w-[100%]"
+                  onClick={kickOutInputHandler}
+                  isLoading={kickOutInputIsLoading}
+                  disabled={!kickOutInputActive}
+                >
+                  Kick out
+                </Button>
+                {!kickOutInputActive && <Prompt docLink={DOCS_URL_kickout} />}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
