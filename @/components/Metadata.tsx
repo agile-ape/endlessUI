@@ -58,6 +58,9 @@ const Metadata = ({
       <meta property="product:price:amount" content="0.00" />
       <meta property="product:price:currency" content="USD" />
       <link rel="shortcut icon" href={`/logo/game-logo.png`} type="image/png" />
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="apple-touch-icon" href="/logo/game-logo.png" />
+      <link href="/images/icons/icon-128x128.png" rel="icon" type="image/png" sizes="128x128" />
 
       <meta property="og:site_name" content="Last Man" />
       <meta property="og:locale" content={'en'} />

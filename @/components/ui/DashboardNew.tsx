@@ -34,7 +34,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import { formatAddress, formatNumber, cn } from '@/lib/utils'
+import { formatAddress, formatNumber, cn, copyToClipboard } from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
   LAST_MAN_STANDING_ADDRESS,
@@ -157,6 +157,15 @@ export default function DashboardNew() {
   const playCount = data?.[0].result || BigInt(0)
   const sideQuestCount = data?.[1].result || BigInt(0)
 
+  function copyAddress() {
+    copyToClipboard(activeWallet?.address || '')
+    toast({
+      variant: 'success',
+      title: 'Address copied',
+      description: 'Address copied to clipboard',
+    })
+  }
+
   // potential to add game stats
   return (
     <div className="w-[85%] mx-auto flex flex-col mb-16 body-last">
@@ -188,7 +197,7 @@ export default function DashboardNew() {
                 {formatAddress(String(activeWallet?.address))}
               </a>
             </span>
-            <span>
+            <span onClick={copyAddress}>
               <Copy size={18} />
             </span>
           </p>

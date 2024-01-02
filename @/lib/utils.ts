@@ -142,3 +142,7 @@ export function transformPlayerTicket(playerTicket: any, test?: any): Ticket {
     contractAddress: LAST_MAN_STANDING_ADDRESS,
   }
 }
+
+export function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text)
+}
