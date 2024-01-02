@@ -154,11 +154,12 @@ const WagerNew = () => {
   // Compute payoff - before or after fees?
 
   // Contract write
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  // const [isModalOpen, setIsModalOpen] = useState(false)
   const [betAmount, setBetAmount] = useState<string>('')
+  const [radioValue, setRadioValue] = useState<string>('')
 
-  const modalRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(modalRef, () => setIsModalOpen(false))
+  // const modalRef = useRef<HTMLDivElement | null>(null)
+  // useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const {
     data: betEndingData,
@@ -177,7 +178,7 @@ const WagerNew = () => {
       const hash = doBetEnding.hash
       setBetAmount('')
 
-      setIsModalOpen(false)
+      // setIsModalOpen(false)
 
       updateCompletionModal({
         isOpen: true,
@@ -207,6 +208,16 @@ const WagerNew = () => {
       console.log({ data })
     },
   })
+
+  function claimHandler() {
+    const radioParam: Record<string, number> = {
+      'option-one': 4,
+      'option-two': 5,
+      'option-three': 6,
+    }
+
+    const param = radioParam[radioValue]
+  }
 
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
@@ -248,6 +259,7 @@ const WagerNew = () => {
         <RadioGroup
           defaultValue="option-one"
           className="flex flex-col md:grid md:grid-cols-3 gap-4"
+          onValueChange={(value) => setRadioValue(value)}
         >
           <div className="flex flex-col items-center border rounded-md border-zinc-400 dark:border-zinc-200 space-x-2">
             <TooltipProvider delayDuration={10}>
@@ -355,26 +367,16 @@ const WagerNew = () => {
             onChange={(e) => setBetAmount(e.target.value)}
           />
 
-          {active && status === 1 && (
-            <Button
-              variant="wager"
-              size="lg"
-              className="w-[220px]"
-              onClick={placeBet}
-              isLoading={betEndingLoad}
-            >
-              Bet
-            </Button>
-          )}
-
-          {!(active && status === 1) && (
-            <>
-              <Button variant="wager" size="lg" className="w-[220px]" disabled>
-                Bet
-              </Button>
-              <Prompt docLink={DOCS_URL_safehouse} />
-            </>
-          )}
+          <Button
+            variant="wager"
+            size="lg"
+            className="w-[220px]"
+            onClick={placeBet}
+            isLoading={betEndingLoad}
+            disabled={!active && status !== 1}
+          >
+            Bet
+          </Button>
         </div>
 
         {/* Claim */}
