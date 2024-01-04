@@ -97,6 +97,7 @@ type ActionType =
   | 'exitGame'
   | 'token'
 import type { Ticket } from 'types/app'
+import { socket } from '@/lib/socket'
 
 type MobileActionType = {
   label: string
@@ -209,6 +210,10 @@ export default function Screen() {
   const { login } = useLogin({
     onComplete: () => {
       console.log('User logged in')
+
+      setTimeout(() => {
+        socket.connect()
+      }, 2000)
 
       toast({
         variant: 'success',

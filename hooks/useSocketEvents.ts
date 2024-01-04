@@ -7,15 +7,15 @@ export interface Event {
 }
 
 export function useSocketEvents(events: Event[]) {
-  useEffect(() => {
-    if (!socket.connected) {
-      socket.connect()
-    }
+  // useEffect(() => {
+  //   if (!socket.connected) {
+  //     socket.connect()
+  //   }
 
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
+  //   return () => {
+  //     socket.disconnect()
+  //   }
+  // }, [])
 
   useEffect(() => {
     for (const event of events) {
