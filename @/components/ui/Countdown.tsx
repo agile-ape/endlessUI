@@ -1,18 +1,24 @@
 import Image from 'next/image'
-
 import { HelpCircle } from 'lucide-react'
 import { Timer } from 'lucide-react'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from './button'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
 import { defaultContractObj, DOCS_URL, WEBSOCKET_ENDPOINT } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
-import PhaseChange from './PhaseChange'
+import PhaseChange from './_PhaseChange'
+import Modal from './Modal'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
 import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
+import OnSignal from './OnSignal'
+import PhaseChangeNew from './PhaseChangeNew'
+import { PhaseChangeActive } from './PhaseChangeNew'
+import { useWindowSize } from '../../../hooks/useWindowSize'
+import { useTheme } from 'next-themes'
+
 type TimeLeftType = {
   hours: number
   minutes: number
@@ -31,8 +37,23 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
+const bgColorPhase: Record<string, string> = {
+  start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
+  day: 'text-white border border-white bg-green-600 hover:bg-green-700',
+  night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
+  lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
+  peacefound: 'bg-blue-800 hover:bg-blue-900',
+  drain: 'bg-red-400 hover:bg-red-500',
+}
+
 export default function Countdown() {
   const phase = useStoreState((state) => state.phase)
+  const phaseChangeActive = PhaseChangeActive()
+  const { xs } = useWindowSize()
+  const { forcedTheme } = useTheme()
+
+  const [showPhaseChangeModal, setShowPhaseChangeModal] = React.useState<boolean>(false)
+  const togglePhaseChange = () => setShowPhaseChangeModal((prevState) => !prevState)
 
   const [timeLeft, setTimeLeft] = useState<number>()
   const [timeFlag, setTimeFlag] = useState<number>()
@@ -199,10 +220,42 @@ export default function Countdown() {
               </TooltipProvider>
             ) : (
               <div className="">
-                <PhaseChange />
+                {/* <PhaseChange /> */}
+
+                {xs ? (
+                  <div className="flex">
+                    <span>Use </span>
+                    <span className="text-black dark:text-white flex mr-1">
+                      {' '}
+                      <Image
+                        priority
+                        src={forcedTheme === 'light' ? `/icon/phase.svg` : `/icon/phaseDark.svg`}
+                        className="ml-1 mr-1"
+                        height={20}
+                        width={20}
+                        alt="change-phase"
+                      />
+                      Phase
+                    </span>
+                    to change phase
+                  </div>
+                ) : (
+                  <Button
+                    variant="default"
+                    className={cn(
+                      'text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3',
+                      bgColorPhase[phase],
+                    )}
+                    onClick={togglePhaseChange}
+                  >
+                    <OnSignal active={phaseChangeActive} own={true} />
+                    Change phase
+                  </Button>
+                )}
               </div>
             )}
           </div>
+          {showPhaseChangeModal && <Modal action={'phaseChange'} toggle={togglePhaseChange} />}
         </div>
       )}
     </>

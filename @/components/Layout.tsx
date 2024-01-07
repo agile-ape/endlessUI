@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
 import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
-import WelcomeModal from './ui/WelcomeModal'
+import WelcomeModal from './ui/_WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
@@ -52,6 +52,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
   const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
   const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
+  const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
 
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
   const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
@@ -62,16 +63,16 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-    return result
-  })
+  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+  //   const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+  //   const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+  //   return result
+  // })
 
-  const toggleModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-    localStorage.setItem('showWelcomeModal', 'false')
-  }
+  // const toggleModal = () => {
+  //   setShowWelcomeModal((prevState) => !prevState)
+  //   localStorage.setItem('showWelcomeModal', 'false')
+  // }
 
   const router = useRouter()
   // const { wallet: activeWallet } = usePrivyWagmi()
@@ -282,6 +283,11 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'nextTicketPrice',
       },
+      {
+        ...tokenContractObj,
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      },
     ],
     enabled: isConnected,
   })
@@ -296,6 +302,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     const drainStart = data[6]?.result || 0
     const drainSwitch = Boolean(data[7]?.result || 0)
     const nextTicketPrice = data[8]?.result || BigInt(0)
+    const balanceOf = data?.[9].result || BigInt(0)
 
     // compute stage
     let stage: number
@@ -322,6 +329,11 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       minimumFractionDigits: 3,
     })
 
+    const tokenBalance = formatNumber(formatUnits(balanceOf, 18), {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    })
+
     updateRound(Number(round))
     updatePhase(Number(phase))
     updateStage(Number(stage))
@@ -330,6 +342,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     updateTicketCount(Number(ticketCount))
     updateVoteCount(Number(voteCount))
     updateNextTicketPrice(Number(nextTicketPriceInEth))
+    updateTokenBalance(Number(tokenBalance))
   }
 
   const refreshData = () => {

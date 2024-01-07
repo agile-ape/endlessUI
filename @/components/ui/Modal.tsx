@@ -27,6 +27,7 @@ import KickOutNew from './KickOutNew'
 import BuyTicketNew from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
 import TokenNew from './TokenNew'
+import PhaseChangeNew from './PhaseChangeNew'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -37,7 +38,7 @@ type ModalType = {
 }
 
 const titleMapping: { [key: string]: string } = {
-  phaseChange: '',
+  phaseChange: 'Trigger phase change',
   buyTicket: 'Join Game',
   exitGame: 'Exit Game',
   submit: 'Submit keyword of the day',
@@ -67,6 +68,7 @@ const indicatorMapping: { [key: string]: string } = {
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
+  phaseChange: <PhaseChangeNew />,
   buyTicket: <BuyTicketNew />,
   exitGame: <ExitGameNew />,
   submit: <Submit />,
@@ -100,7 +102,7 @@ const Modal: FC<ModalType> = ({ action, toggle, id }) => {
                 </span>
               </button>
               <div className="items-center pt-10">
-                <div className="w-[85%] mx-auto flex justify-between p-2 h2-last items-center text-center h2-last">
+                <div className="w-[85%] mx-auto flex justify-between p-2 items-center text-center h1-last">
                   <div className="">{titleMapping[action]}</div>
                   {indicatorMapping[action] && (
                     <Image

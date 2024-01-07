@@ -41,6 +41,7 @@ interface IApp {
   ticketCount: number
   voteCount: number
   nextTicketPrice: number
+  tokenBalance: number
 
   tickets: Ticket[]
 }

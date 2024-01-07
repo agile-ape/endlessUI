@@ -384,7 +384,7 @@ export default function Admin() {
           <DialogHeader className="items-center">
             <DialogTitle className="text-3xl text-center font-normal">Game Master</DialogTitle>
             <ScrollArea className="h-[650px] md:h-[600px] rounded-md p-2">
-              <DialogDescription className="w-[85%] mx-auto flex flex-col gap-3">
+              <DialogDescription className="w-[90%] mx-auto flex flex-col gap-3">
                 <Image
                   priority
                   src="/lore/TokenImage.png"

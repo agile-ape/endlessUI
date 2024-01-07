@@ -152,12 +152,12 @@
 
   /* modal sections */
   .h2-last {
-    @apply text-2xl md:text-2xl lg:text-3xl text-zinc-700 dark:text-zinc-400;
+    @apply text-2xl sm:text-2xl text-zinc-700 dark:text-zinc-400;
   }
 
   /* modal subsections */
   .h3-last {
-    @apply text-xl md:text-xl lg:text-2xl text-zinc-600 dark:text-zinc-200;
+    @apply text-xl sm:text-xl text-zinc-600 dark:text-zinc-200;
   }
 
   /* key trackers */
@@ -168,9 +168,9 @@
     @apply text-xl sm:text-lg md:text-xl leading-tight text-zinc-600 dark:text-zinc-200;
   }
 
-  /* .h5-last {
-    @apply text-xl text-zinc-500 dark:text-zinc-300;
-  } */
+  .h5-last {
+    @apply text-base text-zinc-500 dark:text-zinc-300;
+  }
 
   /* links */
   .h6-last {

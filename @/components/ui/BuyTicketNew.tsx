@@ -226,9 +226,9 @@ const BuyTicketNew = () => {
               <p className="text-right"> {ticketsLeft} </p>
             </div>
 
-            <div className="grid grid-cols-2 text-lg gap-1">
-              <p className="text-left leading-tight">Next price</p>
-              <p className="text-right align-middle"> {nextPrice} ETH </p>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Next price</p>
+              <p className="text-right"> {nextPrice} ETH </p>
             </div>
           </div>
 

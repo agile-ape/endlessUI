@@ -8,13 +8,13 @@ import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useAccount, useContractWrite, useContractReads } from 'wagmi'
 import { LAST_MAN_STANDING_ADDRESS, defaultContractObj } from '../../../services/constant'
-import { fetcher, formatNumber, transformToTicket } from '@/lib/utils'
+import { scrollToTop, fetcher, formatNumber, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
 import useSWR from 'swr'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import type { Ticket } from 'types/app'
+import { ArrowUpToLine } from 'lucide-react'
 
 const TicketList = () => {
   const currentPot = useStoreState((state) => state.currentPot)
@@ -55,13 +55,13 @@ const TicketList = () => {
   }
 
   return (
-    <div className="sm:container-last grow rounded-xl py-2">
+    <div className="">
       <summary
         className="list-none
         relative px-6 py-0 flex flex-col"
       >
-        <div className="flex flex-col items-center md:flex-row md:justify-between">
-          {xs ? '' : <KeyTrackers />}
+        <div className="flex flex-col items-center md:flex-row justify-between">
+          <div className="grow">{xs ? '' : <KeyTrackers />}</div>
 
           {/* <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-0 sm:py-2">
             <TooltipProvider delayDuration={10}>
@@ -165,7 +165,7 @@ const TicketList = () => {
         </div>
       </summary>
 
-      {!totalTicketCount && (
+      {/* {!totalTicketCount && (
         <div className="flex flex-col justify-center items-center my-8">
           <Image
             priority
@@ -199,7 +199,48 @@ const TicketList = () => {
               <TicketUI key={item.id} ownTicket={false} ticketNumber={item.id} ticket={item} />
             ))}
         </div>
+      )} */}
+
+      {totalTicketCount ? (
+        <div
+          className="
+            flex
+            w-[100%]
+            justify-evenly
+            sm:justify-start
+            gap-x-6
+            gap-y-6
+            flex-wrap
+            px-6 py-6
+            overflow-y-scroll
+          "
+        >
+          {ticketListState
+            .sort((a, b) => a.id - b.id)
+            .map((item, i) => (
+              <TicketUI key={item.id} ownTicket={false} ticketNumber={item.id} ticket={item} />
+            ))}
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center my-8">
+          <Image
+            priority
+            src="/pepe/waiting.png"
+            className=""
+            height={400}
+            width={xs ? 150 : 250}
+            alt="waiting-for-players"
+          />
+          <div className="text-center my-2 text-lg sm:text-3xl">hmm...</div>
+        </div>
       )}
+
+      <button
+        className="sm:hidden fixed bottom-12 right-2 rounded-full border border-black dark:border-white p-1 cursor-pointer"
+        onClick={scrollToTop}
+      >
+        <ArrowUpToLine size={18} className="" />
+      </button>
     </div>
   )
 }

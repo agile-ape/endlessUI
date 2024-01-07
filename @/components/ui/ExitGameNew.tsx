@@ -257,7 +257,7 @@ const ExitGameNew = () => {
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-2xl text-center text-purple-800 dark:text-purple-300 shadow-md border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
-          {ticketStatusString === 'exited' && (
+          {/* {ticketStatusString === 'exited' && (
             <p>
               {formatNumber(ticketClaimed, {
                 maximumFractionDigits: 6,
@@ -277,6 +277,32 @@ const ExitGameNew = () => {
             </p>
           )}
           {ticketIsInPlay && (
+            <p>
+              {formatNumber(exitClaim, {
+                maximumFractionDigits: 6,
+                minimumFractionDigits: 3,
+              })}{' '}
+              ETH
+            </p>
+          )} */}
+
+          {ticketStatusString === 'exited' ? (
+            <p>
+              {formatNumber(ticketClaimed, {
+                maximumFractionDigits: 6,
+                minimumFractionDigits: 3,
+              })}{' '}
+              ETH
+            </p>
+          ) : ticketStatusString === 'dead' ? (
+            <p>
+              {formatNumber(killClaim, {
+                maximumFractionDigits: 6,
+                minimumFractionDigits: 3,
+              })}{' '}
+              ETH
+            </p>
+          ) : (
             <p>
               {formatNumber(exitClaim, {
                 maximumFractionDigits: 6,
@@ -327,7 +353,7 @@ const ExitGameNew = () => {
 
             <div className="text-center h3-last">Claim stats</div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">If last till now</p>
+              <p className="text-left">If alive and exit now</p>
               <p className="text-right">
                 {/* {`${rankClaim} ETH`}  */}
                 {formatNumber(exitClaim, {
@@ -338,7 +364,7 @@ const ExitGameNew = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Last Man can claim</p>
+              <p className="text-left">Lastman gets</p>
               <p className="text-right">
                 {/* {Number(lastManClaim)} ETH  */}
                 {formatNumber(lastManClaim, {
@@ -350,7 +376,7 @@ const ExitGameNew = () => {
             </div>
           </div>
 
-          {ticketStatusString === 'exited' && (
+          {/* {ticketStatusString === 'exited' && (
             <Button variant="exit" size="lg" className="w-[100%]" disabled>
               You have exited
             </Button>
@@ -370,6 +396,32 @@ const ExitGameNew = () => {
             </Button>
           )}
           {ticketStatusString !== 'exited' && !active && (
+            <>
+              <Button variant="exit" size="lg" className="w-[100%]" disabled>
+                Exit Game
+              </Button>
+              <Prompt docLink={DOCS_URL_exit} />
+            </>
+          )} */}
+
+          {ticketStatusString === 'exited' ? (
+            <Button variant="exit" size="lg" className="w-[100%]" disabled>
+              You have exited
+            </Button>
+          ) : active ? (
+            <Button
+              variant="exit"
+              size="lg"
+              isLoading={isLoading}
+              onClick={exitGameHandler}
+              className="w-[100%]"
+            >
+              {`Exit Game and claim ${formatNumber(exitClaim, {
+                maximumFractionDigits: 3,
+                minimumFractionDigits: 3,
+              })} ETH`}
+            </Button>
+          ) : (
             <>
               <Button variant="exit" size="lg" className="w-[100%]" disabled>
                 Exit Game

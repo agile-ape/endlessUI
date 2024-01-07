@@ -56,7 +56,9 @@ const buttonVariants = cva(
 
         // fixed bg. light and dark mode
         primary:
-          'text-white bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+          'text-white bg-indigo-700 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+
+        main: 'text-white bg-gradient-to-r from-indigo-950 via-indigo-800 to-indigo-600 hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
 
         wallet:
           'text-white bg-violet-700 hover:bg-violet-600 active:bg-violet-600 border border-transparent hover:border-violet-300',
@@ -68,7 +70,7 @@ const buttonVariants = cva(
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size
         filter:
-          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-800',
+          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:bg-opacity-80',
 
         // does not uses size
         attack:
@@ -90,7 +92,7 @@ const buttonVariants = cva(
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
-        md: 'h-10 rounded-md px-3 text-base leading-6',
+        md: 'h-10 rounded-md px-3 text-xl leading-6',
         lg: 'h-12 rounded-xl px-5 py-1 text-xl leading-10',
         icon: 'h-10 w-10',
         secondary: 'w-full text-xl',

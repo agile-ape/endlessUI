@@ -201,7 +201,7 @@ const CheckOutNew = () => {
             )}
           </div>
         </div>
-        {active && (
+        {active ? (
           <Button
             variant="checkOut"
             size="lg"
@@ -211,9 +211,7 @@ const CheckOutNew = () => {
           >
             Check Out
           </Button>
-        )}
-
-        {!active && (
+        ) : (
           <div className="flex flex-col justify-center items-center">
             <Button variant="checkOut" size="lg" className="w-[220px] sm:w-[100%]" disabled>
               Check Out

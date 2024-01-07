@@ -100,7 +100,9 @@ const KeyTrackers = () => {
           </PopoverTrigger>
           <PopoverContent side="top" align="center">
             <p className="px-3 py-1 max-w-[240px] text-sm">
-              Value in Pot | Players Left | Next Ticket Price or Yes Votes
+              {`Value in Pot | Players Left | ${
+                phase === 'start' ? 'Next Ticket Price' : 'Yes Votes'
+              } `}
             </p>
           </PopoverContent>
         </Popover>

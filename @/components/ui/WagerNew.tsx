@@ -138,6 +138,14 @@ const WagerNew = () => {
         ...wagerContractObj,
         functionName: 'endingPhase',
       },
+      {
+        ...wagerContractObj,
+        functionName: 'fee',
+      },
+      {
+        ...wagerContractObj,
+        functionName: 'feeMultiplier',
+      },
     ],
   })
 
@@ -150,6 +158,8 @@ const WagerNew = () => {
   const pfBetSize = Number(data?.[6].result || BigInt(0))
   const dBetSize = Number(data?.[7].result || BigInt(0))
   const endingPhase = data?.[8].result || BigInt(0)
+  const fee = Number(data?.[9].result || BigInt(0))
+  const feeMultiplier = Number(data?.[10].result || BigInt(0))
 
   // Compute payoff - before or after fees?
   const totalBetSize = lmfBetSize + pfBetSize + dBetSize
@@ -179,7 +189,9 @@ const WagerNew = () => {
 
   const placeBet = async () => {
     try {
-      const doBetEnding = await betEnding()
+      const doBetEnding = await betEnding({
+        args: [BigInt(radioValue)],
+      })
 
       const hash = doBetEnding.hash
       setBetAmount('')
@@ -215,15 +227,15 @@ const WagerNew = () => {
     },
   })
 
-  function claimHandler() {
-    const radioParam: Record<string, number> = {
-      'option-one': 4,
-      'option-two': 5,
-      'option-three': 6,
-    }
+  // function betHandler() {
+  //   const radioParam: Record<string, number> = {
+  //     'option-one': 4,
+  //     'option-two': 5,
+  //     'option-three': 6,
+  //   }
 
-    const param = radioParam[radioValue]
-  }
+  //   return radioParam[radioValue]
+  // }
 
   /*---------------------- claim ----------------------*/
 
@@ -314,6 +326,18 @@ const WagerNew = () => {
       >
         <div className="m-1 capitalize text-center h2-last">Place your bet</div>
 
+        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+          <div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Take fee</p>
+              <p className="text-right"> {fee}%</p>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Bet fee increase per round</p>
+              <p className="text-right"> {feeMultiplier}x</p>
+            </div>
+          </div>
+        </div>
         <div className="mx-auto flex flex-col gap-4 justify-center items-center">
           <RadioGroup
             defaultValue="option-one"
@@ -347,11 +371,11 @@ const WagerNew = () => {
                 </Tooltip>
               </TooltipProvider>
               <RadioGroupItem value="option-one" id="option-one" />
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(lmfBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Odds </p>
                 <p className="">
                   {' '}
@@ -391,11 +415,11 @@ const WagerNew = () => {
                 </Tooltip>
               </TooltipProvider>
               <RadioGroupItem value="option-two" id="option-two" />
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(pfBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Odds </p>
                 <p className="">
                   {' '}
@@ -435,11 +459,11 @@ const WagerNew = () => {
                 </Tooltip>
               </TooltipProvider>
               <RadioGroupItem value="option-three" id="option-three" />
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(dBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h2-last px-2">
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Odds </p>
                 <p className="">
                   {' '}

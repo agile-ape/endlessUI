@@ -154,7 +154,7 @@ const PhaseChange = () => {
 
                   <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
                     <div className="w-[100%] mx-auto flex flex-col justify-center">
-                      {phaseChangeActive && (
+                      {phaseChangeActive ? (
                         <Button
                           variant="default"
                           onClick={phaseChangeHandler}
@@ -164,19 +164,19 @@ const PhaseChange = () => {
                           {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
                           Change phase
                         </Button>
-                      )}
-
-                      {!phaseChangeActive && (
-                        <Button
-                          disabled
-                          variant="default"
-                          className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                        >
-                          Change phase
-                        </Button>
+                      ) : (
+                        <>
+                          <Button
+                            disabled
+                            variant="default"
+                            className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+                          >
+                            Change phase
+                          </Button>
+                          <Prompt docLink={DOCS_URL_phases} />
+                        </>
                       )}
                     </div>
-                    {!phaseChangeActive && <Prompt docLink={DOCS_URL_phases} />}
                   </div>
                 </div>
               </div>

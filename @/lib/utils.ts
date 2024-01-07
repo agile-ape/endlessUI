@@ -146,3 +146,10 @@ export function transformPlayerTicket(playerTicket: any, test?: any): Ticket {
 export function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text)
 }
+
+export function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}

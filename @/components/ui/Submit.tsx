@@ -28,7 +28,6 @@ import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import { toast } from './use-toast'
 import { encodePacked, toBytes, keccak256, hashMessage } from 'viem'
-import { useWindowSize } from '../../../hooks/useWindowSize'
 
 const useStore = () => {
   const phase = useStoreState((state) => state.phase)
@@ -63,7 +62,6 @@ const Submit = () => {
   const { data: walletClient } = useWalletClient()
   const [otpInput, setOtpInput] = React.useState<string>('')
   const [svgKeyword, setSvgKeyword] = React.useState<string>('')
-  const { xs } = useWindowSize()
 
   // let ticketStatus = Number(playerTicket?.[3] || BigInt(0))
   // let ticketStatus = ownedTicket?.status || 0
@@ -285,10 +283,11 @@ const Submit = () => {
           "
         >
           <div className="text-center text-white h2-last">
-            {ticketStatusString === 'submitted' && ticketLastSeen === round && (
+            {ticketStatusString === 'submitted' && ticketLastSeen === round ? (
               <span>You have already submitted. Submit again?</span>
+            ) : (
+              <span>Submit keyword</span>
             )}
-            {ticketStatusString !== 'submitted' && <span>Submit keyword</span>}
           </div>
 
           <OtpInput
@@ -308,16 +307,14 @@ const Submit = () => {
             className="dark:text-white text-black"
           />
 
-          {!active && ticketStatusString === 'safe' && (
+          {!active && ticketStatusString === 'safe' ? (
             <div className="flex flex-col justify-center items-center">
               <Button variant="submit" size="lg" className="w-[100%]" disabled>
                 In Safehouse
               </Button>
               <Prompt docLink={DOCS_URL_submit} />
             </div>
-          )}
-
-          {!(!active && ticketStatusString === 'safe') && (
+          ) : (
             <Button
               variant="submit"
               size="lg"

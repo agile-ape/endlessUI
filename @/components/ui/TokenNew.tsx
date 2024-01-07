@@ -327,7 +327,7 @@ function TokenNew() {
               </div>
               <Button
                 variant="secondary"
-                size="lg"
+                size="md"
                 className="w-[100%]"
                 onClick={approveToken}
                 isLoading={approveLoad}
@@ -367,7 +367,7 @@ function TokenNew() {
               <Button
                 variant="secondary"
                 disabled={Number(allowance) <= Number(tokenValue)}
-                size="lg"
+                size="md"
                 className="w-[100%]"
                 onClick={transferToken}
                 isLoading={transferLoad}

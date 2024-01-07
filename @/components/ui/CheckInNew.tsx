@@ -279,7 +279,7 @@ const CheckInNew = () => {
               <p className="text-xl text-red-600 mt-2 text-center">You can't afford to stay</p>
             )}
           </div>
-          {active && (
+          {active ? (
             <Button
               variant="checkIn"
               size="lg"
@@ -289,8 +289,24 @@ const CheckInNew = () => {
             >
               Check In
             </Button>
+          ) : ticketStatusString === 'safe' ? (
+            <>
+              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                In Safehouse
+              </Button>
+
+              <Prompt docLink={DOCS_URL_safehouse} />
+            </>
+          ) : (
+            <>
+              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
+                Check In
+              </Button>
+
+              <Prompt docLink={DOCS_URL_safehouse} />
+            </>
           )}
-          {!active && ticketStatusString === 'safe' && (
+          {/* {!active && ticketStatusString === 'safe' && (
             <>
               <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
                 In Safehouse
@@ -307,7 +323,7 @@ const CheckInNew = () => {
 
               <Prompt docLink={DOCS_URL_safehouse} />
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>

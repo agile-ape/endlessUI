@@ -15,12 +15,12 @@ import CheckOutNew from '../ui/CheckOutNew'
 import SplitPotNew from '../ui/SplitPotNew'
 import WagerNew from '../ui/WagerNew'
 import TokenNew from '../ui/TokenNew'
+import PhaseChangeNew from '../ui/PhaseChangeNew'
 
 import BuyTicketNew from '../ui/BuyTicketNew'
 
 import DashboardNew from '../ui/DashboardNew'
 import ExitGameNew from '../ui/ExitGameNew'
-import ActionsMobile from '../ui/_ActionsMobile'
 import KeyTrackers from '../ui/KeyTrackers'
 
 import TicketUI from '../ui/TicketUI'
@@ -34,10 +34,11 @@ import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ExternalLink } from 'lucide-react'
-
+import { fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
 import { disconnect } from 'process'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { toast } from '@/components/ui/use-toast'
+import { useTheme } from 'next-themes'
 import {
   LAST_MAN_STANDING_ADDRESS,
   DOCS_URL,
@@ -57,6 +58,7 @@ import {
   Move,
   ChevronDown,
   ChevronUp,
+  Send,
 } from 'lucide-react'
 import {
   DropdownMenu,
@@ -96,67 +98,104 @@ type ActionType =
   | 'buyTicket'
   | 'exitGame'
   | 'token'
+  | 'changePhase'
+type CategoryType = 'players' | 'activePlayers' | 'all'
 import type { Ticket } from 'types/app'
 import { socket } from '@/lib/socket'
 
 type MobileActionType = {
   label: string
-  icon: string
-  action: ActionType
+  lightIcon: string
+  darkIcon: string
+  mobileAction: ActionType
+  category: CategoryType
 }
 
 const arrayMobileAction: MobileActionType[] = [
   {
     label: 'Submit',
-    icon: 'sword.svg',
-    action: 'submit',
+    lightIcon: 'submit.svg',
+    darkIcon: 'submitDark.svg',
+    mobileAction: 'submit',
+    category: 'activePlayers',
   },
   {
-    label: 'Check In',
-    icon: 'sword.svg',
-    action: 'checkIn',
+    label: 'Checkin',
+    lightIcon: 'checkIn.svg',
+    darkIcon: 'checkInDark.svg',
+    mobileAction: 'checkIn',
+    category: 'activePlayers',
   },
   {
-    label: 'Check Out',
-    icon: 'sword.svg',
-    action: 'checkOut',
+    label: 'Checkout',
+    lightIcon: 'checkOut.svg',
+    darkIcon: 'checkOutDark.svg',
+    mobileAction: 'checkOut',
+    category: 'activePlayers',
   },
   {
     label: 'Split',
-    icon: 'sword.svg',
-    action: 'splitIt',
-  },
-  {
-    label: 'Wager',
-    icon: 'sword.svg',
-    action: 'wager',
-  },
-  {
-    label: 'Buy',
-    icon: 'sword.svg',
-    action: 'buyTicket',
-  },
-  {
-    label: 'Exit',
-    icon: 'sword.svg',
-    action: 'exitGame',
+    lightIcon: 'split.svg',
+    darkIcon: 'splitDark.svg',
+    mobileAction: 'splitIt',
+    category: 'activePlayers',
   },
   {
     label: 'Attack',
-    icon: 'sword.svg',
-    action: 'attack',
+    lightIcon: 'attack.svg',
+    darkIcon: 'attackDark.svg',
+    mobileAction: 'attack',
+    category: 'activePlayers',
   },
   {
     label: 'Kick Out',
-    icon: 'sword.svg',
-    action: 'kickOut',
+    lightIcon: 'kick.svg',
+    darkIcon: 'kickDark.svg',
+    mobileAction: 'kickOut',
+    category: 'activePlayers',
+  },
+  {
+    label: 'Exit',
+    lightIcon: 'exit.svg',
+    darkIcon: 'exitDark.svg',
+    mobileAction: 'exitGame',
+    category: 'activePlayers',
   },
   {
     label: 'Send',
-    icon: 'sword.svg',
-    action: 'token',
+    lightIcon: 'send.svg',
+    darkIcon: 'sendDark.svg',
+    mobileAction: 'token',
+    category: 'players',
+  },
+  {
+    label: 'Phase',
+    lightIcon: 'phase.svg',
+    darkIcon: 'phaseDark.svg',
+    mobileAction: 'changePhase',
+    category: 'players',
+  },
+  {
+    label: 'Buy',
+    lightIcon: 'buy.svg',
+    darkIcon: 'buyDark.svg',
+    mobileAction: 'buyTicket',
+    category: 'all',
+  },
+  {
+    label: 'Wager',
+    lightIcon: 'bet.svg',
+    darkIcon: 'betDark.svg',
+    mobileAction: 'wager',
+    category: 'all',
   },
 ]
+
+const actionColor: Record<string, string> = {
+  activePlayers: 'border border-orange-200 bg-orange-100',
+  players: 'border border-green-200 bg-green-100',
+  all: 'border border-purple-200 bg-purple-100',
+}
 
 export default function Screen() {
   const phase = useStoreState((state) => state.phase)
@@ -164,6 +203,8 @@ export default function Screen() {
   const { isConnected, address } = useAccount()
   const { user, connectWallet, ready, authenticated } = usePrivy()
   const { xs } = useWindowSize()
+
+  const { forcedTheme } = useTheme()
 
   // Menu
   const [menuComponent, setMenuComponent] = useState<ComponentType | null>('you')
@@ -232,6 +273,12 @@ export default function Screen() {
     selectAction('buyTicket')
   }
 
+  const exitGameAction = () => {
+    setCarouselVisibility(true)
+    selectMenuComponent('actions')
+    selectAction('exitGame')
+  }
+
   const wagerAction = () => {
     setCarouselVisibility(true)
     selectMenuComponent('actions')
@@ -246,6 +293,8 @@ export default function Screen() {
     login()
   }
   const ownedTicket = useStoreState((state) => state.ownedTicket)
+  let ticketStatus = ownedTicket?.status || 0
+  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
   let ticket: Ticket | undefined = ownedTicket || {
     id: 0,
@@ -313,10 +362,10 @@ export default function Screen() {
           </div>
 
           <div className="flex flex-col gap-4 my-5 justify-center items-center z-10">
-            <div className="w-[80%] bg-gray-600 dark:bg-gray-300 rounded-xl ">
+            <div className="w-[70%] bg-indigo-300 dark:bg-indigo-300 rounded-xl ">
               <Button
                 onClick={enter}
-                variant="primary"
+                variant="main"
                 className={`${
                   isPressed ? '-translate-y-0' : '-translate-y-1'
                 } h-10 w-[100%] hover:-translate-y-2 active:-translate-y-1 border-none rounded-xl px-4 py-2 text-md font-whitrabt`}
@@ -375,7 +424,7 @@ export default function Screen() {
       {authenticated && xs && (
         <>
           <div className="flex flex-col">
-            <div className="sticky top-0 container-last border-none bg-opacity-50 dark:bg-opacity-50 flex flex-col border-b pb-1 border-zinc-400 dark:border-zinc-200 ">
+            <div className="sticky top-0 container-last border-none bg-opacity-50 dark:bg-opacity-50 flex flex-col border-b pb-1 border-zinc-400 dark:border-zinc-200">
               <div className="flex justify-between mx-5 pt-3">
                 {/* <div className="grid grid-cols-3 mx-5 py-3"> */}
                 <div className="float-left">
@@ -468,6 +517,16 @@ export default function Screen() {
                         Buy Ticket
                       </Button>
                     )}
+                    {id !== 0 && (
+                      <Button
+                        variant="exit"
+                        className="rounded-full px-10 py-1 leading-10 h-12 mt-4 mb-2 text-2xl"
+                        onClick={() => exitGameAction()}
+                      >
+                        {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                        {ticketStatusString === 'exited' && <div>You have exited</div>}
+                      </Button>
+                    )}
                     {id === 0 && !(phase === 'deployed' || phase === 'start') && (
                       <Button
                         variant="wager"
@@ -503,7 +562,7 @@ export default function Screen() {
                   <div className="h1-last flex flex-col px-5 mt-4">
                     <a href={DOCS_URL} target="_blank">
                       <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700">
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
                           Docs <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Learn more about game play</p>
@@ -511,7 +570,7 @@ export default function Screen() {
                     </a>
                     <a href={TWITTER_URL} target="_blank">
                       <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700">
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
                           Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Follow us for updates (and memes)</p>
@@ -519,7 +578,7 @@ export default function Screen() {
                     </a>
                     <a href={TELEGRAM_URL} target="_blank">
                       <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700">
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
                           Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Join the community</p>
@@ -527,7 +586,7 @@ export default function Screen() {
                     </a>
                     <a href={BLOG_URL} target="_blank">
                       <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700">
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
                           Blog <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Read about our latest progress</p>
@@ -547,6 +606,7 @@ export default function Screen() {
               {actionView === 'buyTicket' && <BuyTicketNew />}
               {actionView === 'exitGame' && <ExitGameNew />}
               {actionView === 'token' && <TokenNew />}
+              {actionView === 'changePhase' && <PhaseChangeNew />}
             </div>
           </div>
 
@@ -624,22 +684,27 @@ export default function Screen() {
                       <div className="flex justify-center mx-auto">
                         <button
                           className={cn(
-                            actionView === action.action
-                              ? 'container-last border-none bg-opacity-100 dark:bg-opacity-100'
+                            actionColor[action.category],
+                            actionView === action.mobileAction
+                              ? 'border-2 bg-slate-200 dark:bg-slate-700 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
                               : '',
-                            'w-16 flex flex-col justify-center items-center',
+                            'w-16 h-16 border-2 flex flex-col justify-center items-center rounded-lg',
                           )}
-                          onClick={() => selectAction(arrayMobileAction[index].action)}
+                          onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
                         >
-                          {/* {action.icon} */}
                           <Image
                             priority
-                            src={`/icon/${action.icon}`}
+                            src={
+                              forcedTheme === 'light'
+                                ? `/icon/${action.lightIcon}`
+                                : `/icon/${action.darkIcon}`
+                            }
                             className="place-self-center rounded-xl"
                             height={30}
-                            width={actionView === action.action ? 35 : 30}
+                            width={actionView === action.mobileAction ? 35 : 30}
                             alt="attack-player"
                           />
+
                           <div className="whitespace-nowrap">{action.label}</div>
                         </button>
                       </div>
@@ -671,7 +736,7 @@ export default function Screen() {
               <GameTab />
             </div>
 
-            <div className="">
+            <div className="grow rounded-xl py-2 sm:container-last">
               <TicketList />
             </div>
           </div>

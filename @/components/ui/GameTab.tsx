@@ -25,8 +25,8 @@ import {
   TWITTER_URL,
 } from '../../../services/constant'
 import { toast } from './use-toast'
-import BuyTicket from './BuyTicket'
-import ExitGame from './ExitGame'
+import BuyTicket from './_BuyTicket'
+import ExitGame from './_ExitGame'
 
 import Modal from './Modal'
 
