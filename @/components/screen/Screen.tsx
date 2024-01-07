@@ -99,7 +99,7 @@ type ActionType =
   | 'exitGame'
   | 'token'
   | 'changePhase'
-type CategoryType = 'players' | 'activePlayers' | 'all'
+type CategoryType = 'start' | 'day' | 'night' | 'players'
 import type { Ticket } from 'types/app'
 import { socket } from '@/lib/socket'
 
@@ -114,87 +114,88 @@ type MobileActionType = {
 const arrayMobileAction: MobileActionType[] = [
   {
     label: 'Submit',
-    lightIcon: 'submit.svg',
-    darkIcon: 'submitDark.svg',
+    lightIcon: 'submitLight.svg',
+    darkIcon: 'submitNight.svg',
     mobileAction: 'submit',
-    category: 'activePlayers',
-  },
-  {
-    label: 'Checkin',
-    lightIcon: 'checkIn.svg',
-    darkIcon: 'checkInDark.svg',
-    mobileAction: 'checkIn',
-    category: 'activePlayers',
-  },
-  {
-    label: 'Checkout',
-    lightIcon: 'checkOut.svg',
-    darkIcon: 'checkOutDark.svg',
-    mobileAction: 'checkOut',
-    category: 'activePlayers',
-  },
-  {
-    label: 'Split',
-    lightIcon: 'split.svg',
-    darkIcon: 'splitDark.svg',
-    mobileAction: 'splitIt',
-    category: 'activePlayers',
-  },
-  {
-    label: 'Attack',
-    lightIcon: 'attack.svg',
-    darkIcon: 'attackDark.svg',
-    mobileAction: 'attack',
-    category: 'activePlayers',
-  },
-  {
-    label: 'Kick Out',
-    lightIcon: 'kick.svg',
-    darkIcon: 'kickDark.svg',
-    mobileAction: 'kickOut',
-    category: 'activePlayers',
+    category: 'day',
   },
   {
     label: 'Exit',
-    lightIcon: 'exit.svg',
-    darkIcon: 'exitDark.svg',
+    lightIcon: 'exitLight.svg',
+    darkIcon: 'exitNight.svg',
     mobileAction: 'exitGame',
-    category: 'activePlayers',
+    category: 'day',
+  },
+  {
+    label: 'Checkin',
+    lightIcon: 'checkInLight.svg',
+    darkIcon: 'checkInNight.svg',
+    mobileAction: 'checkIn',
+    category: 'day',
+  },
+  {
+    label: 'Checkout',
+    lightIcon: 'checkOutLight.svg',
+    darkIcon: 'checkOutNight.svg',
+    mobileAction: 'checkOut',
+    category: 'day',
+  },
+  {
+    label: 'Split',
+    lightIcon: 'splitLight.svg',
+    darkIcon: 'splitNight.svg',
+    mobileAction: 'splitIt',
+    category: 'day',
+  },
+  {
+    label: 'Attack',
+    lightIcon: 'attackLight.svg',
+    darkIcon: 'attackNight.svg',
+    mobileAction: 'attack',
+    category: 'night',
+  },
+  {
+    label: 'Kick Out',
+    lightIcon: 'kickLight.svg',
+    darkIcon: 'kickNight.svg',
+    mobileAction: 'kickOut',
+    category: 'night',
+  },
+  {
+    label: 'Buy',
+    lightIcon: 'buyLight.svg',
+    darkIcon: 'buyNight.svg',
+    mobileAction: 'buyTicket',
+    category: 'start',
   },
   {
     label: 'Send',
-    lightIcon: 'send.svg',
-    darkIcon: 'sendDark.svg',
+    lightIcon: 'sendLight.svg',
+    darkIcon: 'sendNight.svg',
     mobileAction: 'token',
     category: 'players',
   },
   {
     label: 'Phase',
-    lightIcon: 'phase.svg',
-    darkIcon: 'phaseDark.svg',
+    lightIcon: 'phaseLight.svg',
+    darkIcon: 'phaseNight.svg',
     mobileAction: 'changePhase',
     category: 'players',
   },
   {
-    label: 'Buy',
-    lightIcon: 'buy.svg',
-    darkIcon: 'buyDark.svg',
-    mobileAction: 'buyTicket',
-    category: 'all',
-  },
-  {
     label: 'Wager',
-    lightIcon: 'bet.svg',
-    darkIcon: 'betDark.svg',
+    lightIcon: 'betLight.svg',
+    darkIcon: 'betNight.svg',
     mobileAction: 'wager',
-    category: 'all',
+    category: 'players',
   },
 ]
 
 const actionColor: Record<string, string> = {
-  activePlayers: 'border border-orange-200 bg-orange-100',
-  players: 'border border-green-200 bg-green-100',
-  all: 'border border-purple-200 bg-purple-100',
+  start: 'text-purple-500 dark:text-purple-300',
+  day: 'text-green-600 dark:text-green-300',
+  night: 'text-amber-500 dark:text-amber-300',
+  players: 'text-blue-600 dark:text-blue-300',
 }
 
 export default function Screen() {
@@ -686,9 +687,9 @@ export default function Screen() {
                           className={cn(
                             actionColor[action.category],
                             actionView === action.mobileAction
-                              ? 'border-2 bg-slate-200 dark:bg-slate-700 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
+                              ? 'border-2 bg-slate-200 dark:bg-slate-800 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
                               : '',
-                            'w-16 h-16 border-2 flex flex-col justify-center items-center rounded-lg',
+                            'w-16 h-16 flex flex-col justify-center items-center rounded-lg',
                           )}
                           onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
                         >

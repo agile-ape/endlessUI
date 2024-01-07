@@ -225,11 +225,13 @@ export default function Countdown() {
                 {xs ? (
                   <div className="flex">
                     <span>Use </span>
-                    <span className="text-black dark:text-white flex mr-1">
+                    <span className="text-blue-600 dark:text-blue-300 flex mr-1">
                       {' '}
                       <Image
                         priority
-                        src={forcedTheme === 'light' ? `/icon/phase.svg` : `/icon/phaseDark.svg`}
+                        src={
+                          forcedTheme === 'light' ? `/icon/phaseLight.svg` : `/icon/phaseNight.svg`
+                        }
                         className="ml-1 mr-1"
                         height={20}
                         width={20}
