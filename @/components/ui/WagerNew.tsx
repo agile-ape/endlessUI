@@ -293,7 +293,7 @@ const WagerNew = () => {
         </div>
         <Image
           priority
-          src="/lore/CheckIntoSafehouseMobile.png"
+          src="/lore/WagerMobile.png"
           className="place-self-center rounded-xl"
           height={400}
           width={650}

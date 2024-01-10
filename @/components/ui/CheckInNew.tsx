@@ -119,8 +119,8 @@ const CheckInNew = () => {
 
   useSocketEvents(events)
 
-  const [amountTicket, setAmountTicket] = React.useState<number>(0)
-  const totalCost = Number(stayCost) * amountTicket
+  const [nights, setNights] = React.useState<string>('')
+  const totalCost = Number(stayCost) * Number(nights)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -138,7 +138,7 @@ const CheckInNew = () => {
   const checkInHandler = async () => {
     try {
       const tx = await writeAsync({
-        args: [BigInt(amountTicket)],
+        args: [BigInt(nights)],
       })
       const hash = tx.hash
       console.log(hash)
@@ -245,22 +245,35 @@ const CheckInNew = () => {
             </div>
           </div>
           {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
-          <div className="flex justify-center">
-            <div className="text-2xl flex justify-between items-center p-2 gap-3">Nights:</div>
-            <div className="text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3">
-              <p>{amountTicket}</p>
+          {/* <div className="flex justify-center"> */}
+          {/* <div className="text-2xl flex justify-between items-center p-2 gap-3">Nights:</div> */}
+          <div className="w-full flex flex-col justify-center items-center gap-2">
+            <label htmlFor="checkIn" className="text-2xl">
+              Nights:
+            </label>
+            <div className="flex justify-center items-center">
+              <input
+                type="text"
+                id="checkIn"
+                required
+                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
+                value={nights}
+                placeholder="0"
+                onChange={(e) => setNights(e.target.value)}
+              />
+
               <div className="flex flex-col">
                 <button
                   className="w-[20px] h-[20px] flex justify-center items-center"
-                  onClick={() => setAmountTicket(amountTicket + 1)}
+                  onClick={() => setNights(String(Number(nights) + 1))}
                 >
-                  <ChevronUp />
+                  <ChevronUp size={24} />
                 </button>
                 <button
                   className="w-[20px] h-[20px] flex justify-center items-center"
-                  onClick={() => amountTicket > 0 && setAmountTicket(amountTicket - 1)}
+                  onClick={() => Number(nights) > 0 && setNights(String(Number(nights) - 1))}
                 >
-                  <ChevronDown />
+                  <ChevronDown size={24} />
                 </button>
               </div>
             </div>

@@ -63,8 +63,8 @@ export const BLOCK_EXPLORER = isDevelopment
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
 export const TELEGRAM_URL = 'https://t.me/lastmangame'
 export const API_ENDPOINT = isDevelopment
-  ? 'https://lsm-be.onrender.com'
-  : 'https://lsm-be.onrender.com'
+  ? 'https://lastman-be.onrender.com'
+  : 'https://lastman-be.onrender.com'
 
 export const WEBSOCKET_ENDPOINT = isDevelopment
   ? 'wss://lsm-be.onrender.com/ws'

@@ -196,7 +196,7 @@ const CheckOutNew = () => {
                 <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
               )}
 
-            {ticketStatusString === 'safe' && ticketCheckOutRound <= round && (
+            {ticketStatusString === 'safe' && ticketCheckOutRound < round && (
               <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
             )}
           </div>

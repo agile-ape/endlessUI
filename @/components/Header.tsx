@@ -155,7 +155,7 @@ function Header() {
             </Link> */}
               <a href={DOCS_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  Docs
+                  How To Play
                   {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
                 </Button>
               </a>

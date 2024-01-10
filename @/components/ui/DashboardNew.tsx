@@ -78,6 +78,9 @@ export default function DashboardNew() {
     connectorType = 'external'
   }
 
+  console.log(connectorType)
+  console.log(embeddedWallet)
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
@@ -209,7 +212,7 @@ export default function DashboardNew() {
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Wallet type</p>
               <p className="text-right">
-                {wallet?.connectorType === 'Embedded' ? 'Embedded' : 'External'}
+                {wallet?.connectorType === 'embedded' ? 'Embedded' : 'External'}
               </p>
             </div>
 
@@ -276,8 +279,6 @@ export default function DashboardNew() {
                       <p className="">Set password</p>
                       <p className="">
                         {embeddedWallet ? (
-                          <p className=""> No embedded wallet </p>
-                        ) : (
                           <Button
                             variant="wallet"
                             className="w-24 h-8 rounded-xl px-4"
@@ -286,6 +287,8 @@ export default function DashboardNew() {
                           >
                             Set
                           </Button>
+                        ) : (
+                          <p className=""> No embedded wallet </p>
                         )}
                       </p>
                     </div>
@@ -294,8 +297,6 @@ export default function DashboardNew() {
                       <p className="">Export key</p>
                       <p className="">
                         {embeddedWallet ? (
-                          <p className=""> No embedded wallet </p>
-                        ) : (
                           <Button
                             variant="wallet"
                             className="w-24 h-8 rounded-xl px-4"
@@ -304,6 +305,8 @@ export default function DashboardNew() {
                           >
                             Export
                           </Button>
+                        ) : (
+                          <p className=""> No embedded wallet </p>
                         )}
                       </p>
                     </div>

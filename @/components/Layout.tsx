@@ -110,9 +110,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     {
       name: 'tickets',
       handler(data) {
-        console.log({
-          ticketData: data,
-        })
         if (!data?.id) return
 
         updateLastChangedTicket(data.id)
@@ -334,6 +331,9 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       minimumFractionDigits: 0,
     })
 
+    console.log(Number(tokenBalance))
+    console.log(tokenBalance)
+
     updateRound(Number(round))
     updatePhase(Number(phase))
     updateStage(Number(stage))
@@ -342,7 +342,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     updateTicketCount(Number(ticketCount))
     updateVoteCount(Number(voteCount))
     updateNextTicketPrice(Number(nextTicketPriceInEth))
-    updateTokenBalance(Number(tokenBalance))
+    updateTokenBalance(String(tokenBalance))
   }
 
   const refreshData = () => {

@@ -125,7 +125,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
   let ticketBuddyCount = ticket?.buddyCount || 0
   let ticketRank = Number(ticket?.rank || 0)
 
-  let ticketVoteString = ticketVote ? 'Yes' : 'No'
+  let ticketVoteString = ticketId ? (ticketVote ? 'Yes' : 'No') : '-'
 
   const valueBought = ticketPurchasePrice
   const valueRedeemed = ticketRedeemValue
@@ -512,7 +512,9 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             <p className="text-right">
               {' '}
               <span className="underline decoration-double">{formatCount(ticketLastSeen)}</span>/
-              {ticketVoteString}{' '}
+              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-700' : 'text-red-900')}>
+                {ticketVoteString}
+              </span>{' '}
             </p>
           </div>
 

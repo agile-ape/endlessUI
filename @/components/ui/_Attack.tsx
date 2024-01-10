@@ -253,7 +253,6 @@ const Attack: FC<AttackType> = ({ id }) => {
       if (data.status === 'success') {
         refetch()
       }
-      console.log({ data })
     },
   })
 

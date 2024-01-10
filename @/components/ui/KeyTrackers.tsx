@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-import { Gem, Users, Vote, Coins, Ticket } from 'lucide-react'
+import { Gem, Users, Vote, Coins, Ticket, CookingPot } from 'lucide-react'
 import { useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
@@ -28,7 +28,7 @@ const KeyTrackers = () => {
             <TooltipTrigger>
               <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
                 <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <Coins size={xs ? 18 : 24} className="mr-1" />
+                  <CookingPot size={xs ? 18 : 24} className="mr-1" />
                   <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
                 </div>
 
@@ -71,7 +71,7 @@ const KeyTrackers = () => {
           <PopoverTrigger>
             <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                <Coins size={xs ? 18 : 24} className="mr-1" />
+                <CookingPot size={xs ? 18 : 24} className="mr-1" />
                 <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
               </div>
 

@@ -381,7 +381,7 @@ export const SplitPotNew = () => {
                         </TooltipProvider> */}
               </div>
             </div>
-            {voteCount < thresholdCount ? (
+            {(stage === 2 || stage === 3) && voteCount < thresholdCount ? (
               <p className="text-xl text-amber-600 text-center">
                 {thresholdCount - voteCount} more vote(s) to go
               </p>
@@ -582,12 +582,12 @@ export const SplitPotNew = () => {
             ) : (
               <>
                 <Switch defaultChecked={isVoteYes} disabled />
-                <Prompt docLink={DOCS_URL_split} />
               </>
             )}
 
             <span>Yes</span>
           </div>
+          {!active && <Prompt docLink={DOCS_URL_split} />}
         </div>
       </div>
     </div>

@@ -564,7 +564,8 @@ export default function Screen() {
                     <a href={DOCS_URL} target="_blank">
                       <div className="flex flex-col mb-4">
                         <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                          Docs <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
+                          How To Play{' '}
+                          <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Learn more about game play</p>
                       </div>

@@ -357,7 +357,9 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
             {!idList && (
               <div className="w-full flex flex-col justify-center items-center gap-2">
-                <label htmlFor="kickOut">Player #</label>
+                <label htmlFor="kickOut" className="text-2xl">
+                  Kick Player #
+                </label>
                 <input
                   type="text"
                   id="kickOut"

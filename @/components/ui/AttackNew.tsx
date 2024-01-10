@@ -504,7 +504,9 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
 
             {!idList && (
               <div className="w-full flex flex-col justify-center items-center gap-2">
-                <label htmlFor="attack">Player #</label>
+                <label htmlFor="attack" className="text-2xl">
+                  Attack Player #
+                </label>
                 <input
                   type="text"
                   id="attack"

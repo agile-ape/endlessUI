@@ -7,6 +7,8 @@
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
+  "dir": "auto",
+  "lang": "en-US",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",
