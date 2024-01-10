@@ -365,7 +365,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         >
           <div className="container mx-auto p-0">
             {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-            <Header />
+            {/* <Header /> */}
             {children}
             <CompletionModal alertLookTest="afterPurchase" />
           </div>

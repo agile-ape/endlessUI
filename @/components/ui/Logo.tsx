@@ -41,7 +41,7 @@ export default function Logo() {
           <DropdownMenuTrigger>
             <div className="flex flex-col justify-center items-center relative">
               <button
-                className="rounded-md 
+                className="rounded-md
               px-2 pb-1 text-[24px] font-headline
               text-white bg-red-800 capitalized
               "
@@ -65,21 +65,21 @@ export default function Logo() {
         </DropdownMenu>
       )} */}
 
-      <div
-        className="sm:hidden rounded-md 
+      {/* <div
+        className="sm:hidden rounded-md
             px-2 text-[26px] font-headline
             text-white bg-red-800 capitalized
           "
       >
         last
-      </div>
+      </div> */}
 
-      <Link className="cursor-pointer hidden sm:block" href="/">
+      <Link className="cursor-pointer" href="/">
         <div
           // onClick={() => console.log('last')}
           // onMouseOver={handleHover}
           // onMouseLeave={handleLeave}
-          className="h-12 w-18 rounded-md 
+          className="h-12 rounded-md
               px-2 py-0 text-[34px] font-headline
               text-white bg-red-800 hover:bg-red-700
               transition-colors capitalized

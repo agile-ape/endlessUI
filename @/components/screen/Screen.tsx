@@ -421,11 +421,12 @@ export default function Screen() {
         </div>
       )}
 
+      {/* mobile */}
       {/* style a box to hold all the various component renders */}
       {authenticated && xs && (
         <>
-          <div className="flex flex-col">
-            <div className="sticky top-0 container-last border-none bg-opacity-50 dark:bg-opacity-50 flex flex-col border-b pb-1 border-zinc-400 dark:border-zinc-200">
+          <div className="flex flex-col border-[0px] border-gray-300 border-b-0 ">
+            <div className="sticky top-0 container-last border-none bg-opacity-50 dark:bg-opacity-50 flex flex-col">
               <div className="flex justify-between mx-5 pt-3">
                 {/* <div className="grid grid-cols-3 mx-5 py-3"> */}
                 <div className="float-left">
@@ -441,7 +442,7 @@ export default function Screen() {
               </div>
 
               <details open>
-                <summary className="text-center text-zinc-700 dark:text-zinc-200 tracking-wider">
+                <summary className="h-8 text-center text-zinc-700 dark:text-zinc-200 tracking-wider">
                   Game{' '}
                 </summary>
                 <div className="flex flex-col mb-1">
@@ -454,48 +455,8 @@ export default function Screen() {
               </details>
             </div>
 
-            {/* <Accordion type="single">
-                <AccordionItem value="item-1" className="flex justify-center">
-                  <AccordionTrigger>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <Countdown />
-                    <div className="text-center">
-                      <Title />
-                    </div>
-                    <Round />
-                    <Countdown />
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion> */}
-
-            {/* <div className="text-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <ChevronDown
-                      className="absolute mt-1 bottom-0 animate-pulse text-white rounded-full"
-                      size={14}
-                    />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    className="px-8 bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col gap-2 justify-center"
-                  >
-                    <div className="text-center">
-                      <Title />
-                    </div>
-                    <Round />
-                    <Countdown />
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div> */}
-
-            {/* Items below to change */}
-            {/* <GameTab /> */}
-            {/* <GameFeed /> */}
-            {/* <TicketList /> */}
-            {/* <Submit /> */}
-            <div className="mt-2">
+            {/* Viewport */}
+            <div className="border-[0px] border-zinc-700 border-b-0">
               {/* <div className="text-center">
                 <Title />
               </div> */}
@@ -615,7 +576,7 @@ export default function Screen() {
           <div
             className={cn(
               isCarouselVisible ? '' : 'border-transparent',
-              'fixed bottom-0 w-full h-10 container-last border-l-0 border-r-0 border-b-0 bg-opacity-100 dark:bg-opacity-100',
+              'fixed bottom-0 w-full h-20 container-last border-none bg-opacity-100 dark:bg-opacity-100',
             )}
           >
             <div className="relative">
@@ -624,8 +585,8 @@ export default function Screen() {
                   className="flex flex-col rounded-none justify-center items-center py-2"
                   onClick={() => selectMenuComponent('you')}
                 >
-                  {menuComponent === 'you' && <User size={24} strokeWidth={3} />}
-                  {menuComponent !== 'you' && <User size={24} />}
+                  {menuComponent === 'you' && <User size={32} strokeWidth={3} />}
+                  {menuComponent !== 'you' && <User size={32} />}
 
                   {/* <div className="">You</div> */}
                 </button>
@@ -633,8 +594,8 @@ export default function Screen() {
                   className="flex flex-col justify-center items-center"
                   onClick={() => selectMenuComponent('list')}
                 >
-                  {menuComponent === 'list' && <Users size={24} strokeWidth={3} />}
-                  {menuComponent !== 'list' && <Users size={24} />}
+                  {menuComponent === 'list' && <Users size={32} strokeWidth={3} />}
+                  {menuComponent !== 'list' && <Users size={32} />}
 
                   {/* <div className="">List</div> */}
                 </button>
@@ -643,33 +604,33 @@ export default function Screen() {
                   className="flex flex-col justify-center items-center"
                   onClick={() => selectMenuComponent('events')}
                 >
-                  {menuComponent === 'events' && <Rss size={24} strokeWidth={3} />}
-                  {menuComponent !== 'events' && <Rss size={24} />}
+                  {menuComponent === 'events' && <Rss size={32} strokeWidth={3} />}
+                  {menuComponent !== 'events' && <Rss size={32} />}
                   {/* <div className="">Events</div> */}
                 </button>
                 <button
                   className="flex flex-col justify-center items-center"
                   onClick={() => selectMenuComponent('menu')}
                 >
-                  {menuComponent === 'menu' && <Menu size={24} strokeWidth={3} />}
-                  {menuComponent !== 'menu' && <Menu size={24} />}
+                  {menuComponent === 'menu' && <Menu size={32} strokeWidth={3} />}
+                  {menuComponent !== 'menu' && <Menu size={32} />}
 
                   {/* <div className="">Menu</div> */}
                 </button>
               </div>
             </div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <button
                 className={cn(
                   isCarouselVisible ? 'bg-slate-100 dark:bg-slate-600' : 'border-none',
-                  'flex flex-col justify-center items-center rounded-full p-2 container-last bg-opacity-100 dark:bg-opacity-100',
+                  'flex flex-col justify-center items-center rounded-full p-1 container-last bg-opacity-100 dark:bg-opacity-100',
                 )}
                 onClick={toggleCarousel}
               >
                 {isCarouselVisible ? (
-                  <Move size={40} strokeWidth={1.5} />
+                  <Move size={44} strokeWidth={1.6} />
                 ) : (
-                  <Move size={36} strokeWidth={1} />
+                  <Move size={42} strokeWidth={1.5} />
                 )}
                 {/* <div className="">Actions</div> */}
               </button>
@@ -677,7 +638,7 @@ export default function Screen() {
           </div>
 
           {isCarouselVisible && (
-            <div className="fixed bottom-10 w-full bg-slate-100 dark:bg-slate-600 border-none bg-opacity-100 dark:bg-opacity-100">
+            <div className="fixed bottom-20 w-full bg-slate-100 dark:bg-slate-600 border-none bg-opacity-100 dark:bg-opacity-100">
               <Carousel className="w-full max-w-xs mx-auto">
                 <CarouselContent className="">
                   {arrayMobileAction.map((action, index) => (
@@ -722,6 +683,7 @@ export default function Screen() {
         </>
       )}
 
+      {/* desktop */}
       {authenticated && !xs && (
         <>
           <div className="text-center">
