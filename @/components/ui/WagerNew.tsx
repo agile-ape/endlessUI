@@ -56,12 +56,14 @@ import { io } from 'socket.io-client'
 
 const useStore = () => {
   const phase = useStoreState((state) => state.phase)
+  const round = useStoreState((state) => state.round)
   const stage = useStoreState((state) => state.stage)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
 
   return {
     phase,
+    round,
     stage,
     updateCompletionModal,
     ownedTicket,
@@ -89,7 +91,7 @@ export const WagerActive = () => {
 }
 
 const WagerNew = () => {
-  const { phase, stage, updateCompletionModal } = useStore()
+  const { phase, stage, round, updateCompletionModal } = useStore()
   const { wagerActive: active, wagerStatus: status } = WagerActive()
   const { address, isConnected } = useAccount()
   const { data, refetch } = useContractReads({
@@ -160,6 +162,8 @@ const WagerNew = () => {
   const endingPhase = data?.[8].result || BigInt(0)
   const fee = Number(data?.[9].result || BigInt(0))
   const feeMultiplier = Number(data?.[10].result || BigInt(0))
+
+  const nextRoundFee = (round + 1) * feeMultiplier
 
   // Compute payoff - before or after fees?
   const totalBetSize = lmfBetSize + pfBetSize + dBetSize
@@ -286,11 +290,11 @@ const WagerNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        <div className="flex items-center justify-center gap-2 mt-2">
+        {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Place Bet</div>
-        </div>
+        </div> */}
         <Image
           priority
           src="/lore/WagerMobile.png"
@@ -310,10 +314,10 @@ const WagerNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">Everyone can bet on how the game ends.</p>
+        <p className="mb-2">Bet on how the game ends.</p>
         <p className="mb-2">1 address 1 bet.</p>
-        <p className="mb-2">Bet early. Fee increases every round.</p>
-        <p className="mb-2">Place bets before Stage 2 comes.</p>
+        <p className="mb-2">Bet fee increases each round.</p>
+        <p className="mb-2">No more bets once Stage 2 comes.</p>
         <a href={DOCS_URL} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
@@ -329,12 +333,12 @@ const WagerNew = () => {
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Take fee</p>
+              <p className="text-left">Current bet fee</p>
               <p className="text-right"> {fee}%</p>
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Bet fee increase per round</p>
-              <p className="text-right"> {feeMultiplier}x</p>
+              <p className="text-left">Next round bet fee</p>
+              <p className="text-right"> {nextRoundFee}%</p>
             </div>
           </div>
         </div>
@@ -350,7 +354,7 @@ const WagerNew = () => {
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
                       htmlFor="option-one"
-                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                      className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
                     >
                       <Image
                         priority
@@ -394,7 +398,7 @@ const WagerNew = () => {
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
                       htmlFor="option-two"
-                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                      className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
                     >
                       <Image
                         priority
@@ -438,7 +442,7 @@ const WagerNew = () => {
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
                       htmlFor="option-three"
-                      className="my-2 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl mb-2"
+                      className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
                     >
                       <Image
                         priority
@@ -489,7 +493,7 @@ const WagerNew = () => {
               type="text"
               id="bet"
               required
-              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400"
+              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400 bg-slate-100 bg-slate-700"
               value={betAmount}
               onChange={(e) => setBetAmount(e.target.value)}
             />

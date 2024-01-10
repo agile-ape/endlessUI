@@ -170,24 +170,24 @@ export default function Countdown() {
               <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <div className="text-base sm:text-2xl border-2 border-lime-800 shadow-md rounded-md px-4 py-0 flex flex-row gap-0.5">
+                    <div className="text-4xl sm:text-2xl border-2 border-lime-800 shadow-md rounded-md px-4 py-0 flex flex-row gap-0.5">
                       <div className="flex flex-col text-center">
                         {formatTime(timeLeft).hours}
-                        <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
                           hrs
                         </div>
                       </div>
                       :
                       <div className="flex flex-col text-center">
                         {formatTime(timeLeft).minutes}
-                        <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
                           mins
                         </div>
                       </div>
                       :
                       <div className="flex flex-col text-center">
                         {formatTime(timeLeft).seconds}
-                        <div className="uppercase text-xs text-center text-lime-800 dark:text-lime-300">
+                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
                           secs
                         </div>
                       </div>
@@ -223,7 +223,7 @@ export default function Countdown() {
                 {/* <PhaseChange /> */}
 
                 {xs ? (
-                  <div className="flex">
+                  <div className="flex text-xl">
                     <span>Use </span>
                     <span className="text-blue-600 dark:text-blue-300 flex mr-1">
                       {' '}

@@ -108,9 +108,9 @@ const CheckOutNew = () => {
   }
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        <div className="flex items-center justify-center gap-2 mt-2">
+        {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Check out</div>
           <Image
             priority
@@ -120,7 +120,7 @@ const CheckOutNew = () => {
             className=""
             alt="dayIndicator"
           />
-        </div>
+        </div> */}
         <Image
           priority
           src="/lore/CheckOutOfSafehouseMobile.png"
@@ -141,8 +141,7 @@ const CheckOutNew = () => {
 
       <div className="text-center">
         <p className="mb-2">Make sure to check out on time.</p>
-        <p className="mb-2">You can always check in again.</p>
-        <p className="mb-2">Once out, you are back in the game.</p>
+        <p className="mb-2">You can always check back in.</p>
         <a href={DOCS_URL_checkout} target="_blank" className="link h6-last align-top">
           Learn more
         </a>

@@ -208,9 +208,9 @@ const ExitGameNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        <div className="flex items-center justify-center gap-2 mt-2">
+        {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Exit game</div>
           <Image
             priority
@@ -220,7 +220,7 @@ const ExitGameNew = () => {
             className=""
             alt="dayIndicator"
           />
-        </div>
+        </div> */}
         <Image
           priority
           src="/lore/ExitGameMobile.png"
@@ -244,7 +244,7 @@ const ExitGameNew = () => {
           Leave anytime in the <span className="font-headline day-last">DAY</span>.
         </p>
         <p className="mb-2">Or when game ends.</p>
-        <p className="mb-2">All gets to claim some ETH from pot.</p>
+        <p className="mb-2">All gets to claim some ETH.</p>
         <p className="mb-2">Even if killed.</p>
         <a href={DOCS_URL_exit} target="_blank" className="link h6-last align-top">
           Learn more

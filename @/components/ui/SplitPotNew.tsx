@@ -247,9 +247,9 @@ export const SplitPotNew = () => {
   useSocketEvents(events)
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        <div className="flex items-center justify-center gap-2 mt-2">
+        {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Split Pot</div>
           <Image
             priority
@@ -259,7 +259,7 @@ export const SplitPotNew = () => {
             className=""
             alt="dayIndicator"
           />
-        </div>
+        </div> */}
         <Image
           priority
           src="/lore/SplitPotMobile.png"
@@ -281,9 +281,8 @@ export const SplitPotNew = () => {
 
       <div className="text-center">
         <p className="mb-2">Vote to split once Stage 2 comes.</p>
-        <p className="mb-2">Games ends once Yes hits threshold.</p>
-        <p className="mb-2">Remaining players share remaining pot.</p>
-        <p className="mb-2">You can change your mind.</p>
+        <p className="mb-2">Games ends if Yes hits threshold.</p>
+        <p className="mb-2">Players share remaining pot.</p>
         <a
           href={DOCS_URL_split}
           target="_blank"
@@ -298,7 +297,7 @@ export const SplitPotNew = () => {
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Do you want to split pot?</div>
+        <div className="m-1 capitalize text-center h2-last">Chop it up?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="">

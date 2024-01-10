@@ -26,21 +26,21 @@ const KeyTrackers = () => {
         <TooltipProvider delayDuration={10}>
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
-                <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <CookingPot size={xs ? 18 : 24} className="mr-1" />
+              <div className="flex flex-row gap-3 items-center py-0 sm:py-2 ">
+                <div className="flex flex-row items-center cursor-default tracking-wide">
+                  <CookingPot size={24} className="mr-1" />
                   <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
                 </div>
 
                 <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <Users size={xs ? 18 : 24} className="mr-1" />
+                  <Users size={24} className="mr-1" />
                   <div className="text-2xl sm:text-3xl flash tracking-wide">{ticketCount}</div>
                 </div>
 
                 {phase === 'deployed' ||
                   (phase === 'start' && (
                     <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                      <Ticket size={xs ? 18 : 24} className="mr-1" />
+                      <Ticket size={24} className="mr-1" />
                       <div className="text-2xl sm:text-3xl flash tracking-wide">
                         {nextTicketPrice}
                       </div>
@@ -49,7 +49,7 @@ const KeyTrackers = () => {
 
                 {!(phase === 'deployed' || phase === 'start') && (
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Vote size={xs ? 18 : 24} className="mr-1" />
+                    <Vote size={24} className="mr-1" />
                     <div className="text-2xl sm:text-3xl flash tracking-wide">{voteCount}</div>
                   </div>
                 )}
@@ -71,19 +71,19 @@ const KeyTrackers = () => {
           <PopoverTrigger>
             <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                <CookingPot size={xs ? 18 : 24} className="mr-1" />
+                <CookingPot size={24} className="mr-1" />
                 <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
               </div>
 
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                <Users size={xs ? 18 : 24} className="mr-1" />
+                <Users size={24} className="mr-1" />
                 <div className="text-2xl sm:text-3xl flash tracking-wide">{ticketCount}</div>
               </div>
 
               {phase === 'deployed' ||
                 (phase === 'start' && (
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Ticket size={xs ? 18 : 24} className="mr-1" />
+                    <Ticket size={24} className="mr-1" />
                     <div className="text-2xl sm:text-3xl flash tracking-wide">
                       {nextTicketPrice}
                     </div>
@@ -92,7 +92,7 @@ const KeyTrackers = () => {
 
               {!(phase === 'deployed' || phase === 'start') && (
                 <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <Vote size={xs ? 18 : 24} className="mr-1" />
+                  <Vote size={24} className="mr-1" />
                   <div className="text-2xl sm:text-3xl flash tracking-wide">{voteCount}</div>
                 </div>
               )}

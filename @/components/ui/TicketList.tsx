@@ -236,7 +236,7 @@ const TicketList = () => {
       )}
 
       <button
-        className="sm:hidden fixed bottom-12 right-2 rounded-full border border-black dark:border-white p-1 cursor-pointer"
+        className="sm:hidden fixed bottom-24 right-2 rounded-full border border-black dark:border-white p-1 cursor-pointer"
         onClick={scrollToTop}
       >
         <ArrowUpToLine size={18} className="" />

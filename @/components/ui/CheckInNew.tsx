@@ -29,7 +29,15 @@ import {
 } from 'wagmi'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucide-react'
+import {
+  LogIn,
+  ChevronUp,
+  ChevronDown,
+  MinusCircle,
+  PlusCircle,
+  AlertTriangle,
+  AlertCircle,
+} from 'lucide-react'
 // import { , ChevronDownIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import Prompt from './Prompt'
@@ -173,9 +181,9 @@ const CheckInNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        <div className="flex items-center justify-center gap-2 mt-2">
+        {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Check in</div>
           <Image
             priority
@@ -185,7 +193,7 @@ const CheckInNew = () => {
             className=""
             alt="dayIndicator"
           />
-        </div>
+        </div> */}
         <Image
           priority
           src="/lore/CheckIntoSafehouseMobile.png"
@@ -206,7 +214,7 @@ const CheckInNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">You cannot be killed in the Safehouse.</p>
+        <p className="mb-2">You cannot be killed in Safehouse.</p>
         <p className="mb-2">But actions are limited.</p>
         <p className="mb-2">Dont overstay.</p>
         <p className="mb-2">Others can kick you out.</p>
@@ -251,31 +259,30 @@ const CheckInNew = () => {
             <label htmlFor="checkIn" className="text-2xl">
               Nights:
             </label>
-            <div className="flex justify-center items-center">
+            <div className="flex gap-2 justify-center items-center">
+              <button
+                className="flex justify-center items-center"
+                onClick={() => Number(nights) > 0 && setNights(String(Number(nights) - 1))}
+              >
+                <MinusCircle size={28} />
+              </button>
+
               <input
                 type="text"
                 id="checkIn"
                 required
-                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
+                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                 value={nights}
                 placeholder="0"
                 onChange={(e) => setNights(e.target.value)}
               />
 
-              <div className="flex flex-col">
-                <button
-                  className="w-[20px] h-[20px] flex justify-center items-center"
-                  onClick={() => setNights(String(Number(nights) + 1))}
-                >
-                  <ChevronUp size={24} />
-                </button>
-                <button
-                  className="w-[20px] h-[20px] flex justify-center items-center"
-                  onClick={() => Number(nights) > 0 && setNights(String(Number(nights) - 1))}
-                >
-                  <ChevronDown size={24} />
-                </button>
-              </div>
+              <button
+                className="flex justify-center items-center"
+                onClick={() => setNights(String(Number(nights) + 1))}
+              >
+                <PlusCircle size={28} />
+              </button>
             </div>
           </div>
           <div>

@@ -248,9 +248,9 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
   return (
     <>
-      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-20 body-last">
+      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
         <div className="sm:hidden block flex flex-col">
-          <div className="flex items-center justify-center gap-2 mt-2">
+          {/* <div className="flex items-center justify-center gap-2 mt-2">
             <div className="h1-last text-center">Kick Out</div>
             <Image
               priority
@@ -260,7 +260,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
               className=""
               alt="nightIndicator"
             />
-          </div>
+          </div> */}
           <Image
             priority
             src="/lore/KickOutMobile.png"
@@ -280,14 +280,13 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Kick players out that overstay.</p>
-          <p className="mb-2">Kicked out = Killed</p>
+          <p className="mb-2">Kick out Safehouse players that overstayed.</p>
           <p className="mb-2">
-            Kick once it is <span className="font-headline night-last">Night</span> of their check
-            out round
+            Overstay once it is <span className="font-headline night-last">Night</span> of their
+            check out round
           </p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
-            <p className="mb-2">Ticket value of killed ticket does not go to killer.</p>
+            <p className="mb-2">Value of killed ticket does not go to killer.</p>
           </a>{' '}
           <a href={DOCS_URL_kickout} target="_blank" className="link h6-last align-top">
             Learn more
@@ -299,7 +298,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 gap-4 justify-center items-center h3-last
                 "
         >
-          <div className="m-1 capitalize text-center h2-last">Kick Some Ass</div>
+          <div className="m-1 capitalize text-center h2-last">Kick Them Out</div>
 
           <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
             {idList && (
@@ -364,7 +363,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                   type="text"
                   id="kickOut"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 rounded-xl flex justify-between items-center p-2 gap-3"
+                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />

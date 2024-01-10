@@ -89,7 +89,7 @@ const Title = () => {
   }, [phase])
 
   return (
-    <div className="text-sm sm:text-lg leading-tight sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 mx-3 capitalize">
+    <div className="text-lg leading-tight sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 mx-3 capitalize">
       {!authenticated && <p>Compete and earn ETH. Login to explore Lastman</p>}
 
       {authenticated && (

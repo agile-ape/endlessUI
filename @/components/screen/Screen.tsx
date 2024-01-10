@@ -55,6 +55,7 @@ import {
   Rss,
   Users,
   Clock,
+  Info,
   Move,
   ChevronDown,
   ChevronUp,
@@ -102,6 +103,7 @@ type ActionType =
 type CategoryType = 'start' | 'day' | 'night' | 'players'
 import type { Ticket } from 'types/app'
 import { socket } from '@/lib/socket'
+import is from 'date-fns/esm/locale/is/index.js'
 
 type MobileActionType = {
   label: string
@@ -293,6 +295,13 @@ export default function Screen() {
     }, 10)
     login()
   }
+
+  const [isToggled, setIsToggled] = useState(false)
+
+  const toggleInfo = () => {
+    setIsToggled(!isToggled)
+  }
+
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   let ticketStatus = ownedTicket?.status || 0
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
@@ -424,24 +433,44 @@ export default function Screen() {
       {/* mobile */}
       {/* style a box to hold all the various component renders */}
       {authenticated && xs && (
-        <>
-          <div className="flex flex-col border-[0px] border-gray-300 border-b-0 ">
-            <div className="sticky top-0 container-last border-none bg-opacity-50 dark:bg-opacity-50 flex flex-col">
-              <div className="flex justify-between mx-5 pt-3">
-                {/* <div className="grid grid-cols-3 mx-5 py-3"> */}
+        <div>
+          {/* <div className="border-[5px] border-slate-200 dark:border-slate-500 border-b-0"> */}
+          {/* <div className="bg-slate-200 dark:bg-slate-500"> */}
+          <div className="flex flex-col">
+            <div className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2">
+              {/* <div className="sticky top-0 bg-[#fff] flex flex-col py-2"> */}
+              {/* <div className="flex justify-between mx-5 pt-3">
                 <div className="float-left">
                   <Logo />
                 </div>
                 <div className="float-right">
                   <Indicator />
                 </div>
+              </div> */}
+
+              <div className="h1-last text-center">
+                {actionView === 'submit' && <p>Submit</p>}
+                {actionView === 'checkIn' && <p>Check In</p>}
+                {actionView === 'checkOut' && <p>Check Out</p>}
+                {actionView === 'splitIt' && <p>Split Pot</p>}
+                {actionView === 'wager' && <p>Place Bet</p>}
+                {actionView === 'attack' && <p>Attack</p>}
+                {actionView === 'kickOut' && <p>Kick Out</p>}
+                {actionView === 'buyTicket' && <p>Join Game</p>}
+                {actionView === 'exitGame' && <p>Exit Game</p>}
+                {actionView === 'token' && <p>Send Token</p>}
+                {actionView === 'changePhase' && <p>Change Phase</p>}
+                {menuComponent === 'you' && <p>You</p>}
+                {menuComponent === 'events' && <p>Feed</p>}
+                {menuComponent === 'list' && <p>Players</p>}
+                {menuComponent === 'menu' && <p>Links</p>}
               </div>
 
               <div className="mt-2 text-center">
                 <Title />
               </div>
 
-              <details open>
+              {/* <details open>
                 <summary className="h-8 text-center text-zinc-700 dark:text-zinc-200 tracking-wider">
                   Game{' '}
                 </summary>
@@ -452,17 +481,17 @@ export default function Screen() {
                   </div>
                   <Countdown />
                 </div>
-              </details>
+              </details> */}
             </div>
 
             {/* Viewport */}
-            <div className="border-[0px] border-zinc-700 border-b-0">
+            <div className="mt-2">
               {/* <div className="text-center">
                 <Title />
               </div> */}
               {menuComponent === 'you' && (
                 <>
-                  <div className="h1-last text-center">You</div>
+                  {/* <div className="h1-last text-center">You</div> */}
                   <TicketUI
                     ownTicket={true}
                     ticketNumber={id}
@@ -506,20 +535,20 @@ export default function Screen() {
 
               {menuComponent === 'events' && (
                 <div>
-                  <div className="h1-last text-center">Game Feed</div>
+                  {/* <div className="h1-last text-center">Game Feed</div> */}
                   <GameFeed />
                 </div>
               )}
 
               {menuComponent === 'list' && (
                 <div>
-                  <div className="h1-last text-center">Players</div>
+                  {/* <div className="h1-last text-center">Players</div> */}
                   <TicketList />
                 </div>
               )}
               {menuComponent === 'menu' && (
                 <>
-                  <div className="h1-last text-center">Links</div>
+                  {/* <div className="h1-last text-center">Links</div> */}
 
                   <div className="h1-last flex flex-col px-5 mt-4">
                     <a href={DOCS_URL} target="_blank">
@@ -573,9 +602,10 @@ export default function Screen() {
             </div>
           </div>
 
+          {/* Menu */}
           <div
             className={cn(
-              isCarouselVisible ? '' : 'border-transparent',
+              isCarouselVisible ? '' : '',
               'fixed bottom-0 w-full h-20 container-last border-none bg-opacity-100 dark:bg-opacity-100',
             )}
           >
@@ -644,14 +674,14 @@ export default function Screen() {
                   {arrayMobileAction.map((action, index) => (
                     <CarouselItem key={index} className="basis-1/4 justify-items-center">
                       {/* <div className="p-1 mx-auto"> */}
-                      <div className="flex justify-center mx-auto">
+                      <div className="flex items-center justify-center mx-auto">
                         <button
                           className={cn(
                             actionColor[action.category],
                             actionView === action.mobileAction
                               ? 'border-2 bg-slate-200 dark:bg-slate-800 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
                               : '',
-                            'w-16 h-16 flex flex-col justify-center items-center rounded-lg',
+                            'py-1 px-3 flex flex-col justify-center items-center rounded-lg',
                           )}
                           onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
                         >
@@ -663,9 +693,9 @@ export default function Screen() {
                                 : `/icon/${action.darkIcon}`
                             }
                             className="place-self-center rounded-xl"
-                            height={30}
-                            width={actionView === action.mobileAction ? 35 : 30}
-                            alt="attack-player"
+                            height={34}
+                            width={actionView === action.mobileAction ? 36 : 34}
+                            alt="player-action"
                           />
 
                           <div className="whitespace-nowrap">{action.label}</div>
@@ -680,7 +710,32 @@ export default function Screen() {
               </Carousel>
             </div>
           )}
-        </>
+
+          {/* Info */}
+          <div>
+            <Popover>
+              <PopoverTrigger
+                className={cn(
+                  isCarouselVisible ? 'bottom-40 left-3 fixed' : 'bottom-24 left-3 fixed',
+                )}
+              >
+                <button onClick={() => toggleInfo()}>
+                  <Info size={32} className={isToggled ? 'text-red-200' : ''}></Info>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent side="right" align="end" className="bg-slate-200 dark:bg-slate-800">
+                <div className="flex flex-col gap-2 py-2">
+                  <Indicator />
+                  <Round />
+                  <div className="flex items-center justify-center">
+                    <KeyTrackers />
+                  </div>
+                  <Countdown />
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
       )}
 
       {/* desktop */}

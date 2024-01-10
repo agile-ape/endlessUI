@@ -42,10 +42,10 @@ const Round = () => {
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
-        <TooltipTrigger className="flex justify-between px-5 mx-2 sm:mx-0 sm:px-0 sm:justify-start sm:flex-col items-center lg:items-end lg:gap-4 lg:flex-row">
+        <TooltipTrigger className="flex flex-col sm:flex-row px-5 mx-2 sm:mx-0 sm:px-0 sm:justify-start sm:flex-col items-center lg:items-end lg:gap-4 lg:flex-row">
           <div
             className={cn(
-              'text-xl sm:text-2xl whitespace-nowrap',
+              'text-2xl sm:text-2xl whitespace-nowrap',
               round === 0 ? 'text-zinc-600 dark:text-zinc-400' : '',
             )}
           >
@@ -54,7 +54,7 @@ const Round = () => {
 
           <div
             className={cn(
-              'flex flex-row items-end gap-4 text-base whitespace-nowrap cursor-default',
+              'flex flex-row items-end gap-4 text-base whitespace-nowrap cursor-default text-2xl sm:text-lg',
             )}
           >
             <div className={stage === 1 ? On : Off}>Stage 1</div>
