@@ -67,5 +67,5 @@ export const API_ENDPOINT = isDevelopment
   : 'https://lastman-be.onrender.com'
 
 export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://lsm-be.onrender.com/ws'
-  : 'wss://lsm-be.onrender.com/ws'
+  ? 'wss://lastman-be.onrender.com/ws'
+  : 'wss://lastman-be.onrender.com/ws'
