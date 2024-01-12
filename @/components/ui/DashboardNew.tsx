@@ -37,7 +37,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { formatAddress, formatNumber, cn, copyToClipboard } from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
-  LAST_MAN_STANDING_ADDRESS,
+  GAME_ADDRESS,
   defaultContractObj,
   tokenContractObj,
   BLOCK_EXPLORER,
@@ -57,6 +57,8 @@ import { connect } from 'http2'
 export default function DashboardNew() {
   // Address read
   const { address, isConnected } = useAccount()
+
+  console.log(address)
   const { xs } = useWindowSize()
 
   const { ready, authenticated, user, createWallet, setWalletPassword, exportWallet } = usePrivy()
@@ -171,13 +173,13 @@ export default function DashboardNew() {
 
   // potential to add game stats
   return (
-    <div className="w-[85%] mx-auto flex flex-col mb-16 body-last">
+    <div className="w-[85%] mx-auto flex flex-col mb-8 body-last">
       <div className="hidden sm:block flex flex-col">
         <div className="flex items-center justify-center gap-2 my-2">
           <>
             <Image
               priority
-              src="/lore/EnterGame.png"
+              src="/lore/Dashboard.png"
               className="place-self-center rounded-xl"
               height={400}
               width={650}

@@ -39,8 +39,8 @@ import Image from 'next/image'
 import {
   defaultContractObj,
   tokenContractObj,
-  LAST_MAN_STANDING_ADDRESS,
-  AGOR_RELAYER_ADDRESS,
+  GAME_ADDRESS,
+  RELAYER_ADDRESS,
   TEAM_WALLET_ADDRESS,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
@@ -68,7 +68,7 @@ export default function Admin() {
       {
         ...tokenContractObj,
         functionName: 'balanceOf',
-        args: [LAST_MAN_STANDING_ADDRESS as `0x${string}`],
+        args: [GAME_ADDRESS as `0x${string}`],
       },
       {
         ...defaultContractObj,
@@ -150,7 +150,7 @@ export default function Admin() {
 
   /*-------------------- RELAYER --------------------*/
   const { data: relayerData } = useBalance({
-    address: AGOR_RELAYER_ADDRESS,
+    address: RELAYER_ADDRESS,
   })
 
   /*-------------------- CHECK TIME LEFT --------------------*/

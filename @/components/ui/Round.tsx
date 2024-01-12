@@ -54,7 +54,7 @@ const Round = () => {
 
           <div
             className={cn(
-              'flex flex-row items-end gap-4 text-base whitespace-nowrap cursor-default text-2xl sm:text-lg',
+              'flex flex-row items-end gap-4 text-base whitespace-nowrap cursor-default text-xl sm:text-lg',
             )}
           >
             <div className={stage === 1 ? On : Off}>Stage 1</div>

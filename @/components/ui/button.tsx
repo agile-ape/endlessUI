@@ -58,7 +58,8 @@ const buttonVariants = cva(
         primary:
           'text-white bg-indigo-700 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
 
-        main: 'text-white bg-gradient-to-r from-indigo-950 via-indigo-800 to-indigo-600 hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+        main: 'text-white bg-gradient-to-r from-indigo-800 via-indigo-700 to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+        // main: 'text-white bg-gradient-to-b from-[#FFF1F8] via-[#FFC3E0] to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
 
         wallet:
           'text-white bg-violet-700 hover:bg-violet-600 active:bg-violet-600 border border-transparent hover:border-violet-300',

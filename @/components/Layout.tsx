@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes'
 import { useAccount, useContractRead, useContractReads, useWalletClient } from 'wagmi'
 import {
   API_ENDPOINT,
-  LAST_MAN_STANDING_ADDRESS,
+  GAME_ADDRESS,
   WEBSOCKET_ENDPOINT,
   defaultContractObj,
   tokenContractObj,
@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
 import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
-import WelcomeModal from './ui/_WelcomeModal'
+import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
@@ -27,14 +27,14 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 
 const typeStage: Record<IApp['phase'], string> = {
-  deployed: 'Default',
+  deployed: 'Deployed',
   start: 'Start',
   day: 'Day',
   night: 'Night',
   lastmanfound: 'LastManFound',
   drain: 'Drain',
   peacefound: 'PeaceFound',
-  gameclosed: 'Default',
+  gameclosed: 'Deployed',
 }
 
 type LayoutProps = {
@@ -63,15 +63,20 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
-  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-  //   const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-  //   const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-  //   return result
-  // })
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+    return result
+  })
+
+  const toggleModal = () => {
+    setShowWelcomeModal((prevState) => !prevState)
+    localStorage.setItem('showWelcomeModal', 'false')
+  }
+  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(true)
 
   // const toggleModal = () => {
   //   setShowWelcomeModal((prevState) => !prevState)
-  //   localStorage.setItem('showWelcomeModal', 'false')
   // }
 
   const router = useRouter()
@@ -86,7 +91,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   } = useSWR<{
     data: Ticket[]
   }>(
-    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${LAST_MAN_STANDING_ADDRESS}`,
+    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
     fetcher,
   )
 
@@ -364,7 +369,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           }}
         >
           <div className="container mx-auto p-0">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+            {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
             {/* <Header /> */}
             {children}
             <CompletionModal alertLookTest="afterPurchase" />
@@ -380,7 +385,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           }}
         >
           <div className="container mx-auto">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+            {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
             <Header />
             {children}
             <CompletionModal alertLookTest="afterPurchase" />

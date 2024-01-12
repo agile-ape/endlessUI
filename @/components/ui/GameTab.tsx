@@ -18,12 +18,7 @@ import {
   useWalletClient,
 } from 'wagmi'
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
-import {
-  defaultContractObj,
-  DOCS_URL,
-  LAST_MAN_STANDING_ADDRESS,
-  TWITTER_URL,
-} from '../../../services/constant'
+import { defaultContractObj, DOCS_URL, GAME_ADDRESS, TWITTER_URL } from '../../../services/constant'
 import { toast } from './use-toast'
 import BuyTicket from './_BuyTicket'
 import ExitGame from './_ExitGame'
@@ -80,7 +75,7 @@ const GameTab = () => {
     buddy: 0,
     buddyCount: 0,
     rank: 0,
-    contractAddress: LAST_MAN_STANDING_ADDRESS,
+    contractAddress: GAME_ADDRESS,
   }
 
   const id = ticket?.id || 0
@@ -120,7 +115,7 @@ const GameTab = () => {
             {isConnected && (
               <>
                 <div className="mb-2">
-                  <TicketUI ownTicket={true} ticketNumber={id} ticket={ticket} />
+                  <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
                   {id === 0 && (phase === 'deployed' || phase === 'start') && (
                     <Button
                       variant="enter"

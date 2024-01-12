@@ -157,6 +157,17 @@ const ExitGameNew = () => {
   })
 
   const killClaim = formatUnits(claimIfKilled || BigInt(0), 18)
+
+  let playerClaim: string
+
+  if (ticketStatusString === 'exited') {
+    playerClaim = ticketClaimed
+  } else if (ticketStatusString === 'dead') {
+    playerClaim = killClaim
+  } else {
+    playerClaim = exitClaim
+  }
+
   // console.log(killClaim)
 
   // Contract write
@@ -208,7 +219,7 @@ const ExitGameNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Exit game</div>
@@ -277,7 +288,7 @@ const ExitGameNew = () => {
             </p>
           )}
           {ticketIsInPlay && (
-            <p>
+            <p> 
               {formatNumber(exitClaim, {
                 maximumFractionDigits: 6,
                 minimumFractionDigits: 3,
@@ -286,7 +297,7 @@ const ExitGameNew = () => {
             </p>
           )} */}
 
-          {ticketStatusString === 'exited' ? (
+          {/* {ticketStatusString === 'exited' ? (
             <p>
               {formatNumber(ticketClaimed, {
                 maximumFractionDigits: 6,
@@ -310,7 +321,15 @@ const ExitGameNew = () => {
               })}{' '}
               ETH
             </p>
-          )}
+          )} */}
+
+          <p>
+            {formatNumber(playerClaim, {
+              maximumFractionDigits: 6,
+              minimumFractionDigits: 3,
+            })}{' '}
+            ETH
+          </p>
         </div>
         <div
           className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
@@ -351,9 +370,9 @@ const ExitGameNew = () => {
               <p className="text-right"> {ticketCount} </p>
             </div>
 
-            <div className="text-center h3-last">Claim stats</div>
+            <div className="text-center h3-last">Pot claim if</div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">If alive and exit now</p>
+              <p className="text-left">Last till now and exit</p>
               <p className="text-right">
                 {/* {`${rankClaim} ETH`}  */}
                 {formatNumber(exitClaim, {
@@ -364,7 +383,7 @@ const ExitGameNew = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Lastman gets</p>
+              <p className="text-left">Lastman</p>
               <p className="text-right">
                 {/* {Number(lastManClaim)} ETH  */}
                 {formatNumber(lastManClaim, {
@@ -416,7 +435,7 @@ const ExitGameNew = () => {
               onClick={exitGameHandler}
               className="w-[100%]"
             >
-              {`Exit Game and claim ${formatNumber(exitClaim, {
+              {`Exit Game and claim ${formatNumber(playerClaim, {
                 maximumFractionDigits: 3,
                 minimumFractionDigits: 3,
               })} ETH`}

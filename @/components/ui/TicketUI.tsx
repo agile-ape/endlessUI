@@ -24,27 +24,39 @@ import { Button } from './button'
 import OnSignal from './OnSignal'
 
 type TicketUIType = {
-  ownTicket: boolean
+  ticketSize: number
   ticketNumber: IApp['id']
   ticket?: Ticket
   ticketLength?: number
 }
 
-const getTicketSize = (ownTicket) => {
-  switch (ownTicket) {
-    case true:
+const getTicketSize = (ticketSize) => {
+  switch (ticketSize) {
+    case 1:
+      return {
+        size: 'w-[260px] h-[280px]',
+        edge: 'rounded-xl',
+        h1: 'text-2xl',
+        h2: 'text-xl',
+        h3: 'text-base',
+        imgh: '140',
+        imgw: '180',
+        mt: 'mt-0 mb-0',
+        gap: '',
+      }
+    case 2:
       return {
         size: 'w-[220px] h-[240px]',
         edge: 'rounded-xl',
         h1: 'text-xl',
-        h2: 'text-md',
+        h2: 'text-xl',
         h3: 'text-sm',
         imgh: '110',
         imgw: '150',
         mt: 'mt-0 mb-0',
-        gap: 'gap-y-1',
+        gap: '',
       }
-    case false:
+    case 3:
       return {
         size: 'w-[160px] h-[180px]',
         edge: 'rounded-md',
@@ -59,7 +71,7 @@ const getTicketSize = (ownTicket) => {
   }
 }
 
-const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLength }) => {
+const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLength }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const playerTickets = useStoreState((state) => state.tickets)
@@ -301,7 +313,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     return null
   }
 
-  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ownTicket)
+  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   const ticketLookFinal = ticketLook
 
@@ -326,7 +338,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     },
     spectator: {
       bgImage: '',
-      header: 'bg-zinc-200/20',
+      header: 'bg-zinc-200/60',
       face: 'eatchips',
       id: '',
       status: 'sitting this one out',
@@ -443,7 +455,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     },
     killed: {
       bgImage: 'deadOverlay',
-      header: 'bg-zinc-400/40',
+      header: 'bg-zinc-200/60',
       face: 'angry',
       id: ticketId,
       status: 'killed',
@@ -452,7 +464,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
     },
     exitGame: {
       bgImage: '',
-      header: 'bg-zinc-200/20',
+      header: 'bg-zinc-200/60',
       face: 'exit',
       id: ticketId,
       status: 'exited',
@@ -512,7 +524,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             <p className="text-right">
               {' '}
               <span className="underline decoration-double">{formatCount(ticketLastSeen)}</span>/
-              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-700' : 'text-red-900')}>
+              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-500' : 'text-red-900')}>
                 {ticketVoteString}
               </span>{' '}
             </p>
@@ -576,7 +588,8 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
           )}
 
           {!(
-            ownTicket == true ||
+            ticketSize === 1 ||
+            ticketSize === 2 ||
             ticketLookFinal == 'inSafehouse' ||
             ticketLookFinal == 'killed' ||
             ticketLookFinal == 'exitGame' ||
@@ -592,7 +605,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             </Button>
           )}
 
-          {ownTicket == false && ticketLookFinal == 'inSafehouse' && !xs && (
+          {ticketSize === 3 && ticketLookFinal == 'inSafehouse' && !xs && (
             <Button
               variant="kickOut"
               className="w-full py-1 text-lg h-8 rounded-md"
@@ -602,7 +615,6 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
               Kick Out
             </Button>
           )}
-          {/* {ownTicket == true && ticketLookFinal == 'inSafehouse' && <CheckOut />} */}
         </div>
       )}
 
@@ -610,7 +622,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
       {!isOverlayInspect && (
         <>
           {/* top header */}
-          {!ownTicket && address?.toLowerCase() === ticket?.user && (
+          {ticketSize === 3 && address?.toLowerCase() === ticket?.user && (
             <div className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 rounded-full motion-safe:animate-bounce w-max mx-auto px-3 absolute inset-x-0 -top-3 h-5">
               Hello there
             </div>
@@ -636,6 +648,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             <Image
               priority
               src={`/faces/${face}.png`}
+              // src={`/faces/handsup.svg`}
               height={imgh}
               width={imgw}
               className={`h-auto ${mt}`}
@@ -644,7 +657,7 @@ const TicketUI: FC<TicketUIType> = ({ ownTicket, ticketNumber, ticket, ticketLen
             />
           </div>
           {/* need a mapping to list ticketAttacks */}
-          {ownTicket && ticketIsInPlay == true && (
+          {(ticketSize === 1 || ticketSize === 2) && ticketIsInPlay == true && (
             <div className="flex flex-row-reverse mx-3 ">{swords}</div>
           )}
           {/* rank */}

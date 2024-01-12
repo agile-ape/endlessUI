@@ -34,13 +34,13 @@ import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ExternalLink } from 'lucide-react'
-import { fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
+import { scrollToTop, fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
 import { disconnect } from 'process'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { toast } from '@/components/ui/use-toast'
 import { useTheme } from 'next-themes'
 import {
-  LAST_MAN_STANDING_ADDRESS,
+  GAME_ADDRESS,
   DOCS_URL,
   TWITTER_URL,
   TELEGRAM_URL,
@@ -55,6 +55,8 @@ import {
   Rss,
   Users,
   Clock,
+  Monitor,
+  Target,
   Info,
   Move,
   ChevronDown,
@@ -327,7 +329,7 @@ export default function Screen() {
     buddy: 0,
     buddyCount: 0,
     rank: 0,
-    contractAddress: LAST_MAN_STANDING_ADDRESS,
+    contractAddress: GAME_ADDRESS,
   }
 
   const id = ticket?.id || 0
@@ -341,33 +343,41 @@ export default function Screen() {
               <Logo />
             </div>
           )}
-          <div className="text-center font-whitrabt">Welcome to Lastman</div>
-          <div className="text-center body-last">
+          <div className="text-center text-2xl text-lime-700 dark:text-lime-300 font-whitrabt">
+            Welcome to Lastman
+          </div>
+          <div className="flex flex-col gap-1 my-2 text-center body-last">
             <p className="">Lastman is an onchain game on [Base]</p>
             <p className="">Play, outlast and earn ETH</p>
             <p className="">How long can you last?</p>
           </div>
-          <div className="flex place-content-center">
-            <div className="relative">
+          <div className="relative flex justify-center items-center">
+            <Image
+              priority
+              src="/pepe/portal-welcome.svg"
+              className=""
+              height={300}
+              width={200}
+              alt="sneak-a-peek-pepe"
+            />
+            <div className="absolute bottom-[20px] flex flex-col">
               <Image
                 priority
-                src="/pepe/sun.svg"
-                className="transition-all ease-linear place-self-center animate-pulse"
-                height={300}
-                width={300}
+                src="/pepe/sun-welcome.svg"
+                className="relative transition-all ease-linear place-self-center animate-pulse"
+                height={200}
+                width={150}
                 alt="sneak-a-peek-pepe"
               />
 
-              <div className="absolute top-[50px]">
-                <Image
-                  priority
-                  src="/pepe/pepe-robe.svg"
-                  className="place-self-center"
-                  height={300}
-                  width={300}
-                  alt="sneak-a-peek-pepe"
-                />
-              </div>
+              <Image
+                priority
+                src="/pepe/pepe-robe-welcome.svg"
+                className="absolute -bottom-[20px]"
+                height={300}
+                width={200}
+                alt="sneak-a-peek-pepe"
+              />
             </div>
           </div>
 
@@ -413,19 +423,19 @@ export default function Screen() {
                   </PopoverContent>
                 </Popover> */}
 
-                <div className="flex flex-col justify-center items-center w-[80%] rounded-xl px-4 py-2 container-last">
+                {/* <div className="flex flex-col justify-center items-center w-[80%] rounded-xl px-4 py-2 container-last">
                   <p className="h1-last">Play on mobile</p>
                   <p className="body-last">Visit lastman.xyz on mobile to install the app.</p>
-                </div>
+                </div> */}
               </>
             )}
 
-            {xs && (
+            {/* {xs && (
               <div className="flex flex-col justify-center items-center w-[80%] rounded-xl px-4 py-2 container-last">
                 <p className="h1-last">Add to Home Screen</p>
                 <p className="body-last">To install app, add this website to your home screen.</p>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}
@@ -437,8 +447,11 @@ export default function Screen() {
           {/* <div className="border-[5px] border-slate-200 dark:border-slate-500 border-b-0"> */}
           {/* <div className="bg-slate-200 dark:bg-slate-500"> */}
           <div className="flex flex-col">
-            <div className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2">
-              {/* <div className="sticky top-0 bg-[#fff] flex flex-col py-2"> */}
+            <button
+              onClick={scrollToTop}
+              className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center"
+            >
+              {/* <div className="sticky top-0 bg-slate-300 flex flex-col py-2"> */}
               {/* <div className="flex justify-between mx-5 pt-3">
                 <div className="float-left">
                   <Logo />
@@ -448,28 +461,25 @@ export default function Screen() {
                 </div>
               </div> */}
 
-              <div className="h1-last text-center">
+              <div className="text-3xl text-lime-700 dark:text-lime-300 text-center">
                 {actionView === 'submit' && <p>Submit</p>}
+                {actionView === 'exitGame' && <p>Exit Game</p>}
                 {actionView === 'checkIn' && <p>Check In</p>}
                 {actionView === 'checkOut' && <p>Check Out</p>}
                 {actionView === 'splitIt' && <p>Split Pot</p>}
-                {actionView === 'wager' && <p>Place Bet</p>}
                 {actionView === 'attack' && <p>Attack</p>}
                 {actionView === 'kickOut' && <p>Kick Out</p>}
                 {actionView === 'buyTicket' && <p>Join Game</p>}
-                {actionView === 'exitGame' && <p>Exit Game</p>}
                 {actionView === 'token' && <p>Send Token</p>}
                 {actionView === 'changePhase' && <p>Change Phase</p>}
+                {actionView === 'wager' && <p>Place Bet</p>}
+              </div>
+              <div className="text-3xl text-center">
                 {menuComponent === 'you' && <p>You</p>}
                 {menuComponent === 'events' && <p>Feed</p>}
                 {menuComponent === 'list' && <p>Players</p>}
                 {menuComponent === 'menu' && <p>Links</p>}
               </div>
-
-              <div className="mt-2 text-center">
-                <Title />
-              </div>
-
               {/* <details open>
                 <summary className="h-8 text-center text-zinc-700 dark:text-zinc-200 tracking-wider">
                   Game{' '}
@@ -482,18 +492,18 @@ export default function Screen() {
                   <Countdown />
                 </div>
               </details> */}
-            </div>
+            </button>
 
             {/* Viewport */}
-            <div className="mt-2">
-              {/* <div className="text-center">
-                <Title />
-              </div> */}
+            <div className="mt-4 mb-36">
               {menuComponent === 'you' && (
                 <>
+                  <div className="mt-2 mb-4 text-center">
+                    <Title />
+                  </div>
                   {/* <div className="h1-last text-center">You</div> */}
                   <TicketUI
-                    ownTicket={true}
+                    ticketSize={1}
                     ticketNumber={id}
                     ticket={ticket}
                     // ticketLookInput={'beforePurchase'}
@@ -502,7 +512,7 @@ export default function Screen() {
                     {id === 0 && (phase === 'deployed' || phase === 'start') && (
                       <Button
                         variant="enter"
-                        className="rounded-full px-10 py-1 leading-10 h-12 mt-4 mb-2 text-2xl"
+                        className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
                         onClick={() => buyTicketAction()}
                       >
                         Buy Ticket
@@ -511,7 +521,7 @@ export default function Screen() {
                     {id !== 0 && (
                       <Button
                         variant="exit"
-                        className="rounded-full px-10 py-1 leading-10 h-12 mt-4 mb-2 text-2xl"
+                        className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
                         onClick={() => exitGameAction()}
                       >
                         {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
@@ -533,56 +543,64 @@ export default function Screen() {
                 </>
               )}
 
+              {menuComponent === 'list' && (
+                <div className="mt-2">
+                  {/* <div className="h1-last text-center">Players</div> */}
+                  <TicketList />
+                </div>
+              )}
+
               {menuComponent === 'events' && (
-                <div>
+                <div className="mt-2 text-xl">
                   {/* <div className="h1-last text-center">Game Feed</div> */}
                   <GameFeed />
                 </div>
               )}
 
-              {menuComponent === 'list' && (
-                <div>
-                  {/* <div className="h1-last text-center">Players</div> */}
-                  <TicketList />
-                </div>
-              )}
               {menuComponent === 'menu' && (
                 <>
                   {/* <div className="h1-last text-center">Links</div> */}
 
                   <div className="h1-last flex flex-col px-5 mt-4">
-                    <a href={DOCS_URL} target="_blank">
-                      <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                          How To Play{' '}
-                          <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
-                        </p>
-                        <p className="body-last">Learn more about game play</p>
-                      </div>
+                    <a
+                      href={DOCS_URL}
+                      target="_blank"
+                      className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                    >
+                      <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        How To Play <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                      </p>
+                      <p className="body-last">Learn more about game play</p>
                     </a>
-                    <a href={TWITTER_URL} target="_blank">
-                      <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                          Follow <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
-                        </p>
-                        <p className="body-last">Follow us for updates (and memes)</p>
-                      </div>
+                    <a
+                      href={TWITTER_URL}
+                      target="_blank"
+                      className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                    >
+                      <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        Follow <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                      </p>
+                      <p className="body-last">Follow us for updates (mostly memes)</p>
                     </a>
-                    <a href={TELEGRAM_URL} target="_blank">
-                      <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                          Community <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
-                        </p>
-                        <p className="body-last">Join the community</p>
-                      </div>
+                    <a
+                      href={TELEGRAM_URL}
+                      target="_blank"
+                      className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                    >
+                      <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        Community <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                      </p>
+                      <p className="body-last">Join the community</p>
                     </a>
-                    <a href={BLOG_URL} target="_blank">
-                      <div className="flex flex-col mb-4">
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                          Blog <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>{' '}
-                        </p>
-                        <p className="body-last">Read about our latest progress</p>
-                      </div>
+                    <a
+                      href={BLOG_URL}
+                      target="_blank"
+                      className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                    >
+                      <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        Blog <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                      </p>
+                      <p className="body-last">Read about our latest progress</p>
                     </a>
                   </div>
                 </>
@@ -615,9 +633,11 @@ export default function Screen() {
                   className="flex flex-col rounded-none justify-center items-center py-2"
                   onClick={() => selectMenuComponent('you')}
                 >
+                  {/* <div className="flex flex-col justify-center items-center"> */}
                   {menuComponent === 'you' && <User size={32} strokeWidth={3} />}
                   {menuComponent !== 'you' && <User size={32} />}
-
+                  {/* <p className="whitespace-nowrap">User</p>
+                  </div> */}
                   {/* <div className="">You</div> */}
                 </button>
                 <button
@@ -713,18 +733,22 @@ export default function Screen() {
 
           {/* Info */}
           <div>
-            <Popover>
+            <Popover data-state={isToggled ? 'open' : 'closed'}>
               <PopoverTrigger
                 className={cn(
-                  isCarouselVisible ? 'bottom-40 left-3 fixed' : 'bottom-24 left-3 fixed',
+                  isCarouselVisible ? 'bottom-40 left-1 fixed' : 'bottom-24 left-3 fixed',
+                  '',
                 )}
               >
-                <button onClick={() => toggleInfo()}>
-                  <Info size={32} className={isToggled ? 'text-red-200' : ''}></Info>
+                <button className="p-2 rounded-full container-last" onClick={() => toggleInfo()}>
+                  <Monitor
+                    size={isToggled ? 36 : 32}
+                    // className={isToggled ? 'text-red-200' : ''}
+                  ></Monitor>
                 </button>
               </PopoverTrigger>
               <PopoverContent side="right" align="end" className="bg-slate-200 dark:bg-slate-800">
-                <div className="flex flex-col gap-2 py-2">
+                <div className="flex flex-col gap-2 py-2 px-0">
                   <Indicator />
                   <Round />
                   <div className="flex items-center justify-center">

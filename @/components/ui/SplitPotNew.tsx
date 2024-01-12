@@ -247,7 +247,7 @@ export const SplitPotNew = () => {
   useSocketEvents(events)
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Split Pot</div>
@@ -283,11 +283,7 @@ export const SplitPotNew = () => {
         <p className="mb-2">Vote to split once Stage 2 comes.</p>
         <p className="mb-2">Games ends if Yes hits threshold.</p>
         <p className="mb-2">Players share remaining pot.</p>
-        <a
-          href={DOCS_URL_split}
-          target="_blank"
-          className="link mb-2 text-xs sm:text-sm md:text-base"
-        >
+        <a href={DOCS_URL_split} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
       </div>
@@ -314,9 +310,9 @@ export const SplitPotNew = () => {
                 {stage !== 3 && (
                   <>
                     {' '}
-                    <a href={TWITTER_URL} className="link">
+                    <a href={TWITTER_URL} className="link underline">
                       {' '}
-                      Follow for update
+                      Follow us
                     </a>{' '}
                   </>
                 )}
@@ -380,12 +376,19 @@ export const SplitPotNew = () => {
                         </TooltipProvider> */}
               </div>
             </div>
-            {(stage === 2 || stage === 3) && voteCount < thresholdCount ? (
-              <p className="text-xl text-amber-600 text-center">
-                {thresholdCount - voteCount} more vote(s) to go
-              </p>
+            {stage === 2 || stage === 3 ? (
+              voteCount < thresholdCount ? (
+                <p className="text-xl text-amber-600 text-center">
+                  {thresholdCount - voteCount} more vote(s) to go
+                </p>
+              ) : (
+                <p className="text-xl text-green-600 text-center">We have hit the threshold!</p>
+              )
             ) : (
-              <p className="text-xl text-green-600 text-center">We have hit the threshold!</p>
+              <p className="text-xl text-blue-600 dark:text-blue-300 text-center">
+                {' '}
+                Voting has not began{' '}
+              </p>
             )}
           </div>
 

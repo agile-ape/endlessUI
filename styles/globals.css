@@ -152,7 +152,7 @@
 
   /* modal sections */
   .h2-last {
-    @apply text-3xl sm:text-2xl text-zinc-700 dark:text-zinc-400;
+    @apply text-3xl sm:text-2xl text-zinc-700 dark:text-zinc-100;
   }
 
   /* modal subsections */
@@ -174,7 +174,7 @@
 
   /* links */
   .h6-last {
-    @apply text-sm sm:text-sm md:text-base leading-tight text-gray-500 dark:text-gray-200;
+    @apply text-xl sm:text-sm md:text-base leading-tight text-gray-500 dark:text-gray-200;
   }
 
   .round-last {

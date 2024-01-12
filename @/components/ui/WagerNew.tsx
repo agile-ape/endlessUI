@@ -108,32 +108,32 @@ const WagerNew = () => {
       },
       {
         ...wagerContractObj,
-        functionName: 'betCounts',
+        functionName: 'endingBetCount',
         args: [4],
       },
       {
         ...wagerContractObj,
-        functionName: 'betCounts',
+        functionName: 'endingBetCount',
         args: [5],
       },
       {
         ...wagerContractObj,
-        functionName: 'betCounts',
+        functionName: 'endingBetCount',
         args: [6],
       },
       {
         ...wagerContractObj,
-        functionName: 'betSize',
+        functionName: 'endingBetAmount',
         args: [4],
       },
       {
         ...wagerContractObj,
-        functionName: 'betSize',
+        functionName: 'endingBetAmount',
         args: [5],
       },
       {
         ...wagerContractObj,
-        functionName: 'betSize',
+        functionName: 'endingBetAmount',
         args: [6],
       },
       {
@@ -194,7 +194,7 @@ const WagerNew = () => {
   const placeBet = async () => {
     try {
       const doBetEnding = await betEnding({
-        args: [BigInt(radioValue)],
+        args: [Number(radioValue)],
       })
 
       const hash = doBetEnding.hash
@@ -290,7 +290,7 @@ const WagerNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Place Bet</div>
@@ -306,7 +306,7 @@ const WagerNew = () => {
       </div>
       <Image
         priority
-        src="/lore/CheckIntoSafehouse.png"
+        src="/lore/Wager.png"
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
@@ -349,7 +349,7 @@ const WagerNew = () => {
             onValueChange={(value) => setRadioValue(value)}
           >
             <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
-              <TooltipProvider delayDuration={10}>
+              {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
@@ -366,14 +366,29 @@ const WagerNew = () => {
                       />
                       <div>Lastman</div>
                     </Label>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" align="start">
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="start">
                     <p className="px-3 py-1 max-w-[280px] text-sm cursor-default">
-                      Only 1 player is left. Everyone gives up or is killed.
+                    Only 1 player is left. Everyone gives up or is killed.
                     </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                    </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider> */}
+
+              <Label
+                htmlFor="option-one"
+                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+              >
+                <Image
+                  priority
+                  src="/indicator/lastmanfoundIndicator.svg"
+                  height={300}
+                  width={100}
+                  alt="last-man-found-ending"
+                  className="shrink-0 mb-1"
+                />
+                <div>Lastman</div>
+              </Label>
               <RadioGroupItem value="option-one" id="option-one" />
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
@@ -393,7 +408,7 @@ const WagerNew = () => {
             </div>
 
             <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
-              <TooltipProvider delayDuration={10}>
+              {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
@@ -417,7 +432,21 @@ const WagerNew = () => {
                     </p>
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
+              </TooltipProvider> */}
+              <Label
+                htmlFor="option-two"
+                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+              >
+                <Image
+                  priority
+                  src="/indicator/peacefoundIndicator.svg"
+                  height={300}
+                  width={100}
+                  alt="peace-found-ending"
+                  className="shrink-0 mb-1"
+                />
+                <div>Peace</div>
+              </Label>
               <RadioGroupItem value="option-two" id="option-two" />
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
@@ -437,7 +466,7 @@ const WagerNew = () => {
             </div>
 
             <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
-              <TooltipProvider delayDuration={10}>
+              {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
                     <Label
@@ -461,7 +490,21 @@ const WagerNew = () => {
                     </p>
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
+              </TooltipProvider> */}
+              <Label
+                htmlFor="option-three"
+                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+              >
+                <Image
+                  priority
+                  src="/indicator/drainIndicator.svg"
+                  height={300}
+                  width={100}
+                  alt="drain-ending"
+                  className="shrink-0 mb-1"
+                />
+                <div>Drained</div>
+              </Label>
               <RadioGroupItem value="option-three" id="option-three" />
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
@@ -493,7 +536,7 @@ const WagerNew = () => {
               type="text"
               id="bet"
               required
-              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400 bg-slate-100 bg-slate-700"
+              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400 bg-slate-100 dark:bg-slate-700"
               value={betAmount}
               onChange={(e) => setBetAmount(e.target.value)}
             />

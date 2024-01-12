@@ -181,7 +181,7 @@ const CheckInNew = () => {
   })
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Check in</div>
@@ -271,7 +271,7 @@ const CheckInNew = () => {
                 type="text"
                 id="checkIn"
                 required
-                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                 value={nights}
                 placeholder="0"
                 onChange={(e) => setNights(e.target.value)}

@@ -406,7 +406,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
 
   return (
     <>
-      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+      <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
         <div className="sm:hidden block flex flex-col">
           {/* <div className="flex items-center justify-center gap-2 mt-2">
             <div className="h1-last text-center">Attack</div>
@@ -468,7 +468,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
               </div>
 
               <div>
-                {idList && (
+                {idList ? (
                   <>
                     <div className="grid grid-cols-2 gap-1">
                       <p className="text-left">Player value</p>
@@ -492,6 +492,8 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
                     </Button>
                     {!attackListActive && <Prompt docLink={DOCS_URL_attack} />}
                   </>
+                ) : (
+                  <></>
                 )}
               </div>
             </div>
@@ -511,7 +513,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
                   type="text"
                   id="attack"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />

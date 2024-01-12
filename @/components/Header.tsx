@@ -28,6 +28,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import { useAccount } from 'wagmi'
+import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
 import { cn } from '@/lib/utils'
 import {
@@ -59,6 +60,13 @@ function Header() {
 
   const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
   const toggleToken = () => setShowTokenModal((prevState) => !prevState)
+
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false)
+
+  const toggleWelcomeModal = () => {
+    setShowWelcomeModal((prevState) => !prevState)
+  }
+
   // const { wallets } = useWallets()
   // const wallet = wallets.find((wallet) => wallet.address === address)
 
@@ -141,7 +149,7 @@ function Header() {
               <SideMenu />
             </div> */}
             {/* <div className={`hidden xl:flex items-center space-x-4`}> */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               {/* custom styling */}
               {/* border border-white/40 rounded-md */}
               {/* <Link
@@ -153,6 +161,15 @@ function Header() {
               >
               Quickstart
             </Link> */}
+              <Button
+                variant="link"
+                className={`px-2 text-lg`}
+                size="sm"
+                onClick={toggleWelcomeModal}
+              >
+                Choose
+              </Button>
+
               <a href={DOCS_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">
                   How To Play
@@ -167,7 +184,7 @@ function Header() {
               </a>
               <a href={TELEGRAM_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  Community
+                  Telegram
                   {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
                 </Button>
               </a>
@@ -231,6 +248,7 @@ function Header() {
       </div>
       {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
       {showTokenModal && <Modal action={'token'} toggle={toggleToken} />}
+      {showWelcomeModal && <WelcomeModal toggleModal={toggleWelcomeModal} />}
     </>
     // </div>
   )

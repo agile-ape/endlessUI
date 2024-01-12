@@ -86,7 +86,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           showWalletLoginFirst: true,
         },
         loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
-        defaultChain: arbitrumGoerli,
+        defaultChain: baseGoerli,
         supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
 
         embeddedWallets: {

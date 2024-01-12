@@ -226,7 +226,7 @@ function TokenNew() {
   }
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Send Tokens</div>
@@ -320,7 +320,7 @@ function TokenNew() {
                   type="text"
                   id="approve"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-md my-2 px-1"
+                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-md my-2 px-1"
                   value={approveValue}
                   onChange={(e) => setApproveValue(e.target.value)}
                 />
@@ -346,7 +346,7 @@ function TokenNew() {
                   <input
                     type="text"
                     id="player_id"
-                    className="w-[4rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-md my-2 px-1"
+                    className="w-[4rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-md my-2 px-1"
                     value={receiverId}
                     onChange={(e) => setReceiverId(e.target.value)}
                     required
@@ -359,7 +359,7 @@ function TokenNew() {
                   type="text"
                   id="token"
                   required
-                  className="w-[4rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-md my-2 px-1"
+                  className="w-[4rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-md my-2 px-1"
                   value={tokenValue}
                   onChange={(e) => setTokenValue(e.target.value)}
                 />

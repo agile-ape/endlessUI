@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { publicClient } from '../../services/server_utils'
 import { LAST_MAN_STANDING_ADDRESS } from '../../services/constant'
-import { LAST_MAN_STANDING_ABI } from '../../services/abi/last_man_standing'
+import { LAST_MAN_STANDING_ABI } from '../../services/abi/game'
 import type { IApp } from 'types/app'
 import { supabase } from '../../services/supabase'
 

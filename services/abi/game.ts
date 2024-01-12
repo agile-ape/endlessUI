@@ -1,4 +1,4 @@
-export const LAST_MAN_STANDING_ABI = [
+export const GAME_ABI = [
   {
     inputs: [
       { internalType: 'address', name: '_gameMaster', type: 'address' },
@@ -178,6 +178,16 @@ export const LAST_MAN_STANDING_ABI = [
       { indexed: false, internalType: 'uint256', name: 'time', type: 'uint256' },
     ],
     name: 'TokensTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'uint256', name: 'receivingTicket', type: 'uint256' },
+      { indexed: true, internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { indexed: false, internalType: 'uint256', name: 'time', type: 'uint256' },
+    ],
+    name: 'ValueWaterfall',
     type: 'event',
   },
   {
@@ -400,6 +410,27 @@ export const LAST_MAN_STANDING_ABI = [
     inputs: [],
     name: 'getLeaderboard',
     outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getPhase',
+    outputs: [{ internalType: 'enum LastManGame.Phase', name: '', type: 'uint8' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getRound',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getSuddenDeath',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -651,6 +682,13 @@ export const LAST_MAN_STANDING_ABI = [
   {
     inputs: [],
     name: 'rankShare',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'referencePot',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',

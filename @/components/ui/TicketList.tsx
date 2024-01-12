@@ -7,7 +7,7 @@ import { Gem, Users, Vote } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
 import { useAccount, useContractWrite, useContractReads } from 'wagmi'
-import { LAST_MAN_STANDING_ADDRESS, defaultContractObj } from '../../../services/constant'
+import { GAME_ADDRESS, defaultContractObj } from '../../../services/constant'
 import { scrollToTop, fetcher, formatNumber, transformToTicket } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
 import useSWR from 'swr'
@@ -131,7 +131,7 @@ const TicketList = () => {
             <Button
               onClick={() => toggleTab('aroundMe')}
               variant="filter"
-              className="text-xs sm:text-sm rounded-full h-8 px-3 py-1"
+              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
               disabled={ticketState === 'aroundMe'}
             >
               Around Me
@@ -139,7 +139,7 @@ const TicketList = () => {
             <Button
               onClick={() => toggleTab('inPlay')}
               variant="filter"
-              className="text-xs sm:text-sm rounded-full h-8 px-3 py-1"
+              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
               disabled={ticketState === 'inPlay'}
             >
               In Play
@@ -148,7 +148,7 @@ const TicketList = () => {
             <Button
               onClick={() => toggleTab('mostValue')}
               variant="filter"
-              className="text-xs sm:text-sm rounded-full h-8 px-3 py-1"
+              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
               disabled={ticketState === 'mostValue'}
             >
               Not In Play
@@ -156,7 +156,7 @@ const TicketList = () => {
             <Button
               onClick={() => toggleTab('safehouse')}
               variant="filter"
-              className="text-xs sm:text-sm rounded-full h-8 px-3 py-1"
+              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
               disabled={ticketState === 'safehouse'}
             >
               In Safehouse
@@ -218,7 +218,12 @@ const TicketList = () => {
           {ticketListState
             .sort((a, b) => a.id - b.id)
             .map((item, i) => (
-              <TicketUI key={item.id} ownTicket={false} ticketNumber={item.id} ticket={item} />
+              <TicketUI
+                key={item.id}
+                ticketSize={xs ? 2 : 3}
+                ticketNumber={item.id}
+                ticket={item}
+              />
             ))}
         </div>
       ) : (
@@ -231,16 +236,16 @@ const TicketList = () => {
             width={xs ? 150 : 250}
             alt="waiting-for-players"
           />
-          <div className="text-center my-2 text-lg sm:text-3xl">hmm...</div>
+          {/* <div className="text-center my-2 text-lg sm:text-3xl">hmm...</div> */}
         </div>
       )}
 
-      <button
+      {/* <button
         className="sm:hidden fixed bottom-24 right-2 rounded-full border border-black dark:border-white p-1 cursor-pointer"
         onClick={scrollToTop}
       >
         <ArrowUpToLine size={18} className="" />
-      </button>
+      </button> */}
     </div>
   )
 }

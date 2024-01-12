@@ -85,6 +85,9 @@ const BuyTicketNew = () => {
   const ticketsAvailableAtCurrentPrice = Number(data?.[1].result || BigInt(0))
   const ticketsCounter = Number(data?.[2].result || BigInt(0))
 
+  console.log(ticketsAvailableAtCurrentPrice)
+  console.log(ticketsCounter)
+
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
   const ticketPrice = nextTicketPrice
   const nextPrice = nextTicketPrice + Number(formatUnits(increaseInPrice, 18))
@@ -146,7 +149,7 @@ const BuyTicketNew = () => {
   }
 
   return (
-    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-36 sm:mb-8 body-last">
+    <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
         {/* <div className="flex items-center justify-center gap-2 mt-2">
           <div className="h1-last text-center">Join game</div>
@@ -172,7 +175,7 @@ const BuyTicketNew = () => {
       <Image
         priority
         src="/lore/InsertCoin.png"
-        className="hidden sm:blockplace-self-center rounded-xl"
+        className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="insert-coin-to-play"
@@ -241,7 +244,7 @@ const BuyTicketNew = () => {
             <input
               type="text"
               id="buddy"
-              className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+              className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
               placeholder={buddyValue}
               onChange={(e) => setBuddyValue(e.target.value)}
             />
