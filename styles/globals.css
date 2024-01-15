@@ -177,6 +177,10 @@
     @apply text-xl sm:text-sm md:text-base leading-tight text-gray-500 dark:text-gray-200;
   }
 
+  .whtrabt-last {
+    @apply font-whitrabt text-lime-700 dark:text-lime-300;
+  }
+
   .round-last {
     @apply underline decoration-double;
   }
@@ -216,13 +220,13 @@
   }
 
   @keyframes wiggle {
-    /* rotate 
+    /* rotate
     0% {
       transform: rotate(0deg);
     }
     100% {
       transform: rotate(360deg);
-    } 
+    }
     */
 
     /* scaling

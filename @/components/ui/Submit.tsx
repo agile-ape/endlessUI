@@ -57,7 +57,7 @@ export const SubmitActive = () => {
 }
 
 const Submit = () => {
-  const { round, updateCompletionModal, ticketLastSeen, ticketStatusString } = useStore()
+  const { phase, round, updateCompletionModal, ticketLastSeen, ticketStatusString } = useStore()
   const active = SubmitActive()
   const { data: walletClient } = useWalletClient()
   const [otpInput, setOtpInput] = React.useState<string>('')
@@ -243,23 +243,31 @@ const Submit = () => {
       </div>
 
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize h2-last">Solve and Submit</div>
-        <div className="mx-auto flex flex-col justify-center items-center">
-          <div className="text-center h3-last">Solve Captcha</div>
+        <div className="m-1 capitalize text-center h2-last">Fight On?</div>
 
-          <HCaptcha
-            sitekey={HCAPCTCHA_KEY}
-            onVerify={(token, ekey) => verifyCaptcha(token)}
-            tabIndex={0}
-            size="normal"
-            id={crypto.randomUUID()}
-            // onError={onError}
-            // onExpire={onExpire}
-          />
+        <div className="mx-auto flex flex-col justify-center items-center">
+          {phase === 'day' ? (
+            <>
+              <div className="text-center h3-last">Solve Captcha</div>
+              <HCaptcha
+                sitekey={HCAPCTCHA_KEY}
+                onVerify={(token, ekey) => verifyCaptcha(token)}
+                tabIndex={0}
+                size="normal"
+                id={crypto.randomUUID()}
+                // onError={onError}
+                // onExpire={onExpire}
+              />
+            </>
+          ) : (
+            <>
+              <div className="text-center whtrabt-last">Not time to submit</div>
+            </>
+          )}
         </div>
 
         {svgKeyword && (
@@ -274,17 +282,13 @@ const Submit = () => {
         )}
 
         <div
-          className="w-[220px]
-          m-4 mt-4 mb-0
-          rounded-xl py-3 px-3
-          bg-green-700
-          capitalize text-center mx-auto text-white
-          flex flex-col gap-5 border border-zinc-400 dark:border-zinc-200 
+          className="w-[220px] mx-auto rounded-xl p-3 border border-zinc-400 dark:border-zinc-200
+          flex flex-col gap-4 m-4 mb-0 text-white bg-green-700 capitalize text-center
           "
         >
-          <div className="text-center text-white h2-last">
+          <div className="text-white h2-last">
             {ticketStatusString === 'submitted' && ticketLastSeen === round ? (
-              <span>You have already submitted. Submit again?</span>
+              <span>You have submitted. Submit again?</span>
             ) : (
               <span>Submit keyword</span>
             )}
@@ -307,25 +311,19 @@ const Submit = () => {
             className="dark:text-white text-black "
           />
 
-          {!active && ticketStatusString === 'safe' ? (
-            <div className="flex flex-col justify-center items-center">
-              <Button variant="submit" size="lg" className="w-[100%]" disabled>
-                In Safehouse
-              </Button>
-              <Prompt docLink={DOCS_URL_submit} />
-            </div>
-          ) : (
-            <Button
-              variant="submit"
-              size="lg"
-              onClick={() => submitKeyword(otpInput)}
-              disabled={(!active && ticketStatusString !== 'safe') || !svgKeyword}
-            >
-              Submit
-            </Button>
-          )}
+          <Button
+            variant="submit"
+            size="lg"
+            onClick={() => submitKeyword(otpInput)}
+            isLoading={isLoading}
+            disabled={!active || !svgKeyword}
+          >
+            Submit
+          </Button>
         </div>
-        {!active && <Prompt docLink={DOCS_URL_submit} />}
+        <div className="whtrabt-last">
+          {ticketStatusString === 'safe' ? <>In Safehouse</> : <Prompt docLink={DOCS_URL_submit} />}
+        </div>
       </div>
     </div>
   )

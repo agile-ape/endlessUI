@@ -141,9 +141,8 @@ const PhaseChangeNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">All players can change phase.</p>
-        <p className="mb-2">Change once timer ends.</p>
-        <p className="mb-2">Help usher in the new phase?</p>
+        <p className="mb-2">Any player can change phase.</p>
+        <p className="mb-2">Once timer ends.</p>
         <a href={DOCS_URL_phases} target="_blank" className="link h6-last align-top">
           Learn more
         </a>

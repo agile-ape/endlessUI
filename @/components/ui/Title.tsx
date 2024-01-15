@@ -34,7 +34,7 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
-  deployed: 'contract deployed. stand by to buy tickets',
+  deployed: 'Stand by for ticket sale',
   start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
@@ -89,7 +89,7 @@ const Title = () => {
   }, [phase])
 
   return (
-    <div className="text-lg leading-tight sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 mx-3 capitalize">
+    <div className="text-lg leading-tight sm:leading-8 whtrabt-last mx-3 capitalize">
       {!authenticated && <p>Compete and earn ETH. Login to explore Lastman</p>}
 
       {authenticated && (

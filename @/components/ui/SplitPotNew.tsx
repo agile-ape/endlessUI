@@ -289,14 +289,14 @@ export const SplitPotNew = () => {
       </div>
       {/* Voting information */}
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Chop it up?</div>
+        <div className="m-1 capitalize text-center h2-last">Split it?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="">
+          <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left"> Stage 2 starts on</p>
               <p className="text-right">
@@ -328,7 +328,7 @@ export const SplitPotNew = () => {
 
           {/* <div className="h2-last mt-2">Stage 2 and 3</div> */}
 
-          <div className="">
+          <div className="w-full">
             <div className="underline">Votes</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left"> Players left</p>
@@ -376,23 +376,20 @@ export const SplitPotNew = () => {
                         </TooltipProvider> */}
               </div>
             </div>
-            {stage === 2 || stage === 3 ? (
-              voteCount < thresholdCount ? (
-                <p className="text-xl text-amber-600 text-center">
-                  {thresholdCount - voteCount} more vote(s) to go
-                </p>
+            <div className="whtrabt-last text-center">
+              {stage === 2 || stage === 3 ? (
+                voteCount < thresholdCount ? (
+                  <p>{thresholdCount - voteCount} more vote(s) to go</p>
+                ) : (
+                  <p>We have hit the threshold!</p>
+                )
               ) : (
-                <p className="text-xl text-green-600 text-center">We have hit the threshold!</p>
-              )
-            ) : (
-              <p className="text-xl text-blue-600 dark:text-blue-300 text-center">
-                {' '}
-                Voting has not began{' '}
-              </p>
-            )}
+                <p> Voting has not started </p>
+              )}
+            </div>
           </div>
 
-          <div className="">
+          <div className="w-full">
             <div className="underline">Split payoff</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Split and get </p>
@@ -431,7 +428,7 @@ export const SplitPotNew = () => {
             </div>
           </div>
 
-          <div className="">
+          <div className="w-full">
             <div className="underline">Drain</div>
 
             <div className="grid grid-cols-2 gap-1">
@@ -441,12 +438,12 @@ export const SplitPotNew = () => {
                   maximumFractionDigits: 6,
                   minimumFractionDigits: 0,
                 })}
-                %
+                % per round
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Stage 3 pot </p>
+              <p className="text-left">Pot to drain </p>
               <p className="text-right">
                 {formatNumber(potToDrain, {
                   maximumFractionDigits: 6,
@@ -496,7 +493,7 @@ export const SplitPotNew = () => {
             </div>
           </div>
 
-          <div className="">
+          <div className="w-full">
             <div className="underline">Game ends when</div>
 
             <div className="grid grid-cols-2 gap-1">
@@ -570,7 +567,7 @@ export const SplitPotNew = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="body-last">
-                    
+
                   </div>
                 </AccordionContent>
               </AccordionItem> */}

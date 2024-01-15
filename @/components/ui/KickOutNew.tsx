@@ -280,10 +280,10 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Kick out Safehouse players that overstayed.</p>
+          <p className="mb-2">Kick out Safehouse players...</p>
           <p className="mb-2">
-            Overstay once it is <span className="font-headline night-last">Night</span> of their
-            check out round
+            ...once it is <span className="font-headline night-last">Night</span> of their check out
+            round
           </p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
             <p className="mb-2">Value of killed ticket does not go to killer.</p>
@@ -298,7 +298,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 gap-4 justify-center items-center h3-last
                 "
         >
-          <div className="m-1 capitalize text-center h2-last">Kick Them Out</div>
+          <div className="m-1 capitalize text-center h2-last">Kicking?</div>
 
           <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
             {idList && (

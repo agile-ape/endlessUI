@@ -148,14 +148,14 @@ const CheckOutNew = () => {
       </div>
 
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Is it time to go?</div>
+        <div className="m-1 capitalize text-center h2-last">Time to go?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="">
+          <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Checked in on</p>
               {ticketStatusString === 'safe' ? (
@@ -199,25 +199,18 @@ const CheckOutNew = () => {
               <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
             )}
           </div>
-        </div>
-        {active ? (
           <Button
             variant="checkOut"
             size="lg"
-            className="w-[220px] sm:w-[100%]"
+            className="w-full"
             onClick={checkOutHandler}
             isLoading={isLoading}
+            disabled={!active}
           >
             Check Out
           </Button>
-        ) : (
-          <div className="flex flex-col justify-center items-center">
-            <Button variant="checkOut" size="lg" className="w-[220px] sm:w-[100%]" disabled>
-              Check Out
-            </Button>
-            <Prompt docLink={DOCS_URL_checkout} />
-          </div>
-        )}
+          {!active && <Prompt docLink={DOCS_URL_checkout} />}
+        </div>
       </div>
     </div>
   )

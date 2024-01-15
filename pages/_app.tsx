@@ -85,12 +85,12 @@ function MyApp({ Component, pageProps }: AppProps) {
           // logo:,
           showWalletLoginFirst: true,
         },
-        loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
+        loginMethods: ['wallet', 'sms', 'email', 'google'],
         defaultChain: baseGoerli,
         supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
 
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // or 'all-users'
+          createOnLogin: 'all-users', // or 'users-without-wallets'
         },
       }}
     >

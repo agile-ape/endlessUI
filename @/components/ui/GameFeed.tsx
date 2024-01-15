@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { fetcher, replacePlaceholders } from '@/lib/utils'
-import {
-  API_ENDPOINT,
-  LAST_MAN_STANDING_ADDRESS,
-  WEBSOCKET_ENDPOINT,
-} from '../../../services/constant'
+import { API_ENDPOINT, GAME_ADDRESS, WEBSOCKET_ENDPOINT } from '../../../services/constant'
 import { formatDistanceToNow } from 'date-fns'
 import { socket } from '@/lib/socket'
 type Feeds = {
@@ -30,7 +26,7 @@ const GameFeed = () => {
         args: Record<string, string>
       }
     }[]
-  }>(`/events?address=${LAST_MAN_STANDING_ADDRESS}&page=1&limit=100`, fetcher)
+  }>(`/events?address=${GAME_ADDRESS}&page=1&limit=100`, fetcher)
 
   const [feeds, setFeeds] = useState<Feeds[]>([])
 

@@ -119,7 +119,7 @@ const GameTab = () => {
                   {id === 0 && (phase === 'deployed' || phase === 'start') && (
                     <Button
                       variant="enter"
-                      className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+                      className="px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
                       onClick={toggleBuy}
                     >
                       <OnSignal active={buyActive} own={true} />
@@ -130,7 +130,7 @@ const GameTab = () => {
                   {id !== 0 && (
                     <Button
                       variant="exit"
-                      className="rounded-full px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+                      className="px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
                       onClick={toggleExit}
                     >
                       <OnSignal active={exitActive} own={true} />

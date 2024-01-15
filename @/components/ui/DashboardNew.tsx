@@ -34,7 +34,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import { formatAddress, formatNumber, cn, copyToClipboard } from '@/lib/utils'
+import { formatAddress, formatNumber, cn, copyToClipboard, findChainName } from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
   GAME_ADDRESS,
@@ -57,31 +57,73 @@ import { connect } from 'http2'
 export default function DashboardNew() {
   // Address read
   const { address, isConnected } = useAccount()
-
-  console.log(address)
   const { xs } = useWindowSize()
 
   const { ready, authenticated, user, createWallet, setWalletPassword, exportWallet } = usePrivy()
-  const { wallets } = useWallets()
 
-  const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
+  // 'wallet', 'sms', 'email', 'google', 'twitter'
 
-  const wallet = wallets.find((wallet) => wallet.address === address)
+  const loginMethod = user?.linkedAccounts[1].type
+  let username
 
-  const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
-  const embeddedWalletAddress = embeddedWallet?.address
-
-  const connector = user?.wallet?.connectorType
-  let connectorType: string
-
-  if (connector === 'embedded') {
-    connectorType = 'embedded'
-  } else {
-    connectorType = 'external'
+  if (loginMethod === 'email') {
+    username = user?.linkedAccounts[1].address
+  } else if (loginMethod === 'phone') {
+    username = user?.linkedAccounts[1].number
+  } else if (loginMethod === 'google_oauth') {
+    username = user?.linkedAccounts[1].email
+  } else if (loginMethod === 'wallet') {
+    username = formatAddress(String(user?.linkedAccounts[1].address))
   }
 
-  console.log(connectorType)
-  console.log(embeddedWallet)
+  const { wallets } = useWallets()
+  // search for embedded wallet and pull address
+  const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
+  const embeddedWalletAddress = embeddedWallet?.address
+  const embeddedWalletChain = embeddedWallet?.chainId
+  const chainWithoutPrefix = embeddedWalletChain
+    ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
+    : null
+  console.log(embeddedWalletChain)
+  console.log(chainWithoutPrefix)
+  console.log(typeof embeddedWalletChain)
+
+  // const chainName = chainWithoutPrefix ? findChainName(chainWithoutPrefix).then : null
+  // console.log(chainName)
+
+  const [chainName, setChainName] = useState('')
+  useEffect(() => {
+    if (chainWithoutPrefix !== null) {
+      findChainName(chainWithoutPrefix)
+        .then((result) => {
+          setChainName(result)
+          console.log(chainName)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else {
+      console.error('embeddedWalletChain is undefined or null')
+    }
+  }, [chainWithoutPrefix, chainName])
+
+  // const wallet = wallets.find((wallet) => wallet.address === address)
+
+  // link to Wagmi hooks
+  const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
+  setActiveWallet(embeddedWallet)
+
+  // const connector = user?.wallet?.connectorType
+  // let connectorType: string
+
+  // if (connector === 'embedded') {
+  //   connectorType = 'embedded'
+  // } else {
+  //   connectorType = 'external'
+  // }
+
+  // console.log(connectorType)
+  // console.log(embeddedWallet)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -193,34 +235,99 @@ export default function DashboardNew() {
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Player Info</div>
+        <div className="m-1 capitalize text-center h2-last">Wallet Info</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="">
+          <div className="w-full">
+            <div className="underline">Login info</div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Address</p>
-              <p className="text-right flex items-center">
-                <span className="mr-2">
-                  <a href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`} target="_blank">
-                    {formatAddress(String(activeWallet?.address))}
-                  </a>
-                </span>
-                <span onClick={copyAddress}>
-                  <Copy size={18} className="cursor-pointer" />
-                </span>
-              </p>
+              <p className="text-left">Method</p>
+              <p className="text-right capitalized">{loginMethod}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Wallet type</p>
-              <p className="text-right">
-                {wallet?.connectorType === 'embedded' ? 'Embedded' : 'External'}
-              </p>
+              <p className="text-left">User</p>
+              <p className="text-right">{username}</p>
             </div>
+          </div>
 
+          <div className="w-full">
+            <div className="underline">Embedded wallet</div>
+            <div className="flex flex-col gap-1">
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Wallet address</p>
+                <p className="text-right flex justify-end">
+                  <span className="mr-2">
+                    <a href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`} target="_blank">
+                      {formatAddress(String(activeWallet?.address))}
+                    </a>
+                  </span>
+                  <span onClick={copyAddress}>
+                    <Copy size={18} className="cursor-pointer" />
+                  </span>
+                </p>
+              </div>
+              {/* <div className="flex flex-col gap-2 h3-last"> */}
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Create wallet</p>
+                {embeddedWallet ? (
+                  <p className="text-right"> Already created </p>
+                ) : (
+                  <Button
+                    variant="primary"
+                    className="w-24 h-8 rounded-xl px-4"
+                    disabled={!(ready && authenticated) || Boolean(embeddedWalletAddress)}
+                    onClick={createWallet}
+                  >
+                    Create
+                  </Button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Set password</p>
+                <p className="text-right">
+                  {embeddedWallet ? (
+                    <Button
+                      variant="primary"
+                      className="w-24 h-8 rounded-xl px-4 text-lg"
+                      disabled={!(ready && authenticated)}
+                      onClick={setPasswordHandler}
+                    >
+                      Set
+                    </Button>
+                  ) : (
+                    <p className=""> No embedded wallet </p>
+                  )}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Export key</p>
+                <p className="text-right">
+                  {embeddedWallet ? (
+                    <Button
+                      variant="primary"
+                      className="w-24 h-8 rounded-xl px-4 text-lg"
+                      disabled={!(ready && authenticated)}
+                      onClick={exportKeyHandler}
+                    >
+                      Export key
+                    </Button>
+                  ) : (
+                    <p className=""> No embedded wallet </p>
+                  )}
+                </p>
+              </div>
+            </div>
+            {/* </div> */}
+          </div>
+
+          <div className="w-full">
+            <div className="underline">Game info </div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Current Chain</p>
-              <p className="text-right">{wallet?.chainId}</p>
+              <p className="text-right">{chainName}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
@@ -232,174 +339,21 @@ export default function DashboardNew() {
               <p className="text-left">Side quest count</p>
               <p className="text-right">{Number(sideQuestCount)}</p>
             </div>
-            <a href={DOCS_URL} target="_blank" className="link h6-last flex justify-start">
+            <a
+              href={DOCS_URL}
+              target="_blank"
+              className="link h6-last flex items-center justify-center"
+            >
               Learn more
             </a>
-
-            <Accordion type="multiple">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <div className="h3-last text-center my-1 flex justify-start">
-                    Embedded Wallet
-                    {!xs && (
-                      <TooltipProvider delayDuration={10}>
-                        <Tooltip>
-                          <TooltipTrigger className="ml-1">
-                            {' '}
-                            <HelpCircle />
-                          </TooltipTrigger>
-                          <TooltipContent side="top" align="center">
-                            <p className="px-3 py-1.5 max-w-[240px] cursor-default whitespace-normal text-sm">
-                              An embedded wallet is created if you do not have a wallet during
-                              login.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col gap-2 body-last">
-                    <div className="flex justify-between gap-4">
-                      <p className="text-left">Create wallet</p>
-                      {wallet ? (
-                        <p className=""> You already have one </p>
-                      ) : (
-                        <Button
-                          variant="wallet"
-                          className="w-24 h-8 rounded-xl px-4"
-                          disabled={!(ready && authenticated) || Boolean(embeddedWalletAddress)}
-                          onClick={createWallet}
-                        >
-                          Create
-                        </Button>
-                      )}
-                    </div>
-
-                    <div className="flex justify-between gap-4 ">
-                      <p className="">Set password</p>
-                      <p className="">
-                        {embeddedWallet ? (
-                          <Button
-                            variant="wallet"
-                            className="w-24 h-8 rounded-xl px-4"
-                            disabled={!(ready && authenticated)}
-                            onClick={setPasswordHandler}
-                          >
-                            Set
-                          </Button>
-                        ) : (
-                          <p className=""> No embedded wallet </p>
-                        )}
-                      </p>
-                    </div>
-
-                    <div className="flex justify-between gap-4 ">
-                      <p className="">Export key</p>
-                      <p className="">
-                        {embeddedWallet ? (
-                          <Button
-                            variant="wallet"
-                            className="w-24 h-8 rounded-xl px-4"
-                            disabled={!(ready && authenticated)}
-                            onClick={exportKeyHandler}
-                          >
-                            Export
-                          </Button>
-                        ) : (
-                          <p className=""> No embedded wallet </p>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </div>
-
-        {/* <div className="flex justify-between gap-4 mt-2">
-          <p className="text-left">Address:</p>
-          <p className="text-right flex justify-center items-center gap-2">
-            <span>
-              <a href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`} target="_blank">
-                {formatAddress(String(activeWallet?.address))}
-              </a>
-            </span>
-            <span onClick={copyAddress}>
-              <Copy size={18} className="cursor-pointer" />
-            </span>
-          </p>
-        </div>
-        <div className=""> */}
-        {/* <Accordion type="multiple">
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              <div className="h2-last text-center">Select Wallet</div>
-            </AccordionTrigger>
-            <AccordionContent className="gap-1">
-              <ul className="flex flex-col lg:flex-row gap-2 justify-center items-center">
-                {wallets.map((wallet) => (
-                  <li key={wallet.address}>
-                    <Button
-                      className={cn(
-                        'flex justify-center items-center border border-indigo-950 gap-4 p-2 rounded-sm',
-                        activeWallet?.address === wallet.address
-                          ? 'text-black bg-violet-300 disabled:cursor-not-allowed disabled:pointer-events-none'
-                          : 'text-black bg-slate-100 hover:bg-slate-300',
-                      )}
-                      onClick={() => setActiveWallet(wallet)}
-                    >
-                      <span className="text-lg">{formatAddress(String(wallet.address))}</span>
-                      <span
-                        className={cn(
-                          'text-sm border border-black px-1 rounded-sm',
-                          activeWallet?.address === wallet.address
-                            ? ' text-white bg-violet-600 border border-white'
-                            : '',
-                        )}
-                      >
-                        {wallet.connectorType === 'embedded' ? 'embedded' : 'external'}
-                      </span>
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion> */}
-
-        {/* <div className="flex justify-between gap-4">
-            <p>Wallet type</p>
-            <p>{wallet?.connectorType === 'Embedded' ? 'Embedded' : 'External'}</p>
           </div>
 
-          <div className="flex justify-between gap-4">
-            <p>Current Chain</p>
-            <p>{wallet?.chainId}</p>
-          </div>
-
-          <div className="flex justify-between gap-4">
-            <p>Game play count</p>
-            <p>{Number(playCount)}</p>
-          </div>
-
-          <div className="flex justify-between gap-4">
-            <p>Side quest count</p>
-            <p>{Number(sideQuestCount)}</p>
-          </div>
-          <a href={DOCS_URL} target="_blank" className="link h6-last flex justify-start">
-            Learn more
-          </a> */}
-
-        <div className="flex flex-col gap-4 justify-center items-center mb-4">
           {authenticated ? (
             <>
               <Button
                 onClick={logout}
-                variant={xs ? 'primary' : 'secondary'}
-                className="w-48 h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+                variant="primary"
+                className="w-full rounded-xl text-xl font-whitrabt"
               >
                 Log Out
               </Button>
@@ -407,8 +361,8 @@ export default function DashboardNew() {
           ) : (
             <Button
               onClick={login}
-              variant={xs ? 'primary' : 'secondary'}
-              className="w-48 h-10 rounded-xl px-4 py-2 text-md font-whitrabt"
+              variant="primary"
+              className="w-full rounded-xl text-xl font-whitrabt"
             >
               Log In
             </Button>

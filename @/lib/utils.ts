@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import type { IApp, Ticket } from 'types/app'
-import { API_ENDPOINT, LAST_MAN_STANDING_ADDRESS } from '../../services/constant'
+import { API_ENDPOINT, GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
 import { formatUnits } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
@@ -113,6 +113,11 @@ export function formatAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
 
+export function formatShortAddress(address: string) {
+  if (!address) return '0x'
+  return `${address.slice(0, 4)}..${address.slice(-2)}`
+}
+
 export function encodeSvg(svg: string) {
   return `data:image/svg+xml;base64,${btoa(svg)}`
 }
@@ -139,7 +144,7 @@ export function transformPlayerTicket(playerTicket: any, test?: any): Ticket {
     buddy: Number(playerTicket?.[17]) || 0,
     buddyCount: Number(playerTicket?.[18]) || 0,
     rank: Number(playerTicket?.[19]) || 0,
-    contractAddress: LAST_MAN_STANDING_ADDRESS,
+    contractAddress: GAME_ADDRESS,
   }
 }
 
@@ -152,4 +157,23 @@ export function scrollToTop() {
     top: 0,
     behavior: 'smooth',
   })
+}
+
+export async function findChainName(chainId: number) {
+  try {
+    // Fetch the JSON data from the URL
+    const response = await fetch(CHAIN_LIST)
+    const data = await response.json()
+
+    // Find the name based on chainId
+    const foundItem = data.find((item: any) => item.chainId === chainId)
+
+    if (foundItem) {
+      return foundItem.name
+    } else {
+      return 'Chain name not found'
+    }
+  } catch (error) {
+    return 'Error fetching data'
+  }
 }

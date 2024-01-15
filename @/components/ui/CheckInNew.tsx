@@ -216,7 +216,7 @@ const CheckInNew = () => {
       <div className="text-center">
         <p className="mb-2">You cannot be killed in Safehouse.</p>
         <p className="mb-2">But actions are limited.</p>
-        <p className="mb-2">Dont overstay.</p>
+        <p className="mb-2">Don't overstay.</p>
         <p className="mb-2">Others can kick you out.</p>
         <a href={DOCS_URL_safehouse} target="_blank" className="link h6-last align-top">
           Learn more
@@ -227,10 +227,10 @@ const CheckInNew = () => {
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">How long will you stay?</div>
+        <div className="m-1 capitalize text-center h2-last">Take a break?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="">
+          <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">$LAST held</p>
               <p className="text-right">
@@ -252,9 +252,7 @@ const CheckInNew = () => {
               <p className="text-right"> {stayCost} $LAST </p>
             </div>
           </div>
-          {/* Add new add/subtract component. Allow user to max nights based on $LAST in wallet / Price per night */}
-          {/* <div className="flex justify-center"> */}
-          {/* <div className="text-2xl flex justify-between items-center p-2 gap-3">Nights:</div> */}
+
           <div className="w-full flex flex-col justify-center items-center gap-2">
             <label htmlFor="checkIn" className="text-2xl">
               Nights:
@@ -296,54 +294,28 @@ const CheckInNew = () => {
             </div>
 
             {totalCost > Number(tokenBalance) && (
-              <p className="text-xl text-red-600 mt-2 text-center">You can't afford to stay</p>
+              <p className="whtrabt-last mt-2 text-center">You can't afford to stay</p>
             )}
           </div>
-          {active ? (
-            <Button
-              variant="checkIn"
-              size="lg"
-              className="w-[100%]"
-              onClick={checkInHandler}
-              isLoading={isLoading}
-            >
-              Check In
-            </Button>
-          ) : ticketStatusString === 'safe' ? (
-            <>
-              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-                In Safehouse
-              </Button>
 
-              <Prompt docLink={DOCS_URL_safehouse} />
-            </>
-          ) : (
-            <>
-              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-                Check In
-              </Button>
+          <Button
+            variant="checkIn"
+            size="lg"
+            className="w-full"
+            onClick={checkInHandler}
+            isLoading={isLoading}
+            disabled={!active}
+          >
+            Check In
+          </Button>
 
+          <div className="whtrabt-last">
+            {ticketStatusString === 'safe' ? (
+              <>In Safehouse</>
+            ) : (
               <Prompt docLink={DOCS_URL_safehouse} />
-            </>
-          )}
-          {/* {!active && ticketStatusString === 'safe' && (
-            <>
-              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-                In Safehouse
-              </Button>
-
-              <Prompt docLink={DOCS_URL_safehouse} />
-            </>
-          )}
-          {!active && ticketStatusString !== 'safe' && (
-            <>
-              <Button variant="checkIn" size="lg" className="w-[100%]" disabled>
-                Check In
-              </Button>
-
-              <Prompt docLink={DOCS_URL_safehouse} />
-            </>
-          )} */}
+            )}
+          </div>
         </div>
       </div>
     </div>

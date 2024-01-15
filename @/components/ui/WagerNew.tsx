@@ -314,8 +314,8 @@ const WagerNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">Bet on how the game ends.</p>
-        <p className="mb-2">1 address 1 bet.</p>
+        <p className="mb-2">Bet on how game ends.</p>
+        <p className="mb-2">1 bet per address.</p>
         <p className="mb-2">Bet fee increases each round.</p>
         <p className="mb-2">No more bets once Stage 2 comes.</p>
         <a href={DOCS_URL} target="_blank" className="link h6-last align-top">
@@ -324,11 +324,11 @@ const WagerNew = () => {
       </div>
       {/* Pay for stay */}
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
           gap-4 justify-center items-center h3-last
           "
       >
-        <div className="m-1 capitalize text-center h2-last">Place your bet</div>
+        <div className="m-1 capitalize text-center h2-last">Feeling lucky?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div>
@@ -527,7 +527,7 @@ const WagerNew = () => {
 
           {/* Bet amount component */}
           <div
-            className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col 
+            className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col
           gap-4 justify-center items-center h2-last
           "
           >
@@ -541,33 +541,27 @@ const WagerNew = () => {
               onChange={(e) => setBetAmount(e.target.value)}
             />
 
-            {active && status === 1 && (
-              <Button
-                variant="wager"
-                size="lg"
-                className="w-[220px]"
-                onClick={placeBet}
-                isLoading={betEndingLoad}
-              >
-                Bet
-              </Button>
-            )}
+            <Button
+              variant="wager"
+              size="lg"
+              className="w-[220px] rounded-full"
+              onClick={placeBet}
+              isLoading={betEndingLoad}
+              disabled={!(active && status === 1)}
+            >
+              Bet
+            </Button>
 
-            {!(active && status === 1) && (
-              <>
-                <Button variant="wager" size="lg" className="w-[220px]" disabled>
-                  Bet
-                </Button>
-                <Prompt docLink={DOCS_URL_safehouse} />
-              </>
-            )}
+            <div className="whtrabt-last">
+              {!(active && status === 1) && <Prompt docLink={DOCS_URL_safehouse} />}
+            </div>
           </div>
 
           {/* Claim */}
           <div className="m-1 capitalize text-center h2-last">Claim your winnings</div>
           {status === 2 && (
             <div
-              className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col 
+              className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col
           gap-4 justify-center items-center h2-last
           "
             >

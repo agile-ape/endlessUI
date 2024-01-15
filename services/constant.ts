@@ -16,6 +16,7 @@ export const WEBSOCKET_ENDPOINT = isDevelopment
   ? 'wss://lastman-be.onrender.com/ws'
   : 'wss://lastman-be.onrender.com/ws'
 
+export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
 export const RELAYER_ADDRESS = '0x33cBc636230606c505B53cbBD6BE572c65ED6B30' as const
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const

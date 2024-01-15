@@ -255,7 +255,7 @@ const ExitGameNew = () => {
           Leave anytime in the <span className="font-headline day-last">DAY</span>.
         </p>
         <p className="mb-2">Or when game ends.</p>
-        <p className="mb-2">All gets to claim some ETH.</p>
+        <p className="mb-2">All get some ETH.</p>
         <p className="mb-2">Even if killed.</p>
         <a href={DOCS_URL_exit} target="_blank" className="link h6-last align-top">
           Learn more
@@ -288,7 +288,7 @@ const ExitGameNew = () => {
             </p>
           )}
           {ticketIsInPlay && (
-            <p> 
+            <p>
               {formatNumber(exitClaim, {
                 maximumFractionDigits: 6,
                 minimumFractionDigits: 3,
@@ -332,13 +332,13 @@ const ExitGameNew = () => {
           </p>
         </div>
         <div
-          className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+          className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
         >
-          <div className="m-1 capitalize text-center h2-last">Leaving us?</div>
+          <div className="m-1 capitalize text-center h2-last">Leaving?</div>
 
-          <div className="">
+          <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Still in game?</p>
               <p className="text-right"> {ticketIsInPlay ? 'Yes' : 'No'}</p>
@@ -348,7 +348,7 @@ const ExitGameNew = () => {
               <p className="text-right">{exitRank}</p>
             </div>
 
-            <div className="h3-last text-center">Game stats</div>
+            <div className="h3-last underline mt-4">Game stats</div>
 
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Total joined</p>
@@ -370,9 +370,9 @@ const ExitGameNew = () => {
               <p className="text-right"> {ticketCount} </p>
             </div>
 
-            <div className="text-center h3-last">Pot claim if</div>
+            <div className="h3-last underline mt-4">Pot claim if alive</div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Last till now and exit</p>
+              <p className="text-left">Exit now and get</p>
               <p className="text-right">
                 {/* {`${rankClaim} ETH`}  */}
                 {formatNumber(exitClaim, {
@@ -395,59 +395,31 @@ const ExitGameNew = () => {
             </div>
           </div>
 
-          {/* {ticketStatusString === 'exited' && (
-            <Button variant="exit" size="lg" className="w-[100%]" disabled>
-              You have exited
-            </Button>
-          )}
-          {ticketStatusString !== 'exited' && active && (
-            <Button
-              variant="exit"
-              size="lg"
-              isLoading={isLoading}
-              onClick={exitGameHandler}
-              className="w-[100%]"
-            >
-              {`Exit Game and claim ${formatNumber(exitClaim, {
-                maximumFractionDigits: 3,
-                minimumFractionDigits: 3,
-              })} ETH`}
-            </Button>
-          )}
-          {ticketStatusString !== 'exited' && !active && (
-            <>
-              <Button variant="exit" size="lg" className="w-[100%]" disabled>
-                Exit Game
-              </Button>
-              <Prompt docLink={DOCS_URL_exit} />
-            </>
-          )} */}
+          <Button
+            variant="exit"
+            size="lg"
+            isLoading={isLoading}
+            onClick={exitGameHandler}
+            className="w-full"
+            disabled={!active}
+          >
+            Exit Game
+          </Button>
 
-          {ticketStatusString === 'exited' ? (
-            <Button variant="exit" size="lg" className="w-[100%]" disabled>
-              You have exited
-            </Button>
-          ) : active ? (
-            <Button
-              variant="exit"
-              size="lg"
-              isLoading={isLoading}
-              onClick={exitGameHandler}
-              className="w-[100%]"
-            >
-              {`Exit Game and claim ${formatNumber(playerClaim, {
-                maximumFractionDigits: 3,
-                minimumFractionDigits: 3,
-              })} ETH`}
-            </Button>
-          ) : (
-            <>
-              <Button variant="exit" size="lg" className="w-[100%]" disabled>
-                Exit Game
-              </Button>
+          <div className="whtrabt-last">
+            {ticketStatusString === 'exited' ? (
+              <>You have exited</>
+            ) : active ? (
+              <>
+                {`You can exit and claim ${formatNumber(playerClaim, {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                })} ETH`}
+              </>
+            ) : (
               <Prompt docLink={DOCS_URL_exit} />
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

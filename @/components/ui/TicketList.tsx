@@ -228,15 +228,16 @@ const TicketList = () => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center my-8">
+          <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
           <Image
             priority
-            src="/pepe/waiting.png"
+            src="/faces/hide.png"
             className=""
-            height={400}
+            height={200}
             width={xs ? 150 : 250}
             alt="waiting-for-players"
           />
-          {/* <div className="text-center my-2 text-lg sm:text-3xl">hmm...</div> */}
+          <div className="text-center my-2 text-lg sm:text-3xl">No one is here yet</div>
         </div>
       )}
 

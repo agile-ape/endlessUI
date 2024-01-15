@@ -68,15 +68,18 @@ const UserActions = () => {
   const [showWagerModal, setShowWagerModal] = React.useState<boolean>(false)
   const toggleWager = () => setShowWagerModal((prevState) => !prevState)
 
+  const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
+  const toggleToken = () => setShowTokenModal((prevState) => !prevState)
+
   return (
     <div>
       <div
-        className="w-[240px] rounded-xl p-3 pt-5 pb-5
+        className="w-[240px] rounded-xl px-2 pt-4 pb-2
     container-last
     flex flex-col gap-2 mb-5 relative"
       >
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
-          Only players
+          Players
         </div>
         <Button
           variant="submit"
@@ -88,7 +91,25 @@ const UserActions = () => {
         </Button>
 
         <Button
+          variant="splitPot"
+          className="w-full text-xl flex justify-start"
+          onClick={toggleSplit}
+        >
+          <OnSignal active={splitActive} own={true} />
+          Split Pot
+        </Button>
+      </div>
+      <div
+        className="w-[240px] rounded-xl px-2 pt-4 pb-2
+    container-last
+    flex flex-col gap-2 mb-5 relative"
+      >
+        <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+          Safehouse
+        </div>
+        <Button
           variant="checkIn"
+          // variant="attack"
           className="w-full text-xl flex justify-start"
           onClick={toggleCheckIn}
         >
@@ -98,25 +119,17 @@ const UserActions = () => {
 
         <Button
           variant="checkOut"
+          // variant="kickOut"
           className="w-full text-xl flex justify-start"
           onClick={toggleCheckOut}
         >
           <OnSignal active={checkOutActive} own={true} />
           Check Out
         </Button>
-
-        <Button
-          variant="splitPot"
-          className="w-full text-xl flex justify-start"
-          onClick={toggleSplit}
-        >
-          <OnSignal active={splitActive} own={true} />
-          Split Pot
-        </Button>
       </div>
 
       <div
-        className="w-[240px] rounded-xl p-3 pt-5 pb-5
+        className="w-[240px] rounded-xl px-2 pt-4 pb-2
         container-last
         flex flex-col gap-2 mb-5 relative"
       >
@@ -124,9 +137,22 @@ const UserActions = () => {
           All
         </div>
 
-        <Button variant="wager" className="w-full text-xl flex justify-start" onClick={toggleWager}>
+        <Button
+          variant="wager"
+          className="rounded-full w-full text-xl flex justify-start"
+          onClick={toggleWager}
+        >
           <OnSignal active={wagerActive} own={true} />
-          Ending?
+          Bet
+        </Button>
+
+        <Button
+          variant="primary"
+          className="rounded-full w-full text-xl flex justify-start"
+          onClick={toggleToken}
+        >
+          <OnSignal active={true} own={true} />
+          Send
         </Button>
       </div>
 
@@ -135,6 +161,7 @@ const UserActions = () => {
       {showCheckOutModal && <Modal action={'checkOut'} toggle={toggleCheckOut} />}
       {showSplitModal && <Modal action={'splitIt'} toggle={toggleSplit} />}
       {showWagerModal && <Modal action={'wager'} toggle={toggleWager} />}
+      {showTokenModal && <Modal action={'token'} toggle={toggleToken} />}
     </div>
   )
 }

@@ -30,7 +30,7 @@ import {
 import { useAccount } from 'wagmi'
 import WelcomeModal from './ui/WelcomeModal'
 import CompletionModal from './ui/CompletionModal'
-import { cn } from '@/lib/utils'
+import { cn, formatAddress, formatShortAddress } from '@/lib/utils'
 import {
   DOCS_URL,
   TWITTER_URL,
@@ -106,7 +106,7 @@ function Header() {
 
   return (
     <>
-      {/* 
+      {/*
       <div className="sm:hidden fixed bottom-0 w-full h-14 container-last border-l-0 border-r-0 border-b-0 bg-opacity-100 dark:bg-opacity-100 px-2 pt-1">
         <div className="grid grid-cols-5 gap-4">
           <div className="flex flex-col justify-center items-center">
@@ -207,7 +207,7 @@ function Header() {
                   {/* <Token /> */}
                   {/* <Dashboard /> */}
 
-                  <button onClick={toggleToken}>
+                  {/* <button onClick={toggleToken}>
                     <div className="flex p-1 md:px-2 md:py-2 items-center justify-center border rounded-full border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
                       <div className="relative p-3">
                         <Image
@@ -221,8 +221,8 @@ function Header() {
                         />
                       </div>
                       <span className="ml-1 h5-last font-whitrabt">{tokenBalance}</span>
-                    </div>
-                  </button>
+                      </div>
+                    </button> */}
 
                   <button onClick={toggleDashboard}>
                     <div className="flex p-1 md:px-4 md:py-2 items-center justify-center border rounded-full border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
@@ -237,6 +237,9 @@ function Header() {
                           className=""
                         />
                       </div>
+                      <span className="ml-1 h5-last font-whitrabt">
+                        {formatShortAddress(String(address))}
+                      </span>
                     </div>
                   </button>
                   {/* <DashboardNew /> */}
@@ -247,7 +250,7 @@ function Header() {
         </div>
       </div>
       {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
-      {showTokenModal && <Modal action={'token'} toggle={toggleToken} />}
+      {/* {showTokenModal && <Modal action={'token'} toggle={toggleToken} />} */}
       {showWelcomeModal && <WelcomeModal toggleModal={toggleWelcomeModal} />}
     </>
     // </div>

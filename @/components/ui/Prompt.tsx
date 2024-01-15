@@ -22,13 +22,18 @@ const Prompt: FC<PromptType> = ({ docLink }) => {
           </a>
         </span>
       </div> */}
-      <AlertCircle
+      {/* <AlertCircle
         size={24}
         className="align-top mr-2 text-gray-500 dark:text-gray-200"
-      ></AlertCircle>
-      <span className="link h6-last align-top">
-        <a href={docLink} target="_blank" className="">
-          Not available -- Learn more
+      ></AlertCircle> */}
+      <span className="">
+        <a
+          href={docLink}
+          target="_blank"
+          className="flex whtrabt-last text-base hover:text-lime-600 dark:hover:text-lime-200 active:text-lime-600 dark:active:text-lime-200"
+        >
+          <AlertCircle size={24} className="align-top mr-2"></AlertCircle>
+          Not available
         </a>
       </span>
       {/* <span className="hidden sm:inline sm:flex sm:justify-center sm:items-center">

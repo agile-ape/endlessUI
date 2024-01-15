@@ -196,14 +196,14 @@ const BuyTicketNew = () => {
 
       {/* Pay for stay */}
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
           gap-4 justify-center items-center h3-last
           "
       >
         <div className="m-1 capitalize text-center h2-last">Join us?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-          <div className="">
+          <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH in wallet</p>
               <p className="text-right">
@@ -251,12 +251,12 @@ const BuyTicketNew = () => {
           </div>
 
           <Button
-            disabled={!active}
             variant="enter"
             size="lg"
-            className="rounded-full w-[100%]"
+            className="w-[100%]"
             onClick={buyTicketHandler}
             isLoading={isLoading}
+            disabled={!active}
           >
             Buy Ticket
           </Button>

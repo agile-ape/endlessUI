@@ -28,7 +28,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { formatAddress, formatNumber } from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
-  LAST_MAN_STANDING_ADDRESS,
+  GAME_ADDRESS,
   defaultContractObj,
   tokenContractObj,
   BLOCK_EXPLORER,
@@ -58,7 +58,7 @@ function TokenNew() {
       {
         ...tokenContractObj,
         functionName: 'allowance',
-        args: [address as `0x${string}`, LAST_MAN_STANDING_ADDRESS],
+        args: [address as `0x${string}`, GAME_ADDRESS],
       },
       //   {
       //     ...tokenContractObj,
@@ -125,7 +125,7 @@ function TokenNew() {
   const approveToken = async () => {
     try {
       const doApprove = await approve({
-        args: [LAST_MAN_STANDING_ADDRESS, parseUnits(approveValue, 18)],
+        args: [GAME_ADDRESS, parseUnits(approveValue, 18)],
       })
 
       const hash = doApprove.hash
@@ -257,18 +257,18 @@ function TokenNew() {
 
       <div className="flex text-lg justify-center my-2">
         <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-          <Button variant="primary" className="w-full text-xl">
+          <Button variant="primary" className="w-full text-xl rounded-full">
             Buy $LAST tokens <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
           </Button>
         </a>
       </div>
 
       <div
-        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col 
+        className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Send to players</div>
+        <div className="m-1 capitalize text-center h2-last">Feeling generous?</div>
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="">
             <div className="grid grid-cols-2 gap-1">
@@ -326,9 +326,9 @@ function TokenNew() {
                 />
               </div>
               <Button
-                variant="secondary"
+                variant="primary"
                 size="md"
-                className="w-[100%]"
+                className="w-[100%] rounded-full"
                 onClick={approveToken}
                 isLoading={approveLoad}
               >
@@ -365,10 +365,10 @@ function TokenNew() {
                 />
               </div>
               <Button
-                variant="secondary"
+                variant="primary"
                 disabled={Number(allowance) <= Number(tokenValue)}
                 size="md"
-                className="w-[100%]"
+                className="w-[100%] rounded-full"
                 onClick={transferToken}
                 isLoading={transferLoad}
               >

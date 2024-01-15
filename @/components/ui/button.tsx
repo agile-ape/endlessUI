@@ -26,29 +26,49 @@ const buttonVariants = cva(
         enter:
           'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 border-2 border-transparent hover:border-purple-300',
 
+        // gradient bg. 1 mode.
+        wager:
+          'text-white bg-purple-600 border-2 border-purple-800 hover:bg-purple-800 hover:border-purple-300 active:bg-purple-700',
+
+        send: 'text-white bg-purple-500 border-2 border-purple-600 hover:bg-purple-400 hover:border-purple-300 active:bg-purple-600',
         // fixed bg. light and dark mode. opposite of enter
-        exit: 'text-purple-900 dark:text-purple-100 hover:text-white bg-transparent hover:bg-purple-600 active:bg-purple-500 border-2 border-purple-900 dark:border-purple-100',
+        exit:
+          // 'text-purple-900 dark:text-purple-100 hover:text-white bg-transparent hover:bg-purple-600 active:bg-purple-500 border-2 border-purple-900 dark:border-purple-100',
+          'text-red-500 bg-transparent border-2 border-red-600 hover:text-red-700 hover:bg-red-200 hover:border-red-800 active:bg-red-700/20 dark:text-red-200 dark:bg-transparent dark:border-red-300 dark:hover:bg-red-300/20 dark:hover:text-red-300 dark:hover:border-red-300 dark:active:bg-red-200/20',
+        // 'text-red-800 dark:text-red-300  border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500   ',
 
         // fixed bg. light mode
         submit:
-          'text-white bg-green-600 hover:bg-green-800 active:bg-green-700 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
+          // 'text-white bg-green-600 hover:bg-green-500 active:bg-green-700 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
+          // 'text-white bg-green-700 border-2 border-green-800 hover:bg-green-600 hover:border-green-400 active:bg-green-800',
+          'text-white bg-green-600 border-2 border-green-800 hover:bg-green-800 hover:border-green-300 active:bg-green-700',
 
         // fixed bg. light mode
         splitPot:
-          'text-white bg-pink-500 hover:bg-pink-600 active:bg-pink-500 border-2 border-pink-800 hover:border-pink-300 active:bg-pink-600',
+          // 'text-white bg-green-600 hover:bg-green-500 active:bg-green-600 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
+          // 'text-white bg-pink-500 hover:bg-pink-600 active:bg-pink-500 border-2 border-pink-800 hover:border-pink-300 active:bg-pink-600',
+          'text-white bg-pink-500 border-2 border-pink-700 hover:bg-pink-700 hover:border-pink-200 active:bg-pink-600',
 
         // checkin and checkout - sky
         // fixed bg. light mode
         checkIn:
-          'text-white bg-sky-600 hover:bg-sky-800 active:bg-sky-700 border-2 border-sky-800 hover:border-sky-300',
+          'text-white bg-sky-600 border-2 border-sky-800 hover:bg-sky-800 hover:border-sky-300 active:bg-sky-700',
 
         // fixed bg. opposite but lighter tone than checkIn
         checkOut:
-          'text-sky-600 dark:text-sky-100 hover:text-white bg-transparent hover:bg-sky-400 active:bg-sky-500 border-2 border-sky-600 dark:border-sky-100',
+          // 'text-sky-600 bg-transparent border-2 border-sky-600 hover:text-sky-800 hover:bg-sky-800/20 hover:border-sky-800 active:bg-sky-700/20 dark:text-sky-300 dark:bg-transparent dark:border-sky-300 dark:hover:bg-sky-300/20 dark:hover:text-sky-300 dark:hover:border-sky-300 dark:active:bg-sky-200/20',
+          'text-white bg-sky-500 border-2 border-sky-600 hover:bg-sky-400 hover:border-sky-500 active:bg-sky-600',
 
-        // gradient bg. 1 mode.
-        wager:
-          'rounded-full text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700 border-2 border-orange-800 hover:border-orange-300',
+        // does not uses size
+        attack:
+          // 'text-black dark:text-amber-700 bg-transparent border-2 border-amber-700 hover:text-white dark:hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500',
+          // does not uses size
+          'text-white bg-orange-500 border-2 border-orange-700 hover:bg-orange-700 hover:border-orange-200 active:bg-orange-600',
+
+        kickOut:
+          // 'text-rose-800 border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500',
+          // 'text-red-800 dark:text-red-300  border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500   ',
+          'text-white bg-orange-500 border-2 border-orange-700 hover:bg-orange-700 hover:border-orange-200 active:bg-orange-600',
 
         // fixed bg. light and dark mode
         // checkOutv2:
@@ -56,13 +76,14 @@ const buttonVariants = cva(
 
         // fixed bg. light and dark mode
         primary:
-          'text-white bg-indigo-700 active:bg-indigo-600 border border-transparent hover:border-indigo-300',
+          'text-white bg-indigo-700 border border-indigo-500 hover:bg-indigo-600 hover:border-indigo-200 active:bg-indigo-500',
 
         main: 'text-white bg-gradient-to-r from-indigo-800 via-indigo-700 to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
         // main: 'text-white bg-gradient-to-b from-[#FFF1F8] via-[#FFC3E0] to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
 
         wallet:
-          'text-white bg-violet-700 hover:bg-violet-600 active:bg-violet-600 border border-transparent hover:border-violet-300',
+          // 'text-white bg-violet-700 hover:bg-violet-600 active:bg-violet-600 border border-transparent hover:border-violet-300',
+          'text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-600 border border-transparent hover:border-slate-300',
 
         secondary:
           'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-500 active:bg-indigo-500 border border-indigo-800 hover:border-indigo-300',
@@ -72,15 +93,6 @@ const buttonVariants = cva(
         // does not uses size
         filter:
           'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:bg-opacity-80',
-
-        // does not uses size
-        attack:
-          'text-black dark:text-amber-700 bg-transparent border-2 border-amber-700 hover:text-white dark:hover:text-white hover:bg-amber-600 hover:border-2 hover:border-amber-300 active:bg-amber-500',
-
-        // does not uses size
-        kickOut:
-          'text-rose-800 border border-rose-800 bg-transparent hover:text-white hover:dark:text-white hover:bg-rose-900 active:bg-red-500',
-        // 'text-red-800 dark:text-red-300  border border-red-800 dark:border-red-300 bg-transparent hover:text-white hover:dark:text-white hover:bg-red-600 active:bg-red-500   ',
 
         // wallet:
         //   'text-black hover:text-white bg-white hover:bg-blue-400 active-bg-blue-600 border border-blue-950',

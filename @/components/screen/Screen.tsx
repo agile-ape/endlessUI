@@ -37,6 +37,7 @@ import { ExternalLink } from 'lucide-react'
 import { scrollToTop, fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
 import { disconnect } from 'process'
 import { useWindowSize } from '../../../hooks/useWindowSize'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { toast } from '@/components/ui/use-toast'
 import { useTheme } from 'next-themes'
 import {
@@ -461,7 +462,9 @@ export default function Screen() {
                 </div>
               </div> */}
 
-              <div className="text-3xl text-lime-700 dark:text-lime-300 text-center">
+              {/* <div className="text-3xl text-lime-700 dark:text-lime-300 text-center">
+              </div> */}
+              <div className="text-3xl text-center">
                 {actionView === 'submit' && <p>Submit</p>}
                 {actionView === 'exitGame' && <p>Exit Game</p>}
                 {actionView === 'checkIn' && <p>Check In</p>}
@@ -473,8 +476,6 @@ export default function Screen() {
                 {actionView === 'token' && <p>Send Token</p>}
                 {actionView === 'changePhase' && <p>Change Phase</p>}
                 {actionView === 'wager' && <p>Place Bet</p>}
-              </div>
-              <div className="text-3xl text-center">
                 {menuComponent === 'you' && <p>You</p>}
                 {menuComponent === 'events' && <p>Feed</p>}
                 {menuComponent === 'list' && <p>Players</p>}
@@ -732,6 +733,7 @@ export default function Screen() {
           )}
 
           {/* Info */}
+
           <div>
             <Popover data-state={isToggled ? 'open' : 'closed'}>
               <PopoverTrigger
@@ -742,7 +744,7 @@ export default function Screen() {
               >
                 <button className="p-2 rounded-full container-last" onClick={() => toggleInfo()}>
                   <Monitor
-                    size={isToggled ? 36 : 32}
+                    size={isToggled ? 32 : 28}
                     // className={isToggled ? 'text-red-200' : ''}
                   ></Monitor>
                 </button>
