@@ -541,73 +541,71 @@ export default function Admin() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
-                    Safehouse Cost
-                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
-                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                        <p className="text-left">Input</p>
-                        <p className="text-right"> {safehouseCostPerNight}</p>
-                      </div>
-                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                        <p className="text-left">Price in tokens</p>
-                        <p className="text-right"> {Number(safehouseCostPerNight) / 1000}</p>
-                      </div>
-
-                      <div className="flex flex-col justify-center items-center my-2">
-                        <label htmlFor="adjustSafehousePrice">Change Safehouse Price</label>
-                        <input
-                          type="text"
-                          id="adjustSafehousePrice"
-                          required
-                          className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
-                          value={safehousePrice}
-                          onChange={(e) => setSafehousePrice(e.target.value)}
-                        />
-                      </div>
-                      <Button
-                        variant="secondary"
-                        className="w-full h-8 px-4 py-2 text-xl"
-                        onClick={changePrice}
-                        isLoading={adjustSafehouseCostLoad}
-                      >
-                        Adjust Price
-                      </Button>
+                <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                  Safehouse Cost
+                  <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Input</p>
+                      <p className="text-right"> {safehouseCostPerNight}</p>
                     </div>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Price in tokens</p>
+                      <p className="text-right"> {Number(safehouseCostPerNight) / 1000}</p>
+                    </div>
+
+                    <div className="flex flex-col justify-center items-center my-2">
+                      <label htmlFor="adjustSafehousePrice">Change Safehouse Price</label>
+                      <input
+                        type="text"
+                        id="adjustSafehousePrice"
+                        required
+                        className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                        value={safehousePrice}
+                        onChange={(e) => setSafehousePrice(e.target.value)}
+                      />
+                    </div>
+                    <Button
+                      variant="secondary"
+                      className="w-full h-8 px-4 py-2 text-xl"
+                      onClick={changePrice}
+                      isLoading={adjustSafehouseCostLoad}
+                    >
+                      Adjust Price
+                    </Button>
                   </div>
+                </div>
 
-                  {/* Token Emissions */}
-                  <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
-                    Token Emission
-                    <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
-                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                        <p className="text-left">Input</p>
-                        <p className="text-right"> {tokensPerAttack}</p>
-                      </div>
-                      <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
-                        <p className="text-left">Emission in tokens</p>
-                        <p className="text-right"> {tokensPerAttack / 1000}</p>
-                      </div>
-                      <div className="flex flex-col justify-center items-center my-2">
-                        <label htmlFor="adjustTokenEmission">Change Token Emissions</label>
-                        <input
-                          type="text"
-                          id="adjustTokenEmission"
-                          required
-                          className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
-                          value={tokenEmission}
-                          onChange={(e) => setTokenEmission(e.target.value)}
-                        />
-                      </div>
-                      <Button
-                        variant="secondary"
-                        className="w-full h-8 px-4 py-2 text-xl"
-                        onClick={changeEmission}
-                        isLoading={adjustTokenEmissionLoad}
-                      >
-                        Adjust Emission
-                      </Button>
+                {/* Token Emissions */}
+                <div className="text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
+                  Token Emission
+                  <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Input</p>
+                      <p className="text-right"> {tokensPerAttack}</p>
                     </div>
+                    <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
+                      <p className="text-left">Emission in tokens</p>
+                      <p className="text-right"> {tokensPerAttack / 1000}</p>
+                    </div>
+                    <div className="flex flex-col justify-center items-center my-2">
+                      <label htmlFor="adjustTokenEmission">Change Token Emissions</label>
+                      <input
+                        type="text"
+                        id="adjustTokenEmission"
+                        required
+                        className="w-[6rem] rounded-md border my-2 px-1 text-center border border-zinc-500 dark:border-zinc-400"
+                        value={tokenEmission}
+                        onChange={(e) => setTokenEmission(e.target.value)}
+                      />
+                    </div>
+                    <Button
+                      variant="secondary"
+                      className="w-full h-8 px-4 py-2 text-xl"
+                      onClick={changeEmission}
+                      isLoading={adjustTokenEmissionLoad}
+                    >
+                      Adjust Emission
+                    </Button>
                   </div>
                 </div>
               </DialogDescription>

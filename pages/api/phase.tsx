@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   console.log(currentPhase)
 
   res.status(200).json({
-    message: currentPhase,
-    // message: 'day',
+    // message: currentPhase,
+    message: 'day',
   })
 }
