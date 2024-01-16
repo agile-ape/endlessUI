@@ -89,7 +89,7 @@ const Attack: FC<AttackType> = ({ id }) => {
 
   const events: Event[] = [
     {
-      name: 'events',
+      name: 'events-84531',
       async handler(data) {
         const { event, dataJson } = data
 

@@ -64,7 +64,7 @@ export default function DashboardNew() {
 
   // 'wallet', 'sms', 'email', 'google', 'twitter'
 
-  const loginMethod = user?.linkedAccounts[1].type
+  const loginMethod = user?.linkedAccounts[1]?.type
   let username
 
   if (loginMethod === 'email') {

@@ -88,7 +88,7 @@ function TokenNew() {
 
   const events: Event[] = [
     {
-      name: 'events',
+      name: 'events-84531',
       handler(data) {
         const { event, dataJson } = data
 

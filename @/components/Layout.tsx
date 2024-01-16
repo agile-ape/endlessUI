@@ -92,7 +92,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   } = useSWR<{
     data: Ticket[]
   }>(
-    `/tickets?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
+    `/tickets/84531?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
     fetcher,
   )
 
@@ -114,7 +114,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const events: Event[] = [
     {
-      name: 'tickets',
+      name: 'tickets-84531',
       handler(data) {
         if (!data?.id) return
 
@@ -132,7 +132,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
     },
     {
-      name: 'events',
+      name: 'events-84531',
       async handler(data) {
         const { event, dataJson } = data
 
