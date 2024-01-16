@@ -7,7 +7,6 @@ import { useAccount, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreState } from '../../../store'
-import { Sword } from 'lucide-react'
 import Attack from './_Attack'
 
 import AttackNew from './AttackNew'
@@ -22,6 +21,31 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import Modal from './Modal'
 import { Button } from './button'
 import OnSignal from './OnSignal'
+import {
+  User,
+  Menu,
+  MenuSquare,
+  Link2,
+  Unlink2,
+  Rss,
+  Users,
+  Clock,
+  Monitor,
+  Target,
+  Info,
+  Move,
+  ChevronDown,
+  ChevronUp,
+  Send,
+  Split,
+  LogIn,
+  LogOut,
+  Dices,
+  Gift,
+  Ticket,
+  Sword,
+  Axe,
+} from 'lucide-react'
 
 type TicketUIType = {
   ticketSize: number
@@ -248,7 +272,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   }
 
   if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
-    ticketLook = 'spectator'
+    ticketLook = 'guest'
   }
 
   if (ticketIsInPlay) {
@@ -336,14 +360,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       label: 'value',
       value: ticketValue + ' ETH',
     },
-    spectator: {
+    guest: {
       bgImage: '',
-      header: 'bg-zinc-200/60',
+      header: '',
       face: 'eatchips',
       id: '',
-      status: 'sitting this one out',
-      label: 'do what',
-      value: 'Eat Chips',
+      status: '',
+      label: '',
+      value: '',
     },
     submittedDay: {
       bgImage: 'motif',
@@ -601,6 +625,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
               onClick={toggleAttack}
             >
               <OnSignal active={activeAttack} own={false} />
+              <Sword size={20} className="text-orange-50 mr-1" />
               Attack
             </Button>
           )}
@@ -612,6 +637,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
               onClick={toggleKickOut}
             >
               <OnSignal active={activeKickOut} own={false} />
+              <Axe size={20} className="text-orange-50 mr-1" />
               Kick Out
             </Button>
           )}
@@ -630,8 +656,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
 
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
-              {ticketLookFinal === 'spectator' && <span className="block"> Spectator </span>}
-              {ticketLookFinal !== 'spectator' && (
+              {ticketLookFinal === 'guest' && <span className="block"> Guest </span>}
+              {ticketLookFinal !== 'guest' && (
                 <>
                   Player{' '}
                   <span className="font-whitrabt">

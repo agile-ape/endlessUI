@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import type { MouseEventHandler, FC } from 'react'
+
 import Link from 'next/link'
+import Image from 'next/image'
 import localFont from 'next/font/local'
+import { cn } from '@/lib/utils'
 import Round from '../ui/Round'
 import Countdown from '../ui/Countdown'
 import Indicator from '../ui/Indicator'
@@ -24,57 +28,24 @@ const headlineFont = localFont({
   // fallback: ['sans-serif'],
 })
 export default function Logo() {
-  // const [buttonText, setButtonText] = useState('last')
+  const [handleHover, setHandleHover] = useState<boolean>(false)
 
-  // const handleHover = () => {
-  //   setButtonText('man')
-  // }
+  const handleOnMouseEnter: MouseEventHandler = () => {
+    setHandleHover(true)
+  }
 
-  // const handleLeave = () => {
-  //   setButtonText('last')
-  // }
+  const handleOnMouseLeave: MouseEventHandler = () => {
+    setHandleHover(false)
+  }
 
   return (
     <>
-      {/* {xs && (
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <div className="flex flex-col justify-center items-center relative">
-              <button
-                className="rounded-md
-              px-2 pb-1 text-[24px] font-headline
-              text-white bg-red-800 capitalized
-              "
-              >
-                {buttonText}
-              </button>
-              <ChevronDown
-                className="absolute mt-1 bottom-0 animate-pulse text-white rounded-full"
-                size={14}
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="center"
-            className="px-8 bg-opacity-100 dark:bg-opacity-100 container-last flex flex-col gap-2 justify-center"
-          >
-            <Round />
-            <Countdown />
-            <Indicator />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )} */}
-
-      {/* <div
-        className="sm:hidden rounded-md
-            px-2 text-[26px] font-headline
-            text-white bg-red-800 capitalized
-          "
+      <Link
+        className="cursor-pointer"
+        href="/"
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
       >
-        last
-      </div> */}
-
-      <Link className="cursor-pointer" href="/">
         <div
           // onClick={() => console.log('last')}
           // onMouseOver={handleHover}
@@ -82,10 +53,20 @@ export default function Logo() {
           className="h-12 rounded-md
               px-2 py-0 text-[34px] font-headline
               text-white bg-red-800 hover:bg-red-700
-              transition-colors capitalized
+              transition-colors capitalized relative z-10
             "
         >
           last
+          <div className={cn(handleHover ? '-right-10' : 'hidden', 'absolute top-0 z-4')}>
+            <Image
+              priority
+              src="/faces/stareSq.png"
+              className=""
+              height={20}
+              width={40}
+              alt="pepe-stare"
+            />
+          </div>
         </div>
       </Link>
     </>

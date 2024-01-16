@@ -90,14 +90,10 @@ const Title = () => {
 
   return (
     <div className="text-lg leading-tight sm:leading-8 whtrabt-last mx-3 capitalize">
-      {!authenticated && <p>Compete and earn ETH. Login to explore Lastman</p>}
-
-      {authenticated && (
-        <p>
-          {displayResponse}
-          {!completedTyping && <CursorSVG />}
-        </p>
-      )}
+      <p>
+        {displayResponse}
+        {!completedTyping && <CursorSVG />}
+      </p>
     </div>
   )
 }

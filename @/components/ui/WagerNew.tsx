@@ -345,7 +345,7 @@ const WagerNew = () => {
         <div className="mx-auto flex flex-col gap-4 justify-center items-center">
           <RadioGroup
             defaultValue="option-one"
-            className="flex flex-col md:grid md:grid-cols-3 gap-4"
+            className="flex flex-col gap-4"
             onValueChange={(value) => setRadioValue(value)}
           >
             <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">

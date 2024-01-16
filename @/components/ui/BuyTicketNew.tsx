@@ -253,7 +253,7 @@ const BuyTicketNew = () => {
           <Button
             variant="enter"
             size="lg"
-            className="w-[100%]"
+            className="w-[100%] rounded-full"
             onClick={buyTicketHandler}
             isLoading={isLoading}
             disabled={!active}
@@ -262,7 +262,6 @@ const BuyTicketNew = () => {
           </Button>
         </div>
       </div>
-      {/* </div> */}
     </div>
   )
 }

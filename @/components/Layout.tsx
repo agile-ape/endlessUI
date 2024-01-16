@@ -63,16 +63,17 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-    return result
-  })
+  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+  //   const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+  //   const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+  //   return result
+  // })
 
-  const toggleModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-    localStorage.setItem('showWelcomeModal', 'false')
-  }
+  // const toggleModal = () => {
+  //   setShowWelcomeModal((prevState) => !prevState)
+  //   localStorage.setItem('showWelcomeModal', 'false')
+  // }
+
   // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(true)
 
   // const toggleModal = () => {
@@ -369,7 +370,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           }}
         >
           <div className="container mx-auto p-0">
-            {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
+            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
             {/* <Header /> */}
             {children}
             <CompletionModal alertLookTest="afterPurchase" />
@@ -385,7 +386,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
           }}
         >
           <div className="container mx-auto">
-            {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
+            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
             <Header />
             {children}
             <CompletionModal alertLookTest="afterPurchase" />

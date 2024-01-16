@@ -194,20 +194,13 @@ function Header() {
                   {/* <ExternalLink size={16} className="text-sm ml-1"></ExternalLink> */}
                 </Button>
               </a>
-              {address === GAMEMASTER_ADDRESS ? (
-                <div className="ml-2">
-                  <Admin />
-                </div>
-              ) : (
-                ''
-              )}
 
-              {authenticated && (
-                <>
-                  {/* <Token /> */}
-                  {/* <Dashboard /> */}
+              {/* {authenticated && ( */}
+              <>
+                {/* <Token /> */}
+                {/* <Dashboard /> */}
 
-                  {/* <button onClick={toggleToken}>
+                {/* <button onClick={toggleToken}>
                     <div className="flex p-1 md:px-2 md:py-2 items-center justify-center border rounded-full border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
                       <div className="relative p-3">
                         <Image
@@ -224,27 +217,33 @@ function Header() {
                       </div>
                     </button> */}
 
-                  <button onClick={toggleDashboard}>
-                    <div className="flex p-1 md:px-4 md:py-2 items-center justify-center border rounded-full border-zinc-700 dark:border-zinc-200 hover:bg-zinc-400/50 hover:cursor-pointer">
-                      <div className="relative p-3">
-                        <Image
-                          priority
-                          src="/faces/stare.png"
-                          fill={true}
-                          // height={25}
-                          // width={25}
-                          alt="player-dashboard"
-                          className=""
-                        />
-                      </div>
-                      <span className="ml-1 h5-last font-whitrabt">
-                        {formatShortAddress(String(address))}
-                      </span>
-                    </div>
-                  </button>
-                  {/* <DashboardNew /> */}
-                </>
-              )}
+                <Button
+                  variant="primary"
+                  className="rounded-xl flex p-1 md:px-4 md:py-2 items-center justify-center"
+                  onClick={toggleDashboard}
+                >
+                  {/* <div className="relative p-3">
+                      <Image
+                        priority
+                        src="/faces/stare.png"
+                        fill={true}
+                        // height={25}
+                        // width={25}
+                        alt="player-dashboard"
+                        className=""
+                      />
+                    </div> */}
+                  <span className="ml-1 text-base font-whitrabt">
+                    {authenticated ? (
+                      formatShortAddress(String(address))
+                    ) : (
+                      <p className="text-right"> Log In</p>
+                    )}
+                  </span>
+                </Button>
+                {/* <DashboardNew /> */}
+              </>
+              {/* )} */}
             </div>
           </div>
         </div>

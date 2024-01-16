@@ -159,6 +159,13 @@ export function scrollToTop() {
   })
 }
 
+export function scrollToBottom() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth',
+  })
+}
+
 export async function findChainName(chainId: number) {
   try {
     // Fetch the JSON data from the URL

@@ -28,6 +28,7 @@ import BuyTicketNew from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
 import TokenNew from './TokenNew'
 import PhaseChangeNew from './PhaseChangeNew'
+import AdminNew from './AdminNew'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -50,6 +51,7 @@ const titleMapping: { [key: string]: string } = {
   kickOut: 'Kick Out Player',
   token: 'Send Tokens',
   dashboard: 'Dashboard',
+  admin: 'Gamemaster',
 }
 
 const indicatorMapping: { [key: string]: string } = {
@@ -65,6 +67,7 @@ const indicatorMapping: { [key: string]: string } = {
   kickOut: 'night',
   token: '',
   dashboard: '',
+  admin: '',
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
@@ -78,6 +81,7 @@ const modalMapping: { [key: string]: JSX.Element } = {
   wager: <WagerNew />,
   token: <TokenNew />,
   dashboard: <DashboardNew />,
+  admin: <AdminNew />,
 }
 
 const Modal: FC<ModalType> = ({ action, toggle, id }) => {

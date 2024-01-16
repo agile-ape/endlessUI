@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Image from 'next/image'
@@ -24,6 +24,7 @@ import BuyTicket from './_BuyTicket'
 import ExitGame from './_ExitGame'
 
 import Modal from './Modal'
+import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 
 import BuyTicketNew from './BuyTicketNew'
 import { BuyTicketActive } from './BuyTicketNew'
@@ -36,13 +37,37 @@ import type { Ticket } from 'types/app'
 import { fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
 import useSWR from 'swr'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-
+import {
+  User,
+  Menu,
+  MenuSquare,
+  Link2,
+  Unlink2,
+  Rss,
+  Users,
+  Clock,
+  Monitor,
+  Target,
+  Info,
+  Move,
+  ChevronDown,
+  ChevronUp,
+  Send,
+  Split,
+  LogIn,
+  LogOut,
+  Dices,
+  Gift,
+  DoorOpen,
+  Ticket as Ticket2,
+} from 'lucide-react'
 const GameTab = () => {
   const tabValue = useStoreState((state) => state.gameTab)
   const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
   const phase = useStoreState((state) => state.phase)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   const { xs } = useWindowSize()
+  const { user, connectWallet, ready, authenticated } = usePrivy()
 
   const buyActive = BuyTicketActive()
   const [showBuyModal, setShowBuyModal] = React.useState<boolean>(false)
@@ -95,6 +120,8 @@ const GameTab = () => {
     updateTabValue(value as 'ticket' | 'game')
   }
 
+  const [isPressed, setIsPressed] = useState(false)
+
   return (
     <Tabs value={tabValue} onValueChange={changeTabValue} className="w-[240px] mx-auto">
       <div className="justify-center hidden sm:flex">
@@ -116,15 +143,22 @@ const GameTab = () => {
               <>
                 <div className="mb-2">
                   <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
+
                   {id === 0 && (phase === 'deployed' || phase === 'start') && (
-                    <Button
-                      variant="enter"
-                      className="px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
-                      onClick={toggleBuy}
-                    >
-                      <OnSignal active={buyActive} own={true} />
-                      Buy Ticket
-                    </Button>
+                    <div className="rounded-full bg-slate-500 my-4">
+                      <Button
+                        variant="enter"
+                        // className="px-1 py-1 leading-10 h-14 w-full "
+
+                        className="
+                        h-14 w-full text-3xl rounded-full leading-10 p-1"
+                        onClick={toggleBuy}
+                      >
+                        {/* <OnSignal active={buyActive} own={true} /> */}
+                        {/* <Ticket2 size={28} className=" mr-1" /> */}
+                        START
+                      </Button>
+                    </div>
                   )}
 
                   {id !== 0 && (
@@ -134,6 +168,7 @@ const GameTab = () => {
                       onClick={toggleExit}
                     >
                       <OnSignal active={exitActive} own={true} />
+                      <DoorOpen size={24} className="text-white mr-1" />
                       {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
                       {ticketStatusString === 'exited' && <div>You have exited</div>}
                     </Button>

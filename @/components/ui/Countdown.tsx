@@ -18,6 +18,32 @@ import PhaseChangeNew from './PhaseChangeNew'
 import { PhaseChangeActive } from './PhaseChangeNew'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { useTheme } from 'next-themes'
+import {
+  User,
+  Menu,
+  MenuSquare,
+  Link2,
+  Unlink2,
+  Rss,
+  Users,
+  Clock,
+  Monitor,
+  Target,
+  Info,
+  Move,
+  ChevronDown,
+  ChevronUp,
+  Send,
+  Split,
+  LogIn,
+  LogOut,
+  Dices,
+  Gift,
+  Ticket,
+  Sword,
+  RefreshCw,
+  Axe,
+} from 'lucide-react'
 
 type TimeLeftType = {
   hours: number
@@ -243,14 +269,12 @@ export default function Countdown() {
                   </div>
                 ) : (
                   <Button
-                    variant="default"
-                    className={cn(
-                      'text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3',
-                      bgColorPhase[phase],
-                    )}
+                    variant="change"
+                    className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
                     onClick={togglePhaseChange}
                   >
                     <OnSignal active={phaseChangeActive} own={true} />
+                    <RefreshCw size={20} className="text-white mr-1" />
                     Change phase
                   </Button>
                 )}

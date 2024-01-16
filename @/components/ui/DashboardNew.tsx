@@ -18,6 +18,7 @@ import {
 import { Button } from './button'
 import {
   useAccount,
+  useBalance,
   useEnsName,
   useEnsAvatar,
   useContractRead,
@@ -185,6 +186,11 @@ export default function DashboardNew() {
     chainId: 1,
   })
 
+  const { data: balanceData } = useBalance({
+    address: address,
+  })
+  const ethBalance = formatUnits(balanceData?.value || BigInt(0), 18)
+
   const { data, refetch } = useContractReads({
     contracts: [
       {
@@ -197,12 +203,19 @@ export default function DashboardNew() {
         functionName: 'sideQuestCount',
         args: [address as `0x${string}`],
       },
+      {
+        ...tokenContractObj,
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      },
     ],
   })
 
   // assign to variables
   const playCount = data?.[0].result || BigInt(0)
   const sideQuestCount = data?.[1].result || BigInt(0)
+  const balanceOf = data?.[2].result || BigInt(0)
+  const tokenBalance = formatUnits(balanceOf, 18)
 
   function copyAddress() {
     copyToClipboard(activeWallet?.address || '')
@@ -242,12 +255,16 @@ export default function DashboardNew() {
             <div className="underline">Login info</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Method</p>
-              <p className="text-right capitalized">{loginMethod}</p>
+              <p className="text-right capitalized">
+                {authenticated ? loginMethod : <p className="text-right"> Not logged in</p>}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">User</p>
-              <p className="text-right">{username}</p>
+              <p className="text-right">
+                {authenticated ? username : <p className="text-right"> Not logged in</p>}
+              </p>
             </div>
           </div>
 
@@ -255,15 +272,25 @@ export default function DashboardNew() {
             <div className="underline">Embedded wallet</div>
             <div className="flex flex-col gap-1">
               <div className="grid grid-cols-2 gap-1">
-                <p className="text-left">Wallet address</p>
+                <p className="text-left">Address</p>
                 <p className="text-right flex justify-end">
-                  <span className="mr-2">
-                    <a href={`${BLOCK_EXPLORER}address/${activeWallet?.address}`} target="_blank">
-                      {formatAddress(String(activeWallet?.address))}
-                    </a>
-                  </span>
-                  <span onClick={copyAddress}>
-                    <Copy size={18} className="cursor-pointer" />
+                  <span>
+                    {embeddedWallet ? (
+                      <div className="flex">
+                        <a
+                          href={`${BLOCK_EXPLORER}address/${embeddedWallet?.address}`}
+                          target="_blank"
+                          className="mr-2"
+                        >
+                          {formatAddress(String(embeddedWallet?.address))}
+                        </a>
+                        <span onClick={copyAddress}>
+                          <Copy size={18} className="cursor-pointer" />
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-right">No embedded wallet</p>
+                    )}
                   </span>
                 </p>
               </div>
@@ -273,14 +300,16 @@ export default function DashboardNew() {
                 {embeddedWallet ? (
                   <p className="text-right"> Already created </p>
                 ) : (
-                  <Button
-                    variant="primary"
-                    className="w-24 h-8 rounded-xl px-4"
-                    disabled={!(ready && authenticated) || Boolean(embeddedWalletAddress)}
-                    onClick={createWallet}
-                  >
-                    Create
-                  </Button>
+                  <p className="text-right">
+                    <Button
+                      variant="privy"
+                      className="w-24 h-8 rounded-xl px-4"
+                      disabled={!(ready && authenticated) || Boolean(embeddedWalletAddress)}
+                      onClick={createWallet}
+                    >
+                      Create
+                    </Button>
+                  </p>
                 )}
               </div>
 
@@ -289,7 +318,7 @@ export default function DashboardNew() {
                 <p className="text-right">
                   {embeddedWallet ? (
                     <Button
-                      variant="primary"
+                      variant="privy"
                       className="w-24 h-8 rounded-xl px-4 text-lg"
                       disabled={!(ready && authenticated)}
                       onClick={setPasswordHandler}
@@ -307,7 +336,7 @@ export default function DashboardNew() {
                 <p className="text-right">
                   {embeddedWallet ? (
                     <Button
-                      variant="primary"
+                      variant="privy"
                       className="w-24 h-8 rounded-xl px-4 text-lg"
                       disabled={!(ready && authenticated)}
                       onClick={exportKeyHandler}
@@ -338,6 +367,40 @@ export default function DashboardNew() {
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Side quest count</p>
               <p className="text-right">{Number(sideQuestCount)}</p>
+            </div>
+          </div>
+
+          <div className="w-full">
+            <div className="underline">Tokens</div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">ETH holdings</p>
+              <p className="text-right">
+                {' '}
+                {formatNumber(ethBalance, {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 0,
+                })}{' '}
+                ETH{' '}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">LAST holdings</p>
+              <p className="text-right">
+                {' '}
+                {formatNumber(tokenBalance, {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 0,
+                })}{' '}
+                LAST{' '}
+              </p>
+            </div>
+            <div className="flex text-lg justify-center my-2">
+              <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
+                <Button variant="buy" className="w-full text-xl rounded-full">
+                  Buy $LAST tokens <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+                </Button>
+              </a>
             </div>
             <a
               href={DOCS_URL}

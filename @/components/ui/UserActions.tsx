@@ -14,6 +14,9 @@ import Wager from './_Wager'
 
 import Modal from './Modal'
 
+import Admin from './Admin'
+import AdminNew from './AdminNew'
+
 import SubmitNewKeywordModal from './Submit'
 import { SubmitActive } from './Submit'
 
@@ -29,7 +32,6 @@ import { SplitPotActive } from './SplitPotNew'
 import WagerNew from './WagerNew'
 import { WagerActive } from './WagerNew'
 
-import { Send, Home } from 'lucide-react'
 import OnSignal from './OnSignal'
 import Image from 'next/image'
 import {
@@ -39,14 +41,56 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_exit, WEBSOCKET_ENDPOINT } from '../../../services/constant'
-import { statusPayload } from '@/lib/utils'
+import {
+  defaultContractObj,
+  DOCS_URL_exit,
+  WEBSOCKET_ENDPOINT,
+  GAMEMASTER_ADDRESS,
+} from '../../../services/constant'
+import { cn, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import { io } from 'socket.io-client'
+import {
+  User,
+  Menu,
+  MenuSquare,
+  Link2,
+  Unlink2,
+  Rss,
+  Users,
+  Clock,
+  Monitor,
+  Target,
+  Info,
+  Move,
+  ChevronDown,
+  ChevronUp,
+  Send,
+  Split,
+  LogIn,
+  LogOut,
+  Dices,
+  Gift,
+  Ticket,
+  Sword,
+  Sparkle,
+  RefreshCw,
+  Axe,
+} from 'lucide-react'
+
+// const bgColorPhase: Record<string, string> = {
+//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
+//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
+//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
+//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
+//   peacefound: 'bg-blue-800 hover:bg-blue-900',
+//   drain: 'bg-red-400 hover:bg-red-500',
+// }
 
 const UserActions = () => {
   // const [showModal, setShowModal] = React.useState<boolean>(false)
   // const toggle = () => setShowModal((prevState) => !prevState)
+  const { isConnected, address } = useAccount()
 
   const submitActive = SubmitActive()
   const [showSubmitModal, setShowSubmitModal] = React.useState<boolean>(false)
@@ -71,6 +115,9 @@ const UserActions = () => {
   const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
   const toggleToken = () => setShowTokenModal((prevState) => !prevState)
 
+  const [showAdminModal, setShowAdminModal] = React.useState<boolean>(false)
+  const toggleAdmin = () => setShowAdminModal((prevState) => !prevState)
+
   return (
     <div>
       <div
@@ -87,6 +134,7 @@ const UserActions = () => {
           onClick={toggleSubmit}
         >
           <OnSignal active={submitActive} own={true} />
+          <Send size={20} className="text-green-50 mr-1" />
           Submit Keyword
         </Button>
 
@@ -96,6 +144,7 @@ const UserActions = () => {
           onClick={toggleSplit}
         >
           <OnSignal active={splitActive} own={true} />
+          <Split size={20} className="text-amber-950 mr-1" />
           Split Pot
         </Button>
       </div>
@@ -114,6 +163,7 @@ const UserActions = () => {
           onClick={toggleCheckIn}
         >
           <OnSignal active={checkInActive} own={true} />
+          <LogIn size={20} className="text-white mr-1" />
           Check In
         </Button>
 
@@ -124,6 +174,7 @@ const UserActions = () => {
           onClick={toggleCheckOut}
         >
           <OnSignal active={checkOutActive} own={true} />
+          <LogOut size={20} className="text-sky-900 mr-1" />
           Check Out
         </Button>
       </div>
@@ -143,18 +194,42 @@ const UserActions = () => {
           onClick={toggleWager}
         >
           <OnSignal active={wagerActive} own={true} />
+          <Dices size={20} className="text-neutral-950 mr-1" />
           Bet
         </Button>
-
-        <Button
-          variant="primary"
-          className="rounded-full w-full text-xl flex justify-start"
-          onClick={toggleToken}
-        >
-          <OnSignal active={true} own={true} />
-          Send
-        </Button>
       </div>
+
+      {address !== GAMEMASTER_ADDRESS ? (
+        <div
+          className="w-[240px] rounded-xl px-2 pt-4 pb-2
+        container-last
+        flex flex-col gap-2 mb-5 relative"
+        >
+          <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+            Gamemaster
+          </div>
+
+          <Button
+            variant="admin"
+            className="rounded-full w-full text-xl flex justify-start"
+            onClick={toggleToken}
+          >
+            <Gift size={20} className="text-neutral-950 mr-1" />
+            Send
+          </Button>
+
+          <Button
+            variant="admin"
+            className="rounded-full w-full text-xl flex justify-start"
+            onClick={toggleAdmin}
+          >
+            <Sparkle size={20} className="text-neutral-950 mr-1" />
+            Gamemaster
+          </Button>
+        </div>
+      ) : (
+        ''
+      )}
 
       {showSubmitModal && <Modal action={'submit'} toggle={toggleSubmit} />}
       {showCheckInModal && <Modal action={'checkIn'} toggle={toggleCheckIn} />}
@@ -162,6 +237,7 @@ const UserActions = () => {
       {showSplitModal && <Modal action={'splitIt'} toggle={toggleSplit} />}
       {showWagerModal && <Modal action={'wager'} toggle={toggleWager} />}
       {showTokenModal && <Modal action={'token'} toggle={toggleToken} />}
+      {showAdminModal && <Modal action={'admin'} toggle={toggleAdmin} />}
     </div>
   )
 }

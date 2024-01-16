@@ -35,14 +35,14 @@ const mappedFunction: Record<string, string> = {
   drain: 'closeGame',
 }
 
-const bgColorPhase: Record<string, string> = {
-  start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
-  day: 'text-white border border-white bg-green-600 hover:bg-green-700',
-  night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
-  lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
-  peacefound: 'bg-blue-800 hover:bg-blue-900',
-  drain: 'bg-red-400 hover:bg-red-500',
-}
+// const bgColorPhase: Record<string, string> = {
+//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
+//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
+//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
+//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
+//   peacefound: 'bg-blue-800 hover:bg-blue-900',
+//   drain: 'bg-red-400 hover:bg-red-500',
+// }
 
 const useStore = () => {
   const phase = useStoreState((state) => state.phase)
@@ -157,28 +157,18 @@ const PhaseChangeNew = () => {
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-[100%] mx-auto flex flex-col justify-center">
-            {active ? (
-              <Button
-                variant="default"
-                onClick={phaseChangeHandler}
-                isLoading={isLoading}
-                className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-              >
-                {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-                Change phase
-              </Button>
-            ) : (
-              <>
-                <Button
-                  disabled
-                  variant="default"
-                  className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-                >
-                  Change phase
-                </Button>
-                <Prompt docLink={DOCS_URL_phases} />
-              </>
-            )}
+            <Button
+              variant="change"
+              onClick={phaseChangeHandler}
+              isLoading={isLoading}
+              disabled={!active}
+              className="h-10 px-3 text-xl"
+              // className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
+            >
+              {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
+              Change phase
+            </Button>
+            {!active ?? <Prompt docLink={DOCS_URL_phases} />}
           </div>
         </div>
       </div>
