@@ -9,12 +9,12 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
 export const API_ENDPOINT = isDevelopment
-  ? 'https://lastman-be.onrender.com'
-  : 'https://lastman-be.onrender.com'
+  ? 'https://lsm-api-base-goerli.onrender.com'
+  : 'https://lsm-api-base-goerli.onrender.com'
 
 export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://lastman-be.onrender.com/ws'
-  : 'wss://lastman-be.onrender.com/ws'
+  ? 'wss://lsm-api-base-goerli.onrender.com/ws'
+  : 'wss://lsm-api-base-goerli.onrender.com/ws'
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */

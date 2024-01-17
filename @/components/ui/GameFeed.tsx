@@ -26,7 +26,7 @@ const GameFeed = () => {
         args: Record<string, string>
       }
     }[]
-  }>(`/events?address=${GAME_ADDRESS}&page=1&limit=100`, fetcher)
+  }>(`/events/84531?address=${GAME_ADDRESS}&page=1&limit=100`, fetcher)
 
   const [feeds, setFeeds] = useState<Feeds[]>([])
 
