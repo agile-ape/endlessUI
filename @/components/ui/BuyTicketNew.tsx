@@ -253,10 +253,10 @@ const BuyTicketNew = () => {
           <Button
             variant="enter"
             size="lg"
-            className="w-[100%] rounded-full"
+            className="w-[100%] rounded-full h-14 w-full text-3xl rounded-full leading-10 p-1 dark:bg-slate-100/20 bg-slate-700"
             onClick={buyTicketHandler}
             isLoading={isLoading}
-            disabled={!active}
+            // disabled={!active}
           >
             Buy Ticket
           </Button>

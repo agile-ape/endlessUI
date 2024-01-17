@@ -163,7 +163,7 @@ const UserActions = () => {
           onClick={toggleCheckIn}
         >
           <OnSignal active={checkInActive} own={true} />
-          <LogIn size={20} className="text-white mr-1" />
+          <LogIn size={20} className="text-blue-50 mr-1" />
           Check In
         </Button>
 
@@ -174,7 +174,7 @@ const UserActions = () => {
           onClick={toggleCheckOut}
         >
           <OnSignal active={checkOutActive} own={true} />
-          <LogOut size={20} className="text-sky-900 mr-1" />
+          <LogOut size={20} className="text-blue-950 mr-1" />
           Check Out
         </Button>
       </div>
@@ -194,7 +194,7 @@ const UserActions = () => {
           onClick={toggleWager}
         >
           <OnSignal active={wagerActive} own={true} />
-          <Dices size={20} className="text-neutral-950 mr-1" />
+          <Dices size={20} className="text-stone-950 mr-1" />
           Bet
         </Button>
       </div>
@@ -214,7 +214,7 @@ const UserActions = () => {
             className="rounded-full w-full text-xl flex justify-start"
             onClick={toggleToken}
           >
-            <Gift size={20} className="text-neutral-950 mr-1" />
+            <Gift size={20} className="text-pink-50 mr-1" />
             Send
           </Button>
 
@@ -223,7 +223,7 @@ const UserActions = () => {
             className="rounded-full w-full text-xl flex justify-start"
             onClick={toggleAdmin}
           >
-            <Sparkle size={20} className="text-neutral-950 mr-1" />
+            <Sparkle size={20} className="text-pink-50 mr-1" />
             Gamemaster
           </Button>
         </div>

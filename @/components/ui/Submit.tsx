@@ -317,6 +317,10 @@ const Submit = () => {
             onClick={() => submitKeyword(otpInput)}
             isLoading={isLoading}
             disabled={!active || !svgKeyword}
+            style={{
+              backgroundImage: `url(/ticket/motif.svg)`,
+            }}
+            className="opacity-100 text-green-950 text-2xl hover:text-green-50"
           >
             Submit
           </Button>

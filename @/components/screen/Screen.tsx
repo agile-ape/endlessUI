@@ -808,7 +808,7 @@ export default function Screen() {
             <Button
               onClick={enter}
               variant="primary"
-              className={`h-10 w-[100%] rounded-xl px-4 py-2 text-md font-whitrabt`}
+              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl sm:text-lg font-whitrabt`}
             >
               Log In
             </Button>
@@ -816,7 +816,7 @@ export default function Screen() {
             <Button
               onClick={guest}
               variant="secondary"
-              className={`h-10 w-[100%] rounded-xl px-4 py-2 text-md font-whitrabt`}
+              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl sm:text-lg font-whitrabt`}
             >
               Explore
             </Button>
