@@ -514,8 +514,9 @@ export default function Admin() {
       </div>
 
       <div className="w-[240px] mx-auto flex flex-col justify-center items-center text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
-        Trigger Drain
         {/* <div className="w-[240px] flex flex-col justify-center items-center my-2"> */}
+        <div className="m-1 capitalize text-center h1-last">Trigger Drain</div>
+
         <div className="rounded-lg text-lg flex flex-col justify-center items-center md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
           <label htmlFor="triggerDrain">Set Stage 3 Round Number</label>
           <input
@@ -539,7 +540,8 @@ export default function Admin() {
 
       {/* <div className="grid grid-cols-2 gap-2"> */}
       <div className="w-[240px] mx-auto text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
-        Safehouse Cost
+        <div className="m-1 capitalize text-center h1-last">Safehouse Cost</div>
+
         <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
           <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
             <p className="text-left">Input</p>
@@ -574,7 +576,8 @@ export default function Admin() {
 
       {/* Token Emissions */}
       <div className="w-[240px] mx-auto text-lg md:text-xl lg:text-2xl whitespace-nowrap m-1 justify-start text-zinc-500 dark:text-zinc-400">
-        Token Emission
+        <div className="m-1 capitalize text-center h1-last">Token Emission</div>
+
         <div className="rounded-lg text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400">
           <div className="grid grid-cols-2 text-lg justify-between gap-1 text-xl">
             <p className="text-left">Input</p>

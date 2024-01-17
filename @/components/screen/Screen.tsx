@@ -432,7 +432,7 @@ export default function Screen() {
               <div className="flex flex-col">
                 <button
                   onClick={scrollToTop}
-                  className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center"
+                  className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center z-[1]"
                 >
                   <div className="text-3xl text-center">
                     {actionView === 'submit' && <p>Submit</p>}

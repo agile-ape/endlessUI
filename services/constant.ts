@@ -48,6 +48,7 @@ export const wagerContractObj = {
 //   address: isDevelopment ? WHITELIST_DEV_ADDRESS : WHITELIST_PROD_ADDRESS,
 //   abi: WHITELIST_ABI,
 // }
+/*---------------------------------------- IMG ---------------------------------------- */
 
 /*---------------------------------------- DOCS ---------------------------------------- */
 export const DOCS_URL = 'https://docs.lastman.xyz'

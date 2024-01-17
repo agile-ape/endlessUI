@@ -25,8 +25,7 @@ const TicketList = () => {
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
   const { xs } = useWindowSize()
-  const hideImg =
-    'https://res.cloudinary.com/dn4hm5vfh/image/upload/v1705457550/last_192_fufgmf.png'
+  const hideImg = 'https://res.cloudinary.com/dn4hm5vfh/image/upload/v1705457550/last_192.png'
 
   const { forcedTheme } = useTheme()
 
