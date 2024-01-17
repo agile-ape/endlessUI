@@ -27,3 +27,16 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA(nextConfig)
+
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/dn4hm5vfh/',
+      },
+    ],
+  },
+}

@@ -758,7 +758,7 @@ export default function Screen() {
               width={200}
               alt="dancing-pepe"
             />
-            <p className="text-2xl whtrabt-last">Connecting to the ether...</p>
+            <p className="text-xl whtrabt-last">Connecting to the ether...</p>
           </div>
         )
       ) : (

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudinary/url-gen": "^1.15.0",
     "@hcaptcha/react-hcaptcha": "^1.8.1",
     "@privy-io/react-auth": "^1.51.1",
     "@privy-io/wagmi-connector": "^0.1.9",

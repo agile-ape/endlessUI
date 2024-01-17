@@ -8,6 +8,7 @@ import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreState } from '../../../store'
 import Attack from './_Attack'
+import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 
 import AttackNew from './AttackNew'
 import { AttackActive } from './AttackNew'
@@ -102,6 +103,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
   const { xs } = useWindowSize()
+  const { user, connectWallet, ready, authenticated } = usePrivy()
 
   const activeAttack = AttackActive()
   const activeKickOut = KickOutActive()
@@ -259,84 +261,89 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   }
   */
   /* ORIGINAL */
-  if (phase === 'deployed') {
-    ticketLook = 'beforePurchase'
-  }
 
-  if (phase === 'start') {
-    if (ticketId === 0) {
-      ticketLook = 'beforePurchase'
-    } else if (ticketId != 0) {
-      ticketLook = 'afterPurchase'
-    }
-  }
-
-  if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
+  if (!authenticated) {
     ticketLook = 'guest'
-  }
-
-  if (ticketIsInPlay) {
-    if (phase == 'day') {
-      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-        ticketLook = 'submittedDay'
-      } else if (ticketVote === true) {
-        ticketLook = 'makePeace'
-      } else {
-        if (stage === 1) {
-          ticketLook = 'stage1New'
-        } else if (stage === 2) {
-          ticketLook = 'stage2New'
-        } else if (stage === 3) {
-          ticketLook = 'stage3New'
-        }
-      }
-    }
-
-    if (phase == 'night') {
-      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-        ticketLook = 'submittedNight'
-      } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
-        ticketLook = 'attackedButSafu'
-      } else {
-        ticketLook = 'neverSubmit'
-      }
-    }
-
-    if (ticketStatusString === 'safe') {
-      ticketLook = 'inSafehouse'
-    }
-
-    if (phase === 'lastManFound') {
-      ticketLook = 'lastManStanding'
-    }
-
-    if (phase === 'peaceFound') {
-      ticketLook = 'agreedToSplitPot'
-    }
-
-    if (phase === 'drain') {
-      ticketLook = 'noMorePot'
+  } else {
+    // if authenticated
+    if (phase === 'deployed') {
+      ticketLook = 'beforePurchase'
     }
 
     if (phase === 'start') {
-      ticketLook = 'afterPurchase'
-    }
-  }
-
-  if (!ticketIsInPlay) {
-    if (ticketStatusString == 'dead') {
-      ticketLook = 'killed'
+      if (ticketId === 0) {
+        ticketLook = 'beforePurchase'
+      } else if (ticketId != 0) {
+        ticketLook = 'afterPurchase'
+      }
     }
 
-    if (ticketStatusString == 'exited') {
-      ticketLook = 'exitGame'
+    if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
+      ticketLook = 'notPlaying'
+    }
+
+    if (ticketIsInPlay) {
+      if (phase == 'day') {
+        if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
+          ticketLook = 'submittedDay'
+        } else if (ticketVote === true) {
+          ticketLook = 'makePeace'
+        } else {
+          if (stage === 1) {
+            ticketLook = 'stage1New'
+          } else if (stage === 2) {
+            ticketLook = 'stage2New'
+          } else if (stage === 3) {
+            ticketLook = 'stage3New'
+          }
+        }
+      }
+
+      if (phase == 'night') {
+        if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
+          ticketLook = 'submittedNight'
+        } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
+          ticketLook = 'attackedButSafu'
+        } else {
+          ticketLook = 'neverSubmit'
+        }
+      }
+
+      if (ticketStatusString === 'safe') {
+        ticketLook = 'inSafehouse'
+      }
+
+      if (phase === 'lastManFound') {
+        ticketLook = 'lastManStanding'
+      }
+
+      if (phase === 'peaceFound') {
+        ticketLook = 'agreedToSplitPot'
+      }
+
+      if (phase === 'drain') {
+        ticketLook = 'noMorePot'
+      }
+
+      if (phase === 'start') {
+        ticketLook = 'afterPurchase'
+      }
+    }
+
+    if (!ticketIsInPlay) {
+      if (ticketStatusString == 'dead') {
+        ticketLook = 'killed'
+      }
+
+      if (ticketStatusString == 'exited') {
+        ticketLook = 'exitGame'
+      }
+    }
+
+    if (!ticketLook && !ticketIsInPlay) {
+      return null
     }
   }
-
-  if (!ticketLook && !ticketIsInPlay) {
-    return null
-  }
-
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   const ticketLookFinal = ticketLook
@@ -365,7 +372,16 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: '',
       face: 'eatchips',
       id: '',
-      status: '',
+      status: 'login to play',
+      label: '',
+      value: '',
+    },
+    notPlaying: {
+      bgImage: '',
+      header: '',
+      face: 'sad',
+      id: '',
+      status: 'feeling fomo?',
       label: '',
       value: '',
     },
@@ -527,7 +543,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge} text-black`}
         >
           <div className="flex justify-between gap-6">
-            <p className="text-left"> Player</p>
+            <p className="text-left"> User</p>
             <p className="text-right italic">
               <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
                 {ensName ? ensName : formatAddress(ticketAddress)}
@@ -656,8 +672,11 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
 
           <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
             <p className={`uppercase ${h1} leading-tight`}>
-              {ticketLookFinal === 'guest' && <span className="block"> Guest </span>}
-              {ticketLookFinal !== 'guest' && (
+              {ticketLookFinal === 'guest' ? (
+                <span className="block"> Guest </span>
+              ) : ticketLookFinal === 'notPlaying' ? (
+                <span className="block"> Not In Game </span>
+              ) : (
                 <>
                   Player{' '}
                   <span className="font-whitrabt">

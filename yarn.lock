@@ -1364,6 +1364,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cloudinary/transformation-builder-sdk@npm:^1.10.0":
+  version: 1.10.1
+  resolution: "@cloudinary/transformation-builder-sdk@npm:1.10.1"
+  dependencies:
+    "@cloudinary/url-gen": ^1.7.0
+  checksum: 24f4f6e915787738c8d982b0e850fd29fdad2beb11c69a17125e35c3e1a24aa56602bbc632d64c04ec9a7322fab70c375df74adf07e65eb232c21c4a374ecc5e
+  languageName: node
+  linkType: hard
+
+"@cloudinary/url-gen@npm:^1.15.0, @cloudinary/url-gen@npm:^1.7.0":
+  version: 1.15.0
+  resolution: "@cloudinary/url-gen@npm:1.15.0"
+  dependencies:
+    "@cloudinary/transformation-builder-sdk": ^1.10.0
+  checksum: 774c4cf9978c31dd783576897f9ee309d30572c48e94e3366cc79ec69e1e6e7300cd373e360f18d5d16950cd521ee8905810ac9edc5b6748b2e5b8b8cfb40261
+  languageName: node
+  linkType: hard
+
 "@coinbase/wallet-sdk@npm:^3.6.6":
   version: 3.7.2
   resolution: "@coinbase/wallet-sdk@npm:3.7.2"
@@ -8862,6 +8880,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "last-man-standing@workspace:."
   dependencies:
+    "@cloudinary/url-gen": ^1.15.0
     "@hcaptcha/react-hcaptcha": ^1.8.1
     "@privy-io/react-auth": ^1.51.1
     "@privy-io/wagmi-connector": ^0.1.9

@@ -25,6 +25,8 @@ const TicketList = () => {
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
   const { xs } = useWindowSize()
+  const hideImg =
+    'https://res.cloudinary.com/dn4hm5vfh/image/upload/v1705457550/last_192_fufgmf.png'
 
   const { forcedTheme } = useTheme()
 
@@ -52,6 +54,10 @@ const TicketList = () => {
     } else {
       setTicketListState(playerTickets)
     }
+  }
+
+  const fallbackImg = (event: any) => {
+    event.target.src = '/faces/hide.png'
   }
 
   return (
@@ -231,11 +237,13 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
           <Image
             priority
-            src="/faces/hide.png"
+            src={hideImg}
             className=""
             height={200}
+            unoptimized
             width={xs ? 150 : 250}
             alt="waiting-for-players"
+            onError={fallbackImg}
           />
           <div className="text-center my-2 text-lg sm:text-3xl">No one is here yet</div>
         </div>
