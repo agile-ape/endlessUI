@@ -104,7 +104,7 @@ const buttonVariants = cva(
           'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-600 hover:border-indigo-200 active:bg-indigo-500',
 
         secondary:
-          'text-indigo-800 bg-transparent border border-indigo-800 \
+          'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
             dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-800/20 \
             active:bg-indigo-100',
 

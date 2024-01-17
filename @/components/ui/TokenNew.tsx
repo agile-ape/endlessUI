@@ -34,6 +34,8 @@ import {
   BLOCK_EXPLORER,
   LIQUIDITY_POOL,
   WEBSOCKET_ENDPOINT,
+  TOKEN_IMG,
+  TOKEN_MOBILE_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -225,6 +227,14 @@ function TokenNew() {
     setReceiverId('')
   }
 
+  const tokenBackupImg = (event: any) => {
+    event.target.src = '/lore/TokenImage.png'
+  }
+
+  const tokenMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/TokenImageMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -233,20 +243,24 @@ function TokenNew() {
         </div> */}
         <Image
           priority
-          src="/lore/TokenImageMobile.png"
+          src={TOKEN_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="send-tokens"
+          onError={tokenMobileBackupImg}
         />
       </div>
       <Image
         priority
-        src="/lore/TokenImage.png"
+        src={TOKEN_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="send-tokens"
+        onError={tokenBackupImg}
       />
 
       <div className="text-center">

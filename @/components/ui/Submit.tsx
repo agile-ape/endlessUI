@@ -23,6 +23,8 @@ import {
   defaultContractObj,
   DOCS_URL_submit,
   HCAPCTCHA_KEY,
+  SUBMIT_KEYWORD_IMG,
+  SUBMIT_KEYWORD_MOBILE_IMG,
 } from '../../../services/constant'
 import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
@@ -196,6 +198,14 @@ const Submit = () => {
     }
   }
 
+  const submitBackupImg = (event: any) => {
+    event.target.src = '/lore/SubmitKeyword.png'
+  }
+
+  const submitMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/SubmitKeywordMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -212,21 +222,25 @@ const Submit = () => {
         </div> */}
         <Image
           priority
-          src="/lore/SubmitKeywordMobile.png"
+          src={SUBMIT_KEYWORD_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="submit-keyword"
+          onError={submitMobileBackupImg}
         />
       </div>
 
       <Image
         priority
-        src="/lore/SubmitKeyword.png"
+        src={SUBMIT_KEYWORD_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="submit-keyword"
+        onError={submitBackupImg}
       />
 
       <div className="text-center">

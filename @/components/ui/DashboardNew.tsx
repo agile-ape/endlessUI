@@ -44,6 +44,7 @@ import {
   BLOCK_EXPLORER,
   LIQUIDITY_POOL,
   DOCS_URL,
+  DASHBOARD_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -226,6 +227,10 @@ export default function DashboardNew() {
     })
   }
 
+  const dashboardBackupImg = (event: any) => {
+    event.target.src = '/lore/Dashboard.png'
+  }
+
   // potential to add game stats
   return (
     <div className="w-[85%] mx-auto flex flex-col mb-8 body-last">
@@ -234,11 +239,13 @@ export default function DashboardNew() {
           <>
             <Image
               priority
-              src="/lore/Dashboard.png"
+              src={DASHBOARD_IMG}
+              unoptimized
               className="place-self-center rounded-xl"
               height={400}
               width={650}
-              alt="enter-into-the-pepe"
+              alt="dashboard"
+              onError={dashboardBackupImg}
             />
           </>
         </div>
@@ -248,7 +255,7 @@ export default function DashboardNew() {
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Wallet Info</div>
+        <div className="m-1 capitalize text-center h2-last">Player Info</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-full">
@@ -353,7 +360,7 @@ export default function DashboardNew() {
           </div>
 
           <div className="w-full">
-            <div className="underline">Game info </div>
+            <div className="underline">Play count</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Current Chain</p>
               <p className="text-right">{chainName}</p>
@@ -371,7 +378,7 @@ export default function DashboardNew() {
           </div>
 
           <div className="w-full">
-            <div className="underline">Tokens</div>
+            <div className="underline">Token holdings</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH holdings</p>
               <p className="text-right">

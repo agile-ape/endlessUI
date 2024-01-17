@@ -37,6 +37,8 @@ import {
   DOCS_URL_attack,
   DOCS_URL_waterfall,
   WEBSOCKET_ENDPOINT,
+  ATTACK_PLAYER_IMG,
+  ATTACK_PLAYER_MOBILE_IMG,
 } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
@@ -404,6 +406,14 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
     },
   })
 
+  const attackBackupImg = (event: any) => {
+    event.target.src = '/lore/AttackPlayer.png'
+  }
+
+  const attackMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/AttackPlayerMobile.png'
+  }
+
   return (
     <>
       <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
@@ -421,21 +431,25 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
           </div> */}
           <Image
             priority
-            src="/lore/AttackPlayerMobile.png"
+            src={ATTACK_PLAYER_MOBILE_IMG}
+            unoptimized
             className="place-self-center rounded-xl"
             height={400}
             width={650}
             alt="attack-player"
+            onError={attackMobileBackupImg}
           />
         </div>
 
         <Image
           priority
-          src="/lore/AttackPlayer.png"
+          src={ATTACK_PLAYER_IMG}
+          unoptimized
           className="hidden sm:block place-self-center rounded-xl"
           height={400}
           width={650}
           alt="attack-player"
+          onError={attackBackupImg}
         />
 
         <div className="text-center">

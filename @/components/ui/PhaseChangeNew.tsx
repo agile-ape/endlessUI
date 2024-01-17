@@ -1,7 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAccount, useContractRead, useContractWrite } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import {
+  defaultContractObj,
+  CHANGE_PHASE_IMG,
+  CHANGE_PHASE_MOBILE_IMG,
+} from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
@@ -116,6 +120,14 @@ const PhaseChangeNew = () => {
     }
   }
 
+  const changePhaseBackupImg = (event: any) => {
+    event.target.src = '/lore/ChangePhase.png'
+  }
+
+  const changePhaseMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/ChangePhaseMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -124,20 +136,24 @@ const PhaseChangeNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/ChangePhaseMobile.png"
+          src={CHANGE_PHASE_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="change-phase"
+          onError={changePhaseMobileBackupImg}
         />
       </div>
       <Image
         priority
-        src="/lore/ChangePhase.png"
+        src={CHANGE_PHASE_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="change-phase"
+        onError={changePhaseBackupImg}
       />
 
       <div className="text-center">

@@ -25,7 +25,12 @@ import {
 import dynamic from 'next/dynamic'
 
 import { statusPayload } from '@/lib/utils'
-import { defaultContractObj, DOCS_URL_buy } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_buy,
+  BUY_TICKET_IMG,
+  BUY_TICKET_MOBILE_IMG,
+} from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -84,9 +89,6 @@ const BuyTicketNew = () => {
   const increaseInPrice = data?.[0].result || BigInt(0)
   const ticketsAvailableAtCurrentPrice = Number(data?.[1].result || BigInt(0))
   const ticketsCounter = Number(data?.[2].result || BigInt(0))
-
-  console.log(ticketsAvailableAtCurrentPrice)
-  console.log(ticketsCounter)
 
   const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
   const ticketPrice = nextTicketPrice
@@ -148,6 +150,14 @@ const BuyTicketNew = () => {
     setBuddyValue('')
   }
 
+  const buyTicketBackupImg = (event: any) => {
+    event.target.src = '/lore/BuyTicket.png'
+  }
+
+  const buyTicketMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/BuyTicketMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -164,21 +174,25 @@ const BuyTicketNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/InsertCoinMobile.png"
+          src={BUY_TICKET_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="insert-coin-to-play"
+          onError={buyTicketMobileBackupImg}
         />
       </div>
 
       <Image
         priority
-        src="/lore/InsertCoin.png"
+        src={BUY_TICKET_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="insert-coin-to-play"
+        onError={buyTicketBackupImg}
       />
 
       <div className="text-center">
@@ -256,7 +270,7 @@ const BuyTicketNew = () => {
             className="w-[100%] rounded-full h-14 w-full text-2xl rounded-full leading-10 p-1 dark:bg-slate-100/20 bg-slate-700"
             onClick={buyTicketHandler}
             isLoading={isLoading}
-            // disabled={!active}
+            disabled={!active}
           >
             Buy Ticket
           </Button>

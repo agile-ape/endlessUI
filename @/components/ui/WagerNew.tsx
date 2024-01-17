@@ -45,6 +45,8 @@ import {
   DOCS_URL_safehouse,
   DOCS_URL,
   WEBSOCKET_ENDPOINT,
+  WAGER_IMG,
+  WAGER_MOBILE_IMG,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -289,6 +291,14 @@ const WagerNew = () => {
     },
   })
 
+  const wagerBackupImg = (event: any) => {
+    event.target.src = '/lore/Wager.png'
+  }
+
+  const wagerMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/WagerMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -297,20 +307,24 @@ const WagerNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/WagerMobile.png"
+          src={WAGER_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
-          alt="check-into-safehouse"
+          alt="wager-pepe"
+          onError={wagerMobileBackupImg}
         />
       </div>
       <Image
         priority
-        src="/lore/Wager.png"
+        src={WAGER_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
-        alt="enter-into-the-pepe"
+        alt="wager-pepe"
+        onError={wagerBackupImg}
       />
 
       <div className="text-center">
@@ -538,6 +552,7 @@ const WagerNew = () => {
               required
               className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400 bg-slate-100 dark:bg-slate-700"
               value={betAmount}
+              placeholder="0.00"
               onChange={(e) => setBetAmount(e.target.value)}
             />
 

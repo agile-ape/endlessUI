@@ -30,6 +30,8 @@ import {
   DOCS_URL_split,
   TWITTER_URL,
   WEBSOCKET_ENDPOINT,
+  SPLIT_POT_IMG,
+  SPLIT_POT_MOBILE_IMG,
 } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
@@ -246,6 +248,14 @@ export const SplitPotNew = () => {
 
   useSocketEvents(events)
 
+  const splitBackupImg = (event: any) => {
+    event.target.src = '/lore/SplitPot.png'
+  }
+
+  const splitMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/SplitPotMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -262,21 +272,25 @@ export const SplitPotNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/SplitPotMobile.png"
+          src={SPLIT_POT_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="split-pot"
+          onError={splitMobileBackupImg}
         />
       </div>
 
       <Image
         priority
-        src="/lore/SplitPot.png"
+        src={SPLIT_POT_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="split-pot"
+        onError={splitBackupImg}
       />
 
       <div className="text-center">

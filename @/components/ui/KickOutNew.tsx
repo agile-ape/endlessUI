@@ -28,6 +28,8 @@ import {
   DOCS_URL_kickout,
   DOCS_URL_waterfall,
   WEBSOCKET_ENDPOINT,
+  KICK_OUT_IMG,
+  KICK_OUT_MOBILE_IMG,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
@@ -246,6 +248,14 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
     }
   }
 
+  const kickOutBackupImg = (event: any) => {
+    event.target.src = '/lore/KickOut.png'
+  }
+
+  const kickOutMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/KickOutMobile.png'
+  }
+
   return (
     <>
       <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
@@ -263,20 +273,24 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
           </div> */}
           <Image
             priority
-            src="/lore/KickOutMobile.png"
+            src={KICK_OUT_MOBILE_IMG}
+            unoptimized
             className="place-self-center rounded-xl"
             height={400}
             width={650}
             alt="kick-out-player"
+            onError={kickOutMobileBackupImg}
           />
         </div>
         <Image
           priority
-          src="/lore/KickOut.png"
+          src={KICK_OUT_IMG}
+          unoptimized
           className="hidden sm:block place-self-center rounded-xl"
           height={400}
           width={650}
           alt="kick-out-player"
+          onError={kickOutBackupImg}
         />
 
         <div className="text-center">

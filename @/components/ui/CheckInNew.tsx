@@ -50,6 +50,8 @@ import {
   tokenContractObj,
   DOCS_URL_safehouse,
   WEBSOCKET_ENDPOINT,
+  CHECK_INTO_SAFEHOUSE_IMG,
+  CHECK_INTO_SAFEHOUSE_MOBILE_IMG,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -180,6 +182,14 @@ const CheckInNew = () => {
     },
   })
 
+  const checkInBackupImg = (event: any) => {
+    event.target.src = '/lore/CheckIntoSafehouse.png'
+  }
+
+  const checkInMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/CheckIntoSafehouseMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -196,21 +206,25 @@ const CheckInNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/CheckIntoSafehouseMobile.png"
+          src={CHECK_INTO_SAFEHOUSE_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="check-into-safehouse"
+          onError={checkInMobileBackupImg}
         />
       </div>
 
       <Image
         priority
-        src="/lore/CheckIntoSafehouse.png"
+        src={CHECK_INTO_SAFEHOUSE_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="check-into-safehouse"
+        onError={checkInMobileBackupImg}
       />
 
       <div className="text-center">

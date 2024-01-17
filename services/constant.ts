@@ -50,6 +50,43 @@ export const wagerContractObj = {
 // }
 /*---------------------------------------- IMG ---------------------------------------- */
 
+const IMG_URL_lore = 'https://res.cloudinary.com/dn4hm5vfh/image/upload/v1705495252/lore'
+
+export const SUBMIT_KEYWORD_IMG = `${IMG_URL_lore}/SubmitKeyword.png`
+export const SUBMIT_KEYWORD_MOBILE_IMG = `${IMG_URL_lore}/SubmitKeywordMobile.png`
+
+export const SPLIT_POT_IMG = `${IMG_URL_lore}/SplitPot.png`
+export const SPLIT_POT_MOBILE_IMG = `${IMG_URL_lore}/SplitPotMobile.png`
+
+export const CHECK_INTO_SAFEHOUSE_IMG = `${IMG_URL_lore}/CheckIntoSafehouse.png`
+export const CHECK_INTO_SAFEHOUSE_MOBILE_IMG = `${IMG_URL_lore}/CheckIntoSafehouseMobile.png`
+
+export const CHECK_OUT_OF_SAFEHOUSE_IMG = `${IMG_URL_lore}/CheckOutOfSafehouse.png`
+export const CHECK_OUT_OF_SAFEHOUSE_MOBILE_IMG = `${IMG_URL_lore}/CheckOutOfSafehouseMobile.png`
+
+export const ATTACK_PLAYER_IMG = `${IMG_URL_lore}/AttackPlayer.png`
+export const ATTACK_PLAYER_MOBILE_IMG = `${IMG_URL_lore}/AttackPlayerMobile.png`
+
+export const KICK_OUT_IMG = `${IMG_URL_lore}/KickOut.png`
+export const KICK_OUT_MOBILE_IMG = `${IMG_URL_lore}/KickOutMobile.png`
+
+export const BUY_TICKET_IMG = `${IMG_URL_lore}/BuyTicket.png`
+export const BUY_TICKET_MOBILE_IMG = `${IMG_URL_lore}/BuyTicketMobile.png`
+
+export const EXIT_GAME_IMG = `${IMG_URL_lore}/ExitGame.png`
+export const EXIT_GAME_MOBILE_IMG = `${IMG_URL_lore}/ExitGameMobile.png`
+
+export const CHANGE_PHASE_IMG = `${IMG_URL_lore}/ChangePhase.png`
+export const CHANGE_PHASE_MOBILE_IMG = `${IMG_URL_lore}/ChangePhaseMobile.png`
+
+export const WAGER_IMG = `${IMG_URL_lore}/Wager.png`
+export const WAGER_MOBILE_IMG = `${IMG_URL_lore}/WagerMobile.png`
+
+export const TOKEN_IMG = `${IMG_URL_lore}/Token.png`
+export const TOKEN_MOBILE_IMG = `${IMG_URL_lore}/TokenMobile.png`
+
+export const DASHBOARD_IMG = `${IMG_URL_lore}/Dashboard.png`
+
 /*---------------------------------------- DOCS ---------------------------------------- */
 export const DOCS_URL = 'https://docs.lastman.xyz'
 export const DOCS_URL_stages = `${DOCS_URL}/stages`

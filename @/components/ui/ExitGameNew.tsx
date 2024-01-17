@@ -32,7 +32,12 @@ import {
   useWalletClient,
   useWaitForTransaction,
 } from 'wagmi'
-import { defaultContractObj, DOCS_URL_exit } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_exit,
+  EXIT_GAME_IMG,
+  EXIT_GAME_MOBILE_IMG,
+} from '../../../services/constant'
 import { formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
@@ -218,6 +223,14 @@ const ExitGameNew = () => {
     },
   })
 
+  const exitGameBackupImg = (event: any) => {
+    event.target.src = '/lore/ExitGame.png'
+  }
+
+  const exitGameMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/ExitGameMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -234,20 +247,24 @@ const ExitGameNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/ExitGameMobile.png"
+          src={EXIT_GAME_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="exit-game"
+          onError={exitGameMobileBackupImg}
         />
       </div>
       <Image
         priority
-        src="/lore/ExitGame.png"
+        src={EXIT_GAME_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="exit-game"
+        onError={exitGameBackupImg}
       />
 
       <div className="text-center">

@@ -30,7 +30,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
 import OnSignal from './OnSignal'
-import { defaultContractObj, DOCS_URL_checkout } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL_checkout,
+  CHECK_OUT_OF_SAFEHOUSE_IMG,
+  CHECK_OUT_OF_SAFEHOUSE_MOBILE_IMG,
+} from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
@@ -107,6 +112,14 @@ const CheckOutNew = () => {
     }
   }
 
+  const checkOutBackupImg = (event: any) => {
+    event.target.src = '/lore/CheckOutOfSafehouse.png'
+  }
+
+  const checkOutMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/CheckOutOfSafehouseMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -123,20 +136,24 @@ const CheckOutNew = () => {
         </div> */}
         <Image
           priority
-          src="/lore/CheckOutOfSafehouseMobile.png"
+          src={CHECK_OUT_OF_SAFEHOUSE_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
           alt="check-out-of-safehouse"
+          onError={checkOutMobileBackupImg}
         />
       </div>
       <Image
         priority
-        src="/lore/CheckOutOfSafehouse.png"
+        src={CHECK_OUT_OF_SAFEHOUSE_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
         alt="check-out-of-safehouse"
+        onError={checkOutBackupImg}
       />
 
       <div className="text-center">

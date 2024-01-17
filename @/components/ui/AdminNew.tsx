@@ -42,6 +42,8 @@ import {
   GAME_ADDRESS,
   RELAYER_ADDRESS,
   TEAM_WALLET_ADDRESS,
+  TOKEN_IMG,
+  TOKEN_MOBILE_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { formatNumber } from '@/lib/utils'
@@ -360,6 +362,14 @@ export default function Admin() {
     },
   })
 
+  const adminBackupImg = (event: any) => {
+    event.target.src = '/lore/Token.png'
+  }
+
+  const adminMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/TokenMobile.png'
+  }
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -376,21 +386,25 @@ export default function Admin() {
         </div> */}
         <Image
           priority
-          src="/lore/CheckIntoSafehouseMobile.png"
+          src={TOKEN_MOBILE_IMG}
+          unoptimized
           className="place-self-center rounded-xl"
           height={400}
           width={650}
-          alt="check-into-safehouse"
+          alt="gamemaster-pepe"
+          onError={adminMobileBackupImg}
         />
       </div>
 
       <Image
         priority
-        src="/lore/CheckIntoSafehouse.png"
+        src={TOKEN_IMG}
+        unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}
         width={650}
-        alt="check-into-safehouse"
+        alt="gamemaster-pepe"
+        onError={adminBackupImg}
       />
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center">

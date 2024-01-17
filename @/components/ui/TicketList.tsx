@@ -55,10 +55,6 @@ const TicketList = () => {
     }
   }
 
-  const fallbackImg = (event: any) => {
-    event.target.src = '/faces/hide.png'
-  }
-
   return (
     <div className="">
       <summary
@@ -236,13 +232,11 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
           <Image
             priority
-            src={hideImg}
+            src="/faces/hide.png"
             className=""
             height={200}
-            unoptimized
             width={xs ? 150 : 250}
             alt="waiting-for-players"
-            onError={fallbackImg}
           />
           <div className="text-center my-2 text-lg sm:text-3xl">No one is here yet</div>
         </div>
