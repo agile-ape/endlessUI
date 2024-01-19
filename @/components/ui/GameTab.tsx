@@ -20,8 +20,6 @@ import {
 import { encodePacked, keccak256, recoverMessageAddress, verifyMessage, toBytes } from 'viem'
 import { defaultContractObj, DOCS_URL, GAME_ADDRESS, TWITTER_URL } from '../../../services/constant'
 import { toast } from './use-toast'
-import BuyTicket from './_BuyTicket'
-import ExitGame from './_ExitGame'
 
 import Modal from './Modal'
 import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'

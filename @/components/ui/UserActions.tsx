@@ -1,16 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button } from './button'
 import { HelpCircle } from 'lucide-react'
-import SubmitKeywordModal from './_SubmitKeywordModal'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import CheckIn from './_CheckIn'
-import CheckOut from './_CheckOut'
-import SplitIt from './_SplitIt'
-import BuyTicket from './_BuyTicket'
-import ExitGame from './_ExitGame'
-import Inspect from './_Attack'
-import KickOut from './_KickOut'
-import Wager from './_Wager'
 
 import Modal from './Modal'
 

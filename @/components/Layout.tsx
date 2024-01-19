@@ -348,7 +348,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     updateTicketCount(Number(ticketCount))
     updateVoteCount(Number(voteCount))
     updateNextTicketPrice(Number(nextTicketPriceInEth))
-    updateTokenBalance(String(tokenBalance))
+    updateTokenBalance(Number(tokenBalance))
   }
 
   const refreshData = () => {

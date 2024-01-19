@@ -26,7 +26,7 @@ interface StoreModel {
   updateTicketCount: Action<StoreModel, number>
   updateVoteCount: Action<StoreModel, number>
   updateNextTicketPrice: Action<StoreModel, number>
-  updateTokenBalance: Action<StoreModel, string>
+  updateTokenBalance: Action<StoreModel, number>
 
   updateTickets: Action<StoreModel, IApp['tickets']>
   modifyTicket: Action<StoreModel, { id: number; ticket: Ticket }>

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { publicClient } from '../../services/server_utils'
-import { LAST_MAN_STANDING_ADDRESS } from '../../services/constant'
-import { LAST_MAN_STANDING_ABI } from '../../services/abi/game'
+import { GAME_ADDRESS } from '../../services/constant'
+import { GAME_ABI } from '../../services/abi/game'
 import type { IApp } from 'types/app'
 import { supabase } from '../../services/supabase'
 
@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           ticket_value: body.ticket_value,
           purchase_time: body.purchase_time,
           user_address: body.user_address,
-          contract_address: LAST_MAN_STANDING_ADDRESS,
+          contract_address: GAME_ADDRESS,
         })
         .throwOnError()
 
@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const ticketList = await supabase
       .from('ticket_list')
       .select('*')
-      .eq('contract_address', LAST_MAN_STANDING_ADDRESS)
+      .eq('contract_address', GAME_ADDRESS)
       .throwOnError()
 
     res.status(200).json({

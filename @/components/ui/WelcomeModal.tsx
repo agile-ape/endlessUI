@@ -11,12 +11,12 @@ interface WelcomeModalType {
 // const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
 const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false)
-  const toggle = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-  }
+  // const [showWelcomeModal, setShowWelcomeModal] = useState(false)
+  // const toggle = () => {
+  //   setShowWelcomeModal((prevState) => !prevState)
+  // }
   const modalRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(modalRef, () => setShowWelcomeModal(false))
+  useOutsideClick(modalRef, () => toggleModal())
 
   return (
     <div className="fixed inset-0 z-50 bg-white/10 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 dark:bg-zinc-500/10">
