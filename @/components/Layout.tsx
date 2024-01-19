@@ -355,6 +355,18 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     router.replace(router.asPath)
   }
 
+  // let background: string
+  // let backgroundMobile: string
+
+  // if (router.pathname.includes('404')) {
+  //   background = 'Deployed.svg'
+  //   backgroundMobile = 'DeployedMobile.svg'
+  // } else if (phase === 'gameclosed') {
+  // } else {
+  //   background = `${typeStage[phase]}.svg`
+  //   backgroundMobile = `${typeStage[phase]}.svg`
+  // }
+
   const background = router.pathname.includes('404') ? 'Deployed.svg' : `${typeStage[phase]}.svg`
   const backgroundMobile = router.pathname.includes('404')
     ? 'DeployedMobile.svg'

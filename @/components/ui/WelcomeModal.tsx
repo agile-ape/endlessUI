@@ -33,7 +33,7 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
             <div className="rounded-t-sm">
               <div className="flex flex-col justify-center gap-1 items-center py-4">
                 <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 mx-2 rounded-lg text-2xl font-whitrabt font-semibold">
-                  Play on desktop or mobile?
+                  Play on mobile?
                 </p>
                 <Image
                   priority
@@ -45,8 +45,12 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
               </div>
               <div className="flex flex-col text-center border bg-slate-100/50 px-4 py-2 mx-2 rounded-lg">
                 {/* <div className="text-2xl text-center">How do you want to play?</div> */}
-                <div className="text-black text-2xl my-2 text-center">
-                  <p>For mobile, install app onto phone by 'Add to home screen'</p>
+                <div className="text-black text-xl my-2 text-center">
+                  <p>'Add to home screen' to install app on phone</p>
+                  <p>
+                    Login with the same account (sms, email, google, wallet) to access the same
+                    wallet
+                  </p>
                   <a
                     href={DOCS_URL_setup}
                     target="_blank"

@@ -349,9 +349,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   const ticketLookFinal = ticketLook
 
   const ticketLookMapping = {
+    // ticket in play
     beforePurchase: {
       bgImage: 'burst',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'enter',
       id: nextTicketId,
       status: 'next ticket',
@@ -360,34 +361,17 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     afterPurchase: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'happy',
       id: ticketId,
       status: 'ticket claimed',
       label: 'value',
       value: ticketValue + ' ETH',
     },
-    guest: {
-      bgImage: '',
-      header: '',
-      face: 'eatchips',
-      id: '',
-      status: 'login to play',
-      label: '',
-      value: '',
-    },
-    notPlaying: {
-      bgImage: '',
-      header: '',
-      face: 'sad',
-      id: '',
-      status: 'feeling fomo?',
-      label: '',
-      value: '',
-    },
+
     submittedDay: {
       bgImage: 'motif',
-      header: 'bg-zinc-300/70',
+      header: 'bg-zinc-300/70 text-black',
       face: 'handsup',
       id: ticketId,
       status: 'submitted',
@@ -396,7 +380,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     makePeace: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'prettyplease',
       id: ticketId,
       status: 'ready to submit word',
@@ -405,7 +389,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     stage1New: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'confident',
       id: ticketId,
       status: 'ready to submit word',
@@ -414,7 +398,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     stage2New: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'worried',
       id: ticketId,
       status: 'ready to submit word',
@@ -423,7 +407,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     stage3New: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'anxious',
       id: ticketId,
       status: 'ready to submit word',
@@ -432,7 +416,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     submittedNight: {
       bgImage: 'motif',
-      header: 'bg-zinc-300/70',
+      header: 'bg-zinc-300/70 text-black',
       face: 'attack',
       id: ticketId,
       status: 'time to attack',
@@ -441,7 +425,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     attackedButSafu: {
       bgImage: 'combine',
-      header: 'bg-zinc-300/80',
+      header: 'bg-zinc-300/80 text-black',
       face: 'pray',
       id: ticketId,
       status: 'SAFU',
@@ -450,7 +434,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     neverSubmit: {
       bgImage: 'rainbow',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'attack',
       id: ticketId,
       status: 'time to attack',
@@ -459,7 +443,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     inSafehouse: {
       bgImage: 'safeOverlay',
-      header: 'bg-zinc-100/50',
+      header: 'bg-zinc-100/50 text-black',
       face: 'warm',
       id: ticketId,
       status: 'taking a break',
@@ -468,7 +452,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     lastManStanding: {
       bgImage: 'burst',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'lastman',
       id: ticketId,
       status: 'last man standing',
@@ -477,7 +461,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     agreedToSplitPot: {
       bgImage: 'burst',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'beers',
       id: ticketId,
       status: 'WAGMI',
@@ -486,16 +470,35 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     noMorePot: {
       bgImage: 'burst',
-      header: 'bg-zinc-300/20',
+      header: 'bg-zinc-300/20 text-black',
       face: 'watchitburn',
       id: ticketId,
       status: 'let it burn',
       label: 'value',
       value: ticketValue + ' ETH',
     },
+    // not in play
+    guest: {
+      bgImage: '',
+      header: 'text-black dark:text-white',
+      face: 'eatchips',
+      id: '',
+      status: 'login to play',
+      label: 'value',
+      value: '- ETH',
+    },
+    notPlaying: {
+      bgImage: '',
+      header: 'text-black dark:text-white',
+      face: 'sad',
+      id: '',
+      status: 'feeling fomo?',
+      label: 'value',
+      value: '- ETH',
+    },
     killed: {
       bgImage: 'deadOverlay',
-      header: 'bg-zinc-200/60',
+      header: 'text-white',
       face: 'angry',
       id: ticketId,
       status: 'killed',
@@ -504,7 +507,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     },
     exitGame: {
       bgImage: '',
-      header: 'bg-zinc-200/60',
+      header: 'text-black dark:text-white',
       face: 'exit',
       id: ticketId,
       status: 'exited',
@@ -540,7 +543,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       {/* overlay */}
       {isOverlayInspect && (
         <div
-          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge} text-black`}
+          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge}`}
         >
           <div className="flex justify-between gap-6">
             <p className="text-left"> User</p>
@@ -670,7 +673,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
             </div>
           )}
 
-          <div className={`${header} shadow-xl text-center m-2 rounded-lg text-black`}>
+          <div className={`${header} shadow-xl text-center m-2 rounded-lg`}>
             <p className={`uppercase ${h1} leading-tight`}>
               {ticketLookFinal === 'guest' ? (
                 <span className="block"> Guest </span>
@@ -686,14 +689,13 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
                 </>
               )}
             </p>
-            <p className={`lowercase ${h3} italic text-zinc-700 dark:text-zinc-800`}>{status}</p>
+            <p className={`lowercase ${h3} italic`}>{status}</p>
           </div>
           {/* image */}
           <div className="flex justify-center">
             <Image
               priority
               src={`/faces/${face}.png`}
-              // src={`/faces/handsup.svg`}
               height={imgh}
               width={imgw}
               className={`h-auto ${mt}`}
@@ -719,9 +721,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           {/* not killed or exitGame */}
           {!(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
-              <div className={`capitalize ${h3} text-zinc-600 dark:text-zinc-800 leading-tight`}>
-                {label}
-              </div>
+              <div className={`capitalize ${h3} opacity-50 leading-tight`}>{label}</div>
               <div className={`uppercase font-whitrabt ${h1}`}>{value}</div>
             </div>
           )}

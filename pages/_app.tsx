@@ -55,7 +55,7 @@ const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
   start: 'dark',
   day: 'light',
   night: 'dark',
-  lastmanfound: 'dark',
+  lastmanfound: 'light',
   drain: 'dark',
   peacefound: 'light',
   gameclosed: 'dark',

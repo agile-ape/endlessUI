@@ -34,14 +34,14 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
-  deployed: 'Stand by for ticket sale',
+  deployed: 'Fund wallet. Prepare to buy ticket',
   start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
   lastmanfound: 'A hero stands, triumphant',
   peacefound: 'Make love, drink beers, no more war',
   drain: 'an eye for an eye leaves everyone blind',
-  gameclosed: 'stay tuned for the next game',
+  gameclosed: 'Thanks for playing. Stay tuned for the next game',
 }
 
 const CursorSVG = () => (

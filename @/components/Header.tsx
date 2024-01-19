@@ -167,7 +167,7 @@ function Header() {
                 size="sm"
                 onClick={toggleWelcomeModal}
               >
-                Choose
+                Mobile
               </Button>
 
               <a href={DOCS_URL} target="_blank">
