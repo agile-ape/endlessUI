@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import Logo from '../ui/Logo'
 import Title from '../ui/Title'
@@ -423,332 +423,19 @@ export default function Screen() {
 
   const id = ticket?.id || 0
 
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
+    return () => clearTimeout(delay)
+  }, [])
+
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       {expanded ? (
-        isConnected ? (
-          xs ? (
-            <div>
-              <div className="flex flex-col">
-                <button
-                  onClick={scrollToTop}
-                  className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center z-[1]"
-                >
-                  <div className="text-3xl text-center">
-                    {actionView === 'submit' && <p>Submit</p>}
-                    {actionView === 'exitGame' && <p>Exit Game</p>}
-                    {actionView === 'checkIn' && <p>Check In</p>}
-                    {actionView === 'checkOut' && <p>Check Out</p>}
-                    {actionView === 'splitIt' && <p>Split Pot</p>}
-                    {actionView === 'attack' && <p>Attack</p>}
-                    {actionView === 'kickOut' && <p>Kick Out</p>}
-                    {actionView === 'buyTicket' && <p>Join Game</p>}
-                    {actionView === 'wager' && <p>Place Bet</p>}
-                    {actionView === 'phaseChange' && <p>Change Phase</p>}
-                    {actionView === 'token' && <p>Send Token</p>}
-                    {actionView === 'admin' && <p>Gamemaster</p>}
-                    {menuComponent === 'you' && <p>You</p>}
-                    {menuComponent === 'events' && <p>Feed</p>}
-                    {menuComponent === 'list' && <p>Players</p>}
-                    {menuComponent === 'menu' && <p>Links</p>}
-                  </div>
-                </button>
-
-                {/* Viewport */}
-                <div className="mt-4 mb-36">
-                  {menuComponent === 'you' && (
-                    <>
-                      <div className="mt-2 mb-4 text-center">
-                        <Title />
-                      </div>
-                      <TicketUI ticketSize={1} ticketNumber={id} ticket={ticket} />
-                      <div className="flex justify-center items-center ">
-                        {authenticated ? (
-                          id === 0 ? (
-                            phase === 'deployed' || phase === 'start' ? (
-                              <Button
-                                variant="enter"
-                                className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                                onClick={() => buyTicketAction()}
-                              >
-                                START
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="wager"
-                                className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                                onClick={() => wagerAction()}
-                              >
-                                Ending?
-                              </Button>
-                            )
-                          ) : (
-                            <Button
-                              variant="exit"
-                              className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                              onClick={() => exitGameAction()}
-                            >
-                              {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
-                              {ticketStatusString === 'exited' && <div>You have exited</div>}
-                            </Button>
-                          )
-                        ) : (
-                          // <Button
-                          //   variant="enter"
-                          //   className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                          //   onClick={() => login()}
-                          // >
-                          //   Log In
-                          // </Button>
-                          <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 my-4 text-2xl">
-                            Not logged in
-                          </div>
-                        )}
-                      </div>
-
-                      <DashboardNew />
-                    </>
-                  )}
-
-                  {menuComponent === 'list' && (
-                    <div className="mt-2">
-                      <TicketList />
-                    </div>
-                  )}
-
-                  {menuComponent === 'events' && (
-                    <div className="mt-2 text-xl">
-                      <GameFeed />
-                    </div>
-                  )}
-
-                  {menuComponent === 'menu' && (
-                    <>
-                      <div className="h1-last flex flex-col px-5 mt-4">
-                        <a
-                          href={DOCS_URL}
-                          target="_blank"
-                          className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
-                        >
-                          <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                            How To Play{' '}
-                            <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
-                          </p>
-                          <p className="body-last">Learn more about game play</p>
-                        </a>
-                        <a
-                          href={TWITTER_URL}
-                          target="_blank"
-                          className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
-                        >
-                          <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                            Follow <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
-                          </p>
-                          <p className="body-last">Follow us for updates (mostly memes)</p>
-                        </a>
-                        <a
-                          href={TELEGRAM_URL}
-                          target="_blank"
-                          className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
-                        >
-                          <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                            Community{' '}
-                            <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
-                          </p>
-                          <p className="body-last">Join the community</p>
-                        </a>
-                        <a
-                          href={BLOG_URL}
-                          target="_blank"
-                          className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
-                        >
-                          <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
-                            Blog <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
-                          </p>
-                          <p className="body-last">Read about our latest progress</p>
-                        </a>
-                      </div>
-                    </>
-                  )}
-
-                  {actionView === 'submit' && <Submit />}
-                  {actionView === 'checkIn' && <CheckInNew />}
-                  {actionView === 'checkOut' && <CheckOutNew />}
-                  {actionView === 'splitIt' && <SplitPotNew />}
-                  {actionView === 'wager' && <WagerNew />}
-                  {actionView === 'attack' && <AttackNew />}
-                  {actionView === 'kickOut' && <KickOutNew />}
-                  {actionView === 'buyTicket' && <BuyTicketNew />}
-                  {actionView === 'exitGame' && <ExitGameNew />}
-                  {actionView === 'token' && <TokenNew />}
-                  {actionView === 'phaseChange' && <PhaseChangeNew />}
-                  {actionView === 'admin' && <AdminNew />}
-                </div>
-              </div>
-
-              {/* Menu */}
-              <div
-                className={cn(
-                  isCarouselVisible ? '' : '',
-                  'fixed bottom-0 w-full h-20 container-last border-none bg-opacity-100 dark:bg-opacity-100',
-                )}
-              >
-                <div className="relative">
-                  <div className="grid grid-cols-5">
-                    <button
-                      className="flex flex-col rounded-none justify-center items-center py-2"
-                      onClick={() => selectMenuComponent('you')}
-                    >
-                      {menuComponent === 'you' && <User size={32} strokeWidth={3} />}
-                      {menuComponent !== 'you' && <User size={32} />}
-                    </button>
-                    <button
-                      className="flex flex-col justify-center items-center"
-                      onClick={() => selectMenuComponent('list')}
-                    >
-                      {menuComponent === 'list' && <Users size={32} strokeWidth={3} />}
-                      {menuComponent !== 'list' && <Users size={32} />}
-                    </button>
-                    <div></div>
-                    <button
-                      className="flex flex-col justify-center items-center"
-                      onClick={() => selectMenuComponent('events')}
-                    >
-                      {menuComponent === 'events' && <Rss size={32} strokeWidth={3} />}
-                      {menuComponent !== 'events' && <Rss size={32} />}
-                    </button>
-                    <button
-                      className="flex flex-col justify-center items-center"
-                      onClick={() => selectMenuComponent('menu')}
-                    >
-                      {menuComponent === 'menu' && <Menu size={32} strokeWidth={3} />}
-                      {menuComponent !== 'menu' && <Menu size={32} />}
-                    </button>
-                  </div>
-                </div>
-                <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <button
-                    className={cn(
-                      isCarouselVisible ? 'bg-slate-100 dark:bg-slate-600' : 'border-none',
-                      'flex flex-col justify-center items-center rounded-full p-1 container-last bg-opacity-100 dark:bg-opacity-100',
-                    )}
-                    onClick={toggleCarousel}
-                  >
-                    {isCarouselVisible ? (
-                      <Move size={44} strokeWidth={1.6} />
-                    ) : (
-                      <Move size={42} strokeWidth={1.5} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {isCarouselVisible && (
-                <div className="fixed bottom-20 w-full bg-slate-100 dark:bg-slate-600 border-none bg-opacity-100 dark:bg-opacity-100">
-                  <Carousel className="w-full max-w-xs mx-auto">
-                    <CarouselContent className="">
-                      {arrayMobileAction.map(
-                        (action, index) =>
-                          index < (address !== GAMEMASTER_ADDRESS ? 12 : 10) && (
-                            <CarouselItem key={index} className="basis-1/4 justify-items-center">
-                              <div className="flex items-center justify-center mx-auto">
-                                <button
-                                  className={cn(
-                                    actionColor[action.category],
-                                    actionView === action.mobileAction
-                                      ? 'border-2 bg-slate-200 dark:bg-slate-800 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
-                                      : '',
-                                    'py-1 px-3 flex flex-col justify-center items-center rounded-lg',
-                                  )}
-                                  onClick={() =>
-                                    selectAction(arrayMobileAction[index].mobileAction)
-                                  }
-                                >
-                                  {/* <Image
-                                    priority
-                                    src={
-                                      forcedTheme === 'light'
-                                        ? `/icon/${action.lightIcon}`
-                                        : `/icon/${action.darkIcon}`
-                                    }
-                                    className="place-self-center rounded-xl"
-                                    height={34}
-                                    width={actionView === action.mobileAction ? 36 : 34}
-                                    alt="player-action"
-                                  /> */}
-                                  {React.cloneElement(iconMapping[action.mobileAction], {
-                                    size: actionView === action.mobileAction ? 38 : 34,
-                                  })}
-
-                                  <div className="whitespace-nowrap">{action.label}</div>
-                                </button>
-                              </div>
-                            </CarouselItem>
-                          ),
-                      )}
-                    </CarouselContent>
-                    <CarouselPrevious className="h-6 w-6 -left-[20px]" />
-                    <CarouselNext className="h-6 w-6 -right-[20px]" />
-                  </Carousel>
-                </div>
-              )}
-
-              <div>
-                <Popover data-state={isToggled ? 'open' : 'closed'}>
-                  <PopoverTrigger
-                    className={cn(
-                      isCarouselVisible ? 'bottom-40 left-1 fixed' : 'bottom-24 left-3 fixed',
-                      '',
-                    )}
-                  >
-                    <button
-                      className="p-2 rounded-full container-last"
-                      onClick={() => toggleInfo()}
-                    >
-                      <Monitor size={isToggled ? 32 : 28}></Monitor>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    side="right"
-                    align="end"
-                    className="bg-slate-200 dark:bg-slate-800"
-                  >
-                    <div className="flex flex-col gap-2 py-2 px-0">
-                      <Indicator />
-                      <Round />
-                      <div className="flex items-center justify-center">
-                        <KeyTrackers />
-                      </div>
-                      <Countdown />
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="text-center">
-                <Title />
-              </div>
-
-              <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
-                <Round />
-                <Countdown />
-                <Indicator />
-              </div>
-
-              <div className="flex flex-col lg:flex-row gap-8">
-                <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
-                  <GameTab />
-                </div>
-
-                <div className="grow rounded-xl py-2 sm:container-last">
-                  <TicketList />
-                </div>
-              </div>
-            </>
-          )
-        ) : (
+        isLoading ? (
           <div className="flex flex-col items-center justify-center h-screen space-x-4">
             <Image
               priority
@@ -760,6 +447,316 @@ export default function Screen() {
             />
             <p className="text-xl whtrabt-last">Connecting to the ether...</p>
           </div>
+        ) : xs ? (
+          <div>
+            <div className="flex flex-col">
+              <button
+                onClick={scrollToTop}
+                className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center z-[1]"
+              >
+                <div className="text-3xl text-center">
+                  {actionView === 'submit' && <p>Submit</p>}
+                  {actionView === 'exitGame' && <p>Exit Game</p>}
+                  {actionView === 'checkIn' && <p>Check In</p>}
+                  {actionView === 'checkOut' && <p>Check Out</p>}
+                  {actionView === 'splitIt' && <p>Split Pot</p>}
+                  {actionView === 'attack' && <p>Attack</p>}
+                  {actionView === 'kickOut' && <p>Kick Out</p>}
+                  {actionView === 'buyTicket' && <p>Join Game</p>}
+                  {actionView === 'wager' && <p>Place Bet</p>}
+                  {actionView === 'phaseChange' && <p>Change Phase</p>}
+                  {actionView === 'token' && <p>Send Token</p>}
+                  {actionView === 'admin' && <p>Gamemaster</p>}
+                  {menuComponent === 'you' && <p>You</p>}
+                  {menuComponent === 'events' && <p>Feed</p>}
+                  {menuComponent === 'list' && <p>Players</p>}
+                  {menuComponent === 'menu' && <p>Links</p>}
+                </div>
+              </button>
+
+              {/* Viewport */}
+              <div className="mt-4 mb-36">
+                {menuComponent === 'you' && (
+                  <>
+                    <div className="mt-2 mb-4 text-center">
+                      <Title />
+                    </div>
+                    <TicketUI ticketSize={1} ticketNumber={id} ticket={ticket} />
+                    <div className="flex justify-center items-center ">
+                      {authenticated ? (
+                        id === 0 ? (
+                          phase === 'deployed' || phase === 'start' ? (
+                            <Button
+                              variant="enter"
+                              className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                              onClick={() => buyTicketAction()}
+                            >
+                              START
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="wager"
+                              className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                              onClick={() => wagerAction()}
+                            >
+                              Ending?
+                            </Button>
+                          )
+                        ) : (
+                          <Button
+                            variant="exit"
+                            className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                            onClick={() => exitGameAction()}
+                          >
+                            {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                            {ticketStatusString === 'exited' && <div>You have exited</div>}
+                          </Button>
+                        )
+                      ) : (
+                        // <Button
+                        //   variant="enter"
+                        //   className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                        //   onClick={() => login()}
+                        // >
+                        //   Log In
+                        // </Button>
+                        <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 my-4 text-2xl">
+                          Not logged in
+                        </div>
+                      )}
+                    </div>
+
+                    <DashboardNew />
+                  </>
+                )}
+
+                {menuComponent === 'list' && (
+                  <div className="mt-2">
+                    <TicketList />
+                  </div>
+                )}
+
+                {menuComponent === 'events' && (
+                  <div className="mt-2 text-xl">
+                    <GameFeed />
+                  </div>
+                )}
+
+                {menuComponent === 'menu' && (
+                  <>
+                    <div className="h1-last flex flex-col px-5 mt-4">
+                      <a
+                        href={DOCS_URL}
+                        target="_blank"
+                        className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                      >
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                          How To Play{' '}
+                          <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                        </p>
+                        <p className="body-last">Learn more about game play</p>
+                      </a>
+                      <a
+                        href={TWITTER_URL}
+                        target="_blank"
+                        className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                      >
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                          Follow <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                        </p>
+                        <p className="body-last">Follow us for updates (mostly memes)</p>
+                      </a>
+                      <a
+                        href={TELEGRAM_URL}
+                        target="_blank"
+                        className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                      >
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                          Community <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                        </p>
+                        <p className="body-last">Join the community</p>
+                      </a>
+                      <a
+                        href={BLOG_URL}
+                        target="_blank"
+                        className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
+                      >
+                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                          Blog <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
+                        </p>
+                        <p className="body-last">Read about our latest progress</p>
+                      </a>
+                    </div>
+                  </>
+                )}
+
+                {actionView === 'submit' && <Submit />}
+                {actionView === 'checkIn' && <CheckInNew />}
+                {actionView === 'checkOut' && <CheckOutNew />}
+                {actionView === 'splitIt' && <SplitPotNew />}
+                {actionView === 'wager' && <WagerNew />}
+                {actionView === 'attack' && <AttackNew />}
+                {actionView === 'kickOut' && <KickOutNew />}
+                {actionView === 'buyTicket' && <BuyTicketNew />}
+                {actionView === 'exitGame' && <ExitGameNew />}
+                {actionView === 'token' && <TokenNew />}
+                {actionView === 'phaseChange' && <PhaseChangeNew />}
+                {actionView === 'admin' && <AdminNew />}
+              </div>
+            </div>
+
+            {/* Menu */}
+            <div
+              className={cn(
+                isCarouselVisible ? '' : '',
+                'fixed bottom-0 w-full h-20 container-last border-none bg-opacity-100 dark:bg-opacity-100',
+              )}
+            >
+              <div className="relative">
+                <div className="grid grid-cols-5">
+                  <button
+                    className="flex flex-col rounded-none justify-center items-center py-2"
+                    onClick={() => selectMenuComponent('you')}
+                  >
+                    {menuComponent === 'you' && <User size={32} strokeWidth={3} />}
+                    {menuComponent !== 'you' && <User size={32} />}
+                  </button>
+                  <button
+                    className="flex flex-col justify-center items-center"
+                    onClick={() => selectMenuComponent('list')}
+                  >
+                    {menuComponent === 'list' && <Users size={32} strokeWidth={3} />}
+                    {menuComponent !== 'list' && <Users size={32} />}
+                  </button>
+                  <div></div>
+                  <button
+                    className="flex flex-col justify-center items-center"
+                    onClick={() => selectMenuComponent('events')}
+                  >
+                    {menuComponent === 'events' && <Rss size={32} strokeWidth={3} />}
+                    {menuComponent !== 'events' && <Rss size={32} />}
+                  </button>
+                  <button
+                    className="flex flex-col justify-center items-center"
+                    onClick={() => selectMenuComponent('menu')}
+                  >
+                    {menuComponent === 'menu' && <Menu size={32} strokeWidth={3} />}
+                    {menuComponent !== 'menu' && <Menu size={32} />}
+                  </button>
+                </div>
+              </div>
+              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <button
+                  className={cn(
+                    isCarouselVisible ? 'bg-slate-100 dark:bg-slate-600' : 'border-none',
+                    'flex flex-col justify-center items-center rounded-full p-1 container-last bg-opacity-100 dark:bg-opacity-100',
+                  )}
+                  onClick={toggleCarousel}
+                >
+                  {isCarouselVisible ? (
+                    <Move size={44} strokeWidth={1.6} />
+                  ) : (
+                    <Move size={42} strokeWidth={1.5} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {isCarouselVisible && (
+              <div className="fixed bottom-20 w-full bg-slate-100 dark:bg-slate-600 border-none bg-opacity-100 dark:bg-opacity-100">
+                <Carousel className="w-full max-w-xs mx-auto">
+                  <CarouselContent className="">
+                    {arrayMobileAction.map(
+                      (action, index) =>
+                        index < (address !== GAMEMASTER_ADDRESS ? 12 : 10) && (
+                          <CarouselItem key={index} className="basis-1/4 justify-items-center">
+                            <div className="flex items-center justify-center mx-auto">
+                              <button
+                                className={cn(
+                                  actionColor[action.category],
+                                  actionView === action.mobileAction
+                                    ? 'border-2 bg-slate-200 dark:bg-slate-800 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
+                                    : '',
+                                  'py-1 px-3 flex flex-col justify-center items-center rounded-lg',
+                                )}
+                                onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
+                              >
+                                {/* <Image
+                                    priority
+                                    src={
+                                      forcedTheme === 'light'
+                                        ? `/icon/${action.lightIcon}`
+                                        : `/icon/${action.darkIcon}`
+                                    }
+                                    className="place-self-center rounded-xl"
+                                    height={34}
+                                    width={actionView === action.mobileAction ? 36 : 34}
+                                    alt="player-action"
+                                  /> */}
+                                {React.cloneElement(iconMapping[action.mobileAction], {
+                                  size: actionView === action.mobileAction ? 38 : 34,
+                                })}
+
+                                <div className="whitespace-nowrap">{action.label}</div>
+                              </button>
+                            </div>
+                          </CarouselItem>
+                        ),
+                    )}
+                  </CarouselContent>
+                  <CarouselPrevious className="h-6 w-6 -left-[20px]" />
+                  <CarouselNext className="h-6 w-6 -right-[20px]" />
+                </Carousel>
+              </div>
+            )}
+
+            <div>
+              <Popover data-state={isToggled ? 'open' : 'closed'}>
+                <PopoverTrigger
+                  className={cn(
+                    isCarouselVisible ? 'bottom-40 left-1 fixed' : 'bottom-24 left-3 fixed',
+                    '',
+                  )}
+                >
+                  <button className="p-2 rounded-full container-last" onClick={() => toggleInfo()}>
+                    <Monitor size={isToggled ? 32 : 28}></Monitor>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent side="right" align="end" className="bg-slate-200 dark:bg-slate-800">
+                  <div className="flex flex-col gap-2 py-2 px-0">
+                    <Indicator />
+                    <Round />
+                    <div className="flex items-center justify-center">
+                      <KeyTrackers />
+                    </div>
+                    <Countdown />
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="text-center">
+              <Title />
+            </div>
+
+            <div className="flex flex-col gap-2 lg:grid lg:grid-cols-3 lg:items-end px-5 pb-2 my-2">
+              <Round />
+              <Countdown />
+              <Indicator />
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
+                <GameTab />
+              </div>
+
+              <div className="grow rounded-xl py-2 sm:container-last">
+                <TicketList />
+              </div>
+            </div>
+          </>
         )
       ) : (
         <div className="mx-auto">
