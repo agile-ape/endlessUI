@@ -101,11 +101,11 @@ const buttonVariants = cva(
 
         // fixed bg. light and dark mode
         primary:
-          'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-600 hover:border-indigo-200 active:bg-indigo-500',
+          'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-500 hover:border-indigo-200 active:bg-indigo-500',
 
         secondary:
           'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
-            dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-800/20 \
+            dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-900 \
             active:bg-indigo-100',
 
         // main: 'text-white bg-gradient-to-r from-indigo-800 via-indigo-700 to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',

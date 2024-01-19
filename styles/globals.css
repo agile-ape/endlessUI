@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+body {
+  font-family: 'VT323', monospace;
+}
+
 @font-face {
   font-family: 'VT323';
   src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');

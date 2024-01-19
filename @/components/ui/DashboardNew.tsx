@@ -231,6 +231,8 @@ export default function DashboardNew() {
     event.target.src = '/lore/Dashboard.png'
   }
 
+  // console.log(typeof loginMethod)
+
   // potential to add game stats
   return (
     <div className="w-[85%] mx-auto flex flex-col mb-8 body-last">
