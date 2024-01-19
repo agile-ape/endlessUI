@@ -63,24 +63,6 @@ function Header() {
     setShowWelcomeModal((prevState) => !prevState)
   }
 
-  // const { wallets } = useWallets()
-  // const wallet = wallets.find((wallet) => wallet.address === address)
-
-  // const handleLinkHover = (index: number) => {
-  //   setHoveredLink(index)
-  // }
-
-  // const { logout } = useLogout({
-  //   onSuccess: () => {
-  //     console.log('User logged out')
-  //     toast({
-  //       variant: 'destructive',
-  //       // title: 'Keyword updated',
-  //       description: <p>You are logged out.</p>,
-  //     })
-  //   },
-  // })
-
   // const { login } = useLogin({
   //   onComplete: () => {
   //     console.log('User logged in')
