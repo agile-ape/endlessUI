@@ -23,7 +23,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   locale,
 }) => {
-  const currentPhase = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/phase`)
+  const host = req.headers.host?.includes('localhost')
+    ? `http://${req.headers.host}`
+    : `https://${req.headers.host}`
+
+  const currentPhase = await fetch(`${host}/api/phase`)
   const result = await currentPhase.json()
   const phase: IApp['phase'] = result?.message || 'beginnings'
 
