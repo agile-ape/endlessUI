@@ -52,7 +52,7 @@ export default function Logo() {
           // onMouseLeave={handleLeave}
           className="h-12 rounded-md
               px-2 py-0 text-[34px] font-headline
-              text-white bg-red-800 hover:bg-red-700
+              text-white bg-blue-800 hover:bg-red-700
               transition-colors capitalized relative z-10
             "
         >
