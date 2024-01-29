@@ -548,9 +548,13 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           <div className="flex justify-between gap-6">
             <p className="text-left"> User</p>
             <p className="text-right italic">
-              <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
-                {ensName ? ensName : formatAddress(ticketAddress)}
-              </a>
+              {ticketLookFinal === 'guest' ? (
+                '-'
+              ) : (
+                <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
+                  {ensName ? ensName : formatAddress(ticketAddress)}
+                </a>
+              )}
             </p>
           </div>
 

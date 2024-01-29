@@ -67,15 +67,20 @@ export default function DashboardNew() {
 
   const loginMethod = user?.linkedAccounts[1]?.type
   let username
+  let loginAccount
 
   if (loginMethod === 'email') {
     username = user?.linkedAccounts[1].address
+    loginAccount = 'Email'
   } else if (loginMethod === 'phone') {
     username = user?.linkedAccounts[1].number
+    loginAccount = 'Phone'
   } else if (loginMethod === 'google_oauth') {
     username = user?.linkedAccounts[1].email
+    loginAccount = 'Google'
   } else if (loginMethod === 'wallet') {
     username = formatAddress(String(user?.linkedAccounts[1].address))
+    loginAccount = 'Web3 Wallet'
   }
 
   const { wallets } = useWallets()
@@ -219,7 +224,7 @@ export default function DashboardNew() {
   const tokenBalance = formatUnits(balanceOf, 18)
 
   function copyAddress() {
-    copyToClipboard(activeWallet?.address || '')
+    copyToClipboard(embeddedWallet?.address || '')
     toast({
       variant: 'success',
       title: 'Address copied',
@@ -265,7 +270,7 @@ export default function DashboardNew() {
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Method</p>
               <p className="text-right capitalized">
-                {authenticated ? loginMethod : <p className="text-right"> Not logged in</p>}
+                {authenticated ? loginAccount : <p className="text-right"> Not logged in</p>}
               </p>
             </div>
 
