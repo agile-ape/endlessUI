@@ -4,13 +4,45 @@ import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-import { Gem, Users, Vote, Coins, Ticket, CookingPot } from 'lucide-react'
 import { useContractReads } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-
+import {
+  Gem,
+  Users,
+  Vote,
+  Coins,
+  Ticket,
+  CookingPot,
+  User,
+  Menu,
+  MenuSquare,
+  Link2,
+  Unlink2,
+  Rss,
+  Clock,
+  Monitor,
+  Target,
+  Info,
+  Move,
+  ChevronDown,
+  ChevronUp,
+  Send,
+  Split,
+  LogIn,
+  LogOut,
+  Dices,
+  Gift,
+  DoorOpen,
+  Ticket as Ticket2,
+  Sword,
+  Sparkle,
+  Hexagon,
+  RefreshCw,
+  Axe,
+} from 'lucide-react'
 const KeyTrackers = () => {
   const currentPot = useStoreState((state) => state.currentPot)
   const ticketCount = useStoreState((state) => state.ticketCount)
@@ -27,6 +59,11 @@ const KeyTrackers = () => {
           <Tooltip>
             <TooltipTrigger>
               <div className="flex flex-row gap-3 items-center py-0 sm:py-2 ">
+                <div className="flex flex-row items-center align-middle text-2xl blast-arena-last">
+                  {/* <Hexagon size={36} strokeWidth={3} /> */}
+                  Blast Arena
+                </div>
+
                 <div className="flex flex-row items-center cursor-default tracking-wide">
                   <CookingPot size={24} className="mr-1" />
                   <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import type { MouseEventHandler, FC } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -30,12 +31,27 @@ import {
   useWalletClient,
 } from 'wagmi'
 import Image from 'next/image'
-import { Split, AlertTriangle, ExternalLink, HelpCircle, User, Copy } from 'lucide-react'
+import {
+  Split,
+  AlertTriangle,
+  ExternalLink,
+  HelpCircle,
+  User,
+  RefreshCcw,
+  Copy,
+} from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import { formatAddress, formatNumber, cn, copyToClipboard, findChainName } from '@/lib/utils'
+import {
+  formatAddress,
+  formatShortAddress,
+  formatNumber,
+  cn,
+  copyToClipboard,
+  findChainName,
+} from '@/lib/utils'
 import {
   TOKEN_ADDRESS,
   GAME_ADDRESS,
@@ -78,6 +94,9 @@ export default function DashboardNew() {
   } else if (loginMethod === 'google_oauth') {
     username = user?.linkedAccounts[1].email
     loginAccount = 'Google'
+  } else if (loginMethod === 'twitter_oauth') {
+    username = user?.linkedAccounts[1].username
+    loginAccount = 'Twitter'
   } else if (loginMethod === 'wallet') {
     username = formatAddress(String(user?.linkedAccounts[1].address))
     loginAccount = 'Web3 Wallet'
@@ -192,9 +211,10 @@ export default function DashboardNew() {
     chainId: 1,
   })
 
-  const { data: balanceData } = useBalance({
+  const { data: balanceData, refetch: refetchETH } = useBalance({
     address: address,
   })
+
   const ethBalance = formatUnits(balanceData?.value || BigInt(0), 18)
 
   const { data, refetch } = useContractReads({
@@ -236,13 +256,17 @@ export default function DashboardNew() {
     event.target.src = '/lore/Dashboard.png'
   }
 
+  const refetchETHHandler: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    refetchETH()
+  }
+
   // console.log(typeof loginMethod)
 
   // potential to add game stats
   return (
     <div className="w-[85%] mx-auto flex flex-col mb-8 body-last">
       <div className="hidden sm:block flex flex-col">
-        <div className="flex items-center justify-center gap-2 my-2">
+        <div className="flex items-center justify-center gap-2 my-2 frame-last">
           <>
             <Image
               priority
@@ -316,7 +340,7 @@ export default function DashboardNew() {
                 ) : (
                   <p className="text-right">
                     <Button
-                      variant="privy"
+                      variant="secondary"
                       className="w-24 h-8 rounded-xl px-4"
                       disabled={!(ready && authenticated) || Boolean(embeddedWalletAddress)}
                       onClick={createWallet}
@@ -332,7 +356,7 @@ export default function DashboardNew() {
                 <p className="text-right">
                   {embeddedWallet ? (
                     <Button
-                      variant="privy"
+                      variant="secondary"
                       className="w-24 h-8 rounded-xl px-4 text-lg"
                       disabled={!(ready && authenticated)}
                       onClick={setPasswordHandler}
@@ -350,7 +374,7 @@ export default function DashboardNew() {
                 <p className="text-right">
                   {embeddedWallet ? (
                     <Button
-                      variant="privy"
+                      variant="secondary"
                       className="w-24 h-8 rounded-xl px-4 text-lg"
                       disabled={!(ready && authenticated)}
                       onClick={exportKeyHandler}
@@ -385,9 +409,14 @@ export default function DashboardNew() {
           </div>
 
           <div className="w-full">
-            <div className="underline">Token holdings</div>
+            <div className="underline flex flex-row">
+              Tokens on {formatShortAddress(String(embeddedWallet?.address))}{' '}
+              <button onClick={refetchETHHandler}>
+                <RefreshCcw size={16} className="text-sm ml-1 rounded-full"></RefreshCcw>
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">ETH holdings</p>
+              <p className="text-left">ETH</p>
               <p className="text-right">
                 {' '}
                 {formatNumber(ethBalance, {
@@ -399,7 +428,7 @@ export default function DashboardNew() {
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">LAST holdings</p>
+              <p className="text-left">LAST</p>
               <p className="text-right">
                 {' '}
                 {formatNumber(tokenBalance, {
@@ -411,7 +440,7 @@ export default function DashboardNew() {
             </div>
             <div className="flex text-lg justify-center my-2">
               <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-                <Button variant="buy" className="w-full text-xl rounded-full">
+                <Button variant="secondary" className="w-full text-xl rounded-full">
                   Buy $LAST tokens <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
                 </Button>
               </a>

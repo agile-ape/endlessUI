@@ -80,12 +80,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       config={{
         appearance: {
-          theme: 'light',
-          accentColor: '#676FFF',
+          theme: '#404833',
+          accentColor: '#FCFC03',
           // logo:,
           showWalletLoginFirst: true,
         },
-        loginMethods: ['wallet', 'sms', 'email', 'google'],
+        loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
         defaultChain: baseGoerli,
         supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
 

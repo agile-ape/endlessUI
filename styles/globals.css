@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital@1&display=swap');
+
+@font-face {
+  font-family: 'chakra';
+  src: url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital@1&display=swap');
+}
+
 body {
   font-family: 'VT323', monospace;
 }
@@ -12,11 +19,6 @@ body {
 @font-face {
   font-family: 'headline';
   src: url('/fonts/headline.ttf');
-}
-
-@font-face {
-  font-family: 'chakra';
-  src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 }
 
 /* @font-face {
@@ -150,8 +152,45 @@ body {
   /* text-xl leading-tight text-zinc-800 dark:text-zinc-200  */
 
   /* links */
-  .link {
+  /* .link-last {
     @apply italic bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4;
+  } */
+
+  .text-primary-last {
+    @apply text-[#FCFC03];
+  }
+
+  .text-secondary-last {
+    @apply text-[#FCFDC7];
+  }
+
+  .bg-primary-last {
+    @apply bg-[#404833];
+  }
+
+  .bg-secondary-last {
+    @apply bg-[#39402e];
+  }
+
+  .border-primary-last {
+    @apply border-[#FCFC03];
+  }
+
+  .border-secondary-last {
+    @apply border-[#FCFDC7];
+  }
+
+  .frame-last {
+    @apply rounded-tr-md rounded-bl-md [clip-path:polygon(20px_0,100%_0,100%_50%,calc(100%-20px)_100%,0_100%,0_50%)];
+  }
+
+  .logo-last {
+    /* @apply text-[#11140C] bg-[#FCFC03]; */
+    @apply text-primary-last bg-primary-last;
+  }
+
+  .header-last {
+    @apply text-secondary-last bg-primary-last;
   }
 
   /* titles */
@@ -189,7 +228,13 @@ body {
   .whtrabt-last {
     /* @apply font-whitrabt text-lime-700 dark:text-lime-300; */
     /* @apply font-whitrabt text-[#FCF03F] dark:text-[#FCF03F]; */
-    @apply font-whitrabt text-[#404833] dark:text-yellow-100;
+    @apply font-whitrabt text-[#404833] dark:text-[#FCFDC7];
+  }
+
+  .blast-arena-last {
+    /* @apply font-whitrabt text-lime-700 dark:text-lime-300; */
+    /* @apply font-whitrabt text-[#FCF03F] dark:text-[#FCF03F]; */
+    @apply font-whitrabt text-[#404833] dark:text-[#FCFC03];
   }
 
   .round-last {

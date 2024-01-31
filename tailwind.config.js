@@ -25,6 +25,9 @@ module.exports = {
       padding: '2rem',
     },
     extend: {
+      // duration: {
+      //   100000: '100000ms',
+      // },
       // fontFamily: {
       //   vt323: ['VT323', 'monospace']
       // },

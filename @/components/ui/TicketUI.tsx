@@ -353,9 +353,9 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
     beforePurchase: {
       bgImage: 'burst',
       header: 'bg-zinc-300/20 text-black',
-      face: 'enter',
-      id: nextTicketId,
-      status: 'next ticket',
+      face: 'copium',
+      id: '-',
+      status: 'prepare to enter arena',
       label: 'value',
       value: ' - ETH',
     },
@@ -699,7 +699,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           <div className="flex justify-center">
             <Image
               priority
-              src={`/faces/${face}.png`}
+              src={`/faces/${face}.svg`}
               height={imgh}
               width={imgw}
               className={`h-auto ${mt}`}

@@ -249,7 +249,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
               </p>
               <Image
                 priority
-                src={`/faces/${face}.png`}
+                src={`/faces/${face}.svg`}
                 height={152}
                 width={152}
                 alt={`${face} pepe`}

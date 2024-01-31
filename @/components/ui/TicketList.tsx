@@ -232,7 +232,7 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
           <Image
             priority
-            src="/faces/hide.png"
+            src="/faces/hide.svg"
             className=""
             height={200}
             width={xs ? 150 : 250}

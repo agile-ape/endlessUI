@@ -41,36 +41,50 @@ export default function Logo() {
   return (
     <>
       <Link
-        className="cursor-pointer"
+        className="
+         h-10 rounded-md
+        px-2 py-0 cursor-default flex 
+        capitalized z-10"
         href="/"
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
-        <div
-          // onClick={() => console.log('last')}
-          // onMouseOver={handleHover}
-          // onMouseLeave={handleLeave}
-          className="h-12 rounded-md
+        {/* <div
+          className="h-12 w-16 rounded-md
               px-2 py-0 text-[34px] font-headline
-              text-black \
-              drop-shadow-glow-lg-yellow-300
-              bg-[#FCFC03] hover:bg-blue-700
-              transition-colors capitalized relative z-10
+              text-last bg-last \
+              capitalized z-10
             "
-        >
-          last
-          <div className={cn(handleHover ? '-right-10' : 'hidden', 'absolute top-0 z-4')}>
+        > */}
+
+        <Image
+          priority
+          src="/logo/last-logo.svg"
+          className=""
+          height={200}
+          width={100}
+          alt="last-logo"
+        />
+        {/* </div> */}
+      </Link>
+      {/* <div
+        className={`${
+          handleHover ? 'opacity-100' : 'opacity-0'
+        } transition-opacity duration-1000 ease-in-out absolute h-12 w-16 rounded-md px-2 py-0 punk-last`}
+      >
+        <Image priority src="/7959.png" className="" height={20} width={40} alt="punk7959" />
+      </div> */}
+
+      {/* <div className={cn(handleHover ? '' : 'hidden', ' punk-last absolute top-0 z-4')}>
             <Image
               priority
-              src="/faces/stareSq.png"
-              className=""
+              src="/7959.png"
+              className="duration-1000"
               height={20}
               width={40}
-              alt="pepe-stare"
+              alt="punk7959"
             />
-          </div>
-        </div>
-      </Link>
+          </div> */}
     </>
   )
 }

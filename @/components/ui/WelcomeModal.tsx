@@ -40,7 +40,7 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
                 </p>
                 <Image
                   priority
-                  src={`/faces/choose.png`}
+                  src={`/faces/choose.svg`}
                   height={152}
                   width={152}
                   alt={`enter pepe`}

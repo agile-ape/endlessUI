@@ -143,20 +143,18 @@ const GameTab = () => {
                   <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
 
                   {id === 0 && (phase === 'deployed' || phase === 'start') && (
-                    <div className="rounded-full bg-slate-500 my-4">
-                      <Button
-                        variant="enter"
-                        // className="px-1 py-1 leading-10 h-14 w-full "
+                    <Button
+                      variant="enter"
+                      // className="px-1 py-1 leading-10 h-14 w-full "
 
-                        className="
-                        h-14 w-full text-3xl rounded-full leading-10 p-1"
-                        onClick={toggleBuy}
-                      >
-                        {/* <OnSignal active={buyActive} own={true} /> */}
-                        {/* <Ticket2 size={28} className=" mr-1" /> */}
-                        START
-                      </Button>
-                    </div>
+                      className="
+                        my-4 h-14 w-full leading-10 p-1 z-2"
+                      onClick={toggleBuy}
+                    >
+                      {/* <OnSignal active={buyActive} own={true} /> */}
+                      {/* <Ticket2 size={28} className=" mr-1" /> */}
+                      START
+                    </Button>
                   )}
 
                   {id !== 0 && (

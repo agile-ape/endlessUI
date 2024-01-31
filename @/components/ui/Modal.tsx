@@ -40,7 +40,7 @@ type ModalType = {
 
 const titleMapping: { [key: string]: string } = {
   phaseChange: 'Trigger phase change',
-  buyTicket: 'Join Game',
+  buyTicket: 'Enter Arena',
   exitGame: 'Exit Game',
   submit: 'Submit keyword of the day',
   checkIn: 'Check into Safehouse',

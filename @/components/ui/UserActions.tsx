@@ -116,9 +116,10 @@ const UserActions = () => {
     container-last
     flex flex-col gap-2 mb-5 relative"
       >
-        <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+        <div className="text-sm container-last bg-opacity-100  dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Players
         </div>
+
         <Button
           variant="submit"
           className="w-full text-xl flex justify-start"
@@ -147,6 +148,7 @@ const UserActions = () => {
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Safehouse
         </div>
+
         <Button
           variant="checkIn"
           // variant="attack"

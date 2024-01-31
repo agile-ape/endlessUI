@@ -83,6 +83,7 @@ import {
   Ticket as Ticket2,
   Sword,
   Sparkle,
+  Hexagon,
   RefreshCw,
   Axe,
 } from 'lucide-react'
@@ -432,6 +433,9 @@ export default function Screen() {
     return () => clearTimeout(delay)
   }, [])
 
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => setCarouselVisibility(false))
+
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
       {expanded ? (
@@ -448,11 +452,12 @@ export default function Screen() {
             <p className="text-xl whtrabt-last">Connecting to the ether...</p>
           </div>
         ) : xs ? (
+          // If on phone
           <div>
             <div className="flex flex-col">
               <button
                 onClick={scrollToTop}
-                className="sticky top-0 container-last border-none bg-opacity-100 dark:bg-opacity-100 flex flex-col py-2 items-center z-[1]"
+                className="sticky top-0 header-last flex flex-col py-2 items-center z-[1]"
               >
                 <div className="text-3xl text-center">
                   {actionView === 'submit' && <p>Submit</p>}
@@ -462,14 +467,14 @@ export default function Screen() {
                   {actionView === 'splitIt' && <p>Split Pot</p>}
                   {actionView === 'attack' && <p>Attack</p>}
                   {actionView === 'kickOut' && <p>Kick Out</p>}
-                  {actionView === 'buyTicket' && <p>Join Game</p>}
+                  {actionView === 'buyTicket' && <p>Enter Arena</p>}
                   {actionView === 'wager' && <p>Place Bet</p>}
                   {actionView === 'phaseChange' && <p>Change Phase</p>}
                   {actionView === 'token' && <p>Send Token</p>}
                   {actionView === 'admin' && <p>Gamemaster</p>}
-                  {menuComponent === 'you' && <p>You</p>}
+                  {menuComponent === 'you' && <p>Profile</p>}
                   {menuComponent === 'events' && <p>Feed</p>}
-                  {menuComponent === 'list' && <p>Players</p>}
+                  {menuComponent === 'list' && <p>Arena</p>}
                   {menuComponent === 'menu' && <p>Links</p>}
                 </div>
               </button>
@@ -608,8 +613,8 @@ export default function Screen() {
             {/* Menu */}
             <div
               className={cn(
-                isCarouselVisible ? '' : '',
-                'fixed bottom-0 w-full h-20 container-last border-none bg-opacity-100 dark:bg-opacity-100',
+                isCarouselVisible ? 'border-t-2 border-[#FCFC03]' : 'border-t-2 border-transparent',
+                'fixed bottom-0 w-full h-20 header-last',
               )}
             >
               <div className="relative">
@@ -618,52 +623,60 @@ export default function Screen() {
                     className="flex flex-col rounded-none justify-center items-center py-2"
                     onClick={() => selectMenuComponent('you')}
                   >
-                    {menuComponent === 'you' && <User size={32} strokeWidth={3} />}
-                    {menuComponent !== 'you' && <User size={32} />}
+                    {menuComponent === 'you' && <User size={36} strokeWidth={3} />}
+                    {menuComponent !== 'you' && <User size={36} />}
                   </button>
                   <button
                     className="flex flex-col justify-center items-center"
                     onClick={() => selectMenuComponent('list')}
                   >
-                    {menuComponent === 'list' && <Users size={32} strokeWidth={3} />}
-                    {menuComponent !== 'list' && <Users size={32} />}
+                    {menuComponent === 'list' && <Hexagon size={36} strokeWidth={3} />}
+                    {menuComponent !== 'list' && <Hexagon size={36} />}
                   </button>
                   <div></div>
                   <button
                     className="flex flex-col justify-center items-center"
                     onClick={() => selectMenuComponent('events')}
                   >
-                    {menuComponent === 'events' && <Rss size={32} strokeWidth={3} />}
-                    {menuComponent !== 'events' && <Rss size={32} />}
+                    {menuComponent === 'events' && <Rss size={36} strokeWidth={3} />}
+                    {menuComponent !== 'events' && <Rss size={36} />}
                   </button>
                   <button
                     className="flex flex-col justify-center items-center"
                     onClick={() => selectMenuComponent('menu')}
                   >
-                    {menuComponent === 'menu' && <Menu size={32} strokeWidth={3} />}
-                    {menuComponent !== 'menu' && <Menu size={32} />}
+                    {menuComponent === 'menu' && <Menu size={36} strokeWidth={3} />}
+                    {menuComponent !== 'menu' && <Menu size={36} />}
                   </button>
                 </div>
               </div>
               <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <button
-                  className={cn(
-                    isCarouselVisible ? 'bg-slate-100 dark:bg-slate-600' : 'border-none',
-                    'flex flex-col justify-center items-center rounded-full p-1 container-last bg-opacity-100 dark:bg-opacity-100',
-                  )}
-                  onClick={toggleCarousel}
-                >
-                  {isCarouselVisible ? (
-                    <Move size={44} strokeWidth={1.6} />
-                  ) : (
-                    <Move size={42} strokeWidth={1.5} />
-                  )}
-                </button>
+                <div className="bg-[#FCFDC7] rounded-full">
+                  <button
+                    className={cn(
+                      isCarouselVisible
+                        ? 'bg-[#11140C] border-2 border-[#FCFC03] text-[#FCFC03] -translate-y-0'
+                        : 'border-2 border-[#75835D] -translate-y-1',
+                      'flex flex-col justify-center items-center rounded-full p-2 header-last',
+                    )}
+                    onClick={toggleCarousel}
+                  >
+                    {isCarouselVisible ? (
+                      // <Move size={44} strokeWidth={1.6} />
+                      <Move size={40} strokeWidth={1.5} />
+                    ) : (
+                      <Move size={40} strokeWidth={1.5} />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 
             {isCarouselVisible && (
-              <div className="fixed bottom-20 w-full bg-slate-100 dark:bg-slate-600 border-none bg-opacity-100 dark:bg-opacity-100">
+              <div
+                className="fixed bottom-20 w-full bg-gradient-to-l from-[#11140C] to-[#404833] \
+              "
+              >
                 <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent className="">
                     {arrayMobileAction.map(
@@ -675,7 +688,7 @@ export default function Screen() {
                                 className={cn(
                                   actionColor[action.category],
                                   actionView === action.mobileAction
-                                    ? 'border-2 bg-slate-200 dark:bg-slate-800 border-indigo-700 bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
+                                    ? 'border-2 bg-[#11140C] border-[#FCFC03] bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
                                     : '',
                                   'py-1 px-3 flex flex-col justify-center items-center rounded-lg',
                                 )}
@@ -718,11 +731,15 @@ export default function Screen() {
                     '',
                   )}
                 >
-                  <button className="p-2 rounded-full container-last" onClick={() => toggleInfo()}>
+                  <button className="p-2 rounded-full header-last" onClick={() => toggleInfo()}>
                     <Monitor size={isToggled ? 32 : 28}></Monitor>
                   </button>
                 </PopoverTrigger>
-                <PopoverContent side="right" align="end" className="bg-slate-200 dark:bg-slate-800">
+                <PopoverContent
+                  side="right"
+                  align="end"
+                  className="header-last border-2 border-[#FCFDC7]"
+                >
                   <div className="flex flex-col gap-2 py-2 px-0">
                     <Indicator />
                     <Round />
@@ -736,6 +753,7 @@ export default function Screen() {
             </div>
           </div>
         ) : (
+          // If on desktop
           <>
             <div className="text-center">
               <Title />
@@ -763,12 +781,10 @@ export default function Screen() {
           <div className="sm:hidden flex justify-center mx-auto py-3">
             <Logo />
           </div>
-          <div className="text-center text-2xl text-lime-700 dark:text-lime-300 font-whitrabt">
-            Welcome to Lastman
-          </div>
+          <div className="text-center text-3xl blast-arena-last">Welcome to Lastman</div>
           <div className="flex flex-col gap-1 my-2 text-center body-last">
-            <p className="">Lastman is an onchain game on [Base]</p>
-            <p className="">Play, outlast and earn ETH</p>
+            <p className="">Lastman is a battle royale on Blast</p>
+            <p className="">Play, outlast and yield ETH</p>
             <p className="">How long can you last?</p>
           </div>
           <div className="relative flex justify-center items-center">

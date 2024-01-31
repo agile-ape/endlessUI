@@ -30,7 +30,9 @@ const Prompt: FC<PromptType> = ({ docLink }) => {
         <a
           href={docLink}
           target="_blank"
-          className="flex whtrabt-last text-base hover:text-lime-600 dark:hover:text-lime-200 active:text-lime-600 dark:active:text-lime-200"
+          className="flex whtrabt-last text-base \
+          hover:text-[#75835D] dark:hover:text-[#FCFC03] \
+          active:bg-opacity-50"
         >
           <AlertCircle size={24} className="align-top mr-2"></AlertCircle>
           Not available
