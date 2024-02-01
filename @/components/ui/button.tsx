@@ -34,7 +34,8 @@ const buttonVariants = cva(
         wager:
           // 'text-neutral-50 bg-neutral-600 border-2 border-neutral-800 hover:bg-neutral-700 hover:border-neutral-900 active:bg-neutral-700',
           // 'text-neutral-950 bg-neutral-200 border-2 border-neutral-300 hover:bg-neutral-100 hover:border-neutral-200 active:bg-neutral-300',
-          'text-stone-950 bg-stone-200 border-2 border-stone-400 hover:bg-stone-100 hover:border-stone-500 active:bg-stone-300',
+          // 'text-stone-950 bg-stone-200 border-2 border-stone-400 hover:bg-stone-100 hover:border-stone-500 active:bg-stone-300',
+          'text-purple-50 bg-purple-700 border-2 border-purple-500 hover:bg-purple-600 hover:border-purple-200 active:bg-purple-500',
 
         admin:
           'text-pink-50 bg-pink-500 border-2 border-pink-700 hover:bg-pink-700 hover:border-pink-200 active:bg-pink-600',

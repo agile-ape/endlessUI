@@ -14,6 +14,7 @@ import { Send, CheckCircle2 } from 'lucide-react'
 import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const getAlertLook = (alertLookTest: string) => {
   switch (alertLookTest) {
@@ -217,6 +218,8 @@ interface CompletionModalType {
 
 const CompletionModal: React.FC<CompletionModalType> = () => {
   // const alertLookTest: string = emittedEvent
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  useOutsideClick(modalRef, () => closeModal())
 
   const modalState = useStoreState((state) => state.triggerCompletionModal)
   const modalLooks = getAlertLook(modalState.state)
@@ -235,6 +238,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
     <Dialog open={modalState.isOpen}>
       <DialogContent className="bg-white dark:bg-white rounded-lg p-0 w-[75%] md:w-[20rem]">
         <div
+          ref={modalRef}
           className="rounded-lg shadow-xl"
           style={{
             backgroundImage: `url('/ticket/${bgImage}.svg')`, // different for true
@@ -244,7 +248,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
         >
           <div className="rounded-t-sm">
             <div className="flex flex-col justify-center gap-1 items-center pt-5">
-              <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-lg sm:text-2xl font-whitrabt font-semibold">
+              <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
                 {title}
               </p>
               <Image
@@ -258,7 +262,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
           </div>
 
           <div className="w-[90%] flex flex-col px-4 mx-auto text-center border bg-slate-100/50 rounded-lg my-4">
-            <div className="text-black text-base sm:text-xl my-2">{message}</div>
+            <div className="text-black text-xl my-2">{message}</div>
             <div className="flex justify-center mb-4">
               <div className="flex justify-center w-full" onClick={closeModal}>
                 <Button

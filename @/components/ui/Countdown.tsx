@@ -82,6 +82,7 @@ export default function Countdown() {
 
   const [timeLeft, setTimeLeft] = useState<number>()
   const [timeFlag, setTimeFlag] = useState<number>()
+  const [countdown, setCountdown] = useState<number>()
 
   // const phase = 'gameclosed'
 
@@ -114,6 +115,7 @@ export default function Countdown() {
     ],
     onSuccess(data) {
       setTimeFlag(Number(data[0].result) || 0)
+      setCountdown(Number(data[1].result) || 0)
     },
   })
 
@@ -129,6 +131,20 @@ export default function Countdown() {
           const { caller, previousPhase, newPhase, time } = dataJson
 
           setTimeFlag(Number(time) || 0)
+        }
+      },
+    },
+    {
+      name: 'events-84531',
+      async handler(data) {
+        const { event, dataJson } = data
+
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'NewTicketBought') {
+          const { caller, player, purchasePrice, newCountdownTime, time } = dataJson
+
+          setCountdown(Number(newCountdownTime) || 0)
         }
       },
     },
@@ -148,7 +164,7 @@ export default function Countdown() {
 
   if (phase === 'start') {
     // timeAddon is added to countdownTime whenever someone buys a ticket
-    endTime = new Date((Number(timeFlag) + Number(countdownTime)) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(countdown)) * 1000)
   } else if (phase === 'day') {
     endTime = new Date((Number(timeFlag) + Number(dayTime)) * 1000)
   } else if (phase === 'night') {
@@ -186,10 +202,10 @@ export default function Countdown() {
 
   return (
     <>
-      {(phase === 'deployed' || phase === 'gameclosed') && <></>}
-
-      {!(phase === 'deployed' || phase === 'gameclosed') && (
-        <div className="text-lime-800 dark:text-lime-200 gap-1">
+      {phase === 'deployed' || phase === 'gameclosed' ? (
+        <></>
+      ) : (
+        <div className="text-light-last dark:text-dark-last gap-1">
           <div className="flex justify-center items-end">
             {timeLeft && !isNaN(timeLeft) ? (
               <TooltipProvider delayDuration={10}>
@@ -221,9 +237,9 @@ export default function Countdown() {
                   <TooltipContent
                     side="top"
                     align="center"
-                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:inline cursor-default"
+                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:block cursor-default"
                   >
-                    {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
+                    {phase === 'start' && <p>{timeAdded} mins is added for every new player</p>}
                     {phase === 'day' && (
                       <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
                     )}
@@ -268,12 +284,12 @@ export default function Countdown() {
                   </div>
                 ) : (
                   <Button
-                    variant="change"
+                    variant="primary"
                     className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
                     onClick={togglePhaseChange}
                   >
                     <OnSignal active={phaseChangeActive} own={true} />
-                    <RefreshCw size={20} className="text-white mr-1" />
+                    <RefreshCw size={20} className="mr-1" />
                     Change phase
                   </Button>
                 )}

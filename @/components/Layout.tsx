@@ -96,7 +96,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     fetcher,
   )
 
-  if (ticketsData?.data.length) {
+  if (ticketsData?.data?.length) {
     const ticketList = transformToTicket(ticketsData?.data).filter(
       (item) => item.user !== '0x0000000000000000000000000000000000000000',
     )

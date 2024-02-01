@@ -13,9 +13,9 @@ export default function Indicator() {
 
   return (
     <>
-      {(phase === 'deployed' || phase === 'gameclosed') && <></>}
-
-      {!(phase === 'deployed' || phase === 'gameclosed') && (
+      {phase === 'deployed' || phase === 'gameclosed' ? (
+        <></>
+      ) : (
         <div className="flex justify-center lg:justify-end">
           <TooltipProvider delayDuration={10}>
             <Tooltip>

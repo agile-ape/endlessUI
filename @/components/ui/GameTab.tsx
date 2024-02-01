@@ -137,7 +137,7 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {isConnected && (
+            {authenticated ? (
               <>
                 <div className="mb-2">
                   <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
@@ -153,7 +153,7 @@ const GameTab = () => {
                     >
                       {/* <OnSignal active={buyActive} own={true} /> */}
                       {/* <Ticket2 size={28} className=" mr-1" /> */}
-                      START
+                      ENTER
                     </Button>
                   )}
 
@@ -164,21 +164,35 @@ const GameTab = () => {
                       onClick={toggleExit}
                     >
                       <OnSignal active={exitActive} own={true} />
-                      <DoorOpen size={24} className="text-white mr-1" />
-                      {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                      <DoorOpen size={24} className="mr-1" />
+                      {ticketStatusString !== 'exited' && <div>Exit arena</div>}
                       {ticketStatusString === 'exited' && <div>You have exited</div>}
                     </Button>
                   )}
-
-                  {id === 0 && !(phase === 'start' || phase === 'deployed') && (
-                    <div className="text-center text-lg underline">
-                      <a href={TWITTER_URL} target="_blank">
-                        Follow for updates
-                      </a>
-                    </div>
-                  )}
                 </div>
               </>
+            ) : (
+              <div className="mb-4">
+                <div className="flex flex-col gap-4 items-center justify-center">
+                  <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 text-xl">
+                    Not logged in
+                  </div>
+                  <Image
+                    priority
+                    src={`/faces/eatchips.svg`}
+                    height={110}
+                    width={150}
+                    className={`h-auto mt-0 mb-0`}
+                    // layout="fixed"
+                    alt={`guest pepe`}
+                  />
+                  <div className="text-center text-lg underline">
+                    <a href={TWITTER_URL} target="_blank">
+                      Follow for updates
+                    </a>
+                  </div>
+                </div>
+              </div>
             )}
             <div className="hidden sm:flex">
               <UserActions />

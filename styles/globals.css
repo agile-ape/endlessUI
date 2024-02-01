@@ -156,6 +156,14 @@ body {
     @apply italic bg-transparent active:underline hover:underline focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50 underline-offset-4;
   } */
 
+  .text-light-last {
+    @apply text-[#404833];
+  }
+
+  .text-dark-last {
+    @apply text-[#FCFC03];
+  }
+
   .text-primary-last {
     @apply text-[#FCFC03];
   }

@@ -50,7 +50,7 @@ const titleMapping: { [key: string]: string } = {
   attack: 'Attack Player',
   kickOut: 'Kick Out Player',
   token: 'Send Tokens',
-  dashboard: 'Dashboard',
+  dashboard: 'Profile',
   admin: 'Gamemaster',
 }
 

@@ -174,7 +174,7 @@ const PhaseChangeNew = () => {
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-[100%] mx-auto flex flex-col justify-center">
             <Button
-              variant="change"
+              variant="primary"
               onClick={phaseChangeHandler}
               isLoading={isLoading}
               disabled={!active}

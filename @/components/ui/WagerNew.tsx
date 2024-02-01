@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
@@ -20,6 +21,7 @@ import dynamic from 'next/dynamic'
 
 import {
   useAccount,
+  useBalance,
   useContractRead,
   useContractReads,
   useContractWrite,
@@ -63,23 +65,49 @@ const useStore = () => {
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
 
+  const { address, isConnected } = useAccount()
+
+  const { data, refetch } = useContractReads({
+    contracts: [
+      {
+        ...wagerContractObj,
+        functionName: 'playerBet',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...wagerContractObj,
+        functionName: 'playerBetSize',
+        args: [address as `0x${string}`],
+      },
+    ],
+  })
+
+  const playerBet = Number(data?.[0].result || BigInt(0))
+  const playerBetSize = Number(data?.[1].result || BigInt(0))
+
   return {
     phase,
     round,
     stage,
     updateCompletionModal,
     ownedTicket,
+    playerBet,
+    playerBetSize,
   }
 }
 
 export const WagerActive = () => {
   // Active condition - place bets before stage 2 || claim reward when ending is found
-  const { phase, stage } = useStore()
+  const { phase, stage, playerBet } = useStore()
 
   let wagerActive: boolean
   let wagerStatus: number
 
-  if (stage === 1 && !(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain')) {
+  if (
+    (stage === 0 || stage === 1) &&
+    !(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') &&
+    playerBet === 0
+  ) {
     wagerStatus = 1
   } else if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
     wagerStatus = 2
@@ -154,13 +182,13 @@ const WagerNew = () => {
   })
 
   const playerBet = Number(data?.[0].result || BigInt(0))
-  const playerBetSize = data?.[1].result || BigInt(0)
+  const playerBetSize = Number(data?.[1].result || BigInt(0))
   const lmfBetCount = data?.[2].result || BigInt(0)
   const pfBetCount = data?.[3].result || BigInt(0)
   const dBetCount = data?.[4].result || BigInt(0)
-  const lmfBetSize = Number(data?.[5].result || BigInt(0))
-  const pfBetSize = Number(data?.[6].result || BigInt(0))
-  const dBetSize = Number(data?.[7].result || BigInt(0))
+  const lmfBetSize = data?.[5].result || BigInt(0)
+  const pfBetSize = data?.[6].result || BigInt(0)
+  const dBetSize = data?.[7].result || BigInt(0)
   const endingPhase = data?.[8].result || BigInt(0)
   const fee = Number(data?.[9].result || BigInt(0))
   const feeMultiplier = Number(data?.[10].result || BigInt(0))
@@ -168,10 +196,10 @@ const WagerNew = () => {
   const nextRoundFee = (round + 1) * feeMultiplier
 
   // Compute payoff - before or after fees?
-  const totalBetSize = lmfBetSize + pfBetSize + dBetSize
-  const lmfOdds = totalBetSize / lmfBetSize
-  const pfOdds = totalBetSize / pfBetSize
-  const dOdds = totalBetSize / dBetSize
+  const totalBetSize = Number(lmfBetSize) + Number(pfBetSize) + Number(dBetSize)
+  const lmfOdds = totalBetSize / Number(lmfBetSize)
+  const pfOdds = totalBetSize / Number(pfBetSize)
+  const dOdds = totalBetSize / Number(dBetSize)
 
   // Contract write
   // const [isModalOpen, setIsModalOpen] = useState(false)
@@ -181,7 +209,35 @@ const WagerNew = () => {
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => setIsModalOpen(false))
 
+  let playerEnding: string = ''
+  let playerEndingIndicator: string = ''
+  let playerPayoffRatio: number = 0
+  if (playerBet === 4) {
+    playerEnding = 'Lastman'
+    playerEndingIndicator = 'lastmanfoundIndicator'
+    playerPayoffRatio = lmfOdds
+  } else if (playerBet === 5) {
+    playerEnding = 'Peace'
+    playerEndingIndicator = 'peacefoundIndicator'
+    playerPayoffRatio = pfOdds
+  } else if (playerBet === 6) {
+    playerEnding = 'Drained'
+    playerEndingIndicator = 'drainIndicator'
+    playerPayoffRatio = dOdds
+  }
+
+  const playerPayoff = formatUnits(BigInt(playerBetSize * playerPayoffRatio), 18)
+
   /*---------------------- place bet ----------------------*/
+  const { data: balanceData, refetch: refetchETH } = useBalance({
+    address: address,
+  })
+
+  const ethBalance = formatUnits(balanceData?.value || BigInt(0), 18)
+  const playerSize = formatUnits(BigInt(playerBetSize), 18)
+  const lmfPot = formatUnits(lmfBetSize, 18)
+  const pfPot = formatUnits(pfBetSize, 18)
+  const dPot = formatUnits(dBetSize, 18)
 
   const {
     data: betEndingData,
@@ -344,7 +400,7 @@ const WagerNew = () => {
       >
         <div className="m-1 capitalize text-center h2-last">Feeling lucky?</div>
 
-        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+        <div className="mx-auto flex flex-col gap-4 text-lg justify-center items-center">
           <div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Current bet fee</p>
@@ -356,13 +412,19 @@ const WagerNew = () => {
             </div>
           </div>
         </div>
+
         <div className="mx-auto flex flex-col gap-4 justify-center items-center">
           <RadioGroup
-            defaultValue="option-one"
+            // defaultValue="option-one"
             className="flex flex-col gap-4"
             onValueChange={(value) => setRadioValue(value)}
           >
-            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+            <div
+              className={cn(
+                radioValue === '4' ? 'bg-[#404833]/50' : '',
+                'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
+              )}
+            >
               {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -403,25 +465,33 @@ const WagerNew = () => {
                 />
                 <div>Lastman</div>
               </Label>
-              <RadioGroupItem value="option-one" id="option-one" />
+              <RadioGroupItem value="4" id="option-one" />
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
+                <p className="">Bets(ETH) </p>
+                <p className=""> {Number(lmfPot)}</p>
+              </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(lmfBetCount)}</p>
               </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Odds </p>
+                <p className="">Payoff</p>
                 <p className="">
                   {' '}
                   {formatNumber(lmfOdds, {
-                    maximumFractionDigits: 0,
-                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 4,
+                    minimumFractionDigits: 3,
                   })}
-                  : 1
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+            <div
+              className={cn(
+                radioValue === '5' ? 'bg-[#404833]/50' : '',
+                'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
+              )}
+            >
               {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -461,25 +531,33 @@ const WagerNew = () => {
                 />
                 <div>Peace</div>
               </Label>
-              <RadioGroupItem value="option-two" id="option-two" />
+              <RadioGroupItem value="5" id="option-two" />
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
+                <p className="">Bets(ETH) </p>
+                <p className=""> {Number(pfPot)}</p>
+              </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(pfBetCount)}</p>
               </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Odds </p>
+                <p className="">Payoff </p>
                 <p className="">
                   {' '}
                   {formatNumber(pfOdds, {
-                    maximumFractionDigits: 0,
-                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 4,
+                    minimumFractionDigits: 3,
                   })}
-                  : 1
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2">
+            <div
+              className={cn(
+                radioValue === '6' ? 'bg-[#404833]/50' : '',
+                'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
+              )}
+            >
               {/* <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger className="flex flex-col items-center justify-center">
@@ -519,58 +597,129 @@ const WagerNew = () => {
                 />
                 <div>Drained</div>
               </Label>
-              <RadioGroupItem value="option-three" id="option-three" />
+              <RadioGroupItem value="6" id="option-three" />
+              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
+                <p className="">Bets(ETH) </p>
+                <p className=""> {Number(dPot)}</p>
+              </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
                 <p className="">Bets(#) </p>
                 <p className=""> {Number(dBetCount)}</p>
               </div>
               <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Odds </p>
+                <p className="">Payoff </p>
                 <p className="">
                   {' '}
                   {formatNumber(dOdds, {
-                    maximumFractionDigits: 0,
-                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 4,
+                    minimumFractionDigits: 3,
                   })}
-                  : 1
                 </p>
               </div>
             </div>
           </RadioGroup>
           {/* </div> */}
 
-          {/* Bet amount component */}
-          <div
-            className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col
+          {/* Your bet */}
+          {playerBet === 0 ? (
+            <div
+              className="rounded-xl p-3 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 flex flex-col
           gap-4 justify-center items-center h2-last
           "
-          >
-            <label htmlFor="bet">Bet Amount (ETH) </label>
-            <input
-              type="text"
-              id="bet"
-              required
-              className="w-[6rem] rounded-md px-1 text-center border border-zinc-500 dark:border-zinc-400 bg-slate-100 dark:bg-slate-700"
-              value={betAmount}
-              placeholder="0.00"
-              onChange={(e) => setBetAmount(e.target.value)}
-            />
-
-            <Button
-              variant="wager"
-              size="lg"
-              className="w-[220px] rounded-full"
-              onClick={placeBet}
-              isLoading={betEndingLoad}
-              disabled={!(active && status === 1)}
             >
-              Bet
-            </Button>
+              <label htmlFor="bet">Bet Amount (ETH) </label>
 
-            <div className="whtrabt-last">
-              {!(active && status === 1) && <Prompt docLink={DOCS_URL_safehouse} />}
+              <div className="mx-auto flex flex-col gap-4 text-xl justify-center items-center">
+                <div>
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left">ETH in wallet</p>
+                    <p className="text-right">
+                      {' '}
+                      {formatNumber(ethBalance, {
+                        maximumFractionDigits: 3,
+                        minimumFractionDigits: 0,
+                      })}{' '}
+                      ETH{' '}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <input
+                type="text"
+                id="bet"
+                required
+                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                value={betAmount}
+                placeholder="0.00"
+                onChange={(e) => setBetAmount(e.target.value)}
+              />
+
+              <Button
+                variant="wager"
+                size="lg"
+                className="w-[220px] rounded-full"
+                onClick={placeBet}
+                isLoading={betEndingLoad}
+                disabled={!(active && status === 1)}
+              >
+                Bet
+              </Button>
+
+              <div className="whtrabt-last">
+                {!(active && status === 1) && <Prompt docLink={DOCS_URL_safehouse} />}
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <div
+                className="rounded-xl p-3 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 flex flex-col
+                gap-4 justify-center items-center h2-last
+                "
+              >
+                <div className="capitalize text-center h2-last">Your Bet</div>
+                <div className="mx-auto flex flex-col gap-2 text-2xl justify-center items-center">
+                  <div className="flex flex-col gap-2">
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left flex items-center">Bet Ending</p>
+                      <div className="text-right flex flex-col justify-center items-center">
+                        <Image
+                          priority
+                          src={`/indicator/${playerEndingIndicator}.svg`}
+                          height={300}
+                          width={100}
+                          alt="last-man-found-ending"
+                          className="shrink-0 mb-1"
+                        />
+                        {playerEnding}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Bet Size</p>
+                      <p className="text-right">
+                        {formatNumber(playerSize, {
+                          maximumFractionDigits: 5,
+                          minimumFractionDigits: 0,
+                        })}{' '}
+                        ETH
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <p className="text-left">Payout if win</p>
+                      <p className="text-right">
+                        {formatNumber(playerPayoff, {
+                          maximumFractionDigits: 5,
+                          minimumFractionDigits: 0,
+                        })}{' '}
+                        ETH
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Claim */}
           <div className="m-1 capitalize text-center h2-last">Claim your winnings</div>
@@ -606,7 +755,7 @@ const WagerNew = () => {
             </div>
           )}
 
-          {status !== 2 && <div>It's not time to claim winnings yet</div>}
+          {status !== 2 && <div className="whtrabt-last">It's not time to claim winnings</div>}
         </div>
       </div>
     </div>

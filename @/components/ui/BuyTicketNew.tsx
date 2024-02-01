@@ -214,7 +214,7 @@ const BuyTicketNew = () => {
           gap-4 justify-center items-center h3-last
           "
       >
-        <div className="m-1 capitalize text-center h2-last">Join us?</div>
+        <div className="m-1 capitalize text-center h2-last">Enter?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-full">

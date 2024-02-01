@@ -16,6 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from './button'
 import {
   useAccount,
@@ -286,11 +287,12 @@ export default function DashboardNew() {
                 gap-4 justify-center items-center h3-last
                 "
       >
-        <div className="m-1 capitalize text-center h2-last">Player Info</div>
+        {/* <div className="m-1 capitalize text-center h2-last">Player Info</div> */}
 
-        <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+        <div className="mx-auto flex flex-col gap-6 justify-center items-center mb-4">
           <div className="w-full">
-            <div className="underline">Login info</div>
+            <div className="underline flex flex-row justify-center">Login</div>
+            {/* <div className="underline">Login</div> */}
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Method</p>
               <p className="text-right capitalized">
@@ -307,14 +309,42 @@ export default function DashboardNew() {
           </div>
 
           <div className="w-full">
-            <div className="underline">Embedded wallet</div>
+            <div className="underline flex flex-row justify-center">
+              Embedded wallet
+              <div className="hidden sm:block">
+                <TooltipProvider delayDuration={10}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <HelpCircle size={24} className="ml-1 cursor-pointer" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="center" className="">
+                      <p className="px-3 py-1 max-w-[260px] text-sm">
+                        Fund this wallet with ETH to buy tickets and enter the arena.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <div className="block sm:hidden">
+                <Popover>
+                  <PopoverTrigger>
+                    <HelpCircle size={24} className="ml-1 cursor-pointer" />
+                  </PopoverTrigger>
+                  <PopoverContent side="top" align="center" className="">
+                    <p className="px-3 py-1 max-w-[260px] text-sm">
+                      Fund this wallet with ETH to buy ticket and enter the arena.
+                    </p>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
             <div className="flex flex-col gap-1">
               <div className="grid grid-cols-2 gap-1">
                 <p className="text-left">Address</p>
                 <p className="text-right flex justify-end">
                   <span>
                     {embeddedWallet ? (
-                      <div className="flex">
+                      <div className="flex justify-center items-center">
                         <a
                           href={`${BLOCK_EXPLORER}address/${embeddedWallet?.address}`}
                           target="_blank"
@@ -332,7 +362,50 @@ export default function DashboardNew() {
                   </span>
                 </p>
               </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">ETH in wallet</p>
+                <p className="text-right">
+                  {' '}
+                  {formatNumber(ethBalance, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 0,
+                  })}{' '}
+                  ETH{' '}
+                  <button onClick={refetchETHHandler}>
+                    <RefreshCcw size={16} className="text-sm ml-1 rounded-full"></RefreshCcw>
+                  </button>
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">LAST in wallet</p>
+                <p className="text-right">
+                  {' '}
+                  {formatNumber(tokenBalance, {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 0,
+                  })}{' '}
+                  LAST{' '}
+                </p>
+              </div>
+
+              <div className="flex flex-col text-lg justify-center mt-2 mb-4">
+                <a
+                  href={LIQUIDITY_POOL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex justify-center items-center"
+                >
+                  <Button variant="secondary" className="text-xl rounded-full">
+                    Buy $LAST <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
+                  </Button>
+                </a>
+              </div>
+
               {/* <div className="flex flex-col gap-2 h3-last"> */}
+
+              <div className="underline flex flex-row justify-center">Wallet management</div>
+
               <div className="grid grid-cols-2 gap-1">
                 <p className="text-left">Create wallet</p>
                 {embeddedWallet ? (
@@ -389,91 +462,43 @@ export default function DashboardNew() {
             </div>
             {/* </div> */}
           </div>
-
-          <div className="w-full">
-            <div className="underline">Play count</div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Current Chain</p>
-              <p className="text-right">{chainName}</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Game play count</p>
-              <p className="text-right">{Number(playCount)}</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Side quest count</p>
-              <p className="text-right">{Number(sideQuestCount)}</p>
-            </div>
-          </div>
-
-          <div className="w-full">
-            <div className="underline flex flex-row">
-              Tokens on {formatShortAddress(String(embeddedWallet?.address))}{' '}
-              <button onClick={refetchETHHandler}>
-                <RefreshCcw size={16} className="text-sm ml-1 rounded-full"></RefreshCcw>
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">ETH</p>
-              <p className="text-right">
-                {' '}
-                {formatNumber(ethBalance, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 0,
-                })}{' '}
-                ETH{' '}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">LAST</p>
-              <p className="text-right">
-                {' '}
-                {formatNumber(tokenBalance, {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 0,
-                })}{' '}
-                LAST{' '}
-              </p>
-            </div>
-            <div className="flex text-lg justify-center my-2">
-              <a href={LIQUIDITY_POOL} target="_blank" rel="noreferrer" className="">
-                <Button variant="secondary" className="w-full text-xl rounded-full">
-                  Buy $LAST tokens <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
-                </Button>
-              </a>
-            </div>
-            <a
-              href={DOCS_URL}
-              target="_blank"
-              className="link h6-last flex items-center justify-center"
-            >
-              Learn more
-            </a>
-          </div>
-
-          {authenticated ? (
-            <>
-              <Button
-                onClick={logout}
-                variant="primary"
-                className="w-full rounded-xl text-xl font-whitrabt"
-              >
-                Log Out
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={login}
-              variant="primary"
-              className="w-full rounded-xl text-xl font-whitrabt"
-            >
-              Log In
-            </Button>
-          )}
         </div>
+
+        <div className="mb-4">
+          <div className="underline flex justify-center">Play count</div>
+          <div className="grid grid-cols-2 gap-1">
+            <p className="text-left">Current Chain</p>
+            <p className="text-right">{chainName}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1">
+            <p className="text-left">Game play count</p>
+            <p className="text-right">{Number(playCount)}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1">
+            <p className="text-left">Side quest count</p>
+            <p className="text-right">{Number(sideQuestCount)}</p>
+          </div>
+        </div>
+
+        {authenticated ? (
+          <Button
+            onClick={logout}
+            variant="primary"
+            className="w-9/12 h-12 rounded-xl text-2xl font-whitrabt"
+          >
+            Log Out
+          </Button>
+        ) : (
+          <Button
+            onClick={login}
+            variant="primary"
+            className="w-9/12 h-12 rounded-xl text-2xl font-whitrabt"
+          >
+            Log In
+          </Button>
+        )}
       </div>
     </div>
   )

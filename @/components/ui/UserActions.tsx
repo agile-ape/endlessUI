@@ -187,7 +187,7 @@ const UserActions = () => {
           onClick={toggleWager}
         >
           <OnSignal active={wagerActive} own={true} />
-          <Dices size={20} className="text-stone-950 mr-1" />
+          <Dices size={20} className="mr-1" />
           Bet
         </Button>
       </div>

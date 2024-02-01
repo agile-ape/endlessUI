@@ -66,28 +66,26 @@ const KeyTrackers = () => {
 
                 <div className="flex flex-row items-center cursor-default tracking-wide">
                   <CookingPot size={24} className="mr-1" />
-                  <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
+                  <div className="text-2xl flash tracking-wide">{currentPot}</div>
                 </div>
 
                 <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                   <Users size={24} className="mr-1" />
-                  <div className="text-2xl sm:text-3xl flash tracking-wide">{ticketCount}</div>
+                  <div className="text-2xl flash tracking-wide">{ticketCount}</div>
                 </div>
 
                 {phase === 'deployed' ||
                   (phase === 'start' && (
                     <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                       <Ticket size={24} className="mr-1" />
-                      <div className="text-2xl sm:text-3xl flash tracking-wide">
-                        {nextTicketPrice}
-                      </div>
+                      <div className="text-2xl flash tracking-wide">{nextTicketPrice}</div>
                     </div>
                   ))}
 
                 {!(phase === 'deployed' || phase === 'start') && (
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Vote size={24} className="mr-1" />
-                    <div className="text-2xl sm:text-3xl flash tracking-wide">{voteCount}</div>
+                    <div className="text-2xl flash tracking-wide">{voteCount}</div>
                   </div>
                 )}
               </div>
@@ -109,20 +107,21 @@ const KeyTrackers = () => {
             <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                 <CookingPot size={24} className="mr-1" />
-                <div className="text-2xl sm:text-3xl flash tracking-wide">{currentPot}</div>
+                <div className="text-2xl flash tracking-wide">{currentPot}</div>
               </div>
 
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                 <Users size={24} className="mr-1" />
-                <div className="text-2xl sm:text-3xl flash tracking-wide">{ticketCount}</div>
+                <div className="text-2xl flash tracking-wide">{ticketCount}</div>
               </div>
 
               {phase === 'deployed' ||
                 (phase === 'start' && (
                   <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                     <Ticket size={24} className="mr-1" />
-                    <div className="text-2xl sm:text-3xl flash tracking-wide">
+                    <div className="text-2xl flash tracking-wide">
                       {nextTicketPrice}
+                      {/* <span className="text-lg sm:text-xl">ETH</span> */}
                     </div>
                   </div>
                 ))}
@@ -130,7 +129,7 @@ const KeyTrackers = () => {
               {!(phase === 'deployed' || phase === 'start') && (
                 <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                   <Vote size={24} className="mr-1" />
-                  <div className="text-2xl sm:text-3xl flash tracking-wide">{voteCount}</div>
+                  <div className="text-2xl flash tracking-wide">{voteCount}</div>
                 </div>
               )}
             </div>

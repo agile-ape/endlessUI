@@ -196,14 +196,14 @@ const arrayMobileAction: MobileActionType[] = [
     category: 'kickOut',
   },
   {
-    label: 'START',
+    label: 'ENTER',
     // lightIcon: 'buyLight.svg',
     // darkIcon: 'buyNight.svg',
     mobileAction: 'buyTicket',
     category: 'buyTicket',
   },
   {
-    label: 'Exit',
+    label: 'EXIT',
     // lightIcon: 'exitLight.svg',
     // darkIcon: 'exitNight.svg',
     mobileAction: 'exitGame',
@@ -486,37 +486,39 @@ export default function Screen() {
                     <div className="mt-2 mb-4 text-center">
                       <Title />
                     </div>
-                    <TicketUI ticketSize={1} ticketNumber={id} ticket={ticket} />
                     <div className="flex justify-center items-center ">
                       {authenticated ? (
-                        id === 0 ? (
-                          phase === 'deployed' || phase === 'start' ? (
-                            <Button
-                              variant="enter"
-                              className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                              onClick={() => buyTicketAction()}
-                            >
-                              START
-                            </Button>
+                        <div className="flex flex-col justify-center items-center">
+                          <TicketUI ticketSize={1} ticketNumber={id} ticket={ticket} />
+                          {id === 0 ? (
+                            phase === 'deployed' || phase === 'start' ? (
+                              <Button
+                                variant="enter"
+                                className="px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                                onClick={() => buyTicketAction()}
+                              >
+                                ENTER
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="wager"
+                                className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
+                                onClick={() => wagerAction()}
+                              >
+                                Ending?
+                              </Button>
+                            )
                           ) : (
                             <Button
-                              variant="wager"
+                              variant="exit"
                               className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                              onClick={() => wagerAction()}
+                              onClick={() => exitGameAction()}
                             >
-                              Ending?
+                              {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                              {ticketStatusString === 'exited' && <div>You have exited</div>}
                             </Button>
-                          )
-                        ) : (
-                          <Button
-                            variant="exit"
-                            className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
-                            onClick={() => exitGameAction()}
-                          >
-                            {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
-                            {ticketStatusString === 'exited' && <div>You have exited</div>}
-                          </Button>
-                        )
+                          )}
+                        </div>
                       ) : (
                         // <Button
                         //   variant="enter"
@@ -525,8 +527,29 @@ export default function Screen() {
                         // >
                         //   Log In
                         // </Button>
-                        <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 my-4 text-2xl">
-                          Not logged in
+                        <div className="flex flex-col">
+                          <div className="mb-4">
+                            <div className="flex flex-col gap-2 items-center justify-center">
+                              {/* <div className="text-xl">Login to join the fun</div> */}
+                              <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 text-2xl">
+                                Not logged in
+                              </div>
+                              <Image
+                                priority
+                                src={`/faces/eatchips.svg`}
+                                height={110}
+                                width={150}
+                                className={`h-auto mt-0 mb-0`}
+                                // layout="fixed"
+                                alt={`guest pepe`}
+                              />
+                              <div className="text-center text-lg underline">
+                                <a href={TWITTER_URL} target="_blank">
+                                  Follow for updates
+                                </a>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -651,12 +674,12 @@ export default function Screen() {
                 </div>
               </div>
               <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="bg-[#FCFDC7] rounded-full">
+                <div className="bg-[#75835D] rounded-full">
                   <button
                     className={cn(
                       isCarouselVisible
                         ? 'bg-[#11140C] border-2 border-[#FCFC03] text-[#FCFC03] -translate-y-0'
-                        : 'border-2 border-[#75835D] -translate-y-1',
+                        : 'border border-[#75835D] -translate-y-1',
                       'flex flex-col justify-center items-center rounded-full p-2 header-last',
                     )}
                     onClick={toggleCarousel}
@@ -783,8 +806,8 @@ export default function Screen() {
           </div>
           <div className="text-center text-3xl blast-arena-last">Welcome to Lastman</div>
           <div className="flex flex-col gap-1 my-2 text-center body-last">
-            <p className="">Lastman is a battle royale on Blast</p>
-            <p className="">Play, outlast and yield ETH</p>
+            <p className="">Lastman is battle royale on Blast</p>
+            <p className="">Play, yield and outlast</p>
             <p className="">How long can you last?</p>
           </div>
           <div className="relative flex justify-center items-center">
