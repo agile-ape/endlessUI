@@ -411,7 +411,7 @@ export default function Admin() {
         <Button
           onClick={beginGame}
           variant="primary"
-          className="w-full h-8 rounded-xl px-4 py-2 text-md font-whitrabt"
+          className="w-full h-8 rounded-xl px-4 py-2 text-md font-digit"
         >
           Start Game
         </Button>

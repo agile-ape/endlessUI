@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex whitespace-nowrap focus:outline-none focus:ring-1 focus:ring-white focus:ring disabled:pointer-events-none items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+  ' \
+  inline-flex whitespace-nowrap focus:outline-none focus:ring-1 focus:ring-white focus:ring disabled:pointer-events-none items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
@@ -18,7 +19,7 @@ const buttonVariants = cva(
 
         /*-------------------- HEADER ---------------------*/
         // style text only. no bg. underline
-        link: 'text-gray-600 dark:text-gray-200 bg-transparent active:underline hover:underline underline-offset-4',
+        link: 'text-gray-600 dark:text-gray-400 bg-transparent active:underline hover:underline underline-offset-4',
 
         /*-------------------- GAME TAB ---------------------*/
         // enter and exit - purple
@@ -28,7 +29,7 @@ const buttonVariants = cva(
           // 'text-fuchsia-950 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 border-4 border-fuchsia-950 hover:text-fuchsia-50 hover:bg-fuchsia-700 hover:border-fuchsia-300 active:bg-fuchsia-500 ',
           // 'text-blue-100 shadow-xl hover:shadow-purple-50 bg-gradient-to-r from-purple-600 to-purple-500 border-4 border-purple-700 hover:text-purple-50 hover:bg-purple-700 hover:border-purple-300 active:bg-purple-500 ',
           // 'font-whitrabt text-2xl hover:text-3xl text-lime-400 bg-slate-200/10 hover:bg-slate-600/30 border-4 border-lime-400 hover:text-lime-200 hover:border-lime-200 active:text-lime-300 active:border-lime-300',
-          'font-whitrabt frame-last text-3xl text-primary-last bg-gradient-to-br from-[#11140C] to-[#75835D] hover:bg-gradient-to-br hover:from-[#75835D] hover:to-[#C3D4A5] hover:text-[#11140C] active:bg-opacity-60',
+          'digit-last text-4xl text-primary-last bg-gradient-to-br from-[#11140C] to-[#75835D] hover:bg-gradient-to-br hover:from-[#75835D] hover:to-[#C3D4A5] hover:text-[#11140C] active:bg-opacity-60',
 
         // gradient bg. 1 mode.
         wager:

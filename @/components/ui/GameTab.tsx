@@ -174,7 +174,7 @@ const GameTab = () => {
             ) : (
               <div className="mb-4">
                 <div className="flex flex-col gap-4 items-center justify-center">
-                  <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 text-xl">
+                  <div className="digit-last text-center px-10 py-1 leading-10 h-12 text-2xl">
                     Not logged in
                   </div>
                   <Image

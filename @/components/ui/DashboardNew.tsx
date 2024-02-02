@@ -267,7 +267,7 @@ export default function DashboardNew() {
   return (
     <div className="w-[85%] mx-auto flex flex-col mb-8 body-last">
       <div className="hidden sm:block flex flex-col">
-        <div className="flex items-center justify-center gap-2 my-2 frame-last">
+        <div className="flex items-center justify-center gap-2 my-2">
           <>
             <Image
               priority
@@ -486,7 +486,7 @@ export default function DashboardNew() {
           <Button
             onClick={logout}
             variant="primary"
-            className="w-9/12 h-12 rounded-xl text-2xl font-whitrabt"
+            className="w-9/12 h-12 rounded-xl text-2xl font-digit"
           >
             Log Out
           </Button>
@@ -494,7 +494,7 @@ export default function DashboardNew() {
           <Button
             onClick={login}
             variant="primary"
-            className="w-9/12 h-12 rounded-xl text-2xl font-whitrabt"
+            className="w-9/12 h-12 rounded-xl text-2xl font-digit"
           >
             Log In
           </Button>

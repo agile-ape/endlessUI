@@ -295,10 +295,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
         <div className="text-center">
           <p className="mb-2">Kick out Safehouse players...</p>
-          <p className="mb-2">
-            ...once it is <span className="font-headline night-last">Night</span> of their check out
-            round
-          </p>
+          <p className="mb-2">...once they overstay (Night of their check out round)</p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
             <p className="mb-2">Value of killed ticket does not go to killer.</p>
           </a>{' '}
@@ -376,8 +373,9 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 <input
                   type="text"
                   id="kickOut"
+                  placeholder="0"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                  className="font-digit w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />

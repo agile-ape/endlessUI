@@ -172,10 +172,6 @@ const WagerNew = () => {
       },
       {
         ...wagerContractObj,
-        functionName: 'fee',
-      },
-      {
-        ...wagerContractObj,
         functionName: 'feeMultiplier',
       },
     ],
@@ -190,8 +186,7 @@ const WagerNew = () => {
   const pfBetSize = data?.[6].result || BigInt(0)
   const dBetSize = data?.[7].result || BigInt(0)
   const endingPhase = data?.[8].result || BigInt(0)
-  const fee = Number(data?.[9].result || BigInt(0))
-  const feeMultiplier = Number(data?.[10].result || BigInt(0))
+  const feeMultiplier = Number(data?.[9].result || BigInt(0))
 
   const nextRoundFee = (round + 1) * feeMultiplier
 
@@ -208,6 +203,14 @@ const WagerNew = () => {
 
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => setIsModalOpen(false))
+
+  let fee: number
+
+  if (round === 0) {
+    fee = 1
+  } else if (round > 0 && stage === 1) {
+    fee = feeMultiplier * round
+  }
 
   let playerEnding: string = ''
   let playerEndingIndicator: string = ''
@@ -421,7 +424,7 @@ const WagerNew = () => {
           >
             <div
               className={cn(
-                radioValue === '4' ? 'bg-[#404833]/50' : '',
+                radioValue === '4' ? 'bg-[#FCFDC7]/50 dark:bg-[#404833]/50' : '',
                 'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
               )}
             >
@@ -488,7 +491,7 @@ const WagerNew = () => {
 
             <div
               className={cn(
-                radioValue === '5' ? 'bg-[#404833]/50' : '',
+                radioValue === '5' ? 'bg-[#FCFDC7]/50 dark:bg-[#404833]/50' : '',
                 'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
               )}
             >
@@ -554,7 +557,7 @@ const WagerNew = () => {
 
             <div
               className={cn(
-                radioValue === '6' ? 'bg-[#404833]/50' : '',
+                radioValue === '6' ? 'bg-[#FCFDC7]/50 dark:bg-[#404833]/50' : '',
                 'flex flex-col items-center border rounded-md border-zinc-300 dark:border-zinc-100 space-x-2',
               )}
             >
@@ -649,7 +652,7 @@ const WagerNew = () => {
                 type="text"
                 id="bet"
                 required
-                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                className="w-[12rem] font-digit text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                 value={betAmount}
                 placeholder="0.00"
                 onChange={(e) => setBetAmount(e.target.value)}
@@ -666,7 +669,7 @@ const WagerNew = () => {
                 Bet
               </Button>
 
-              <div className="whtrabt-last">
+              <div className="digit-last">
                 {!(active && status === 1) && <Prompt docLink={DOCS_URL_safehouse} />}
               </div>
             </div>
@@ -755,7 +758,7 @@ const WagerNew = () => {
             </div>
           )}
 
-          {status !== 2 && <div className="whtrabt-last">It's not time to claim winnings</div>}
+          {status !== 2 && <div className="digit-last">It's not time to claim winnings</div>}
         </div>
       </div>
     </div>

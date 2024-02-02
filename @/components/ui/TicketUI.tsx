@@ -5,7 +5,15 @@ import type { IApp, Ticket } from 'types/app'
 import Image from 'next/image'
 import { useAccount, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
-import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
+import {
+  cn,
+  formatAddress,
+  formatShortAddress,
+  formatCount,
+  formatNumber,
+  copyToClipboard,
+  statusPayload,
+} from '@/lib/utils'
 import { useStoreState } from '../../../store'
 import Attack from './_Attack'
 import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
@@ -22,6 +30,7 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import Modal from './Modal'
 import { Button } from './button'
 import OnSignal from './OnSignal'
+import { toast } from './use-toast'
 import {
   User,
   Menu,
@@ -43,6 +52,7 @@ import {
   LogOut,
   Dices,
   Gift,
+  Copy,
   Ticket,
   Sword,
   Axe,
@@ -526,6 +536,15 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     <Sword key={index} size={16} className="text-black"></Sword>
   ))
 
+  function copyAddress() {
+    copyToClipboard(ticketAddress || '')
+    toast({
+      variant: 'success',
+      title: 'Address copied',
+      description: 'Address copied to clipboard',
+    })
+  }
+
   return (
     <div
       className={`flex flex-col wiggle  mx-auto relative justify-center shadow-xl ${size} ${edge} ${
@@ -551,14 +570,17 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
         >
           <div className="flex justify-between gap-6">
             <p className="text-left"> User</p>
-            <p className="text-right italic">
-              {ticketLookFinal === 'guest' ? (
-                '-'
-              ) : (
-                <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
-                  {ensName ? ensName : formatAddress(ticketAddress)}
-                </a>
-              )}
+            <p className="text-right italic flex justify-center items-center">
+              <a
+                className="hover:underline"
+                href={`${BLOCK_EXPLORER}address/${ticketAddress}`}
+                target="_blank"
+              >
+                {ensName ? ensName : formatAddress(ticketAddress)}
+              </a>{' '}
+              <span onClick={copyAddress}>
+                <Copy size={18} className="ml-1 cursor-pointer" />
+              </span>
             </p>
           </div>
 
@@ -690,7 +712,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
               ) : (
                 <>
                   Player{' '}
-                  <span className="font-whitrabt">
+                  <span className="font-digit">
                     {' '}
                     <span className={h2}>#{String(id)}</span>
                   </span>
@@ -718,7 +740,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
           {/* rank */}
           {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div
-              className={`flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
+              className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
             >
               {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
               <div className={`uppercase font-semibold tracking-wider ${h1}`}>
@@ -730,7 +752,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
           {!(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
               <div className={`capitalize ${h3} opacity-50 leading-tight`}>{label}</div>
-              <div className={`uppercase font-whitrabt ${h1}`}>{value}</div>
+              <div className={`uppercase font-digit ${h1}`}>{value}</div>
             </div>
           )}
         </>

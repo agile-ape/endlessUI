@@ -2,8 +2,14 @@ import { TOKEN_ABI } from './abi/token'
 import { GAME_ABI } from './abi/game'
 import { BET_ENDING_ABI } from './abi/bet'
 import { WHITELIST_ABI } from './abi/whitelist'
+import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 
+/*---------------------------------------- ENV ---------------------------------------- */
 const isDevelopment = process.env.NODE_ENV === 'development'
+
+/*---------------------------------------- CHAIN ---------------------------------------- */
+export const CHAIN = baseGoerli
+export const CHAIN_ID = 84531
 
 /*---------------------------------------- API KEYS ---------------------------------------- */
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const

@@ -5,7 +5,7 @@ import { Button } from '../@/components/ui/button'
 function NotFound() {
   return (
     <div className="flex flex-col mx-auto gap-4 justify-center items-center mt-[50px] text-white text-2xl">
-      <p className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 font-whitrabt text-lime-700 dark:text-lime-300 rounded-xl capitalize">
+      <p className="text-sm mx-3 leading-tight sm:text-lg sm:leading-8 text-lime-700 dark:text-lime-300 rounded-xl capitalize">
         Hmm. Page not found...
       </p>
 

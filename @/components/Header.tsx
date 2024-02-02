@@ -35,7 +35,7 @@ import {
   GAMEMASTER_ADDRESS,
 } from '../../services/constant'
 import { useRouter } from 'next/router'
-import Admin from './ui/Admin'
+import Admin from './ui/_Admin'
 import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 import { toast } from '../components/ui/use-toast'
 import { useWindowSize } from '../../hooks/useWindowSize'
@@ -211,7 +211,7 @@ function Header() {
                         className=""
                       />
                     </div> */}
-                  <span className="ml-1 text-base font-whitrabt">
+                  <span className="ml-1 text-xl font-digit">
                     {authenticated ? (
                       formatShortAddress(String(address))
                     ) : (

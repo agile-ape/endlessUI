@@ -35,7 +35,7 @@ const WelcomeModal: React.FC<WelcomeModalType> = ({ toggleModal }) => {
           >
             <div className="rounded-t-sm">
               <div className="flex flex-col justify-center gap-1 items-center py-4">
-                <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 mx-2 rounded-lg text-2xl font-whitrabt font-semibold">
+                <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 mx-2 rounded-lg text-2xl font-semibold">
                   Play on mobile?
                 </p>
                 <Image

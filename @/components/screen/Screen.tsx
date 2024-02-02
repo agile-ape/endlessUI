@@ -85,6 +85,7 @@ import {
   Sparkle,
   Hexagon,
   RefreshCw,
+  ChevronsRight,
   Axe,
 } from 'lucide-react'
 import {
@@ -240,43 +241,67 @@ const arrayMobileAction: MobileActionType[] = [
 ]
 
 const actionColor: Record<string, string> = {
-  submit: 'text-green-600 dark:text-green-300 mr-1',
+  // submit: 'text-green-600 dark:text-green-300 mr-1',
+  submit: 'text-green-300 mr-1',
   // splitIt: 'text-amber-400 dark:text-amber-100 mr-1',
-  splitIt: 'text-green-600 dark:text-green-300 mr-1',
+  // splitIt: 'text-green-600 dark:text-green-300 mr-1',
+  splitIt: 'text-green-300 mr-1',
 
-  checkIn: 'text-blue-600 dark:text-blue-300 mr-1',
+  // checkIn: 'text-blue-600 dark:text-blue-300 mr-1',
+  checkIn: 'text-blue-300 mr-1',
   // checkOut: 'text-blue-400 dark:text-blue-100 mr-1',
-  checkOut: 'text-blue-600 dark:text-blue-300 mr-1',
+  // checkOut: 'text-blue-600 dark:text-blue-300 mr-1',
+  checkOut: 'text-blue-300 mr-1',
 
-  buyTicket: 'text-lime-700 dark:text-lime-400 mr-1',
+  // buyTicket: 'text-lime-700 dark:text-lime-400 mr-1',
+  buyTicket: 'text-lime-400 mr-1',
   // exitGame: 'text-red-600 dark:text-red-300 mr-1',
-  exitGame: 'text-lime-700 dark:text-lime-400 mr-1',
-  attack: 'text-orange-600 dark:text-orange-300 mr-1',
-  kickOut: 'text-orange-600 dark:text-orange-300 mr-1',
-  wager: 'text-stone-700 dark:text-stone-400 mr-1',
-  phaseChange: 'text-purple-700 dark:text-purple-400 mr-1',
-  token: 'text-pink-700 dark:text-pink-400 mr-1',
-  admin: 'text-pink-700 dark:text-pink-400 mr-1',
+  // exitGame: 'text-lime-700 dark:text-lime-400 mr-1',
+  exitGame: 'text-lime-400 mr-1',
+  // attack: 'text-orange-600 dark:text-orange-300 mr-1',
+  attack: 'text-orange-300 mr-1',
+  // kickOut: 'text-orange-600 dark:text-orange-300 mr-1',
+  kickOut: 'text-orange-300 mr-1',
+  // wager: 'text-stone-700 dark:text-stone-400 mr-1',
+  wager: 'text-stone-400 mr-1',
+  // phaseChange: 'text-purple-700 dark:text-purple-400 mr-1',
+  phaseChange: 'text-primary-last mr-1',
+  // token: 'text-pink-700 dark:text-pink-400 mr-1',
+  token: 'text-pink-400 mr-1',
+  // admin: 'text-pink-700 dark:text-pink-400 mr-1',
+  admin: 'text-pink-400 mr-1',
 }
 
 const iconMapping: { [key: string]: JSX.Element } = {
-  submit: <Send className="text-green-600 dark:text-green-300 mr-1" />,
+  // submit: <Send className="text-green-600 dark:text-green-300 mr-1" />,
+  submit: <Send className="text-green-300 mr-1" />,
   // splitIt: <Split className="text-amber-400 dark:text-amber-100 mr-1" />,
-  splitIt: <Split className="text-green-600 dark:text-green-300 mr-1" />,
-  checkIn: <LogIn className="text-blue-600 dark:text-blue-300 mr-1" />,
+  // splitIt: <Split className="text-green-600 dark:text-green-300 mr-1" />,
+  splitIt: <Split className="text-green-300 mr-1" />,
+  // checkIn: <LogIn className="text-blue-600 dark:text-blue-300 mr-1" />,
+  checkIn: <LogIn className="text-blue-300 mr-1" />,
   // checkOut: <LogOut className="text-blue-400 dark:text-blue-100 mr-1" />,
-  checkOut: <LogOut className="text-blue-600 dark:text-blue-300 mr-1" />,
+  // checkOut: <LogOut className="text-blue-600 dark:text-blue-300 mr-1" />,
+  checkOut: <LogOut className="text-blue-300 mr-1" />,
 
-  buyTicket: <Ticket2 className="text-lime-700 dark:text-lime-400 mr-1" />,
+  // buyTicket: <Ticket2 className="text-lime-700 dark:text-lime-400 mr-1" />,
+  buyTicket: <Ticket2 className="text-lime-400 mr-1" />,
   // exitGame: <DoorOpen className="text-red-600 dark:text-red-300 mr-1" />,
-  exitGame: <DoorOpen className="text-lime-700 dark:text-lime-400 mr-1" />,
+  // exitGame: <DoorOpen className="text-lime-700 dark:text-lime-400 mr-1" />,
+  exitGame: <DoorOpen className="text-lime-400 mr-1" />,
 
-  attack: <Sword className="text-orange-600 dark:text-orange-300 mr-1" />,
-  kickOut: <Axe className="text-orange-600 dark:text-orange-300 mr-1" />,
-  wager: <Dices className="text-stone-700 dark:text-stone-400 mr-1" />,
-  phaseChange: <RefreshCw className="text-purple-700 dark:text-purple-400 mr-1" />,
-  token: <Gift className="text-pink-700 dark:text-pink-400 mr-1" />,
-  admin: <Sparkle className="text-pink-700 dark:text-pink-400 mr-1" />,
+  // attack: <Sword className="text-orange-600 dark:text-orange-300 mr-1" />,
+  attack: <Sword className="text-orange-300 mr-1" />,
+  // kickOut: <Axe className="text-orange-600 dark:text-orange-300 mr-1" />,
+  kickOut: <Axe className="text-orange-300 mr-1" />,
+  // wager: <Dices className="text-stone-700 dark:text-stone-400 mr-1" />,
+  wager: <Dices className="text-stone-400 mr-1" />,
+  // phaseChange: <RefreshCw className="text-purple-700 dark:text-purple-400 mr-1" />,
+  phaseChange: <ChevronsRight className="text-primary-last mr-1" />,
+  // token: <Gift className="text-pink-700 dark:text-pink-400 mr-1" />,
+  token: <Gift className="text-pink-400 mr-1" />,
+  // admin: <Sparkle className="text-pink-700 dark:text-pink-400 mr-1" />,
+  admin: <Sparkle className="text-pink-400 mr-1" />,
   // dashboard: <Send className="text-green-50 mr-1" />,
 }
 
@@ -449,7 +474,7 @@ export default function Screen() {
               width={200}
               alt="dancing-pepe"
             />
-            <p className="text-xl whtrabt-last">Connecting to the ether...</p>
+            <p className="text-xl digit-last">Connecting to the ether...</p>
           </div>
         ) : xs ? (
           // If on phone
@@ -461,7 +486,7 @@ export default function Screen() {
               >
                 <div className="text-3xl text-center">
                   {actionView === 'submit' && <p>Submit</p>}
-                  {actionView === 'exitGame' && <p>Exit Game</p>}
+                  {actionView === 'exitGame' && <p>Exit Arena</p>}
                   {actionView === 'checkIn' && <p>Check In</p>}
                   {actionView === 'checkOut' && <p>Check Out</p>}
                   {actionView === 'splitIt' && <p>Split Pot</p>}
@@ -531,7 +556,7 @@ export default function Screen() {
                           <div className="mb-4">
                             <div className="flex flex-col gap-2 items-center justify-center">
                               {/* <div className="text-xl">Login to join the fun</div> */}
-                              <div className="whtrabt-last text-center px-10 py-1 leading-10 h-12 text-2xl">
+                              <div className="digit-last text-center px-10 py-1 leading-10 h-12 text-2xl">
                                 Not logged in
                               </div>
                               <Image
@@ -761,7 +786,7 @@ export default function Screen() {
                 <PopoverContent
                   side="right"
                   align="end"
-                  className="header-last border-2 border-[#FCFDC7]"
+                  className="header-last bg-[#FCFDC7]/90 dark:bg-[#404833]/90"
                 >
                   <div className="flex flex-col gap-2 py-2 px-0">
                     <Indicator />
@@ -804,7 +829,9 @@ export default function Screen() {
           <div className="sm:hidden flex justify-center mx-auto py-3">
             <Logo />
           </div>
-          <div className="text-center text-3xl blast-arena-last">Welcome to Lastman</div>
+          <div className="text-center text-4xl font-digit text-[#404833] dark:text-[#FCFC03]">
+            Welcome to Lastman
+          </div>
           <div className="flex flex-col gap-1 my-2 text-center body-last">
             <p className="">Lastman is battle royale on Blast</p>
             <p className="">Play, yield and outlast</p>
@@ -844,7 +871,7 @@ export default function Screen() {
             <Button
               onClick={enter}
               variant="primary"
-              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl sm:text-lg font-whitrabt`}
+              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
             >
               Log In
             </Button>
@@ -852,7 +879,7 @@ export default function Screen() {
             <Button
               onClick={guest}
               variant="secondary"
-              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl sm:text-lg font-whitrabt`}
+              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
             >
               Explore
             </Button>

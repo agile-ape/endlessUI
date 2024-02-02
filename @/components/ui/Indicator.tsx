@@ -25,7 +25,7 @@ export default function Indicator() {
                   src={`/indicator/${indicator}`}
                   height={300}
                   width={xs ? 75 : 100}
-                  className="h-auto"
+                  className="h-auto cursor-default"
                   alt={`${indicator}`}
                 />
               </TooltipTrigger>

@@ -245,13 +245,9 @@ const Submit = () => {
 
       <div className="text-center">
         <p className="mb-2">Solve captcha to reveal word.</p>
-        <p className="mb-2">
-          Submit word in the <span className="font-headline day-last">Day</span>.
-        </p>
-        <p className="mb-2">
-          So others can't kill you at <span className="font-headline night-last">Night</span>.
-        </p>
-        <a href={DOCS_URL_submit} target="_blank" className="link h6-last align-top">
+        <p className="mb-2">Submit word for Pepe Protection.</p>
+        <p className="mb-2">So others can't kill you in the night.</p>
+        <a href={DOCS_URL_submit} target="_blank" className="h6-last align-top">
           Learn more
         </a>
       </div>
@@ -279,7 +275,7 @@ const Submit = () => {
             </>
           ) : (
             <>
-              <div className="text-center whtrabt-last">Not time to submit</div>
+              <div className="text-center digit-last">Not time to submit</div>
             </>
           )}
         </div>
@@ -322,7 +318,7 @@ const Submit = () => {
               fontSize: '36px',
             }}
             placeholder="****"
-            className="dark:text-white text-black "
+            className="dark:text-white text-black font-digit"
           />
 
           <Button
@@ -339,7 +335,7 @@ const Submit = () => {
             Submit
           </Button>
         </div>
-        <div className="whtrabt-last">
+        <div className="digit-last">
           {ticketStatusString === 'safe' ? <>In Safehouse</> : <Prompt docLink={DOCS_URL_submit} />}
         </div>
       </div>

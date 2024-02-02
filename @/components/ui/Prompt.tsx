@@ -30,7 +30,7 @@ const Prompt: FC<PromptType> = ({ docLink }) => {
         <a
           href={docLink}
           target="_blank"
-          className="flex whtrabt-last text-base \
+          className="flex digit-last text-base \
           hover:text-[#75835D] dark:hover:text-[#FCFC03] \
           active:bg-opacity-50"
         >

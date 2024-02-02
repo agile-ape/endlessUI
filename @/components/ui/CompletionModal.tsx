@@ -248,7 +248,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
         >
           <div className="rounded-t-sm">
             <div className="flex flex-col justify-center gap-1 items-center pt-5">
-              <p className="text-lime-700 text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-whitrabt font-semibold">
+              <p className="text-center border bg-slate-100/50 px-4 py-2 rounded-lg text-2xl font-digit text-[#404833]">
                 {title}
               </p>
               <Image

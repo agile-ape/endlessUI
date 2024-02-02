@@ -115,7 +115,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
           >
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={pageProps.metadata} phase={data?.phase || 'night'}>
+            <Layout metadata={pageProps.metadata} phase={data?.phase || 'deployed'}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>

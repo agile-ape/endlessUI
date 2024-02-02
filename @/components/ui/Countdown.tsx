@@ -41,6 +41,7 @@ import {
   Ticket,
   Sword,
   RefreshCw,
+  ChevronsRight,
   Axe,
 } from 'lucide-react'
 
@@ -62,14 +63,14 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
-const bgColorPhase: Record<string, string> = {
-  start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
-  day: 'text-white border border-white bg-green-600 hover:bg-green-700',
-  night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
-  lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
-  peacefound: 'bg-blue-800 hover:bg-blue-900',
-  drain: 'bg-red-400 hover:bg-red-500',
-}
+// const bgColorPhase: Record<string, string> = {
+//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
+//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
+//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
+//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
+//   peacefound: 'bg-blue-800 hover:bg-blue-900',
+//   drain: 'bg-red-400 hover:bg-red-500',
+// }
 
 export default function Countdown() {
   const phase = useStoreState((state) => state.phase)
@@ -205,31 +206,27 @@ export default function Countdown() {
       {phase === 'deployed' || phase === 'gameclosed' ? (
         <></>
       ) : (
-        <div className="text-light-last dark:text-dark-last gap-1">
+        <div className="text-[#FCFDC7] gap-1">
           <div className="flex justify-center items-end">
             {timeLeft && !isNaN(timeLeft) ? (
               <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <div className="text-4xl sm:text-2xl border-2 border-lime-800 shadow-md rounded-md px-4 py-0 flex flex-row gap-0.5">
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).hours}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          hrs
+                    <div className="p-1 bg-[#39402e] rounded-md cursor-default">
+                      <div className="font-digit text-2xl shadow-xl rounded-md px-4 py-0 flex flex-row gap-1 bg-[#404833] border-2 border-[#404833]">
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).hours}
+                          <div className="uppercase text-sm text-center">hr</div>
                         </div>
-                      </div>
-                      :
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).minutes}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          mins
+                        :
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).minutes}
+                          <div className="uppercase text-sm text-center">min</div>
                         </div>
-                      </div>
-                      :
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).seconds}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          secs
+                        :
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).seconds}
+                          <div className="uppercase text-sm text-center">sec</div>
                         </div>
                       </div>
                     </div>
@@ -289,7 +286,7 @@ export default function Countdown() {
                     onClick={togglePhaseChange}
                   >
                     <OnSignal active={phaseChangeActive} own={true} />
-                    <RefreshCw size={20} className="mr-1" />
+                    <ChevronsRight size={20} className="mr-1" />
                     Change phase
                   </Button>
                 )}

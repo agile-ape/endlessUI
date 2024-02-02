@@ -295,8 +295,8 @@ export const SplitPotNew = () => {
 
       <div className="text-center">
         <p className="mb-2">Vote to split once Stage 2 comes.</p>
-        <p className="mb-2">Games ends if Yes hits threshold.</p>
-        <p className="mb-2">Players share remaining pot.</p>
+        <p className="mb-2">Games end once Yes hits threshold.</p>
+        <p className="mb-2">Players then share remaining pot.</p>
         <a href={DOCS_URL_split} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
@@ -390,7 +390,7 @@ export const SplitPotNew = () => {
                         </TooltipProvider> */}
               </div>
             </div>
-            <div className="whtrabt-last text-center">
+            <div className="digit-last text-center">
               {stage === 2 || stage === 3 ? (
                 voteCount < thresholdCount ? (
                   <p>{thresholdCount - voteCount} more vote(s) to go</p>

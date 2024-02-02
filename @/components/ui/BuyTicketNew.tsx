@@ -258,7 +258,7 @@ const BuyTicketNew = () => {
             <input
               type="text"
               id="buddy"
-              className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+              className="w-[6rem] font-digit text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
               placeholder={buddyValue}
               onChange={(e) => setBuddyValue(e.target.value)}
             />

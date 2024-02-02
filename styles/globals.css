@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital@1&display=swap');
-
-@font-face {
-  font-family: 'chakra';
-  src: url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital@1&display=swap');
-}
-
 body {
   font-family: 'VT323', monospace;
 }
@@ -21,6 +14,14 @@ body {
   src: url('/fonts/headline.ttf');
 }
 
+@font-face {
+  font-family: 'digit';
+  src: url('/fonts/dsdigit.ttf');
+}
+
+.font-digit {
+  font-family: 'digit', monospace;
+}
 /* @font-face {
   font-family: 'typewriter';
   src: url('/fonts/typewriter.ttf');
@@ -188,9 +189,9 @@ body {
     @apply border-[#FCFDC7];
   }
 
-  .frame-last {
+  /* .frame-last {
     @apply rounded-tr-md rounded-bl-md [clip-path:polygon(20px_0,100%_0,100%_50%,calc(100%-20px)_100%,0_100%,0_50%)];
-  }
+  } */
 
   .logo-last {
     /* @apply text-[#11140C] bg-[#FCFC03]; */
@@ -230,19 +231,13 @@ body {
 
   /* links */
   .h6-last {
-    @apply text-xl sm:text-sm md:text-base leading-tight text-gray-500 dark:text-gray-200;
+    @apply text-xl sm:text-sm md:text-base leading-tight text-gray-500 dark:text-gray-400;
   }
 
-  .whtrabt-last {
+  .digit-last {
     /* @apply font-whitrabt text-lime-700 dark:text-lime-300; */
     /* @apply font-whitrabt text-[#FCF03F] dark:text-[#FCF03F]; */
-    @apply font-whitrabt text-[#404833] dark:text-[#FCFDC7];
-  }
-
-  .blast-arena-last {
-    /* @apply font-whitrabt text-lime-700 dark:text-lime-300; */
-    /* @apply font-whitrabt text-[#FCF03F] dark:text-[#FCF03F]; */
-    @apply font-whitrabt text-[#404833] dark:text-[#FCFC03];
+    @apply font-digit text-[#404833] dark:text-[#FCFDC7];
   }
 
   .round-last {

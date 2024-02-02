@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import Modal from './Modal'
 
-import Admin from './Admin'
+import Admin from './_Admin'
 import AdminNew from './AdminNew'
 
 import SubmitNewKeywordModal from './Submit'
@@ -127,7 +127,7 @@ const UserActions = () => {
         >
           <OnSignal active={submitActive} own={true} />
           <Send size={20} className="text-green-50 mr-1" />
-          Submit Keyword
+          Submit
         </Button>
 
         <Button
@@ -137,7 +137,7 @@ const UserActions = () => {
         >
           <OnSignal active={splitActive} own={true} />
           <Split size={20} className="text-amber-950 mr-1" />
-          Split Pot
+          Split
         </Button>
       </div>
       <div

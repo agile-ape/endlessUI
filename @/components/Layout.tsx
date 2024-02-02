@@ -96,7 +96,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     fetcher,
   )
 
-  if (ticketsData?.data?.length) {
+  if (ticketsData?.data.length) {
     const ticketList = transformToTicket(ticketsData?.data).filter(
       (item) => item.user !== '0x0000000000000000000000000000000000000000',
     )
@@ -337,7 +337,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       minimumFractionDigits: 0,
     })
 
-    console.log(Number(tokenBalance))
+    console.log(phase)
     console.log(tokenBalance)
 
     updateRound(Number(round))
