@@ -343,11 +343,13 @@ export default function Screen() {
   }
 
   // Login / Logout
-  const [expanded, setExpanded] = useState<boolean>(() => {
-    const expanded = localStorage.getItem('expanded')
-    const result = expanded ? JSON.parse(expanded) : false
-    return result
-  })
+  // const [expanded, setExpanded] = useState<boolean>(() => {
+  //   const expanded = localStorage.getItem('expanded')
+  //   const result = expanded ? JSON.parse(expanded) : false
+  //   return result
+  // })
+
+  const [expanded, setExpanded] = useState<boolean>(false)
 
   const { logout } = useLogout({
     onSuccess: () => {
@@ -369,7 +371,7 @@ export default function Screen() {
       }, 2000)
 
       setExpanded(true)
-      localStorage.setItem('expanded', 'true')
+      // localStorage.setItem('expanded', 'true')
 
       toast({
         variant: 'success',
@@ -410,8 +412,10 @@ export default function Screen() {
 
   function guest() {
     setExpanded(true)
-    localStorage.setItem('expanded', 'true')
+    // localStorage.setItem('expanded', 'true')
   }
+
+  function pwa() {}
 
   const [isToggled, setIsToggled] = useState(false)
 
@@ -883,6 +887,14 @@ export default function Screen() {
             >
               Explore
             </Button>
+
+            {/* <Button
+              onClick={pwa}
+              variant="secondary"
+              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
+            >
+              Play on mobile
+            </Button> */}
           </div>
         </div>
       )}

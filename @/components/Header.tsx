@@ -24,7 +24,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import { useAccount } from 'wagmi'
-import WelcomeModal from './ui/WelcomeModal'
+import PWADrawer from './ui/PWADrawer'
 import CompletionModal from './ui/CompletionModal'
 import { cn, formatAddress, formatShortAddress } from '@/lib/utils'
 import {
@@ -57,11 +57,11 @@ function Header() {
   const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
   const toggleToken = () => setShowTokenModal((prevState) => !prevState)
 
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false)
+  // const [showPWADrawer, setShowPWADrawer] = useState<boolean>(false)
 
-  const toggleWelcomeModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-  }
+  // const togglePWADrawer = () => {
+  //   setShowPWADrawer((prevState) => !prevState)
+  // }
 
   // const { login } = useLogin({
   //   onComplete: () => {
@@ -78,9 +78,9 @@ function Header() {
   //   setHoveredHeader(index)
   // }
 
-  const isActive = (href: string) => {
-    return router.pathname === href
-  }
+  // const isActive = (href: string) => {
+  //   return router.pathname === href
+  // }
 
   return (
     <>
@@ -139,13 +139,8 @@ function Header() {
               >
               Quickstart
             </Link> */}
-              <Button
-                variant="link"
-                className={`px-2 text-lg`}
-                size="sm"
-                onClick={toggleWelcomeModal}
-              >
-                Mobile
+              <Button variant="link" className={`px-2 text-lg`} size="sm">
+                <PWADrawer />
               </Button>
 
               <a href={DOCS_URL} target="_blank">
@@ -228,7 +223,7 @@ function Header() {
       </div>
       {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
       {/* {showTokenModal && <Modal action={'token'} toggle={toggleToken} />} */}
-      {showWelcomeModal && <WelcomeModal toggleModal={toggleWelcomeModal} />}
+      {/* {showPWADrawer && <PWADrawer toggleModal={togglePWADrawer} />} */}
     </>
     // </div>
   )
