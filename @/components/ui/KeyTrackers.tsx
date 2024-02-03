@@ -104,7 +104,7 @@ const KeyTrackers = () => {
       <span className="inline sm:hidden">
         <Popover>
           <PopoverTrigger>
-            <div className="flex flex-row gap-3 items-center py-0 sm:py-2 h4-last">
+            <div className="flex flex-row gap-3 items-center py-0 sm:py-2">
               <div className="flex flex-row items-center cursor-default text-md tracking-wide">
                 <CookingPot size={24} className="mr-1" />
                 <div className="text-2xl flash tracking-wide">{currentPot}</div>

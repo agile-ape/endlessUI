@@ -294,10 +294,10 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Kick out Safehouse players...</p>
-          <p className="mb-2">...once they overstay (Night of their check out round)</p>
+          <p className="mb-2">Kick out and kill overstayers.</p>
+          <p className="mb-2">Players overstay once it is night of their check out round</p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
-            <p className="mb-2">Value of killed ticket does not go to killer.</p>
+            <p className="mb-2">Value of killed ticket drops to next valid ticket.</p>
           </a>{' '}
           <a href={DOCS_URL_kickout} target="_blank" className="link h6-last align-top">
             Learn more

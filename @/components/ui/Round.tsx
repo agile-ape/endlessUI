@@ -37,7 +37,7 @@ const Round = () => {
   const levelUp = Number(data?.[0].result || 0)
 
   const On = 'font-medium tracking-wider'
-  const Off = 'text-zinc-400 dark:text-zinc-400 tracking-tight'
+  const Off = 'text-zinc-500 dark:text-zinc-300 tracking-tight'
 
   return (
     <TooltipProvider delayDuration={10}>

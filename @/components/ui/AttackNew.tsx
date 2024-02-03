@@ -453,11 +453,11 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Players dies if no protection.</p>
-          <p className="mb-2">Attacks get $LAST tokens.</p>
+          <p className="mb-2">Attacked player dies if no Pepe Protection.</p>
+          <p className="mb-2">Attacker get $LAST tokens.</p>
           <p className="mb-2">Each player can only be attacked once per round.</p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
-            <p className="mb-2">Value of killed ticket does not go to killer.</p>
+            <p className="mb-2">Value of killed ticket drops to next valid ticket.</p>
           </a>{' '}
           <a href={DOCS_URL_attack} target="_blank" className="link h6-last align-top">
             Learn more

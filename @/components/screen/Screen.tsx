@@ -736,9 +736,9 @@ export default function Screen() {
                                 className={cn(
                                   actionColor[action.category],
                                   actionView === action.mobileAction
-                                    ? 'border-2 bg-[#11140C] border-[#FCFC03] bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
-                                    : '',
-                                  'py-2 px-3 flex flex-col justify-center items-center rounded-lg',
+                                    ? 'py-1 border-2 bg-[#11140C] border-[#FCFC03] bg-opacity-100 dark:bg-opacity-100 shadow-lg text-xl'
+                                    : 'py-2 text-lg',
+                                  'px-3 flex flex-col justify-center items-center rounded-lg',
                                 )}
                                 onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
                               >
@@ -755,7 +755,7 @@ export default function Screen() {
                                     alt="player-action"
                                   /> */}
                                 {React.cloneElement(iconMapping[action.mobileAction], {
-                                  size: actionView === action.mobileAction ? 38 : 34,
+                                  size: actionView === action.mobileAction ? 40 : 36,
                                 })}
 
                                 <div className="whitespace-nowrap">{action.label}</div>
@@ -786,7 +786,7 @@ export default function Screen() {
                 <PopoverContent
                   side="right"
                   align="end"
-                  className="header-last bg-[#FCFDC7]/90 dark:bg-[#404833]/90"
+                  className="header-last bg-[#9BA885] dark:bg-[#404833] border-2 border-[#FCFC03] dark:border-[#FCFC03]"
                 >
                   <div className="flex flex-col gap-2 py-2 px-0">
                     <Indicator />

@@ -204,7 +204,7 @@ const WagerNew = () => {
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  let fee: number
+  let fee: number = 0
 
   if (round === 0) {
     fee = 1

@@ -345,7 +345,7 @@ const ExitGameNew = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Lastman</p>
+              <p className="text-left">Lastman gets</p>
               <p className="text-right">
                 {/* {Number(lastManClaim)} ETH  */}
                 {formatNumber(lastManClaim, {

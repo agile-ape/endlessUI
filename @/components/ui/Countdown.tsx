@@ -261,11 +261,11 @@ export default function Countdown() {
                 {/* <PhaseChange /> */}
 
                 {xs ? (
-                  <div className="flex text-xl">
+                  <div className="flex text-xl text-[#404833] dark:text-[#FCFC03]">
                     <span>Use </span>
-                    <span className="text-blue-600 dark:text-blue-300 flex mr-1">
+                    <span className="flex mr-1">
                       {' '}
-                      <Image
+                      {/* <Image
                         priority
                         src={
                           forcedTheme === 'light' ? `/icon/phaseLight.svg` : `/icon/phaseNight.svg`
@@ -274,8 +274,11 @@ export default function Countdown() {
                         height={20}
                         width={20}
                         alt="change-phase"
-                      />
-                      Phase
+                      /> */}
+                      <p className="flex justify-center items-center">
+                        <ChevronsRight className="" />
+                        Phase
+                      </p>
                     </span>
                     to change phase
                   </div>
