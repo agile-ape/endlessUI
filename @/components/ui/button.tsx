@@ -110,6 +110,7 @@ const buttonVariants = cva(
         secondary:
           'text-secondary-last bg-secondary-last border border-secondary-last hover:bg-opacity-50',
 
+        tertiary: 'text-[#404833] bg-[#FCFDC7] border-2 border-[#404833] hover:bg-opacity-50',
         // 'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
         //   dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-900 \
         //   active:bg-indigo-100',

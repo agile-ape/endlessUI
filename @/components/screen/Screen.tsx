@@ -17,6 +17,7 @@ import WagerNew from '../ui/WagerNew'
 import TokenNew from '../ui/TokenNew'
 import PhaseChangeNew from '../ui/PhaseChangeNew'
 import AdminNew from '../ui/AdminNew'
+import PWADrawer from '../ui/PWADrawer'
 
 import BuyTicketNew from '../ui/BuyTicketNew'
 
@@ -882,19 +883,18 @@ export default function Screen() {
 
             <Button
               onClick={guest}
-              variant="secondary"
+              variant="primary"
               className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
             >
               Explore
             </Button>
 
-            {/* <Button
-              onClick={pwa}
+            <Button
               variant="secondary"
               className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
             >
-              Play on mobile
-            </Button> */}
+              <PWADrawer />
+            </Button>
           </div>
         </div>
       )}

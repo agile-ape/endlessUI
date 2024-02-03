@@ -13,7 +13,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Share, PlusSquare, Key } from 'lucide-react'
+import { Share, PlusSquare, Key, MoreVertical } from 'lucide-react'
+import { useWindowSize } from '../../../hooks/useWindowSize'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 // interface PWADrawerType {
 //   toggleModal: () => void
@@ -22,6 +32,18 @@ import { Share, PlusSquare, Key } from 'lucide-react'
 // const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
 function PWADrawer() {
+  const { xs } = useWindowSize()
+
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+  const isAndroid = /Android/i.test(navigator.userAgent)
+  if (isIOS) {
+    console.log('This is an iOS device')
+  } else if (isAndroid) {
+    console.log('This is an Android device')
+  } else {
+    console.log('This is neither an iOS nor an Android device')
+  }
+
   // const [showWelcomeModal, setShowWelcomeModal] = useState(false)
   // const toggle = () => {
   //   setShowWelcomeModal((prevState) => !prevState)
@@ -89,43 +111,108 @@ function PWADrawer() {
     //   </div>
     //   </div>
 
-    <Drawer>
-      <DrawerTrigger>Mobile</DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="mx-auto">
-          <DrawerTitle className="font-normal flex justify-center items-center h2-last">
-            Play on mobile?
-          </DrawerTitle>
-          <DrawerDescription className="body-last">
-            <div className="flex flex-col justify-center items-center">
-              <Image
-                priority
-                src={`/faces/choose.svg`}
-                height={152}
-                width={152}
-                alt={`enter pepe`}
-              />
-              <div className="h3-last">To install the app from Safari on iOS:</div>
-              <div className="w-full flex justify-start my-1">
-                <Share className="mr-1" />
-                1. Tap Share
+    xs ? (
+      <Drawer>
+        <DrawerTrigger>Mobile</DrawerTrigger>
+        <DrawerContent className="bg-[#404833] text-white">
+          <DrawerHeader className="mx-auto">
+            <DrawerTitle className="font-digit text-3xl font-normal flex justify-center items-center">
+              Play on mobile?
+            </DrawerTitle>
+            <DrawerDescription className="text-white">
+              <div className="flex flex-col justify-center items-center">
+                <Image
+                  priority
+                  src={`/faces/choose.svg`}
+                  height={152}
+                  width={152}
+                  className="my-2"
+                  alt={`enter pepe`}
+                />
+
+                {isIOS ? (
+                  <div className="text-xl">
+                    <div className="text-xl">To install the app from Safari on iOS:</div>
+                    <div className="w-full flex justify-start my-1">
+                      <Share className="mr-1" />
+                      1. Tap Share
+                    </div>
+                    <div className="w-full flex justify-start my-1">
+                      <PlusSquare className="mr-1" />
+                      2. Swipe up and tap Add to Home Screen
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xl">
+                    <div className="text-xl">To install the app:</div>
+                    <div className="w-full flex justify-start my-1">
+                      <MoreVertical className="mr-1" />
+                      1. Tap the More icon
+                    </div>
+                    <div className="w-full flex justify-start my-1">
+                      <PlusSquare className="mr-1" />
+                      2. Add to Home Screen or Install App
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="w-full flex justify-start my-1">
-                <PlusSquare className="mr-1" />
-                2. Swipe up and tap Add to Home Screen
+            </DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <DrawerClose></DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    ) : (
+      <Dialog>
+        <DialogTrigger>Mobile</DialogTrigger>
+        <DialogContent className="bg-[#404833] text-white">
+          <DialogHeader className="mx-auto">
+            <DialogTitle className="font-digit text-3xl font-normal flex justify-center items-center">
+              Play on mobile?
+            </DialogTitle>
+            <DialogDescription className="text-white">
+              <div className="flex flex-col justify-center items-center">
+                <Image
+                  priority
+                  src={`/faces/choose.svg`}
+                  height={152}
+                  width={152}
+                  className="my-2"
+                  alt={`enter pepe`}
+                />
+
+                {isIOS ? (
+                  <div className="text-xl">
+                    <div className="text-xl">To install the app from Safari on iOS:</div>
+                    <div className="w-full flex justify-start my-1">
+                      <Share className="mr-1" />
+                      1. Tap Share
+                    </div>
+                    <div className="w-full flex justify-start my-1">
+                      <PlusSquare className="mr-1" />
+                      2. Swipe up and tap Add to Home Screen
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xl">
+                    <div className="">To install the app:</div>
+                    <div className="w-full flex justify-start my-1">
+                      <MoreVertical className="mr-1" />
+                      1. Tap the More icon
+                    </div>
+                    <div className="w-full flex justify-start my-1">
+                      <PlusSquare className="mr-1" />
+                      2. Add to Home Screen or Install App
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="w-full flex justify-start my-1">
-                <Key className="mr-1" />
-                3. Login with the same login method to access the same account
-              </div>
-            </div>
-          </DrawerDescription>
-        </DrawerHeader>
-        <DrawerFooter>
-          <DrawerClose></DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    )
   )
 }
 
