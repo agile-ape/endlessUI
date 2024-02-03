@@ -484,7 +484,7 @@ export default function Screen() {
                 onClick={scrollToTop}
                 className="sticky top-0 header-last flex flex-col py-2 items-center z-[1]"
               >
-                <div className="text-3xl text-center">
+                <div className="font-digit text-3xl text-center">
                   {actionView === 'submit' && <p>Submit</p>}
                   {actionView === 'exitGame' && <p>Exit Arena</p>}
                   {actionView === 'checkIn' && <p>Check In</p>}
@@ -530,7 +530,7 @@ export default function Screen() {
                                 className="rounded-full px-10 py-1 leading-10 h-12 my-4 text-2xl"
                                 onClick={() => wagerAction()}
                               >
-                                Ending?
+                                Bet Ending
                               </Button>
                             )
                           ) : (
@@ -603,7 +603,7 @@ export default function Screen() {
                         target="_blank"
                         className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
                       >
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        <p className="h2-last flex items-center text-[#404833] dark:text-[#FCFDC7]">
                           How To Play{' '}
                           <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
@@ -614,7 +614,7 @@ export default function Screen() {
                         target="_blank"
                         className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
                       >
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        <p className="h2-last flex items-center text-[#404833] dark:text-[#FCFDC7]">
                           Follow <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Follow us for updates (mostly memes)</p>
@@ -624,7 +624,7 @@ export default function Screen() {
                         target="_blank"
                         className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
                       >
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        <p className="h2-last flex items-center text-[#404833] dark:text-[#FCFDC7]">
                           Community <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Join the community</p>
@@ -634,7 +634,7 @@ export default function Screen() {
                         target="_blank"
                         className="flex flex-col mb-4 border py-2 px-4 shadow-xl rounded-xl"
                       >
-                        <p className="h2-last flex items-center text-indigo-700 dark:text-indigo-300">
+                        <p className="h2-last flex items-center text-[#404833] dark:text-[#FCFDC7]">
                           Blog <ExternalLink size={18} className="text-sm ml-1"></ExternalLink>{' '}
                         </p>
                         <p className="body-last">Read about our latest progress</p>
@@ -738,7 +738,7 @@ export default function Screen() {
                                   actionView === action.mobileAction
                                     ? 'border-2 bg-[#11140C] border-[#FCFC03] bg-opacity-100 dark:bg-opacity-100 shadow-lg text-lg'
                                     : '',
-                                  'py-1 px-3 flex flex-col justify-center items-center rounded-lg',
+                                  'py-2 px-3 flex flex-col justify-center items-center rounded-lg',
                                 )}
                                 onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
                               >
@@ -775,7 +775,7 @@ export default function Screen() {
               <Popover data-state={isToggled ? 'open' : 'closed'}>
                 <PopoverTrigger
                   className={cn(
-                    isCarouselVisible ? 'bottom-40 left-1 fixed' : 'bottom-24 left-3 fixed',
+                    isCarouselVisible ? 'bottom-44 left-1 fixed' : 'bottom-24 left-3 fixed',
                     '',
                   )}
                 >

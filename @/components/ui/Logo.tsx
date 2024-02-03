@@ -47,7 +47,7 @@ export default function Logo() {
     <>
       {/* <div className="relative p-1 m-1 bg-[#39402e] rounded-md"> */}
       <div
-        className="rounded-md px-2 py-0 text-[32px] bg-[#404833] shadow-sm text-[#FCFDC7] \
+        className="rounded-md px-2 py-0 text-[32px] h-12 bg-[#404833] shadow-sm text-[#FCFDC7] \
           capitalized font-digit cursor-default"
       >
         last

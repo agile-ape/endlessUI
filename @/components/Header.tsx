@@ -197,7 +197,7 @@ function Header() {
 
                 <Button
                   variant="primary"
-                  className="rounded-xl flex p-1 md:px-4 md:py-2 items-center justify-center"
+                  className="h-12 rounded-xl flex p-1 md:px-4 md:py-2 items-center justify-center"
                   onClick={toggleDashboard}
                 >
                   {/* <div className="relative p-3">

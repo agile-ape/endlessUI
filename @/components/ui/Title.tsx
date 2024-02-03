@@ -89,7 +89,7 @@ const Title = () => {
   }, [phase])
 
   return (
-    <div className="text-lg leading-tight sm:leading-8 digit-last mx-3 capitalize">
+    <div className="text-xl leading-tight sm:leading-8 digit-last mx-3 capitalize">
       <p>
         {displayResponse}
         {!completedTyping && <CursorSVG />}
