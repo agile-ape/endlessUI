@@ -310,7 +310,7 @@ export default function DashboardNew() {
 
           <div className="w-full">
             <div className="underline flex flex-row justify-center">
-              Embedded wallet
+              Game wallet
               <div className="hidden sm:block">
                 <TooltipProvider delayDuration={10}>
                   <Tooltip>
@@ -357,7 +357,7 @@ export default function DashboardNew() {
                         </span>
                       </div>
                     ) : (
-                      <p className="text-right">No embedded wallet</p>
+                      <p className="text-right">No game wallet</p>
                     )}
                   </span>
                 </p>
@@ -407,7 +407,7 @@ export default function DashboardNew() {
               <div className="underline flex flex-row justify-center">Wallet management</div>
 
               <div className="grid grid-cols-2 gap-1">
-                <p className="text-left">Create wallet</p>
+                <p className="text-left">Create game wallet</p>
                 {embeddedWallet ? (
                   <p className="text-right"> Already created </p>
                 ) : (
@@ -437,7 +437,7 @@ export default function DashboardNew() {
                       Set
                     </Button>
                   ) : (
-                    <p className=""> No embedded wallet </p>
+                    <p className=""> No game wallet </p>
                   )}
                 </p>
               </div>
@@ -455,7 +455,7 @@ export default function DashboardNew() {
                       Export key
                     </Button>
                   ) : (
-                    <p className=""> No embedded wallet </p>
+                    <p className=""> No game wallet </p>
                   )}
                 </p>
               </div>

@@ -579,7 +579,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
                 {ensName ? ensName : formatAddress(ticketAddress)}
               </a>{' '}
               <span onClick={copyAddress}>
-                <Copy size={18} className="ml-1 cursor-pointer" />
+                <Copy size={12} className="ml-1 cursor-pointer" />
               </span>
             </p>
           </div>
@@ -610,6 +610,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
 
           <div className="flex justify-between gap-6">
             <p className="text-left">Bud/Bud Count </p>
+            <p className="text-right">
+              {' '}
+              #{formatCount(ticketBuddy)}/{formatCount(ticketBuddyCount)}
+            </p>
+          </div>
+
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Bet Ending </p>
             <p className="text-right">
               {' '}
               #{formatCount(ticketBuddy)}/{formatCount(ticketBuddyCount)}
