@@ -616,23 +616,15 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
             </p>
           </div>
 
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Bet Ending </p>
-            <p className="text-right">
-              {' '}
-              #{formatCount(ticketBuddy)}/{formatCount(ticketBuddyCount)}
-            </p>
-          </div>
-
           {ticketLookFinal == 'inSafehouse' && (
-            <div className="flex justify-between text-lg text-amber-600 gap-6">
+            <div className={`${h2} flex justify-between text-lg text-amber-600 gap-6`}>
               <p className="text-left">Check out by</p>
               <p className="text-right underline"> {ticketcheckOutRound}</p>
             </div>
           )}
 
           {(ticketLookFinal == 'exitGame' || ticketLookFinal == 'killed') && (
-            <div className="flex justify-between gap-6">
+            <div className={`${h2} flex justify-between gap-6`}>
               <p className="text-left">Killed By</p>
               <p className="text-right"> #{formatCount(ticketKilledBy)}</p>
             </div>
@@ -640,7 +632,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
 
           {ticketLookFinal == 'exitGame' && (
             <>
-              <div className="flex justify-between gap-6">
+              <div className={`${h2} flex justify-between gap-6`}>
                 <p className="text-left">Bought for</p>
                 <p className="text-right">
                   {' '}
@@ -653,7 +645,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
                 </p>
               </div>
 
-              <div className="flex justify-between gap-6">
+              <div className={`${h2} flex justify-between gap-6`}>
                 <p className="text-left">Exited with</p>
                 <p className="text-right">
                   {' '}

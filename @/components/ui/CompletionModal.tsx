@@ -22,7 +22,7 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'salute',
-        title: 'Phase Changed!',
+        title: 'phase changed',
         message: 'We thank you for your service',
       }
 
@@ -30,16 +30,40 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'scheming',
-        title: 'Bet Placed!',
-        message: 'Ooo. Good luck and enjoy the game!',
+        title: 'bet accepted',
+        message: 'Good luck and enjoy the game',
+      }
+
+    case 'afterPurchase':
+      return {
+        bgImage: 'rainbow',
+        face: 'happy',
+        title: 'welcome',
+        message: 'A warrior enters the arena',
+      }
+
+    case 'checkedIn':
+      return {
+        bgImage: 'safeOverlay',
+        face: 'warm',
+        title: 'checked in',
+        message: 'Enjoy your stay. Remember to check out on time. Or else.',
+      }
+
+    case 'checkedOut':
+      return {
+        bgImage: 'rainbow',
+        face: 'happy',
+        title: 'checked out',
+        message: 'We hope you enjoyed your stay. You are back in the game!',
       }
 
     case 'claimWin':
       return {
         bgImage: 'rainbow',
         face: 'wine',
-        title: 'Winnings Claimed!',
-        message: 'Congrats on the win sire!',
+        title: 'winnings claimed',
+        message: 'Congrats on the win!',
       }
 
     //used
@@ -47,72 +71,47 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'muscle',
-        title: 'Tokens sent!',
+        title: 'tokens sent',
         message: 'Thanks for spreading the love',
-      }
-    //used
-    case 'afterPurchase':
-      return {
-        bgImage: 'rainbow',
-        face: 'happy',
-        title: 'Welcome to the game!',
-        message: 'We are excited to have you. Just hold on tight until DAY comes!',
       }
     //used
     case 'submitted':
       return {
         bgImage: 'motif',
         face: 'handsup',
-        title: 'Keyword submitted!',
-        message: 'You can always submit again anytime in the DAY',
+        title: 'received PPP',
+        message: 'You received Pepe Protection for the day',
       }
     //used
     case 'attackAndKill':
       return {
         bgImage: 'deadOverlay',
         face: 'shoot',
-        title: 'Player killed!',
-        message: 'Congrats on the kill. You are 1 step nearer to be the last man standing',
+        title: 'player killed',
+        message: 'Congrats on the kill. You are 1 step nearer to be the last man',
       }
     //used
     case 'attackButFail':
       return {
         bgImage: 'rainbow',
         face: 'sad',
-        title: 'Player is safe!',
-        message: 'Sorry. Player defended your attack (valid keyword). Try another player?',
+        title: 'player is safe',
+        message: 'Player has PPP and defended your attack. Try another player?',
       }
     //used
     case 'kickedOut':
       return {
         bgImage: 'deadOverlay',
         face: 'police',
-        title: 'Player kicked out and killed!',
+        title: 'player kicked out',
         message: 'Thanks for kicking the overstayer out.',
-      }
-    //used
-    case 'checkedIn':
-      return {
-        bgImage: 'safeOverlay',
-        face: 'warm',
-        title: 'You are checked in!',
-        message: 'Enjoy your stay. Please remember to check out on time. Or else.',
-      }
-    //used
-    case 'checkedOut':
-      return {
-        bgImage: 'rainbow',
-        face: 'happy',
-        title: 'You are checked out!',
-        message:
-          'We hope you enjoyed your stay. Please remember to submit the keyword now that you are back in the game.',
       }
     //used
     case 'voteYes':
       return {
         bgImage: 'rainbow',
         face: 'prettyplease',
-        title: 'You voted Yes!',
+        title: 'voted yes',
         message: 'Cheers man. Make love not war.',
       }
     //used
@@ -120,15 +119,15 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'smoke',
-        title: 'You voted back No!',
-        message: 'Awww. We appreciate you fighting the good fight.',
+        title: 'voted back no',
+        message: 'For honor and glory?',
       }
     //used
     case 'exitGame':
       return {
         bgImage: 'burst',
         face: 'exit',
-        title: 'Thanks for playing!',
+        title: 'bye',
         message: 'We hope you have fun. We will see you in the next game.',
       }
 
@@ -139,8 +138,8 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'surprised',
-        title: '$LAST received!',
-        message: 'Do use it wisely in your game journey',
+        title: '$LAST',
+        message: 'Use it wisely in your journey',
       }
 
     //used
@@ -148,8 +147,8 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'deadOverlay',
         face: 'angry',
-        title: 'You got killed!',
-        message: 'Sorry about that. You can still claim your share of the pot when you exit.',
+        title: 'killed',
+        message: 'Sorry about that. Remember to exit game and claim your share of the pot',
       }
 
     // NEXT ITERATION
@@ -157,8 +156,8 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'motif',
         face: 'surprised',
-        title: 'You got ETH!',
-        message: 'Good things happen to those that outlast others.',
+        title: 'value drop',
+        message: 'You received ETH from players above. Congrats!',
       }
 
     //used
@@ -166,8 +165,8 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'combine',
         face: 'pray',
-        title: 'You were attacked!',
-        message: 'You are untouchable as your keyword is valid.',
+        title: 'attacked',
+        message: 'You are untouchable with PPP',
       }
 
     /*------  sent to all ------*/
@@ -176,25 +175,24 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'burst',
         face: 'beers',
-        title: 'Peace to all!',
-        message: 'Peace is found. All remaining players gets to share the pot.',
+        title: 'peace',
+        message: 'Peace is found. All remaining players share the remaining pot.',
       }
     //drain
     case 'drain':
       return {
         bgImage: 'burst',
         face: 'watchitburn',
-        title: 'Pot is drained!',
-        message:
-          'Some pot crumbs left. Remaining players can claim whatever that is left of the pot.',
+        title: 'drained',
+        message: 'Pot is drained. Was it worth it?',
       }
     //lastman
     case 'lastman':
       return {
         bgImage: 'burst',
         face: 'lastman',
-        title: 'Last Man Found!',
-        message: 'All hail the man, the myth, the legend. The last man standing!',
+        title: 'last man found',
+        message: 'All hail the man, the myth, the legend. The lastman stands!',
       }
 
     //game closed
@@ -202,7 +200,7 @@ const getAlertLook = (alertLookTest: string) => {
       return {
         bgImage: 'rainbow',
         face: 'love',
-        title: 'Game has ended!',
+        title: 'game end',
         message: 'Stay tuned for the next game!',
       }
 

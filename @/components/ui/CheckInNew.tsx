@@ -326,6 +326,8 @@ const CheckInNew = () => {
           <div className="digit-last">
             {ticketStatusString === 'safe' ? (
               <>In Safehouse</>
+            ) : active ? (
+              ''
             ) : (
               <Prompt docLink={DOCS_URL_safehouse} />
             )}

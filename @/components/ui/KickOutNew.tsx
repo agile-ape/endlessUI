@@ -329,7 +329,8 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                     <p className="text-left">Current round</p>
                     <p className="text-right underline"> {round} </p>
                   </div>
-
+                </div>
+                <div className="digit-last">
                   {defenderCheckOutRound > round && (
                     <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
                       Not yet. He can still chill
@@ -346,7 +347,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                     <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
                   )}
 
-                  {defenderCheckOutRound <= round && (
+                  {defenderCheckOutRound < round && (
                     <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
                   )}
                 </div>
@@ -361,7 +362,8 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 >
                   Kick Out Player #{idList}
                 </Button>
-                {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />}
+                {/* {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />} */}
+                {kickOutListActive ? '' : <Prompt docLink={DOCS_URL_kickout} />}
               </>
             )}
 
@@ -389,7 +391,11 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 >
                   Kick out
                 </Button>
-                {!kickOutInputActive && <Prompt docLink={DOCS_URL_kickout} />}
+                {/* {!kickOutInputActive && <Prompt docLink={DOCS_URL_kickout} />} */}
+
+                <div className="digit-last">
+                  {kickOutInputActive ? '' : <Prompt docLink={DOCS_URL_kickout} />}
+                </div>
               </div>
             )}
           </div>

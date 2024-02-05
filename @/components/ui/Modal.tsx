@@ -51,7 +51,7 @@ const titleMapping: { [key: string]: string } = {
   kickOut: 'Kick Out Player',
   token: 'Send Tokens',
   dashboard: 'Profile',
-  admin: 'Gamemaster',
+  admin: 'Stats',
 }
 
 const indicatorMapping: { [key: string]: string } = {

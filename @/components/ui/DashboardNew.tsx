@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog-unblur'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import OtpInput from 'react-otp-input'
 import {
@@ -289,7 +290,19 @@ export default function DashboardNew() {
       >
         {/* <div className="m-1 capitalize text-center h2-last">Player Info</div> */}
 
+        <Tabs defaultValue="account" className="w-[240px] sm:w-[400px]">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+            <TabsTrigger value="game">Game</TabsTrigger>
+          </TabsList>
+          <TabsContent value="wallet"></TabsContent>
+          <TabsContent value="game"></TabsContent>
+        </Tabs>
+
         <div className="mx-auto flex flex-col gap-6 justify-center items-center mb-4">
+          <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
+            player wallet
+          </div>
           <div className="w-full">
             <div className="underline flex flex-row justify-center">Login</div>
             {/* <div className="underline">Login</div> */}
@@ -465,7 +478,7 @@ export default function DashboardNew() {
         </div>
 
         <div className="mb-4">
-          <div className="underline flex justify-center">Play count</div>
+          <div className="underline flex justify-center">Game info</div>
           <div className="grid grid-cols-2 gap-1">
             <p className="text-left">Current Chain</p>
             <p className="text-right">{chainName}</p>

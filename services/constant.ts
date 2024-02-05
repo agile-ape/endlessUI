@@ -27,6 +27,10 @@ export const CHAIN_LIST = 'https://chainid.network/chains.json'
 export const RELAYER_ADDRESS = '0x33cBc636230606c505B53cbBD6BE572c65ED6B30' as const
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
 export const GAMEMASTER_ADDRESS = '0xD72CA6647693f6D35Ef305e171673E72D258E428' as const
+export const ADMIN_ADDRESSES = [
+  '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4',
+  '0xD72CA6647693f6D35Ef305e171673E72D258E428',
+]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
 export const TOKEN_ADDRESS = '0xbda537bbb33c1c39db3eaf499d99ad8ddb2bf58d' as const

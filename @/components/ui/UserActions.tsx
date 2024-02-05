@@ -37,6 +37,7 @@ import {
   DOCS_URL_exit,
   WEBSOCKET_ENDPOINT,
   GAMEMASTER_ADDRESS,
+  ADMIN_ADDRESSES,
 } from '../../../services/constant'
 import { cn, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
@@ -192,14 +193,14 @@ const UserActions = () => {
         </Button>
       </div>
 
-      {address !== GAMEMASTER_ADDRESS ? (
+      {ADMIN_ADDRESSES.includes(String(address)) ? (
         <div
           className="w-[240px] rounded-xl px-2 pt-4 pb-2
         container-last
         flex flex-col gap-2 mb-5 relative"
         >
           <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
-            Gamemaster
+            Admin
           </div>
 
           <Button
@@ -217,7 +218,7 @@ const UserActions = () => {
             onClick={toggleAdmin}
           >
             <Sparkle size={20} className="text-pink-50 mr-1" />
-            Gamemaster
+            Stats
           </Button>
         </div>
       ) : (

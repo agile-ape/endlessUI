@@ -125,11 +125,11 @@ const GameTab = () => {
       <div className="justify-center hidden sm:flex">
         <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
           <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Ticket
+            Player
           </TabsTrigger>
 
           <TabsTrigger value="game" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Game
+            Feed
           </TabsTrigger>
         </TabsList>
       </div>

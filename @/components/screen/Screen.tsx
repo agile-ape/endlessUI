@@ -57,6 +57,7 @@ import {
   TWITTER_URL,
   TELEGRAM_URL,
   BLOG_URL,
+  ADMIN_ADDRESSES,
 } from '../../../services/constant'
 
 import {
@@ -734,7 +735,7 @@ export default function Screen() {
                   <CarouselContent className="">
                     {arrayMobileAction.map(
                       (action, index) =>
-                        index < (address !== GAMEMASTER_ADDRESS ? 12 : 10) && (
+                        index < (ADMIN_ADDRESSES.includes(String(address)) ? 12 : 10) && (
                           <CarouselItem key={index} className="basis-1/4 justify-items-center">
                             <div className="flex items-center justify-center mx-auto">
                               <button
