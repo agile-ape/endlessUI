@@ -2,14 +2,46 @@ import { TOKEN_ABI } from './abi/token'
 import { GAME_ABI } from './abi/game'
 import { BET_ENDING_ABI } from './abi/bet'
 import { WHITELIST_ABI } from './abi/whitelist'
+
+import { defineChain } from 'viem'
 import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 
 /*---------------------------------------- ENV ---------------------------------------- */
 const isDevelopment = process.env.NODE_ENV === 'development'
 
 /*---------------------------------------- CHAIN ---------------------------------------- */
+
+export const blastSepolia = /*#__PURE__*/ defineChain({
+  id: 168_587_773,
+  network: 'Blast Sepolia',
+  name: 'Blast Sepolia',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://sepolia.blast.io'],
+    },
+    public: {
+      http: ['https://sepolia.blast.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Blastscan',
+      url: 'https://testnet.blastscan.io',
+    },
+  },
+  testnet: true,
+})
+
 export const CHAIN = baseGoerli
 export const CHAIN_ID = 84531
+
+// export const CHAIN = blastSepolia
+// export const CHAIN_ID = 168_587_773
 
 /*---------------------------------------- API KEYS ---------------------------------------- */
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
