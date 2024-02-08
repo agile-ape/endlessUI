@@ -337,9 +337,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       minimumFractionDigits: 0,
     })
 
-    console.log(phase)
-    console.log(tokenBalance)
-
     updateRound(Number(round))
     updatePhase(Number(phase))
     updateStage(Number(stage))

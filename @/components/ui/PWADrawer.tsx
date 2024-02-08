@@ -13,7 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Share, PlusSquare, Key, MoreVertical } from 'lucide-react'
+import { Share, PlusSquare, Key, MoreVertical, Compass } from 'lucide-react'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 
 import {
@@ -36,13 +36,6 @@ function PWADrawer() {
 
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
   const isAndroid = /Android/i.test(navigator.userAgent)
-  if (isIOS) {
-    console.log('This is an iOS device')
-  } else if (isAndroid) {
-    console.log('This is an Android device')
-  } else {
-    console.log('This is neither an iOS nor an Android device')
-  }
 
   // const [showWelcomeModal, setShowWelcomeModal] = useState(false)
   // const toggle = () => {
@@ -134,24 +127,32 @@ function PWADrawer() {
                   <div className="text-xl">
                     <div className="text-xl">To install the app from Safari on iOS:</div>
                     <div className="w-full flex justify-start my-1">
+                      <Compass className="mr-1" />
+                      1.Go to lastman.xyz on Safari mobile browser
+                    </div>
+                    <div className="w-full flex justify-start my-1">
                       <Share className="mr-1" />
-                      1. Tap Share
+                      2. Tap Share
                     </div>
                     <div className="w-full flex justify-start my-1">
                       <PlusSquare className="mr-1" />
-                      2. Swipe up and tap Add to Home Screen
+                      3. Swipe up and tap Add to Home Screen
                     </div>
                   </div>
                 ) : (
                   <div className="text-xl">
                     <div className="text-xl">To install the app:</div>
                     <div className="w-full flex justify-start my-1">
+                      <Compass className="mr-1" />
+                      1. Go to lastman.xyz on mobile browser
+                    </div>
+                    <div className="w-full flex justify-start my-1">
                       <MoreVertical className="mr-1" />
-                      1. Tap the More icon
+                      2. Tap the More icon
                     </div>
                     <div className="w-full flex justify-start my-1">
                       <PlusSquare className="mr-1" />
-                      2. Add to Home Screen or Install App
+                      3. Add to Home Screen or Install App
                     </div>
                   </div>
                 )}
@@ -186,24 +187,32 @@ function PWADrawer() {
                   <div className="text-xl">
                     <div className="text-xl">To install the app from Safari on iOS:</div>
                     <div className="w-full flex justify-start my-1">
+                      <Compass className="mr-1" />
+                      1. Go to lastman.xyz on Safari mobile browser
+                    </div>
+                    <div className="w-full flex justify-start my-1">
                       <Share className="mr-1" />
-                      1. Tap Share
+                      2. Tap Share
                     </div>
                     <div className="w-full flex justify-start my-1">
                       <PlusSquare className="mr-1" />
-                      2. Swipe up and tap Add to Home Screen
+                      3. Swipe up and tap Add to Home Screen
                     </div>
                   </div>
                 ) : (
                   <div className="text-xl">
                     <div className="">To install the app:</div>
                     <div className="w-full flex justify-start my-1">
+                      <Compass className="mr-1" />
+                      1. Go to lastman.xyz on mobile browser
+                    </div>
+                    <div className="w-full flex justify-start my-1">
                       <MoreVertical className="mr-1" />
-                      1. Tap the More icon
+                      2. Tap the More icon
                     </div>
                     <div className="w-full flex justify-start my-1">
                       <PlusSquare className="mr-1" />
-                      2. Add to Home Screen or Install App
+                      3. Add to Home Screen or Install App
                     </div>
                   </div>
                 )}

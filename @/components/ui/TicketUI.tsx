@@ -524,7 +524,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       header: 'text-black dark:text-white',
       face: 'exit',
       id: ticketId,
-      status: 'live to fight another day',
+      status: 'to fight another day',
       label: 'rank',
       value: ticketRank,
     },

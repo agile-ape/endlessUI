@@ -404,18 +404,18 @@ export default function DashboardNew() {
                     </p>
                   </div>
 
-                  <div className="flex flex-col text-lg justify-center mt-2 mb-4">
+                  {/* <div className="flex flex-col text-lg justify-center mt-2 mb-4">
                     <a
                       href={LIQUIDITY_POOL}
                       target="_blank"
                       rel="noreferrer"
                       className="flex justify-center items-center"
                     >
-                      <Button variant="secondary" className="text-xl rounded-full">
+                      <Button variant="secondary" className="text-xl rounded-full" disabled={true}>
                         Buy $LAST <ExternalLink size={16} className="text-sm ml-1"></ExternalLink>
                       </Button>
                     </a>
-                  </div>
+                  </div> */}
 
                   {/* <div className="flex flex-col gap-2 h3-last"> */}
 

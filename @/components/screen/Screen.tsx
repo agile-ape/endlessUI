@@ -838,21 +838,21 @@ export default function Screen() {
           <div className="text-center text-4xl font-digit text-[#404833] dark:text-[#FCFC03]">
             Welcome to Lastman
           </div>
-          <div className="flex flex-col gap-1 my-2 text-center body-last">
-            <p className="">Lastman is battle royale on Blast</p>
-            <p className="">Play, yield and outlast</p>
+          <div className="flex flex-col gap-1 my-2 text-center body-last sm:text-2xl">
+            <p className="">Battle royale on Blast</p>
+            <p className="">Play, Yield, Outlast</p>
             <p className="">How long can you last?</p>
           </div>
-          <div className="relative flex justify-center items-center">
-            <Image
+          <div className=" flex justify-center items-center">
+            {/* <Image
               priority
               src="/pepe/portal-welcome.svg"
               className=""
               height={300}
               width={200}
               alt="sneak-a-peek-pepe"
-            />
-            <div className="absolute bottom-[20px] flex flex-col">
+            /> */}
+            <div className="relative flex flex-col">
               <Image
                 priority
                 src="/pepe/sun-welcome.svg"
@@ -873,7 +873,7 @@ export default function Screen() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 my-5 justify-center items-center z-10">
+          <div className="flex flex-col sm:flex-row gap-4 my-8 justify-center items-center z-10">
             <Button
               onClick={enter}
               variant="primary"

@@ -1,7 +1,6 @@
 import { TOKEN_ABI } from './abi/token'
 import { GAME_ABI } from './abi/game'
 import { BET_ENDING_ABI } from './abi/bet'
-import { WHITELIST_ABI } from './abi/whitelist'
 
 import { defineChain } from 'viem'
 import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
@@ -37,47 +36,43 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
   testnet: true,
 })
 
-export const CHAIN = baseGoerli
-export const CHAIN_ID = 84531
+// export const CHAIN = baseGoerli
+// export const CHAIN_ID = 84531
 
-// export const CHAIN = blastSepolia
-// export const CHAIN_ID = 168_587_773
+export const CHAIN = blastSepolia
+export const CHAIN_ID = 168_587_773
 
 /*---------------------------------------- API KEYS ---------------------------------------- */
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
-export const API_ENDPOINT = isDevelopment
-  ? 'https://lsm-api-base-goerli.onrender.com'
-  : 'https://lsm-api-base-goerli.onrender.com'
+export const API_ENDPOINT = isDevelopment ? '' : '' // to be updated
 
-export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://lsm-api-base-goerli.onrender.com/ws'
-  : 'wss://lsm-api-base-goerli.onrender.com/ws'
+export const WEBSOCKET_ENDPOINT = isDevelopment ? '' : '' // to be updated
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
-export const RELAYER_ADDRESS = '0x33cBc636230606c505B53cbBD6BE572c65ED6B30' as const
+export const RELAYER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const // to be updated
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
-export const GAMEMASTER_ADDRESS = '0xD72CA6647693f6D35Ef305e171673E72D258E428' as const
+export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
 export const ADMIN_ADDRESSES = [
   '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4',
   '0xD72CA6647693f6D35Ef305e171673E72D258E428',
 ]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
-export const TOKEN_ADDRESS = '0xbda537bbb33c1c39db3eaf499d99ad8ddb2bf58d' as const
+export const TOKEN_ADDRESS = '0xe3e6133c3930c265757a6429ab5e53f30c19d70e' as const
 export const tokenContractObj = {
   address: TOKEN_ADDRESS,
   abi: TOKEN_ABI,
 }
 
-export const GAME_ADDRESS = '0x59d6e2475744402c9ef342da0bd9a5bb47839f96' as const
+export const GAME_ADDRESS = '0xAe12F4a75c955c82348672F7De3ebbBD332488Dc' as const
 export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
 }
 
-export const BET_ENDING_ADDRESS = '0x26B412a7ABc5f83B3Ef946E9fDe9450073AA4302' as const
+export const BET_ENDING_ADDRESS = '0x703E7072F2fd066aFdee81571c94572F50101223' as const
 export const wagerContractObj = {
   address: BET_ENDING_ADDRESS,
   abi: BET_ENDING_ABI,

@@ -18,6 +18,7 @@ import 'wagmi/window'
 
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
 import { PrivyProvider } from '@privy-io/react-auth'
+import { blastSepolia } from '../services/constant'
 
 const chainsConfig = [
   ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
@@ -86,8 +87,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           showWalletLoginFirst: true,
         },
         loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
-        defaultChain: baseGoerli,
-        supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
+        defaultChain: blastSepolia,
+        supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, blastSepolia],
 
         embeddedWallets: {
           createOnLogin: 'all-users', // or 'users-without-wallets'
