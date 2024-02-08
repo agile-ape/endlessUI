@@ -6,6 +6,7 @@ import { useAccount, useContractRead, useContractReads, useWalletClient } from '
 import {
   API_ENDPOINT,
   GAME_ADDRESS,
+  CHAIN_ID,
   WEBSOCKET_ENDPOINT,
   defaultContractObj,
   tokenContractObj,
@@ -16,7 +17,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getTickets } from '../../services/api'
 import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
-import WelcomeModal from './ui/WelcomeModal'
+import WelcomeModal from './ui/PWADrawer'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from '../components/ui/use-toast'
@@ -34,7 +35,7 @@ const typeStage: Record<IApp['phase'], string> = {
   lastmanfound: 'LastManFound',
   drain: 'Drain',
   peacefound: 'PeaceFound',
-  gameclosed: 'Deployed',
+  gameclosed: 'GameClosed',
 }
 
 type LayoutProps = {
@@ -92,7 +93,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
   } = useSWR<{
     data: Ticket[]
   }>(
-    `/tickets/84531?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
+    `/tickets/${CHAIN_ID}?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
     fetcher,
   )
 
@@ -114,7 +115,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const events: Event[] = [
     {
-      name: 'tickets-84531',
+      name: `tickets-${CHAIN_ID}`,
       handler(data) {
         if (!data?.id) return
 
@@ -132,7 +133,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
     },
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -336,9 +337,6 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       maximumFractionDigits: 2,
       minimumFractionDigits: 0,
     })
-
-    console.log(Number(tokenBalance))
-    console.log(tokenBalance)
 
     updateRound(Number(round))
     updatePhase(Number(phase))

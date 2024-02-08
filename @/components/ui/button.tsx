@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex whitespace-nowrap focus:outline-none focus:ring-1 focus:ring-white focus:ring disabled:pointer-events-none items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+  ' \
+  inline-flex whitespace-nowrap focus:outline-none focus:ring-1 focus:ring-white focus:ring disabled:pointer-events-none items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
@@ -18,7 +19,7 @@ const buttonVariants = cva(
 
         /*-------------------- HEADER ---------------------*/
         // style text only. no bg. underline
-        link: 'text-gray-600 dark:text-gray-200 bg-transparent active:underline hover:underline underline-offset-4',
+        link: 'text-gray-600 dark:text-gray-100 bg-transparent active:underline hover:underline underline-offset-4',
 
         /*-------------------- GAME TAB ---------------------*/
         // enter and exit - purple
@@ -27,13 +28,16 @@ const buttonVariants = cva(
           // 'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 border-2 border-transparent hover:border-purple-300',
           // 'text-fuchsia-950 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 border-4 border-fuchsia-950 hover:text-fuchsia-50 hover:bg-fuchsia-700 hover:border-fuchsia-300 active:bg-fuchsia-500 ',
           // 'text-blue-100 shadow-xl hover:shadow-purple-50 bg-gradient-to-r from-purple-600 to-purple-500 border-4 border-purple-700 hover:text-purple-50 hover:bg-purple-700 hover:border-purple-300 active:bg-purple-500 ',
-          'font-whitrabt text-2xl hover:text-3xl text-lime-400 bg-slate-200/10 hover:bg-slate-600/30 border-4 border-lime-400 hover:text-lime-200 hover:border-lime-200 active:text-lime-300 active:border-lime-300',
+          // 'font-whitrabt text-2xl hover:text-3xl text-lime-400 bg-slate-200/10 hover:bg-slate-600/30 border-4 border-lime-400 hover:text-lime-200 hover:border-lime-200 active:text-lime-300 active:border-lime-300',
+          'font-digit text-4xl text-primary-last bg-gradient-to-br from-[#11140C] to-[#75835D] hover:bg-gradient-to-br hover:from-[#75835D] hover:to-[#C3D4A5] hover:text-[#11140C] active:bg-opacity-60',
+        // 'font-digit text-4xl text-primary-last bg-primary-last hover:bg-opacity-50 active:bg-opacity-60',
 
         // gradient bg. 1 mode.
         wager:
           // 'text-neutral-50 bg-neutral-600 border-2 border-neutral-800 hover:bg-neutral-700 hover:border-neutral-900 active:bg-neutral-700',
           // 'text-neutral-950 bg-neutral-200 border-2 border-neutral-300 hover:bg-neutral-100 hover:border-neutral-200 active:bg-neutral-300',
-          'text-stone-950 bg-stone-200 border-2 border-stone-400 hover:bg-stone-100 hover:border-stone-500 active:bg-stone-300',
+          // 'text-stone-950 bg-stone-200 border-2 border-stone-400 hover:bg-stone-100 hover:border-stone-500 active:bg-stone-300',
+          'text-purple-50 bg-purple-700 border-2 border-purple-500 hover:bg-purple-600 hover:border-purple-200 active:bg-purple-500',
 
         admin:
           'text-pink-50 bg-pink-500 border-2 border-pink-700 hover:bg-pink-700 hover:border-pink-200 active:bg-pink-600',
@@ -59,7 +63,7 @@ const buttonVariants = cva(
         submit:
           // 'text-white bg-green-600 hover:bg-green-500 active:bg-green-700 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
           // 'text-white bg-green-700 border-2 border-green-800 hover:bg-green-600 hover:border-green-400 active:bg-green-800',
-          'text-green-50 bg-green-600 border-2 border-green-800 hover:bg-green-800 hover:border-green-300 active:bg-green-700',
+          'text-green-50 bg-green-600 border-2 border-green-800 drop-shadow-2xl shadow-white hover:bg-green-800 hover:border-green-300 active:bg-green-700',
 
         // fixed bg. light mode
         splitPot:
@@ -100,13 +104,16 @@ const buttonVariants = cva(
         //   'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
 
         // fixed bg. light and dark mode
-        primary:
-          'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-500 hover:border-indigo-200 active:bg-indigo-500',
+        primary: 'text-primary-last bg-primary-last border border-primary-last hover:bg-opacity-50',
+        // 'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-500 hover:border-indigo-200 active:bg-indigo-500',
 
         secondary:
-          'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
-            dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-900 \
-            active:bg-indigo-100',
+          'text-secondary-last bg-secondary-last border border-secondary-last hover:bg-opacity-50',
+
+        tertiary: 'text-[#404833] bg-[#FCFDC7] border-2 border-[#404833] hover:bg-opacity-50',
+        // 'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
+        //   dark:text-indigo-50 dark:border-indigo-50 dark:hover:bg-indigo-900 \
+        //   active:bg-indigo-100',
 
         // main: 'text-white bg-gradient-to-r from-indigo-800 via-indigo-700 to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',
         // main: 'text-white bg-gradient-to-b from-[#FFF1F8] via-[#FFC3E0] to-[#6672C7] hover:bg-indigo-300 hover:motion-safe:animate-bounce active:bg-indigo-600 border border-transparent hover:border-indigo-300',

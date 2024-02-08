@@ -36,6 +36,7 @@ import {
   WEBSOCKET_ENDPOINT,
   TOKEN_IMG,
   TOKEN_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -90,7 +91,7 @@ function TokenNew() {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       handler(data) {
         const { event, dataJson } = data
 

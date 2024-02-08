@@ -49,7 +49,8 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
-    "viem": "^1.20.0",
+    "vaul": "^0.9.0",
+    "viem": "^1.2.0",
     "wagmi": "^1.4.12"
   },
   "devDependencies": {

@@ -196,12 +196,12 @@ const BuyTicketNew = () => {
       />
 
       <div className="text-center">
-        <p className="mb-2">Buy a ticket to join.</p>
+        <p className="mb-2">Buy a ticket to enter arena.</p>
         <p className="mb-2">
           {/* <span className="font-headline day-last">Day</span> comes = Can no longer join. */}
-          Join before timer ends.
+          Enter before timer ends.
         </p>
-        <p className="mb-2">Price increase as more joins.</p>
+        <p className="mb-2">Price increase as more enters.</p>
         <p className="mb-2">Join with buddy to get more $LAST.</p>
         <a href={DOCS_URL_buy} target="_blank" className="link h6-last align-top">
           Learn more
@@ -214,7 +214,7 @@ const BuyTicketNew = () => {
           gap-4 justify-center items-center h3-last
           "
       >
-        <div className="m-1 capitalize text-center h2-last">Join us?</div>
+        <div className="m-1 capitalize text-center h2-last">Enter?</div>
 
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-full">
@@ -258,7 +258,7 @@ const BuyTicketNew = () => {
             <input
               type="text"
               id="buddy"
-              className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+              className="w-[6rem] font-digit text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
               placeholder={buddyValue}
               onChange={(e) => setBuddyValue(e.target.value)}
             />
@@ -267,7 +267,7 @@ const BuyTicketNew = () => {
           <Button
             variant="enter"
             size="lg"
-            className="w-[100%] rounded-full h-14 w-full text-2xl rounded-full leading-10 p-1 dark:bg-slate-100/20 bg-slate-700"
+            className="w-[100%] h-14 w-full leading-10 p-1"
             onClick={buyTicketHandler}
             isLoading={isLoading}
             disabled={!active}

@@ -40,7 +40,7 @@ type ModalType = {
 
 const titleMapping: { [key: string]: string } = {
   phaseChange: 'Trigger phase change',
-  buyTicket: 'Join Game',
+  buyTicket: 'Enter Arena',
   exitGame: 'Exit Game',
   submit: 'Submit keyword of the day',
   checkIn: 'Check into Safehouse',
@@ -50,8 +50,8 @@ const titleMapping: { [key: string]: string } = {
   attack: 'Attack Player',
   kickOut: 'Kick Out Player',
   token: 'Send Tokens',
-  dashboard: 'Dashboard',
-  admin: 'Gamemaster',
+  dashboard: 'Profile',
+  admin: 'Stats',
 }
 
 const indicatorMapping: { [key: string]: string } = {

@@ -195,26 +195,6 @@ const CheckOutNew = () => {
               <p className="text-left">Current round</p>
               <p className="text-right round-last"> {round} </p>
             </div>
-
-            {ticketStatusString === 'safe' && ticketCheckOutRound > round && (
-              <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
-                .....Chill out.....
-              </p>
-            )}
-
-            {ticketStatusString === 'safe' && ticketCheckOutRound === round && phase === 'day' && (
-              <p className="text-xl text-amber-600 mt-2 text-center">Today is check out day</p>
-            )}
-
-            {ticketStatusString === 'safe' &&
-              ticketCheckOutRound === round &&
-              phase === 'night' && (
-                <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
-              )}
-
-            {ticketStatusString === 'safe' && ticketCheckOutRound < round && (
-              <p className="text-xl text-red-600 mt-2 text-center">You are overstaying...</p>
-            )}
           </div>
           <Button
             variant="checkOut"
@@ -226,7 +206,30 @@ const CheckOutNew = () => {
           >
             Check Out
           </Button>
-          {!active && <Prompt docLink={DOCS_URL_checkout} />}
+
+          <div className="digit-last">
+            {ticketStatusString === 'safe' && ticketCheckOutRound > round && (
+              <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
+                Chill. Still have time
+              </p>
+            )}
+
+            {ticketStatusString === 'safe' && ticketCheckOutRound === round && phase === 'day' && (
+              <p className="text-xl text-amber-600 mt-2 text-center">Today is check out day</p>
+            )}
+
+            {ticketStatusString === 'safe' &&
+              ticketCheckOutRound === round &&
+              phase === 'night' && (
+                <p className="text-xl text-red-600 mt-2 text-center">You are overstaying</p>
+              )}
+
+            {ticketStatusString === 'safe' && ticketCheckOutRound < round && (
+              <p className="text-xl text-red-600 mt-2 text-center">You are overstaying</p>
+            )}
+
+            {active ? '' : <Prompt docLink={DOCS_URL_checkout} />}
+          </div>
         </div>
       </div>
     </div>

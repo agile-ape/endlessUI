@@ -37,12 +37,12 @@ const Round = () => {
   const levelUp = Number(data?.[0].result || 0)
 
   const On = 'font-medium tracking-wider'
-  const Off = 'text-zinc-400 dark:text-zinc-400 tracking-tight'
+  const Off = 'text-zinc-500 dark:text-zinc-300 tracking-tight'
 
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
-        <TooltipTrigger className="flex flex-col sm:flex-row px-5 mx-2 sm:mx-0 sm:px-0 sm:justify-start sm:flex-col items-center lg:items-end lg:gap-4 lg:flex-row">
+        <TooltipTrigger className="flex cursor-default flex-col sm:flex-row px-5 mx-2 sm:mx-0 sm:px-0 sm:justify-start sm:flex-col items-center lg:items-end lg:gap-4 lg:flex-row">
           <div
             className={cn(
               'text-2xl sm:text-2xl whitespace-nowrap',

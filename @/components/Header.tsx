@@ -24,7 +24,7 @@ import {
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
 import { useAccount } from 'wagmi'
-import WelcomeModal from './ui/WelcomeModal'
+import PWADrawer from './ui/PWADrawer'
 import CompletionModal from './ui/CompletionModal'
 import { cn, formatAddress, formatShortAddress } from '@/lib/utils'
 import {
@@ -35,7 +35,7 @@ import {
   GAMEMASTER_ADDRESS,
 } from '../../services/constant'
 import { useRouter } from 'next/router'
-import Admin from './ui/Admin'
+import Admin from './ui/_Admin'
 import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 import { toast } from '../components/ui/use-toast'
 import { useWindowSize } from '../../hooks/useWindowSize'
@@ -57,11 +57,11 @@ function Header() {
   const [showTokenModal, setShowTokenModal] = React.useState<boolean>(false)
   const toggleToken = () => setShowTokenModal((prevState) => !prevState)
 
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false)
+  // const [showPWADrawer, setShowPWADrawer] = useState<boolean>(false)
 
-  const toggleWelcomeModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-  }
+  // const togglePWADrawer = () => {
+  //   setShowPWADrawer((prevState) => !prevState)
+  // }
 
   // const { login } = useLogin({
   //   onComplete: () => {
@@ -78,9 +78,9 @@ function Header() {
   //   setHoveredHeader(index)
   // }
 
-  const isActive = (href: string) => {
-    return router.pathname === href
-  }
+  // const isActive = (href: string) => {
+  //   return router.pathname === href
+  // }
 
   return (
     <>
@@ -139,13 +139,8 @@ function Header() {
               >
               Quickstart
             </Link> */}
-              <Button
-                variant="link"
-                className={`px-2 text-lg`}
-                size="sm"
-                onClick={toggleWelcomeModal}
-              >
-                Mobile
+              <Button variant="link" className={`px-2 text-lg`} size="sm">
+                <PWADrawer />
               </Button>
 
               <a href={DOCS_URL} target="_blank">
@@ -197,7 +192,7 @@ function Header() {
 
                 <Button
                   variant="primary"
-                  className="rounded-xl flex p-1 md:px-4 md:py-2 items-center justify-center"
+                  className="h-12 rounded-xl flex p-1 md:px-4 md:py-2 items-center justify-center"
                   onClick={toggleDashboard}
                 >
                   {/* <div className="relative p-3">
@@ -211,7 +206,7 @@ function Header() {
                         className=""
                       />
                     </div> */}
-                  <span className="ml-1 text-base font-whitrabt">
+                  <span className="ml-1 text-xl font-digit">
                     {authenticated ? (
                       formatShortAddress(String(address))
                     ) : (
@@ -228,7 +223,7 @@ function Header() {
       </div>
       {showDashboardModal && <Modal action={'dashboard'} toggle={toggleDashboard} />}
       {/* {showTokenModal && <Modal action={'token'} toggle={toggleToken} />} */}
-      {showWelcomeModal && <WelcomeModal toggleModal={toggleWelcomeModal} />}
+      {/* {showPWADrawer && <PWADrawer toggleModal={togglePWADrawer} />} */}
     </>
     // </div>
   )

@@ -13,9 +13,9 @@ export default function Indicator() {
 
   return (
     <>
-      {(phase === 'deployed' || phase === 'gameclosed') && <></>}
-
-      {!(phase === 'deployed' || phase === 'gameclosed') && (
+      {phase === 'deployed' || phase === 'gameclosed' ? (
+        <></>
+      ) : (
         <div className="flex justify-center lg:justify-end">
           <TooltipProvider delayDuration={10}>
             <Tooltip>
@@ -25,7 +25,7 @@ export default function Indicator() {
                   src={`/indicator/${indicator}`}
                   height={300}
                   width={xs ? 75 : 100}
-                  className="h-auto"
+                  className="h-auto cursor-default"
                   alt={`${indicator}`}
                 />
               </TooltipTrigger>

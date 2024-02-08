@@ -32,6 +32,7 @@ import {
   WEBSOCKET_ENDPOINT,
   SPLIT_POT_IMG,
   SPLIT_POT_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
@@ -217,7 +218,7 @@ export const SplitPotNew = () => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       handler(data) {
         const { event, dataJson } = data
 
@@ -295,8 +296,8 @@ export const SplitPotNew = () => {
 
       <div className="text-center">
         <p className="mb-2">Vote to split once Stage 2 comes.</p>
-        <p className="mb-2">Games ends if Yes hits threshold.</p>
-        <p className="mb-2">Players share remaining pot.</p>
+        <p className="mb-2">Game ends once Yes votes hit threshold.</p>
+        <p className="mb-2">Remaining players share remaining pot.</p>
         <a href={DOCS_URL_split} target="_blank" className="link h6-last align-top">
           Learn more
         </a>
@@ -304,7 +305,7 @@ export const SplitPotNew = () => {
       {/* Voting information */}
       <div
         className="w-[100%] rounded-xl p-3 border border-zinc-400 dark:border-zinc-200 flex flex-col
-                gap-4 justify-center items-center h3-last
+                gap-2 justify-center items-center h3-last
                 "
       >
         <div className="m-1 capitalize text-center h2-last">Split it?</div>
@@ -341,8 +342,21 @@ export const SplitPotNew = () => {
           </div>
 
           {/* <div className="h2-last mt-2">Stage 2 and 3</div> */}
-
+          <div className="digit-last text-center">
+            {stage === 2 || stage === 3 ? (
+              voteCount < thresholdCount ? (
+                <p>{thresholdCount - voteCount} more vote(s) to go</p>
+              ) : (
+                <p>We have hit the threshold!</p>
+              )
+            ) : (
+              <p> Voting has not started </p>
+            )}
+          </div>
           <div className="w-full">
+            <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
+              stage 2
+            </div>
             <div className="underline">Votes</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left"> Players left</p>
@@ -390,17 +404,6 @@ export const SplitPotNew = () => {
                         </TooltipProvider> */}
               </div>
             </div>
-            <div className="whtrabt-last text-center">
-              {stage === 2 || stage === 3 ? (
-                voteCount < thresholdCount ? (
-                  <p>{thresholdCount - voteCount} more vote(s) to go</p>
-                ) : (
-                  <p>We have hit the threshold!</p>
-                )
-              ) : (
-                <p> Voting has not started </p>
-              )}
-            </div>
           </div>
 
           <div className="w-full">
@@ -443,6 +446,9 @@ export const SplitPotNew = () => {
           </div>
 
           <div className="w-full">
+            <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
+              stage 3
+            </div>
             <div className="underline">Drain</div>
 
             <div className="grid grid-cols-2 gap-1">

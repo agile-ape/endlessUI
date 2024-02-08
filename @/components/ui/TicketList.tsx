@@ -61,7 +61,7 @@ const TicketList = () => {
         className="list-none
         relative px-6 py-0 flex flex-col"
       >
-        <div className="flex flex-col items-center md:flex-row justify-between">
+        <div className="flex flex-col items-center 2xl:flex-row justify-between">
           <div className="grow">{xs ? '' : <KeyTrackers />}</div>
 
           {/* <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-0 sm:py-2">
@@ -232,7 +232,7 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
           <Image
             priority
-            src="/faces/hide.png"
+            src="/faces/hide.svg"
             className=""
             height={200}
             width={xs ? 150 : 250}

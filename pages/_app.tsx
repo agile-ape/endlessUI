@@ -18,6 +18,7 @@ import 'wagmi/window'
 
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
 import { PrivyProvider } from '@privy-io/react-auth'
+import { blastSepolia } from '../services/constant'
 
 const chainsConfig = [
   ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
@@ -80,14 +81,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       config={{
         appearance: {
-          theme: 'light',
-          accentColor: '#676FFF',
+          theme: '#404833',
+          accentColor: '#FCFC03',
           // logo:,
           showWalletLoginFirst: true,
         },
-        loginMethods: ['wallet', 'sms', 'email', 'google'],
-        defaultChain: baseGoerli,
-        supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
+        loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
+        defaultChain: blastSepolia,
+        supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, blastSepolia],
 
         embeddedWallets: {
           createOnLogin: 'all-users', // or 'users-without-wallets'
@@ -115,7 +116,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
           >
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={pageProps.metadata} phase={data?.phase || 'night'}>
+            <Layout metadata={pageProps.metadata} phase={data?.phase || 'deployed'}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>

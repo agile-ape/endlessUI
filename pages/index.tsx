@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const currentPhase = await fetch(`${host}/api/phase`)
   const result = await currentPhase.json()
-  const phase: IApp['phase'] = result?.message || 'beginnings'
+  const phase: IApp['phase'] = result?.message || 'deployed'
 
   const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
     deployed: 'dark',

@@ -207,7 +207,7 @@ const ExitGameNew = () => {
 
       toast({
         variant: 'destructive',
-        title: 'Exit Game failed',
+        title: 'Exit Arena failed',
         description: <p>{errorMsg}</p>,
       })
     }
@@ -269,10 +269,10 @@ const ExitGameNew = () => {
 
       <div className="text-center">
         <p className="mb-2">
-          Leave anytime in the <span className="font-headline day-last">DAY</span>.
+          You can leave in the <span className="font-headline day-last">DAY</span>.
         </p>
         <p className="mb-2">Or when game ends.</p>
-        <p className="mb-2">All get some ETH.</p>
+        <p className="mb-2">You get some ETH.</p>
         <p className="mb-2">Even if killed.</p>
         <a href={DOCS_URL_exit} target="_blank" className="link h6-last align-top">
           Learn more
@@ -284,63 +284,8 @@ const ExitGameNew = () => {
       </div>
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
-        <div className="text-2xl text-center text-purple-800 dark:text-purple-300 shadow-md border-[2px] border-violet-800 dark:border-violet-300 rounded-xl items-center p-2 gap-3">
-          {/* {ticketStatusString === 'exited' && (
-            <p>
-              {formatNumber(ticketClaimed, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          )}
-
-          {ticketStatusString === 'dead' && (
-            <p>
-              {formatNumber(killClaim, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          )}
-          {ticketIsInPlay && (
-            <p>
-              {formatNumber(exitClaim, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          )} */}
-
-          {/* {ticketStatusString === 'exited' ? (
-            <p>
-              {formatNumber(ticketClaimed, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          ) : ticketStatusString === 'dead' ? (
-            <p>
-              {formatNumber(killClaim, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          ) : (
-            <p>
-              {formatNumber(exitClaim, {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 3,
-              })}{' '}
-              ETH
-            </p>
-          )} */}
-
-          <p>
+        <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
+          <p className="font-digit">
             {formatNumber(playerClaim, {
               maximumFractionDigits: 6,
               minimumFractionDigits: 3,
@@ -400,7 +345,7 @@ const ExitGameNew = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Lastman</p>
+              <p className="text-left">Lastman gets</p>
               <p className="text-right">
                 {/* {Number(lastManClaim)} ETH  */}
                 {formatNumber(lastManClaim, {
@@ -420,10 +365,10 @@ const ExitGameNew = () => {
             className="w-full"
             disabled={!active}
           >
-            Exit Game
+            Exit Arena
           </Button>
 
-          <div className="whtrabt-last">
+          <div className="digit-last">
             {ticketStatusString === 'exited' ? (
               <>You have exited</>
             ) : active ? (

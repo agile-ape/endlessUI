@@ -6,7 +6,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Button } from './button'
 import React, { useEffect, useState } from 'react'
 import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import { defaultContractObj, DOCS_URL, WEBSOCKET_ENDPOINT } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL,
+  WEBSOCKET_ENDPOINT,
+  CHAIN_ID,
+} from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import Modal from './Modal'
 import { useStoreState } from '../../../store'
@@ -41,6 +46,7 @@ import {
   Ticket,
   Sword,
   RefreshCw,
+  ChevronsRight,
   Axe,
 } from 'lucide-react'
 
@@ -62,14 +68,14 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
-const bgColorPhase: Record<string, string> = {
-  start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
-  day: 'text-white border border-white bg-green-600 hover:bg-green-700',
-  night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
-  lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
-  peacefound: 'bg-blue-800 hover:bg-blue-900',
-  drain: 'bg-red-400 hover:bg-red-500',
-}
+// const bgColorPhase: Record<string, string> = {
+//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
+//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
+//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
+//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
+//   peacefound: 'bg-blue-800 hover:bg-blue-900',
+//   drain: 'bg-red-400 hover:bg-red-500',
+// }
 
 export default function Countdown() {
   const phase = useStoreState((state) => state.phase)
@@ -82,6 +88,7 @@ export default function Countdown() {
 
   const [timeLeft, setTimeLeft] = useState<number>()
   const [timeFlag, setTimeFlag] = useState<number>()
+  const [countdown, setCountdown] = useState<number>()
 
   // const phase = 'gameclosed'
 
@@ -114,12 +121,13 @@ export default function Countdown() {
     ],
     onSuccess(data) {
       setTimeFlag(Number(data[0].result) || 0)
+      setCountdown(Number(data[1].result) || 0)
     },
   })
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -129,6 +137,20 @@ export default function Countdown() {
           const { caller, previousPhase, newPhase, time } = dataJson
 
           setTimeFlag(Number(time) || 0)
+        }
+      },
+    },
+    {
+      name: `events-${CHAIN_ID}`,
+      async handler(data) {
+        const { event, dataJson } = data
+
+        if (!Object.keys(dataJson).length) return
+
+        if (event === 'NewTicketBought') {
+          const { caller, player, purchasePrice, newCountdownTime, time } = dataJson
+
+          setCountdown(Number(newCountdownTime) || 0)
         }
       },
     },
@@ -148,7 +170,7 @@ export default function Countdown() {
 
   if (phase === 'start') {
     // timeAddon is added to countdownTime whenever someone buys a ticket
-    endTime = new Date((Number(timeFlag) + Number(countdownTime)) * 1000)
+    endTime = new Date((Number(timeFlag) + Number(countdown)) * 1000)
   } else if (phase === 'day') {
     endTime = new Date((Number(timeFlag) + Number(dayTime)) * 1000)
   } else if (phase === 'night') {
@@ -186,34 +208,30 @@ export default function Countdown() {
 
   return (
     <>
-      {(phase === 'deployed' || phase === 'gameclosed') && <></>}
-
-      {!(phase === 'deployed' || phase === 'gameclosed') && (
-        <div className="text-lime-800 dark:text-lime-200 gap-1">
+      {phase === 'deployed' || phase === 'gameclosed' ? (
+        <></>
+      ) : (
+        <div className="text-[#FCFDC7] gap-1">
           <div className="flex justify-center items-end">
             {timeLeft && !isNaN(timeLeft) ? (
               <TooltipProvider delayDuration={10}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <div className="text-4xl sm:text-2xl border-2 border-lime-800 shadow-md rounded-md px-4 py-0 flex flex-row gap-0.5">
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).hours}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          hrs
+                    <div className="p-1 bg-[#39402e] rounded-md cursor-default">
+                      <div className="font-digit text-2xl shadow-xl rounded-md px-4 py-0 flex flex-row gap-1 bg-[#404833] border-2 border-[#404833]">
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).hours}
+                          <div className="uppercase text-sm text-center">hr</div>
                         </div>
-                      </div>
-                      :
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).minutes}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          mins
+                        :
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).minutes}
+                          <div className="uppercase text-sm text-center">min</div>
                         </div>
-                      </div>
-                      :
-                      <div className="flex flex-col text-center">
-                        {formatTime(timeLeft).seconds}
-                        <div className="uppercase text-sm text-center text-lime-800 dark:text-lime-300">
-                          secs
+                        :
+                        <div className="flex flex-col text-center">
+                          {formatTime(timeLeft).seconds}
+                          <div className="uppercase text-sm text-center">sec</div>
                         </div>
                       </div>
                     </div>
@@ -221,9 +239,9 @@ export default function Countdown() {
                   <TooltipContent
                     side="top"
                     align="center"
-                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:inline cursor-default"
+                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:block cursor-default"
                   >
-                    {phase === 'start' && <p>{timeAdded} mins is added for every new joiner</p>}
+                    {phase === 'start' && <p>{timeAdded} mins is added for every new player</p>}
                     {phase === 'day' && (
                       <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
                     )}
@@ -248,11 +266,11 @@ export default function Countdown() {
                 {/* <PhaseChange /> */}
 
                 {xs ? (
-                  <div className="flex text-xl">
+                  <div className="flex text-xl text-[#404833] dark:text-[#FCFC03]">
                     <span>Use </span>
-                    <span className="text-blue-600 dark:text-blue-300 flex mr-1">
+                    <span className="flex mr-1">
                       {' '}
-                      <Image
+                      {/* <Image
                         priority
                         src={
                           forcedTheme === 'light' ? `/icon/phaseLight.svg` : `/icon/phaseNight.svg`
@@ -261,19 +279,22 @@ export default function Countdown() {
                         height={20}
                         width={20}
                         alt="change-phase"
-                      />
-                      Phase
+                      /> */}
+                      <p className="flex justify-center items-center">
+                        <ChevronsRight className="" />
+                        Phase
+                      </p>
                     </span>
                     to change phase
                   </div>
                 ) : (
                   <Button
-                    variant="change"
+                    variant="primary"
                     className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
                     onClick={togglePhaseChange}
                   >
                     <OnSignal active={phaseChangeActive} own={true} />
-                    <RefreshCw size={20} className="text-white mr-1" />
+                    <ChevronsRight size={20} className="mr-1" />
                     Change phase
                   </Button>
                 )}

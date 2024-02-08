@@ -52,6 +52,7 @@ import {
   WEBSOCKET_ENDPOINT,
   CHECK_INTO_SAFEHOUSE_IMG,
   CHECK_INTO_SAFEHOUSE_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -113,7 +114,7 @@ const CheckInNew = () => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -283,7 +284,7 @@ const CheckInNew = () => {
                 type="text"
                 id="checkIn"
                 required
-                className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                className="w-[6rem] font-digit text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                 value={nights}
                 placeholder="0"
                 onChange={(e) => setNights(e.target.value)}
@@ -308,7 +309,7 @@ const CheckInNew = () => {
             </div>
 
             {totalCost > Number(tokenBalance) && (
-              <p className="whtrabt-last mt-2 text-center">You can't afford to stay</p>
+              <p className="digit-last mt-2 text-center">You can't afford to stay</p>
             )}
           </div>
 
@@ -323,9 +324,11 @@ const CheckInNew = () => {
             Check In
           </Button>
 
-          <div className="whtrabt-last">
+          <div className="digit-last">
             {ticketStatusString === 'safe' ? (
               <>In Safehouse</>
+            ) : active ? (
+              ''
             ) : (
               <Prompt docLink={DOCS_URL_safehouse} />
             )}

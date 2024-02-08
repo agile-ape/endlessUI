@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import Modal from './Modal'
 
-import Admin from './Admin'
+import Admin from './_Admin'
 import AdminNew from './AdminNew'
 
 import SubmitNewKeywordModal from './Submit'
@@ -37,6 +37,7 @@ import {
   DOCS_URL_exit,
   WEBSOCKET_ENDPOINT,
   GAMEMASTER_ADDRESS,
+  ADMIN_ADDRESSES,
 } from '../../../services/constant'
 import { cn, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
@@ -116,9 +117,10 @@ const UserActions = () => {
     container-last
     flex flex-col gap-2 mb-5 relative"
       >
-        <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
+        <div className="text-sm container-last bg-opacity-100  dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Players
         </div>
+
         <Button
           variant="submit"
           className="w-full text-xl flex justify-start"
@@ -126,7 +128,7 @@ const UserActions = () => {
         >
           <OnSignal active={submitActive} own={true} />
           <Send size={20} className="text-green-50 mr-1" />
-          Submit Keyword
+          Submit
         </Button>
 
         <Button
@@ -136,7 +138,7 @@ const UserActions = () => {
         >
           <OnSignal active={splitActive} own={true} />
           <Split size={20} className="text-amber-950 mr-1" />
-          Split Pot
+          Split
         </Button>
       </div>
       <div
@@ -147,6 +149,7 @@ const UserActions = () => {
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Safehouse
         </div>
+
         <Button
           variant="checkIn"
           // variant="attack"
@@ -185,19 +188,19 @@ const UserActions = () => {
           onClick={toggleWager}
         >
           <OnSignal active={wagerActive} own={true} />
-          <Dices size={20} className="text-stone-950 mr-1" />
+          <Dices size={20} className="mr-1" />
           Bet
         </Button>
       </div>
 
-      {address !== GAMEMASTER_ADDRESS ? (
+      {ADMIN_ADDRESSES.includes(String(address)) ? (
         <div
           className="w-[240px] rounded-xl px-2 pt-4 pb-2
         container-last
         flex flex-col gap-2 mb-5 relative"
         >
           <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
-            Gamemaster
+            Admin
           </div>
 
           <Button
@@ -215,7 +218,7 @@ const UserActions = () => {
             onClick={toggleAdmin}
           >
             <Sparkle size={20} className="text-pink-50 mr-1" />
-            Gamemaster
+            Stats
           </Button>
         </div>
       ) : (

@@ -30,6 +30,7 @@ import {
   WEBSOCKET_ENDPOINT,
   KICK_OUT_IMG,
   KICK_OUT_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
@@ -130,7 +131,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       handler(data) {
         const { event, dataJson } = data
 
@@ -294,13 +295,10 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Kick out Safehouse players...</p>
-          <p className="mb-2">
-            ...once it is <span className="font-headline night-last">Night</span> of their check out
-            round
-          </p>
+          <p className="mb-2">Kick out and kill overstayers.</p>
+          <p className="mb-2">Players overstay once it is night of their check out round</p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
-            <p className="mb-2">Value of killed ticket does not go to killer.</p>
+            <p className="mb-2">Value of killed ticket drops to next valid ticket.</p>
           </a>{' '}
           <a href={DOCS_URL_kickout} target="_blank" className="link h6-last align-top">
             Learn more
@@ -332,7 +330,8 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                     <p className="text-left">Current round</p>
                     <p className="text-right underline"> {round} </p>
                   </div>
-
+                </div>
+                <div className="digit-last">
                   {defenderCheckOutRound > round && (
                     <p className="text-xl text-zinc-500 dark:text-zinc-400 mt-2 text-center">
                       Not yet. He can still chill
@@ -349,7 +348,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                     <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
                   )}
 
-                  {defenderCheckOutRound <= round && (
+                  {defenderCheckOutRound < round && (
                     <p className="text-xl text-red-600 mt-2 text-center">He is overstaying...</p>
                   )}
                 </div>
@@ -364,7 +363,8 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 >
                   Kick Out Player #{idList}
                 </Button>
-                {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />}
+                {/* {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />} */}
+                {kickOutListActive ? '' : <Prompt docLink={DOCS_URL_kickout} />}
               </>
             )}
 
@@ -376,8 +376,9 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 <input
                   type="text"
                   id="kickOut"
+                  placeholder="0"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                  className="font-digit w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />
@@ -391,7 +392,11 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                 >
                   Kick out
                 </Button>
-                {!kickOutInputActive && <Prompt docLink={DOCS_URL_kickout} />}
+                {/* {!kickOutInputActive && <Prompt docLink={DOCS_URL_kickout} />} */}
+
+                <div className="digit-last">
+                  {kickOutInputActive ? '' : <Prompt docLink={DOCS_URL_kickout} />}
+                </div>
               </div>
             )}
           </div>

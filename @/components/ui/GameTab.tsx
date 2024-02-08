@@ -125,11 +125,11 @@ const GameTab = () => {
       <div className="justify-center hidden sm:flex">
         <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
           <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Ticket
+            Player
           </TabsTrigger>
 
           <TabsTrigger value="game" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Game
+            Feed
           </TabsTrigger>
         </TabsList>
       </div>
@@ -137,26 +137,24 @@ const GameTab = () => {
       <div className="flex justify-center">
         <TabsContent value="ticket" className="flex flex-col gap-3">
           <>
-            {isConnected && (
+            {authenticated ? (
               <>
                 <div className="mb-2">
                   <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
 
                   {id === 0 && (phase === 'deployed' || phase === 'start') && (
-                    <div className="rounded-full bg-slate-500 my-4">
-                      <Button
-                        variant="enter"
-                        // className="px-1 py-1 leading-10 h-14 w-full "
+                    <Button
+                      variant="enter"
+                      // className="px-1 py-1 leading-10 h-14 w-full "
 
-                        className="
-                        h-14 w-full text-3xl rounded-full leading-10 p-1"
-                        onClick={toggleBuy}
-                      >
-                        {/* <OnSignal active={buyActive} own={true} /> */}
-                        {/* <Ticket2 size={28} className=" mr-1" /> */}
-                        START
-                      </Button>
-                    </div>
+                      className="
+                        my-4 h-14 w-full leading-10 p-1 z-2"
+                      onClick={toggleBuy}
+                    >
+                      {/* <OnSignal active={buyActive} own={true} /> */}
+                      {/* <Ticket2 size={28} className=" mr-1" /> */}
+                      ENTER
+                    </Button>
                   )}
 
                   {id !== 0 && (
@@ -166,21 +164,35 @@ const GameTab = () => {
                       onClick={toggleExit}
                     >
                       <OnSignal active={exitActive} own={true} />
-                      <DoorOpen size={24} className="text-white mr-1" />
-                      {ticketStatusString !== 'exited' && <div>Exit and claim ETH</div>}
+                      <DoorOpen size={24} className="mr-1" />
+                      {ticketStatusString !== 'exited' && <div>Exit arena</div>}
                       {ticketStatusString === 'exited' && <div>You have exited</div>}
                     </Button>
                   )}
-
-                  {id === 0 && !(phase === 'start' || phase === 'deployed') && (
-                    <div className="text-center text-lg underline">
-                      <a href={TWITTER_URL} target="_blank">
-                        Follow for updates
-                      </a>
-                    </div>
-                  )}
                 </div>
               </>
+            ) : (
+              <div className="mb-4">
+                <div className="flex flex-col gap-4 items-center justify-center">
+                  <div className="digit-last text-center px-10 py-1 leading-10 h-12 text-2xl">
+                    Not logged in
+                  </div>
+                  <Image
+                    priority
+                    src={`/faces/eatchips.svg`}
+                    height={110}
+                    width={150}
+                    className={`h-auto mt-0 mb-0`}
+                    // layout="fixed"
+                    alt={`guest pepe`}
+                  />
+                  <div className="text-center text-lg underline">
+                    <a href={TWITTER_URL} target="_blank">
+                      Follow for updates
+                    </a>
+                  </div>
+                </div>
+              </div>
             )}
             <div className="hidden sm:flex">
               <UserActions />

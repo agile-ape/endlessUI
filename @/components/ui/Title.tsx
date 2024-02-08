@@ -13,7 +13,7 @@ type TitleType = {
 
 const startPhrase = [
   'wake up. the matrix has you. follow the white rabbit',
-  'entry fee is the lowest they will ever be',
+  'Fees are the lowest they will ever be',
   'how long can you endure before breaking',
   'do you think thats air you are breathing now',
 ]
@@ -34,7 +34,7 @@ const nightPhrase = [
 ]
 
 const title: Record<any, string> = {
-  deployed: 'Fund wallet. Prepare to buy ticket',
+  deployed: 'Fund wallet. Prepare to enter arena',
   start: startPhrase[Math.floor(Math.random() * startPhrase.length)],
   day: dayPhrase[Math.floor(Math.random() * dayPhrase.length)],
   night: nightPhrase[Math.floor(Math.random() * nightPhrase.length)],
@@ -89,7 +89,7 @@ const Title = () => {
   }, [phase])
 
   return (
-    <div className="text-lg leading-tight sm:leading-8 whtrabt-last mx-3 capitalize">
+    <div className="text-xl leading-tight sm:leading-8 digit-last mx-3 capitalize">
       <p>
         {displayResponse}
         {!completedTyping && <CursorSVG />}

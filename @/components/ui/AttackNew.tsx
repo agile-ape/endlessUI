@@ -39,6 +39,7 @@ import {
   WEBSOCKET_ENDPOINT,
   ATTACK_PLAYER_IMG,
   ATTACK_PLAYER_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
@@ -228,7 +229,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -453,14 +454,11 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
         />
 
         <div className="text-center">
-          <p className="mb-2">Players dies if never submit.</p>
-          <p className="mb-2">Attacks get $LAST tokens.</p>
-          <p className="mb-2">
-            Each player can only be attacked once per{' '}
-            <span className="font-headline night-last">Night</span>.
-          </p>
+          <p className="mb-2">Attacked player dies if no Pepe Protection.</p>
+          <p className="mb-2">Attacker get $LAST tokens.</p>
+          <p className="mb-2">Each player can only be attacked once per round.</p>
           <a href={DOCS_URL_waterfall} target="_blank" className="link underline">
-            <p className="mb-2">Value of killed ticket does not go to killer.</p>
+            <p className="mb-2">Value of killed ticket drops to next valid ticket.</p>
           </a>{' '}
           <a href={DOCS_URL_attack} target="_blank" className="link h6-last align-top">
             Learn more
@@ -527,8 +525,9 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
                   type="text"
                   id="attack"
                   required
-                  className="w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
+                  className="font-digit w-[6rem] text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
                   value={defenderIdInput}
+                  placeholder="0"
                   onChange={(e) => setDefenderIdInput(e.target.value)}
                 />
                 <Button

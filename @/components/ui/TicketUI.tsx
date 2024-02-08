@@ -5,7 +5,15 @@ import type { IApp, Ticket } from 'types/app'
 import Image from 'next/image'
 import { useAccount, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
-import { cn, formatAddress, formatCount, formatNumber, statusPayload } from '@/lib/utils'
+import {
+  cn,
+  formatAddress,
+  formatShortAddress,
+  formatCount,
+  formatNumber,
+  copyToClipboard,
+  statusPayload,
+} from '@/lib/utils'
 import { useStoreState } from '../../../store'
 import Attack from './_Attack'
 import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
@@ -22,6 +30,7 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import Modal from './Modal'
 import { Button } from './button'
 import OnSignal from './OnSignal'
+import { toast } from './use-toast'
 import {
   User,
   Menu,
@@ -43,6 +52,7 @@ import {
   LogOut,
   Dices,
   Gift,
+  Copy,
   Ticket,
   Sword,
   Axe,
@@ -96,7 +106,7 @@ const getTicketSize = (ticketSize) => {
   }
 }
 
-const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLength }) => {
+const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLookOverwrite }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const playerTickets = useStoreState((state) => state.tickets)
@@ -262,101 +272,105 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   */
   /* ORIGINAL */
 
-  if (!authenticated) {
-    ticketLook = 'guest'
-  } else {
-    // if authenticated
-    if (phase === 'deployed') {
+  // if (!authenticated) {
+  //   ticketLook = 'guest'
+  // } else {
+  // if authenticated
+  if (phase === 'deployed') {
+    ticketLook = 'beforePurchase'
+  }
+
+  if (phase === 'start') {
+    if (ticketId === 0) {
       ticketLook = 'beforePurchase'
+    } else if (ticketId != 0) {
+      ticketLook = 'afterPurchase'
+    }
+  }
+
+  if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
+    ticketLook = 'notPlaying'
+  }
+
+  if (ticketIsInPlay) {
+    if (phase == 'day') {
+      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
+        ticketLook = 'submittedDay'
+      } else if (ticketVote === true) {
+        ticketLook = 'makePeace'
+      } else {
+        if (stage === 1) {
+          ticketLook = 'stage1New'
+        } else if (stage === 2) {
+          ticketLook = 'stage2New'
+        } else if (stage === 3) {
+          ticketLook = 'stage3New'
+        }
+      }
+    }
+
+    if (phase == 'night') {
+      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
+        ticketLook = 'submittedNight'
+      } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
+        ticketLook = 'attackedButSafu'
+      } else {
+        ticketLook = 'neverSubmit'
+      }
+    }
+
+    if (ticketStatusString === 'safe') {
+      ticketLook = 'inSafehouse'
+    }
+
+    if (phase === 'lastManFound') {
+      ticketLook = 'lastManStanding'
+    }
+
+    if (phase === 'peaceFound') {
+      ticketLook = 'agreedToSplitPot'
+    }
+
+    if (phase === 'drain') {
+      ticketLook = 'noMorePot'
     }
 
     if (phase === 'start') {
-      if (ticketId === 0) {
-        ticketLook = 'beforePurchase'
-      } else if (ticketId != 0) {
-        ticketLook = 'afterPurchase'
-      }
-    }
-
-    if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
-      ticketLook = 'notPlaying'
-    }
-
-    if (ticketIsInPlay) {
-      if (phase == 'day') {
-        if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-          ticketLook = 'submittedDay'
-        } else if (ticketVote === true) {
-          ticketLook = 'makePeace'
-        } else {
-          if (stage === 1) {
-            ticketLook = 'stage1New'
-          } else if (stage === 2) {
-            ticketLook = 'stage2New'
-          } else if (stage === 3) {
-            ticketLook = 'stage3New'
-          }
-        }
-      }
-
-      if (phase == 'night') {
-        if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-          ticketLook = 'submittedNight'
-        } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
-          ticketLook = 'attackedButSafu'
-        } else {
-          ticketLook = 'neverSubmit'
-        }
-      }
-
-      if (ticketStatusString === 'safe') {
-        ticketLook = 'inSafehouse'
-      }
-
-      if (phase === 'lastManFound') {
-        ticketLook = 'lastManStanding'
-      }
-
-      if (phase === 'peaceFound') {
-        ticketLook = 'agreedToSplitPot'
-      }
-
-      if (phase === 'drain') {
-        ticketLook = 'noMorePot'
-      }
-
-      if (phase === 'start') {
-        ticketLook = 'afterPurchase'
-      }
-    }
-
-    if (!ticketIsInPlay) {
-      if (ticketStatusString == 'dead') {
-        ticketLook = 'killed'
-      }
-
-      if (ticketStatusString == 'exited') {
-        ticketLook = 'exitGame'
-      }
-    }
-
-    if (!ticketLook && !ticketIsInPlay) {
-      return null
+      ticketLook = 'afterPurchase'
     }
   }
+
+  if (!ticketIsInPlay) {
+    if (ticketStatusString == 'dead') {
+      ticketLook = 'killed'
+    }
+
+    if (ticketStatusString == 'exited') {
+      ticketLook = 'exitGame'
+    }
+  }
+
+  if (!ticketLook && !ticketIsInPlay) {
+    return null
+  }
+  // }
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
-  const ticketLookFinal = ticketLook
+  // ticketLookOverwrite ? (ticketLookFinal = ticketLookOverwrite) : (ticketLookFinal = ticketLook)
+  // const ticketLookFinal = ticketLook
+
+  let ticketLookFinal: string
+  ticketLookFinal = ticketLookOverwrite ?? ticketLook
 
   const ticketLookMapping = {
     // ticket in play
     beforePurchase: {
       bgImage: 'burst',
       header: 'bg-zinc-300/20 text-black',
-      face: 'enter',
-      id: nextTicketId,
-      status: 'next ticket',
-      label: 'value',
+      face: 'copium',
+      id: '-',
+      status: 'prepare to enter arena',
+      label: 'ticket value',
       value: ' - ETH',
     },
     afterPurchase: {
@@ -364,8 +378,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'happy',
       id: ticketId,
-      status: 'ticket claimed',
-      label: 'value',
+      status: 'a warrior enters',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
@@ -374,8 +388,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/70 text-black',
       face: 'handsup',
       id: ticketId,
-      status: 'submitted',
-      label: 'value',
+      status: 'received Pepe Protection',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     makePeace: {
@@ -383,8 +397,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'prettyplease',
       id: ticketId,
-      status: 'ready to submit word',
-      label: 'value',
+      status: 'i fight for peace',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     stage1New: {
@@ -392,8 +406,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'confident',
       id: ticketId,
-      status: 'ready to submit word',
-      label: 'value',
+      status: 'nice and slow',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     stage2New: {
@@ -401,8 +415,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'worried',
       id: ticketId,
-      status: 'ready to submit word',
-      label: 'value',
+      status: 'fight or flight?',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     stage3New: {
@@ -410,8 +424,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'anxious',
       id: ticketId,
-      status: 'ready to submit word',
-      label: 'value',
+      status: 'do we all lose?',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     submittedNight: {
@@ -419,8 +433,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/70 text-black',
       face: 'attack',
       id: ticketId,
-      status: 'time to attack',
-      label: 'value',
+      status: 'attack the unprotected',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     attackedButSafu: {
@@ -428,8 +442,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/80 text-black',
       face: 'pray',
       id: ticketId,
-      status: 'SAFU',
-      label: 'value',
+      status: 'pepe protects thee',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     neverSubmit: {
@@ -437,8 +451,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'attack',
       id: ticketId,
-      status: 'time to attack',
-      label: 'value',
+      status: 'unprotected thee are',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     inSafehouse: {
@@ -447,7 +461,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       face: 'warm',
       id: ticketId,
       status: 'taking a break',
-      label: 'value',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     lastManStanding: {
@@ -455,8 +469,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'lastman',
       id: ticketId,
-      status: 'last man standing',
-      label: 'value',
+      status: 'the last man stands',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     agreedToSplitPot: {
@@ -464,8 +478,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'beers',
       id: ticketId,
-      status: 'WAGMI',
-      label: 'value',
+      status: 'WAGMI i guess?',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     noMorePot: {
@@ -473,8 +487,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'bg-zinc-300/20 text-black',
       face: 'watchitburn',
       id: ticketId,
-      status: 'let it burn',
-      label: 'value',
+      status: 'let it all burn',
+      label: 'ticket value',
       value: ticketValue + ' ETH',
     },
     // not in play
@@ -484,7 +498,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       face: 'eatchips',
       id: '',
       status: 'login to play',
-      label: 'value',
+      label: 'ticket value',
       value: '- ETH',
     },
     notPlaying: {
@@ -493,7 +507,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       face: 'sad',
       id: '',
       status: 'feeling fomo?',
-      label: 'value',
+      label: 'ticket value',
       value: '- ETH',
     },
     killed: {
@@ -501,7 +515,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'text-white',
       face: 'angry',
       id: ticketId,
-      status: 'killed',
+      status: 'vengeance in my next life',
       label: 'rank',
       value: ticketRank,
     },
@@ -510,7 +524,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
       header: 'text-black dark:text-white',
       face: 'exit',
       id: ticketId,
-      status: 'exited',
+      status: 'to fight another day',
       label: 'rank',
       value: ticketRank,
     },
@@ -521,6 +535,15 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
     <Sword key={index} size={16} className="text-black"></Sword>
   ))
+
+  function copyAddress() {
+    copyToClipboard(ticketAddress || '')
+    toast({
+      variant: 'success',
+      title: 'Address copied',
+      description: 'Address copied to clipboard',
+    })
+  }
 
   return (
     <div
@@ -547,10 +570,17 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
         >
           <div className="flex justify-between gap-6">
             <p className="text-left"> User</p>
-            <p className="text-right italic">
-              <a href={`${BLOCK_EXPLORER}address/${ticketAddress}`} target="_blank">
+            <p className="text-right italic flex justify-center items-center">
+              <a
+                className="hover:underline"
+                href={`${BLOCK_EXPLORER}address/${ticketAddress}`}
+                target="_blank"
+              >
                 {ensName ? ensName : formatAddress(ticketAddress)}
-              </a>
+              </a>{' '}
+              <span onClick={copyAddress}>
+                <Copy size={12} className="ml-1 cursor-pointer" />
+              </span>
             </p>
           </div>
 
@@ -587,14 +617,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           </div>
 
           {ticketLookFinal == 'inSafehouse' && (
-            <div className="flex justify-between text-lg text-amber-600 gap-6">
+            <div className={`${h2} flex justify-between text-lg text-amber-600 gap-6`}>
               <p className="text-left">Check out by</p>
               <p className="text-right underline"> {ticketcheckOutRound}</p>
             </div>
           )}
 
           {(ticketLookFinal == 'exitGame' || ticketLookFinal == 'killed') && (
-            <div className="flex justify-between gap-6">
+            <div className={`${h2} flex justify-between gap-6`}>
               <p className="text-left">Killed By</p>
               <p className="text-right"> #{formatCount(ticketKilledBy)}</p>
             </div>
@@ -602,7 +632,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
 
           {ticketLookFinal == 'exitGame' && (
             <>
-              <div className="flex justify-between gap-6">
+              <div className={`${h2} flex justify-between gap-6`}>
                 <p className="text-left">Bought for</p>
                 <p className="text-right">
                   {' '}
@@ -615,7 +645,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
                 </p>
               </div>
 
-              <div className="flex justify-between gap-6">
+              <div className={`${h2} flex justify-between gap-6`}>
                 <p className="text-left">Exited with</p>
                 <p className="text-right">
                   {' '}
@@ -682,7 +712,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
               ) : (
                 <>
                   Player{' '}
-                  <span className="font-whitrabt">
+                  <span className="font-digit">
                     {' '}
                     <span className={h2}>#{String(id)}</span>
                   </span>
@@ -695,7 +725,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           <div className="flex justify-center">
             <Image
               priority
-              src={`/faces/${face}.png`}
+              src={`/faces/${face}.svg`}
               height={imgh}
               width={imgw}
               className={`h-auto ${mt}`}
@@ -710,7 +740,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           {/* rank */}
           {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div
-              className={`flex justify-center font-whitrabt text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
+              className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
             >
               {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
               <div className={`uppercase font-semibold tracking-wider ${h1}`}>
@@ -722,7 +752,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLe
           {!(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
             <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
               <div className={`capitalize ${h3} opacity-50 leading-tight`}>{label}</div>
-              <div className={`uppercase font-whitrabt ${h1}`}>{value}</div>
+              <div className={`uppercase font-digit ${h1}`}>{value}</div>
             </div>
           )}
         </>

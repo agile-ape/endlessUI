@@ -23,52 +23,61 @@ import {
 import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucide-react'
 
 const headlineFont = localFont({
-  src: '../../../public/fonts/headline.ttf',
+  src: '../../../public/fonts/typo.otf',
   display: 'swap',
   // fallback: ['sans-serif'],
 })
+
 export default function Logo() {
-  const [handleHover, setHandleHover] = useState<boolean>(false)
+  // const [handleHover, setHandleHover] = useState<boolean>(false)
+  // const handleOnMouseEnter: MouseEventHandler = () => {
+  //   setHandleHover(true)
+  // }
+  // const handleOnMouseLeave: MouseEventHandler = () => {
+  //   setHandleHover(false)
+  // }
 
-  const handleOnMouseEnter: MouseEventHandler = () => {
-    setHandleHover(true)
-  }
+  const [isAlarmOn, setAlarm] = useState<boolean>(false)
 
-  const handleOnMouseLeave: MouseEventHandler = () => {
-    setHandleHover(false)
+  const toggleAlarm = () => {
+    setAlarm(!isAlarmOn)
   }
 
   return (
     <>
-      <Link
-        className="cursor-pointer"
-        href="/"
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
+      {/* <div className="relative p-1 m-1 bg-[#39402e] rounded-md"> */}
+      <div
+        className="rounded-md px-2 py-0 text-[32px] h-12 bg-[#404833] shadow-sm text-[#FCFDC7] \
+          capitalized font-digit cursor-default"
       >
-        <div
-          // onClick={() => console.log('last')}
-          // onMouseOver={handleHover}
-          // onMouseLeave={handleLeave}
-          className="h-12 rounded-md
-              px-2 py-0 text-[34px] font-headline
-              text-white bg-blue-800 hover:bg-blue-700
-              transition-colors capitalized relative z-10
-            "
-        >
-          last
-          <div className={cn(handleHover ? '-right-10' : 'hidden', 'absolute top-0 z-4')}>
+        last
+      </div>
+      {/* <div
+          className={cn(
+            isAlarmOn ? '-top-1' : '-top-2',
+            'absolute bg-[#FCFDC7] w-6 h-3 p-1 rounded-sm',
+          )}
+        ></div> */}
+      {/* </div> */}
+
+      {/* <div
+        className={`${
+          handleHover ? 'opacity-100' : 'opacity-0'
+        } transition-opacity duration-1000 ease-in-out absolute h-12 w-16 rounded-md px-2 py-0 punk-last`}
+      >
+        <Image priority src="/7959.png" className="" height={20} width={40} alt="punk7959" />
+      </div> */}
+
+      {/* <div className={cn(handleHover ? '' : 'hidden', ' punk-last absolute top-0 z-4')}>
             <Image
               priority
-              src="/faces/stareSq.png"
-              className=""
+              src="/7959.png"
+              className="duration-1000"
               height={20}
               width={40}
-              alt="pepe-stare"
+              alt="punk7959"
             />
-          </div>
-        </div>
-      </Link>
+          </div> */}
     </>
   )
 }
