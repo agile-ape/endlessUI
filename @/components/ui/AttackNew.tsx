@@ -39,6 +39,7 @@ import {
   WEBSOCKET_ENDPOINT,
   ATTACK_PLAYER_IMG,
   ATTACK_PLAYER_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
@@ -228,7 +229,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 

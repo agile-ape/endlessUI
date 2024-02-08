@@ -30,6 +30,7 @@ import {
   WEBSOCKET_ENDPOINT,
   KICK_OUT_IMG,
   KICK_OUT_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
@@ -130,7 +131,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       handler(data) {
         const { event, dataJson } = data
 

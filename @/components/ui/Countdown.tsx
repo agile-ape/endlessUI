@@ -6,7 +6,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Button } from './button'
 import React, { useEffect, useState } from 'react'
 import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import { defaultContractObj, DOCS_URL, WEBSOCKET_ENDPOINT } from '../../../services/constant'
+import {
+  defaultContractObj,
+  DOCS_URL,
+  WEBSOCKET_ENDPOINT,
+  CHAIN_ID,
+} from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import Modal from './Modal'
 import { useStoreState } from '../../../store'
@@ -122,7 +127,7 @@ export default function Countdown() {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -136,7 +141,7 @@ export default function Countdown() {
       },
     },
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 

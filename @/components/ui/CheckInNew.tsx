@@ -52,6 +52,7 @@ import {
   WEBSOCKET_ENDPOINT,
   CHECK_INTO_SAFEHOUSE_IMG,
   CHECK_INTO_SAFEHOUSE_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -113,7 +114,7 @@ const CheckInNew = () => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       async handler(data) {
         const { event, dataJson } = data
 

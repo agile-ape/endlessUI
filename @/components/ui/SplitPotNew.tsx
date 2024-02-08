@@ -32,6 +32,7 @@ import {
   WEBSOCKET_ENDPOINT,
   SPLIT_POT_IMG,
   SPLIT_POT_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
 import OnSignal from './OnSignal'
@@ -217,7 +218,7 @@ export const SplitPotNew = () => {
 
   const events: Event[] = [
     {
-      name: 'events-84531',
+      name: `events-${CHAIN_ID}`,
       handler(data) {
         const { event, dataJson } = data
 
