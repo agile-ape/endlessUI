@@ -42,12 +42,22 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 export const CHAIN = blastSepolia
 export const CHAIN_ID = 168_587_773
 
+export const BLOCK_EXPLORER = isDevelopment
+  ? 'https://testnet.blastscan.io'
+  : 'https://testnet.blastscan.io'
+
+// https://testnet.arbiscan.io/
+
 /*---------------------------------------- API KEYS ---------------------------------------- */
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
-export const API_ENDPOINT = isDevelopment ? '' : '' // to be updated
+export const API_ENDPOINT = isDevelopment
+  ? 'https://test2-1e36.onrender.com'
+  : 'https://test2-1e36.onrender.com' // to be updated
 
-export const WEBSOCKET_ENDPOINT = isDevelopment ? '' : '' // to be updated
+export const WEBSOCKET_ENDPOINT = isDevelopment
+  ? 'wss://test2-1e36.onrender.com/ws'
+  : 'wss://test2-1e36.onrender.com/ws' // to be updated
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
@@ -55,8 +65,8 @@ export const RELAYER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as c
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
 export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
 export const ADMIN_ADDRESSES = [
-  '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4',
-  '0xD72CA6647693f6D35Ef305e171673E72D258E428',
+  '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
+  '0xf03B25a16C013B63c9d385f0a65e3017FcDEa845', // gameMaster
 ]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
@@ -123,6 +133,10 @@ export const TOKEN_IMG = `${IMG_URL_lore}/Token.png`
 export const TOKEN_MOBILE_IMG = `${IMG_URL_lore}/TokenMobile.png`
 
 export const DASHBOARD_IMG = `${IMG_URL_lore}/Dashboard.png`
+export const DASHBOARD_MOBILE_IMG = `${IMG_URL_lore}/DashboardMobile.png`
+
+export const GAMEMASTER_IMG = `${IMG_URL_lore}/Gamemaster.png`
+export const GAMEMASTER_MOBILE_IMG = `${IMG_URL_lore}/GamemasterMobile.png`
 
 /*---------------------------------------- DOCS ---------------------------------------- */
 export const DOCS_URL = 'https://docs.lastman.xyz'
@@ -146,9 +160,3 @@ export const TWITTER_URL = 'https://twitter.com/lastman0x'
 export const TELEGRAM_URL = 'https://t.me/lastmangame'
 
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
-
-export const BLOCK_EXPLORER = isDevelopment
-  ? 'https://goerli.basescan.org/'
-  : 'https://goerli.basescan.org/'
-
-// https://testnet.arbiscan.io/

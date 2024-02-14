@@ -63,6 +63,7 @@ import {
   LIQUIDITY_POOL,
   DOCS_URL,
   DASHBOARD_IMG,
+  DASHBOARD_MOBILE_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -256,6 +257,10 @@ export default function DashboardNew() {
 
   const dashboardBackupImg = (event: any) => {
     event.target.src = '/lore/Dashboard.png'
+  }
+
+  const dashboardMobileBackupImg = (event: any) => {
+    event.target.src = '/lore/DashboardMobile.png'
   }
 
   const refetchETHHandler: MouseEventHandler<HTMLButtonElement> = async (event) => {

@@ -141,7 +141,7 @@ const buttonVariants = cva(
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
         md: 'h-10 rounded-md px-3 text-xl leading-6',
-        lg: 'h-12 rounded-xl px-5 py-1 text-xl leading-10',
+        lg: 'h-14 rounded-xl px-5 py-1 text-3xl leading-10',
         icon: 'h-10 w-10',
         secondary: 'w-full text-xl',
       },

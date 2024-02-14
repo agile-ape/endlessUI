@@ -128,7 +128,7 @@ function PWADrawer() {
                     <div className="text-xl">To install the app from Safari on iOS:</div>
                     <div className="w-full flex justify-start my-1">
                       <Compass className="mr-1" />
-                      1.Go to lastman.xyz on Safari mobile browser
+                      1.Go to lastman.xyz on Safari browser
                     </div>
                     <div className="w-full flex justify-start my-1">
                       <Share className="mr-1" />
@@ -159,9 +159,6 @@ function PWADrawer() {
               </div>
             </DrawerDescription>
           </DrawerHeader>
-          <DrawerFooter>
-            <DrawerClose></DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     ) : (

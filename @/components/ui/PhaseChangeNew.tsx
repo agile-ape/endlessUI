@@ -175,10 +175,11 @@ const PhaseChangeNew = () => {
           <div className="w-[100%] mx-auto flex flex-col justify-center">
             <Button
               variant="primary"
+              size="lg"
               onClick={phaseChangeHandler}
               isLoading={isLoading}
               disabled={!active}
-              className="h-10 px-3 text-xl"
+              // className="h-10 px-3 text-xl"
               // className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
             >
               {/* {playerTicket ? 'Change phase' : 'Hold on'} */}

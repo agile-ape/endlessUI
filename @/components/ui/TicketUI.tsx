@@ -739,12 +739,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
           )}
           {/* rank */}
           {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
-            <div
-              className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
-            >
-              {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
-              <div className={`uppercase font-semibold tracking-wider ${h1}`}>
-                {label} {value}
+            <div className="bg-white rounded-xl">
+              <div
+                className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
+              >
+                {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
+                <div className={`uppercase font-semibold tracking-wider ${h1}`}>
+                  {label} {value}
+                </div>
               </div>
             </div>
           )}

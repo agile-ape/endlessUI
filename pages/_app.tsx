@@ -43,7 +43,7 @@ const chainsConfig = [
 // })
 
 const configureChainsConfig = configureChains(
-  [mainnet, goerli, arbitrum, arbitrumGoerli, base, baseGoerli],
+  [blastSepolia],
   [
     publicProvider(),
     // alchemyProvider({ apiKey: "your-alchemy-api-key" }),
@@ -88,7 +88,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
         loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
         defaultChain: blastSepolia,
-        supportedChains: [mainnet, goerli, arbitrum, arbitrumGoerli, base, blastSepolia],
+        supportedChains: [blastSepolia],
 
         embeddedWallets: {
           createOnLogin: 'all-users', // or 'users-without-wallets'

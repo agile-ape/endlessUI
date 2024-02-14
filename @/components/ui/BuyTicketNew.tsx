@@ -161,17 +161,6 @@ const BuyTicketNew = () => {
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        {/* <div className="flex items-center justify-center gap-2 mt-2">
-          <div className="h1-last text-center">Join game</div>
-          <Image
-            priority
-            src={`/indicator/startIndicator.svg`}
-            height={300}
-            width={60}
-            className=""
-            alt="dayIndicator"
-          />
-        </div> */}
         <Image
           priority
           src={BUY_TICKET_MOBILE_IMG}
