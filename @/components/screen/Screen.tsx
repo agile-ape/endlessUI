@@ -710,7 +710,7 @@ export default function Screen() {
                     className={cn(
                       isCarouselVisible
                         ? 'bg-[#11140C] border-2 border-[#FCFC03] text-[#FCFC03] -translate-y-0'
-                        : 'border border-[#75835D] -translate-y-1',
+                        : 'border border-[#75835D] -translate-y-0.5',
                       'flex flex-col justify-center items-center rounded-full p-2 header-last',
                     )}
                     onClick={toggleCarousel}
@@ -746,7 +746,10 @@ export default function Screen() {
                                     : 'py-2 text-lg',
                                   'px-3 flex flex-col justify-center items-center rounded-lg',
                                 )}
-                                onClick={() => selectAction(arrayMobileAction[index].mobileAction)}
+                                onClick={() => {
+                                  selectAction(arrayMobileAction[index].mobileAction)
+                                  toggleCarousel()
+                                }}
                               >
                                 {/* <Image
                                     priority

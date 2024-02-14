@@ -42,8 +42,8 @@ import {
   GAME_ADDRESS,
   RELAYER_ADDRESS,
   TEAM_WALLET_ADDRESS,
-  TOKEN_IMG,
-  TOKEN_MOBILE_IMG,
+  GAMEMASTER_IMG,
+  GAMEMASTER_MOBILE_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { formatNumber } from '@/lib/utils'
@@ -363,11 +363,11 @@ export default function Admin() {
   })
 
   const adminBackupImg = (event: any) => {
-    event.target.src = '/lore/Token.png'
+    event.target.src = '/lore/Gamemaster.png'
   }
 
   const adminMobileBackupImg = (event: any) => {
-    event.target.src = '/lore/TokenMobile.png'
+    event.target.src = '/lore/GamemasterMobile.png'
   }
 
   return (
@@ -386,7 +386,7 @@ export default function Admin() {
         </div> */}
         <Image
           priority
-          src={TOKEN_MOBILE_IMG}
+          src={GAMEMASTER_MOBILE_IMG}
           unoptimized
           className="place-self-center rounded-xl"
           height={400}
@@ -398,7 +398,7 @@ export default function Admin() {
 
       <Image
         priority
-        src={TOKEN_IMG}
+        src={GAMEMASTER_IMG}
         unoptimized
         className="hidden sm:block place-self-center rounded-xl"
         height={400}

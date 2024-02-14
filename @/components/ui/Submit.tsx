@@ -330,7 +330,7 @@ const Submit = () => {
             style={{
               backgroundImage: `url(/ticket/motif.svg)`,
             }}
-            className="opacity-100 text-green-950 text-2xl hover:text-green-50"
+            className="opacity-100 text-green-950 hover:text-green-50"
           >
             Submit
           </Button>

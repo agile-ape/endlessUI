@@ -229,11 +229,11 @@ function TokenNew() {
   }
 
   const tokenBackupImg = (event: any) => {
-    event.target.src = '/lore/TokenImage.png'
+    event.target.src = '/lore/Token.png'
   }
 
   const tokenMobileBackupImg = (event: any) => {
-    event.target.src = '/lore/TokenImageMobile.png'
+    event.target.src = '/lore/TokenMobile.png'
   }
 
   return (
