@@ -511,7 +511,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
             </div>
 
             {phase === 'night' && isAttackTime === false && (
-              <div className="h-12 rounded-xl px-5 py-1 text-xl leading-10">
+              <div className="font-digit h-12 rounded-xl px-5 py-1 text-xl leading-10">
                 Keyword updating...
               </div>
             )}

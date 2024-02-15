@@ -46,12 +46,13 @@ export default function Logo() {
   return (
     <>
       {/* <div className="relative p-1 m-1 bg-[#39402e] rounded-md"> */}
-      <div
+      <Link
+        href="/"
         className="rounded-md px-2 py-0 text-[32px] h-12 bg-[#404833] shadow-sm text-[#FCFDC7] \
           capitalized font-digit cursor-default"
       >
         last
-      </div>
+      </Link>
       {/* <div
           className={cn(
             isAlarmOn ? '-top-1' : '-top-2',

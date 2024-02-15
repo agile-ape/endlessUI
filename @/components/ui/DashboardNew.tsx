@@ -109,13 +109,10 @@ export default function DashboardNew() {
   // search for embedded wallet and pull address
   const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
   const embeddedWalletAddress = embeddedWallet?.address
-  const embeddedWalletChain = embeddedWallet?.chainId
+  const embeddedWalletChain = embeddedWallet?.chainId || 0
   const chainWithoutPrefix = embeddedWalletChain
     ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
     : null
-  console.log(embeddedWalletChain)
-  console.log(chainWithoutPrefix)
-  console.log(typeof embeddedWalletChain)
 
   // const chainName = chainWithoutPrefix ? findChainName(chainWithoutPrefix).then : null
   // console.log(chainName)
@@ -126,7 +123,6 @@ export default function DashboardNew() {
       findChainName(chainWithoutPrefix)
         .then((result) => {
           setChainName(result)
-          console.log(chainName)
         })
         .catch((error) => {
           console.error(error)
@@ -204,6 +200,7 @@ export default function DashboardNew() {
     },
   })
 
+  /* remove ENS integration 
   const { data: ensName } = useEnsName({
     address: address,
     chainId: 1,
@@ -213,6 +210,7 @@ export default function DashboardNew() {
     name: ensName,
     chainId: 1,
   })
+  */
 
   const { data: balanceData, refetch: refetchETH } = useBalance({
     address: address,
