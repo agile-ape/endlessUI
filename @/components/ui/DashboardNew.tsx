@@ -64,6 +64,7 @@ import {
   DOCS_URL,
   DASHBOARD_IMG,
   DASHBOARD_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -85,7 +86,7 @@ export default function DashboardNew() {
   // 'wallet', 'sms', 'email', 'google', 'twitter'
 
   const loginMethod = user?.linkedAccounts[1]?.type
-  let username
+  let username: any
   let loginAccount
 
   if (loginMethod === 'email') {
@@ -108,6 +109,11 @@ export default function DashboardNew() {
   const { wallets } = useWallets()
   // search for embedded wallet and pull address
   const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
+
+  const setToDefaultChain = async () => {
+    await embeddedWallet?.switchChain(CHAIN_ID)
+  }
+
   const embeddedWalletAddress = embeddedWallet?.address
   const embeddedWalletChain = embeddedWallet?.chainId || 0
   const chainWithoutPrefix = embeddedWalletChain
@@ -119,6 +125,7 @@ export default function DashboardNew() {
 
   const [chainName, setChainName] = useState('')
   useEffect(() => {
+    setToDefaultChain()
     if (chainWithoutPrefix !== null) {
       findChainName(chainWithoutPrefix)
         .then((result) => {
@@ -235,6 +242,10 @@ export default function DashboardNew() {
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
       },
+      {
+        ...defaultContractObj,
+        functionName: 'randNumber',
+      },
     ],
   })
 
@@ -242,6 +253,7 @@ export default function DashboardNew() {
   const playCount = data?.[0].result || BigInt(0)
   const sideQuestCount = data?.[1].result || BigInt(0)
   const balanceOf = data?.[2].result || BigInt(0)
+  const randNumber = Number(data?.[3].result || 0)
   const tokenBalance = formatUnits(balanceOf, 18)
 
   function copyAddress() {
@@ -250,6 +262,15 @@ export default function DashboardNew() {
       variant: 'success',
       title: 'Address copied',
       description: 'Address copied to clipboard',
+    })
+  }
+
+  function copyUsername() {
+    copyToClipboard(username)
+    toast({
+      variant: 'success',
+      title: 'Username copied',
+      description: 'Username copied to clipboard',
     })
   }
 
@@ -320,8 +341,13 @@ export default function DashboardNew() {
 
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">User</p>
-                  <p className="text-right">
-                    {authenticated ? username : <p className="text-right"> Not logged in</p>}
+                  <p className="text-right flex justify-end">
+                    <div className="flex justify-center items-center">
+                      {authenticated ? username : <p className="text-right"> Not logged in</p>}
+                      {/* <span onClick={copyUsername}>
+                        <Copy size={18} className="cursor-pointer ml-2" />
+                      </span> */}
+                    </div>
                   </p>
                 </div>
               </div>
@@ -498,11 +524,15 @@ export default function DashboardNew() {
                   <p className="text-right">Desert</p>
                 </div>
                 <div className="grid grid-cols-2 gap-1">
+                  <p className="text-left">Rand</p>
+                  <p className="text-right">{randNumber}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Current Chain</p>
                   <p className="text-right">{chainName}</p>
                 </div>
 
-                <div className="underline flex justify-center">Play count</div>
+                <div className="underline flex justify-center mt-6">Play count</div>
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Game play</p>
                   <p className="text-right">{Number(playCount)}</p>
