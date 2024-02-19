@@ -178,7 +178,7 @@ const CheckOutNew = () => {
               {ticketStatusString === 'safe' ? (
                 <p className="text-right round-last">{ticketLastSeen}</p>
               ) : (
-                <p className="text-right">Not in safehouse</p>
+                <p className="digit-last text-right">Not in safehouse</p>
               )}{' '}
             </div>
 
@@ -187,7 +187,7 @@ const CheckOutNew = () => {
               {ticketStatusString === 'safe' ? (
                 <p className="text-right round-last">{ticketCheckOutRound}</p>
               ) : (
-                <p className="text-right">Not in safehouse</p>
+                <p className="digit-last text-right">Not in safehouse</p>
               )}{' '}
             </div>
 

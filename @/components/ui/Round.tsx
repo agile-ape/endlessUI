@@ -36,7 +36,7 @@ const Round = () => {
 
   const levelUp = Number(data?.[0].result || 0)
 
-  const On = 'font-medium tracking-wider'
+  const On = 'text-[#404833] dark:text-[#FCFC03] font-medium tracking-wider'
   const Off = 'text-zinc-500 dark:text-zinc-300 tracking-tight'
 
   return (

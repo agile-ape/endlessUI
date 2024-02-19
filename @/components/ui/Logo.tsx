@@ -43,16 +43,20 @@ export default function Logo() {
     setAlarm(!isAlarmOn)
   }
 
+  const refreshPage = () => {
+    location.reload()
+  }
+
   return (
     <>
       {/* <div className="relative p-1 m-1 bg-[#39402e] rounded-md"> */}
-      <Link
-        href="/"
+      <button
+        onClick={refreshPage}
         className="rounded-md px-2 py-0 text-[32px] h-12 bg-[#404833] shadow-sm text-[#FCFDC7] \
           capitalized font-digit cursor-default"
       >
         last
-      </Link>
+      </button>
       {/* <div
           className={cn(
             isAlarmOn ? '-top-1' : '-top-2',

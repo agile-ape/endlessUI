@@ -316,6 +316,8 @@ export default function Screen() {
 
   const { forcedTheme } = useTheme()
 
+  console.log(forcedTheme)
+
   // Menu
   const [menuComponent, setMenuComponent] = useState<ComponentType | null>('you')
   const selectMenuComponent = (component: ComponentType) => {
@@ -842,7 +844,30 @@ export default function Screen() {
             Welcome to Lastman
           </div>
           <div className="flex flex-col gap-1 my-2 text-center body-last sm:text-2xl">
-            <p className="">Battle royale on Blast</p>
+            <p className="flex justify-center items-center">
+              Battle royale on{' '}
+              <span>
+                {forcedTheme == 'light' ? (
+                  <Image
+                    priority
+                    src="/logo/blast_black.svg"
+                    className="ml-2"
+                    height={200}
+                    width={100}
+                    alt="blast-logo"
+                  />
+                ) : (
+                  <Image
+                    priority
+                    src="/logo/blast_yellow.svg"
+                    className="ml-2"
+                    height={200}
+                    width={100}
+                    alt="blast-logo"
+                  />
+                )}
+              </span>
+            </p>
             <p className="">Play, Yield, Outlast</p>
             <p className="">How long can you last?</p>
           </div>

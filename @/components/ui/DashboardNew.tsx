@@ -207,7 +207,7 @@ export default function DashboardNew() {
     },
   })
 
-  /* remove ENS integration 
+  /* remove ENS integration
   const { data: ensName } = useEnsName({
     address: address,
     chainId: 1,
@@ -408,28 +408,34 @@ export default function DashboardNew() {
                   </div>
                   <div className="grid grid-cols-2 gap-1">
                     <p className="text-left">ETH in wallet</p>
-                    <p className="text-right">
-                      {' '}
-                      {formatNumber(ethBalance, {
-                        maximumFractionDigits: 3,
-                        minimumFractionDigits: 0,
-                      })}{' '}
-                      ETH{' '}
+                    <div className="flex justify-end">
+                      <p className="flex text-right">
+                        {' '}
+                        <p className="text-right text-[#404833] dark:text-[#FCFC03]">
+                          {formatNumber(ethBalance, {
+                            maximumFractionDigits: 3,
+                            minimumFractionDigits: 0,
+                          })}
+                        </p>{' '}
+                        <p className="ml-1"> ETH </p>
+                      </p>
                       <button onClick={refetchETHHandler}>
                         <RefreshCcw size={16} className="text-sm ml-1 rounded-full"></RefreshCcw>
                       </button>
-                    </p>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-1">
                     <p className="text-left">LAST in wallet</p>
-                    <p className="text-right">
+                    <p className="flex justify-end text-right">
                       {' '}
-                      {formatNumber(tokenBalance, {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 0,
-                      })}{' '}
-                      LAST{' '}
+                      <p className="text-right text-[#404833] dark:text-[#FCFC03]">
+                        {formatNumber(tokenBalance, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}
+                      </p>{' '}
+                      <p className="ml-1"> LAST </p>
                     </p>
                   </div>
 
@@ -529,7 +535,7 @@ export default function DashboardNew() {
                 </div>
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Current Chain</p>
-                  <p className="text-right">{chainName}</p>
+                  <p className="text-right text-[#404833] dark:text-[#FCFC03]">{chainName}</p>
                 </div>
 
                 <div className="underline flex justify-center mt-6">Play count</div>

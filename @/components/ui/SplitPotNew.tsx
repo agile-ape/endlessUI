@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
@@ -257,6 +258,9 @@ export const SplitPotNew = () => {
     event.target.src = '/lore/SplitPotMobile.png'
   }
 
+  const On = 'border-[#404833] dark:border-[#FCFC03]'
+  const Off = 'border-transparent'
+
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
@@ -322,22 +326,31 @@ export const SplitPotNew = () => {
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left"> Stage 3 starts on</p>
               <p className="text-right">
-                {stage !== 3 && (
-                  <>
-                    {' '}
-                    <a href={TWITTER_URL} className="link underline">
-                      {' '}
-                      Follow us
-                    </a>{' '}
-                  </>
-                )}
-                {stage === 3 && (
+                {stage === 3 ? (
                   <p>
                     {' '}
                     Round <span className="round-last">{drainStart}</span>
                   </p>
+                ) : (
+                  <div className="digit-last">
+                    {' '}
+                    <a href={TWITTER_URL} className="link underline">
+                      {' '}
+                      TBD
+                    </a>{' '}
+                  </div>
                 )}
               </p>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Current pot</p>
+              <p className="text-right"> {currentPot} ETH</p>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left"> Players left</p>
+              <div className="text-right">
+                <p>{ticketCount}</p>
+              </div>
             </div>
           </div>
 
@@ -345,7 +358,7 @@ export const SplitPotNew = () => {
           <div className="digit-last text-center">
             {stage === 2 || stage === 3 ? (
               voteCount < thresholdCount ? (
-                <p>{thresholdCount - voteCount} more vote(s) to go</p>
+                <p>{thresholdCount - voteCount} more Yes needed</p>
               ) : (
                 <p>We have hit the threshold!</p>
               )
@@ -353,30 +366,25 @@ export const SplitPotNew = () => {
               <p> Voting has not started </p>
             )}
           </div>
-          <div className="w-full">
-            <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
-              stage 2
-            </div>
-            <div className="underline">Votes</div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left"> Players left</p>
-              <div className="text-right">
-                <p>{ticketCount}</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left"> Vote threshold</p>
-              <div className="text-right">
-                <p>{voteThreshold}%</p>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left"> Yes votes</p>
-              <div className="text-right">
-                <p>{voteCount}</p>
+          <div className={cn(stage === 2 ? On : Off, 'border rounded-xl p-4 m-4')}>
+            <div className="w-full">
+              <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
+                stage 2
+              </div>
+              <div className="underline">Votes</div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left"> Vote threshold</p>
+                <div className="text-right">
+                  <p>{voteThreshold}%</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left"> Yes votes</p>
+                <div className="text-right">
+                  <p>{voteCount}</p>
 
-                {/* <TooltipProvider delayDuration={10}>
+                  {/* <TooltipProvider delayDuration={10}>
                           <Tooltip>
                             <TooltipTrigger>{voteCount}</TooltipTrigger>
                             <TooltipContent side="top" align="center">
@@ -386,13 +394,13 @@ export const SplitPotNew = () => {
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider> */}
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left"> Threshold to hit</p>
-              <div className="text-right">
-                <p>{thresholdCount}</p>
-                {/* <TooltipProvider delayDuration={10}>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left"> Target to hit</p>
+                <div className="text-right">
+                  <p>{thresholdCount}</p>
+                  {/* <TooltipProvider delayDuration={10}>
                           <Tooltip>
                             <TooltipTrigger>{thresholdCount}</TooltipTrigger>
                             <TooltipContent side="top" align="center">
@@ -402,16 +410,15 @@ export const SplitPotNew = () => {
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider> */}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-full">
-            <div className="underline">Split payoff</div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Split and get </p>
-              {stage === 2 ||
-                (stage === 3 && (
+            <div className="w-full mt-4">
+              <div className="underline">Split payoff</div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Split and get </p>
+                {stage === 2 || stage === 3 ? (
                   <p className="text-right">
                     {' '}
                     {formatNumber(splitAmountPerPlayer, {
@@ -420,71 +427,75 @@ export const SplitPotNew = () => {
                     })}{' '}
                     ETH each
                   </p>
-                ))}
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Exit now and get </p>
-              <p className="text-right">
-                {formatNumber(exitClaim, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 0,
-                })}{' '}
-                ETH
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Lastman gets</p>
-              <p className="text-right">
-                {/* {Number(lastManClaim)} ETH  */}
-                {formatNumber(lastManClaim, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
-                ETH
-              </p>
+                ) : (
+                  <p className="font-digit text-right">not time yet</p>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Exit now and get </p>
+                <p className="text-right">
+                  {formatNumber(exitClaim, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 0,
+                  })}{' '}
+                  ETH
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">If outlast till last</p>
+                <p className="text-right">
+                  {/* {Number(lastManClaim)} ETH  */}
+                  {formatNumber(lastManClaim, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 3,
+                  })}{' '}
+                  ETH
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="w-full">
-            <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
-              stage 3
-            </div>
-            <div className="underline">Drain</div>
+          <div className={cn(stage === 3 ? On : Off, 'border rounded-xl p-4 m-4')}>
+            <div className="w-full">
+              <div className="font-digit uppercase text-center h2-last text-2xl sm:text-xl underline">
+                stage 3
+              </div>
+              <div className="underline">Drain</div>
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Drain rate </p>
-              <p className="text-right">
-                {formatNumber(formatUnits(drainRate, 1), {
-                  maximumFractionDigits: 6,
-                  minimumFractionDigits: 0,
-                })}
-                % per round
-              </p>
-            </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Drain rate </p>
+                <p className="text-right">
+                  {formatNumber(formatUnits(drainRate, 1), {
+                    maximumFractionDigits: 6,
+                    minimumFractionDigits: 0,
+                  })}
+                  % per round
+                </p>
+              </div>
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Pot to drain </p>
-              <p className="text-right">
-                {formatNumber(potToDrain, {
-                  maximumFractionDigits: 6,
-                  minimumFractionDigits: 0,
-                })}{' '}
-                ETH
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Drain per round</p>
-              <div className="text-right">
-                <p>
-                  {formatNumber(drainAmount, {
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Pot to drain </p>
+                <p className="text-right">
+                  {formatNumber(potToDrain, {
                     maximumFractionDigits: 6,
                     minimumFractionDigits: 0,
                   })}{' '}
                   ETH
                 </p>
+              </div>
 
-                {/* <TooltipProvider delayDuration={10}>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Drain per round</p>
+                <div className="text-right">
+                  <p>
+                    {formatNumber(drainAmount, {
+                      maximumFractionDigits: 6,
+                      minimumFractionDigits: 0,
+                    })}{' '}
+                    ETH
+                  </p>
+
+                  {/* <TooltipProvider delayDuration={10}>
                           <Tooltip>
                             <TooltipTrigger>
                               {formatNumber(drainAmount, {
@@ -509,33 +520,33 @@ export const SplitPotNew = () => {
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider> */}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-full">
-            <div className="underline">Game ends when</div>
+            <div className="w-full mt-4">
+              <div className="underline">Game ends when</div>
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Pot floor </p>
-              <p className="text-right">
-                {formatNumber(minPot, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 0,
-                })}
-                %
-              </p>
-            </div>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Pot floor </p>
+                <p className="text-right">
+                  {formatNumber(minPot, {
+                    maximumFractionDigits: 3,
+                    minimumFractionDigits: 0,
+                  })}
+                  %
+                </p>
+              </div>
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">{`Ends when pot <`} </p>
-              <p className="text-right">
-                {formatNumber(potToEnd, {
-                  maximumFractionDigits: 6,
-                  minimumFractionDigits: 0,
-                })}{' '}
-                ETH
-                {/* <TooltipProvider delayDuration={10}>
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">{`Ends when pot <`} </p>
+                <p className="text-right">
+                  {formatNumber(potToEnd, {
+                    maximumFractionDigits: 6,
+                    minimumFractionDigits: 0,
+                  })}{' '}
+                  ETH
+                  {/* <TooltipProvider delayDuration={10}>
                           <Tooltip>
                             <TooltipTrigger>
                               {formatNumber(potToEnd, {
@@ -560,24 +571,27 @@ export const SplitPotNew = () => {
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider> */}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Current pot</p>
-              <p className="text-right"> {currentPot} ETH</p>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left"> Amount drained so far</p>
-              {stage === 3 && (
-                <p className="text-right">
-                  {' '}
-                  {formatNumber(formatUnits(amountDrained, 18), {
-                    maximumFractionDigits: 6,
-                    minimumFractionDigits: 0,
-                  })}{' '}
-                  ETH
                 </p>
-              )}
+              </div>
+              {/* <div className="grid grid-cols-2 gap-1">
+                <p className="text-left">Current pot</p>
+                <p className="text-right"> {currentPot} ETH</p>
+              </div> */}
+              <div className="grid grid-cols-2 gap-1">
+                <p className="text-left"> Amount drained so far</p>
+                {stage === 3 ? (
+                  <p className="text-right">
+                    {' '}
+                    {formatNumber(formatUnits(amountDrained, 18), {
+                      maximumFractionDigits: 6,
+                      minimumFractionDigits: 0,
+                    })}{' '}
+                    ETH
+                  </p>
+                ) : (
+                  <p className="digit-last text-right">not time yet</p>
+                )}
+              </div>
             </div>
           </div>
 

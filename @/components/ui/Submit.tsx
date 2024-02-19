@@ -261,7 +261,7 @@ const Submit = () => {
         <div className="m-1 capitalize text-center h2-last">Fight On?</div>
 
         <div className="mx-auto flex flex-col justify-center items-center">
-          {phase === 'day' ? (
+          {active ? (
             <>
               <div className="text-center h3-last">Solve Captcha</div>
               <HCaptcha
@@ -276,7 +276,7 @@ const Submit = () => {
             </>
           ) : (
             <>
-              <div className="text-center digit-last">Not time to submit</div>
+              <div className="text-center digit-last">Not available</div>
             </>
           )}
         </div>
