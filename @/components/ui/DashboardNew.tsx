@@ -65,6 +65,7 @@ import {
   DASHBOARD_IMG,
   DASHBOARD_MOBILE_IMG,
   CHAIN_ID,
+  TOKEN_NAME,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -411,7 +412,7 @@ export default function DashboardNew() {
                     <div className="flex justify-end">
                       <p className="flex text-right">
                         {' '}
-                        <p className="text-right text-[#404833] dark:text-[#FCFC03]">
+                        <p className="text-right text-[#11140C] dark:text-[#FCFC03]">
                           {formatNumber(ethBalance, {
                             maximumFractionDigits: 3,
                             minimumFractionDigits: 0,
@@ -426,16 +427,16 @@ export default function DashboardNew() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-1">
-                    <p className="text-left">LAST in wallet</p>
+                    <p className="text-left">{TOKEN_NAME} in wallet</p>
                     <p className="flex justify-end text-right">
                       {' '}
-                      <p className="text-right text-[#404833] dark:text-[#FCFC03]">
+                      <p className="text-right text-[#11140C] dark:text-[#FCFC03]">
                         {formatNumber(tokenBalance, {
                           maximumFractionDigits: 2,
                           minimumFractionDigits: 0,
                         })}
                       </p>{' '}
-                      <p className="ml-1"> LAST </p>
+                      <p className="ml-1"> {TOKEN_NAME} </p>
                     </p>
                   </div>
 
@@ -535,7 +536,7 @@ export default function DashboardNew() {
                 </div>
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Current Chain</p>
-                  <p className="text-right text-[#404833] dark:text-[#FCFC03]">{chainName}</p>
+                  <p className="text-right text-[#11140C] dark:text-[#FCFC03]">{chainName}</p>
                 </div>
 
                 <div className="underline flex justify-center mt-6">Play count</div>

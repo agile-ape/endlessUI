@@ -120,7 +120,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
         if (!data?.id) return
 
         updateLastChangedTicket(data.id)
-        setTimeout(() => updateLastChangedTicket(0), 3000)
+        // setTimeout(() => updateLastChangedTicket(0), 3000)
 
         if (data?.user?.toLowerCase() === address?.toLowerCase()) {
           updateOwnedTicket(data)

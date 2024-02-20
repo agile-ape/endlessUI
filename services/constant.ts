@@ -46,6 +46,14 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 export const CHAIN = blastSepolia
 export const CHAIN_ID = blastSepolia.id
 
+export let TOKEN_NAME: string
+
+if (CHAIN_ID === 168_587_773) {
+  TOKEN_NAME = 'tLAST'
+} else {
+  TOKEN_NAME = 'LAST'
+}
+
 export const BLOCK_EXPLORER = isDevelopment
   ? 'https://testnet.blastscan.io'
   : 'https://testnet.blastscan.io'

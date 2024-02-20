@@ -316,8 +316,6 @@ export default function Screen() {
 
   const { forcedTheme } = useTheme()
 
-  console.log(forcedTheme)
-
   // Menu
   const [menuComponent, setMenuComponent] = useState<ComponentType | null>('you')
   const selectMenuComponent = (component: ComponentType) => {
@@ -799,7 +797,8 @@ export default function Screen() {
                   align="end"
                   className="header-last bg-[#9BA885] dark:bg-[#404833] border-2 border-[#FCFC03] dark:border-[#FCFC03]"
                 >
-                  <div className="flex flex-col gap-2 py-2 px-0">
+                  <div className="flex flex-col justify-center items-center gap-2 py-2 px-0">
+                    <Logo />
                     <Indicator />
                     <Round />
                     <div className="flex items-center justify-center">
@@ -838,7 +837,7 @@ export default function Screen() {
       ) : (
         <div className="mx-auto">
           <div className="sm:hidden flex justify-center mx-auto py-3">
-            <Logo />
+            <Logo isMenu={true} />
           </div>
           <div className="text-center text-4xl font-digit text-[#404833] dark:text-[#FCFC03]">
             Welcome to Lastman

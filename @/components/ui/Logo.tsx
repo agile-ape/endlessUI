@@ -5,84 +5,84 @@ import Link from 'next/link'
 import Image from 'next/image'
 import localFont from 'next/font/local'
 import { cn } from '@/lib/utils'
-import Round from '../ui/Round'
-import Countdown from '../ui/Countdown'
-import Indicator from '../ui/Indicator'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuSubTrigger,
-  DropdownMenuSub,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
-} from '@/components/ui/dropdown-menu'
-import { LogIn, ChevronUp, ChevronDown, AlertTriangle, AlertCircle } from 'lucide-react'
 
-const headlineFont = localFont({
-  src: '../../../public/fonts/typo.otf',
-  display: 'swap',
-  // fallback: ['sans-serif'],
-})
+type LogoType = {
+  isMenu?: boolean
+}
+const Logo: FC<LogoType> = ({ isMenu }) => {
+  const [alarmState, setAlarmState] = useState<string>('default')
 
-export default function Logo() {
-  // const [handleHover, setHandleHover] = useState<boolean>(false)
-  // const handleOnMouseEnter: MouseEventHandler = () => {
-  //   setHandleHover(true)
-  // }
-  // const handleOnMouseLeave: MouseEventHandler = () => {
-  //   setHandleHover(false)
-  // }
-
-  const [isAlarmOn, setAlarm] = useState<boolean>(false)
-
-  const toggleAlarm = () => {
-    setAlarm(!isAlarmOn)
+  const handleOnMouseEnter: MouseEventHandler = () => {
+    setAlarmState('ready')
+  }
+  const handleOnMouseLeave: MouseEventHandler = () => {
+    setAlarmState('default')
   }
 
-  const refreshPage = () => {
+  const handleOnMouseDown: MouseEventHandler = () => {
+    setAlarmState('go')
     location.reload()
   }
 
   return (
     <>
-      {/* <div className="relative p-1 m-1 bg-[#39402e] rounded-md"> */}
-      <button
-        onClick={refreshPage}
-        className="rounded-md px-2 py-0 text-[32px] h-12 bg-[#404833] shadow-sm text-[#FCFDC7] \
-          capitalized font-digit cursor-default"
+      <div
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        onMouseDown={handleOnMouseDown}
+        // onClick={handleOnMouseDown}
+        className="relative h-12 w-24 sm:h-10 sm:w-20 cursor-pointer m-2"
       >
-        last
-      </button>
-      {/* <div
+        {/* display */}
+        <div
           className={cn(
-            isAlarmOn ? '-top-1' : '-top-2',
-            'absolute bg-[#FCFDC7] w-6 h-3 p-1 rounded-sm',
+            'rounded-md \
+            py-4 sm:py-0 \
+        text-[36px] sm:text-[28px] \
+        bg-[#404833] shadow-sm text-[#FCFDC7] \
+        capitalized font-digit \
+        border border-[#11140C] text-center',
+            alarmState === 'ready'
+              ? ''
+              : alarmState === 'go'
+                ? 'border-[#FCFC03] text-[#FCFC03]'
+                : '',
+            isMenu ? 'py-0' : '',
           )}
-        ></div> */}
-      {/* </div> */}
+        >
+          {alarmState === 'default' ? 'last' : alarmState === 'ready' ? 'blast' : 'off'}
+        </div>
 
-      {/* <div
-        className={`${
-          handleHover ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-1000 ease-in-out absolute h-12 w-16 rounded-md px-2 py-0 punk-last`}
-      >
-        <Image priority src="/7959.png" className="" height={20} width={40} alt="punk7959" />
-      </div> */}
-
-      {/* <div className={cn(handleHover ? '' : 'hidden', ' punk-last absolute top-0 z-4')}>
-            <Image
-              priority
-              src="/7959.png"
-              className="duration-1000"
-              height={20}
-              width={40}
-              alt="punk7959"
-            />
-          </div> */}
+        {/* button + stem */}
+        <div
+          className={cn(
+            'absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full \
+            flex flex-col justify-center items-center',
+            alarmState === 'ready' ? '' : alarmState === 'go' ? '' : '',
+          )}
+        >
+          {/* button */}
+          <div
+            className={cn(
+              'bg-[#404833] z-[5] border border-[#11140C] w-6 h-2 rounded-[0.125rem]',
+              alarmState === 'ready' ? '' : alarmState === 'go' ? 'border-[#FCFC03]' : '',
+            )}
+          ></div>
+          {/* stem */}
+          <div
+            className={cn(
+              'bg-[#404833] z-[10] border border-[#11140C] border-t-0 border-b-0 w-2 h-[2px]',
+              alarmState === 'ready'
+                ? 'h-[6px]'
+                : alarmState === 'go'
+                  ? 'h-[0px] border-[#FCFC03]'
+                  : '',
+            )}
+          ></div>
+        </div>
+      </div>
     </>
   )
 }
+
+export default Logo
