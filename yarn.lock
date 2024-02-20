@@ -4663,6 +4663,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/analytics@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@vercel/analytics@npm:1.2.1"
+  dependencies:
+    server-only: ^0.0.1
+  peerDependencies:
+    next: ">= 13"
+    react: ^18 || ^19
+  peerDependenciesMeta:
+    next:
+      optional: true
+    react:
+      optional: true
+  checksum: 16c5c78bab7bf9deebff98266c9ada20762acdf7d15a90bd0b00305243c78bcf303f8c31185f14f52c2853291037e0d40e27a24143eefc2ab747dc659030834f
+  languageName: node
+  linkType: hard
+
 "@wagmi/connectors@npm:3.1.11":
   version: 3.1.11
   resolution: "@wagmi/connectors@npm:3.1.11"
@@ -9035,6 +9052,7 @@ __metadata:
     "@supabase/supabase-js": ^2.33.2
     "@types/node": ^18.16.12
     "@types/react": ^18.2.6
+    "@vercel/analytics": ^1.2.1
     autoprefixer: ^10.4.14
     class-variance-authority: ^0.7.0
     clsx: ^2.0.0
@@ -11364,6 +11382,13 @@ __metadata:
   dependencies:
     randombytes: ^2.1.0
   checksum: c4839c6206c1d143c0f80763997a361310305751171dd95e4b57efee69b8f6edd8960a0b7fbfc45042aadff98b206d55428aee0dc276efe54f100899c7fa8ab7
+  languageName: node
+  linkType: hard
+
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: c432348956641ea3f460af8dc3765f3a1bdbcf7a1e0205b0756d868e6e6fe8934cdee6bff68401a1dd49ba4a831c75916517a877446d54b334f7de36fa273e53
   languageName: node
   linkType: hard
 
