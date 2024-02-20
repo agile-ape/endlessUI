@@ -185,6 +185,11 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
 
   const quartile = (ticketRank / totalTicketCount) * 100
 
+  const ticketStatusString: string = statusPayload[ticketStatus] || 'unknown'
+
+  /*-------------------------------------- STANDALONE VARIATION -----------------------------------*/
+
+  /*
   let rankColor: string
   if (quartile < 25) {
     rankColor = 'bg-black'
@@ -196,86 +201,18 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   } else if (quartile <= 100) {
     rankColor = 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500'
   }
+  */
 
-  // bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500
-  // bg-gradient-to-r from-purple-500 via-pink-500 to-red-500
-  // console.log(rankColor)
+  // user input size
+  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
-  // const suddenDeath = useStoreState((state) => state.suddenDeath)
+  const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
+    <Sword key={index} size={16} className="text-black"></Sword>
+  ))
 
-  // const nextTicketId = useStoreState((state) => state.ticketId)
-
-  const ticketStatusString: string = statusPayload[ticketStatus] || 'unknown'
-  // console.log(ticketStatusString)
-
+  /*-------------------------------------- TICKET LOOK -----------------------------------*/
   let ticketLook: string
 
-  // console.log(phase)
-  // console.log(ticketId)
-  // console.log(ticketIsInPlay)
-
-  /* CHATGPT
-  // Your main logic
-  if (phase === 'deployed') {
-    // handleDeployedPhase()
-    ticketLook = 'beforePurchase'
-  } else if (phase === 'start') {
-    // handleStartPhase()
-    if (ticketId === 0) {
-      ticketLook = 'beforePurchase'
-    } else {
-      ticketLook = 'afterPurchase'
-    }
-  } else if (ticketIsInPlay) {
-    if (phase === 'day') {
-      // handleDayPhase()
-      if (ticketStatusString === 'submitted') {
-        ticketLook = 'submittedDay'
-      } else {
-        if (round < suddenDeath) {
-          ticketLook = 'stage1New'
-        } else if (round < suddenDeath * 2) {
-          ticketLook = 'stage2New'
-        } else {
-          ticketLook = 'stage3New'
-        }
-      }
-    } else if (phase === 'night') {
-      // handleNightPhase()
-      if (ticketStatusString === 'submitted' && ticketLastSeen === round) {
-        ticketLook = 'submittedNight'
-      } else if (ticketStatusString === 'checked') {
-        ticketLook = 'attackedButSafu'
-      } else {
-        ticketLook = 'neverSubmit'
-      }
-    } else if (phase === 'lastManFound') {
-      // handleLastManFoundPhase()
-      ticketLook = 'lastManStanding'
-    } else if (phase === 'peaceFound') {
-      // handlePeaceFoundPhase()
-      ticketLook = 'agreedToSplitPot'
-    } else if (phase === 'drain') {
-      // handleDrainPhase()
-      ticketLook = 'noMorePot'
-    } else if (phase === 'start') {
-      ticketLook = 'afterPurchase'
-    }
-  } else {
-    // handleNotInPlay()
-    if (ticketStatusString === 'dead') {
-      ticketLook = 'killed'
-    } else if (ticketStatusString === 'exited') {
-      ticketLook = 'exitGame'
-    }
-  }
-  */
-  /* ORIGINAL */
-
-  // if (!authenticated) {
-  //   ticketLook = 'guest'
-  // } else {
-  // if authenticated
   if (phase === 'deployed') {
     ticketLook = 'beforePurchase'
   }
@@ -353,11 +290,6 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   if (!ticketLook && !ticketIsInPlay) {
     return null
   }
-  // }
-  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
-
-  // ticketLookOverwrite ? (ticketLookFinal = ticketLookOverwrite) : (ticketLookFinal = ticketLook)
-  // const ticketLookFinal = ticketLook
 
   let ticketLookFinal: string
   ticketLookFinal = ticketLookOverwrite ?? ticketLook
@@ -512,7 +444,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     },
     killed: {
       bgImage: 'deadOverlay',
-      header: 'text-white',
+      header: 'text-black dark:text-white',
       face: 'angry',
       id: ticketId,
       status: 'vengeance in my next life',
@@ -531,10 +463,6 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   }
 
   const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
-
-  const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
-    <Sword key={index} size={16} className="text-black"></Sword>
-  ))
 
   function copyAddress() {
     copyToClipboard(ticketAddress || '')
@@ -739,14 +667,13 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
           )}
           {/* rank */}
           {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
-            <div className="bg-white rounded-xl">
-              <div
-                className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
-              >
-                {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
-                <div className={`uppercase font-semibold tracking-wider ${h1}`}>
-                  {label} {value}
-                </div>
+            <div
+              // className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
+              className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end`}
+            >
+              {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
+              <div className={`uppercase font-semibold tracking-wider ${h1}`}>
+                {label} {value}
               </div>
             </div>
           )}

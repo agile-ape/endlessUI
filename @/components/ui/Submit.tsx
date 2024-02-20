@@ -25,6 +25,7 @@ import {
   HCAPCTCHA_KEY,
   SUBMIT_KEYWORD_IMG,
   SUBMIT_KEYWORD_MOBILE_IMG,
+  CHAIN_ID,
 } from '../../../services/constant'
 import { encodeSvg, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
@@ -95,7 +96,7 @@ const Submit = () => {
 
     if (res?.message === 'success') {
       try {
-        const fetchKeyword = await fetch(`${API_ENDPOINT}/keywords`)
+        const fetchKeyword = await fetch(`${API_ENDPOINT}/keywords/${CHAIN_ID}`)
         const svgResult = await fetchKeyword.text()
 
         setSvgKeyword(svgResult)
@@ -127,7 +128,7 @@ const Submit = () => {
 
   async function verifyKeyword(input: string) {
     try {
-      const data = await fetch(`${API_ENDPOINT}/keywords/verify`, {
+      const data = await fetch(`${API_ENDPOINT}/keywords/${CHAIN_ID}/verify`, {
         method: 'POST',
         body: JSON.stringify({
           keyword: input,
@@ -260,7 +261,7 @@ const Submit = () => {
         <div className="m-1 capitalize text-center h2-last">Fight On?</div>
 
         <div className="mx-auto flex flex-col justify-center items-center">
-          {phase === 'day' ? (
+          {active ? (
             <>
               <div className="text-center h3-last">Solve Captcha</div>
               <HCaptcha
@@ -275,7 +276,7 @@ const Submit = () => {
             </>
           ) : (
             <>
-              <div className="text-center digit-last">Not time to submit</div>
+              <div className="text-center digit-last">Not available</div>
             </>
           )}
         </div>
@@ -336,7 +337,13 @@ const Submit = () => {
           </Button>
         </div>
         <div className="digit-last">
-          {ticketStatusString === 'safe' ? <>In Safehouse</> : <Prompt docLink={DOCS_URL_submit} />}
+          {ticketStatusString === 'safe' ? (
+            <>In Safehouse</>
+          ) : active ? (
+            ''
+          ) : (
+            <Prompt docLink={DOCS_URL_submit} />
+          )}
         </div>
       </div>
     </div>

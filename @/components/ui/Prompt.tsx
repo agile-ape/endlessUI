@@ -41,8 +41,8 @@ const Prompt: FC<PromptType> = ({ docLink }) => {
       </span> */}
 
       <span className="flex digit-last text-base">
-        <AlertCircle size={24} className="align-top mr-2"></AlertCircle>
-        Not available
+        {/* <AlertCircle size={24} className="align-top mr-2"></AlertCircle> */}
+        {/* Not available */}
       </span>
 
       {/* <span className="hidden sm:inline sm:flex sm:justify-center sm:items-center">

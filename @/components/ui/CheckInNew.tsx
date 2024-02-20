@@ -53,6 +53,7 @@ import {
   CHECK_INTO_SAFEHOUSE_IMG,
   CHECK_INTO_SAFEHOUSE_MOBILE_IMG,
   CHAIN_ID,
+  TOKEN_NAME,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -247,7 +248,7 @@ const CheckInNew = () => {
         <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
           <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">$LAST held</p>
+              <p className="text-left">{TOKEN_NAME} in wallet</p>
               <p className="text-right">
                 {' '}
                 {formatNumber(tokenBalance, {
@@ -258,13 +259,16 @@ const CheckInNew = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Nights stayed</p>
-              <p className="text-right"> {ticketSafehouseNights} </p>
+              <p className="text-left">Price per night</p>
+              <p className="text-right">
+                {' '}
+                {stayCost} {TOKEN_NAME}{' '}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Price per night</p>
-              <p className="text-right"> {stayCost} $LAST </p>
+              <p className="text-left">Total nights stayed</p>
+              <p className="text-right"> {ticketSafehouseNights} </p>
             </div>
           </div>
 
@@ -304,7 +308,7 @@ const CheckInNew = () => {
                 Cost to stay:
               </div>
               <div className="text-2xl flex justify-between items-center p-2 gap-3">
-                {totalCost} LAST
+                {totalCost} {TOKEN_NAME}
               </div>
             </div>
 

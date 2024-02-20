@@ -31,18 +31,20 @@ const GameFeed = () => {
         args: Record<string, string>
       }
     }[]
+
+    // data: { id: number }[]
   }>(`/events/${CHAIN_ID}?address=${GAME_ADDRESS}&page=1&limit=100`, fetcher)
 
   const [feeds, setFeeds] = useState<Feeds[]>([])
 
   useEffect(() => {
-    if (data?.data?.length) {
+    if (data?.data.length) {
       setFeeds(data.data)
     }
   }, [data])
 
   useEffect(() => {
-    socket.on('events', (data) => {
+    socket.on(`events-${CHAIN_ID}`, (data) => {
       console.log('events', data)
       setFeeds((prev) => [data, ...prev])
     })

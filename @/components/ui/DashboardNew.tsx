@@ -64,6 +64,8 @@ import {
   DOCS_URL,
   DASHBOARD_IMG,
   DASHBOARD_MOBILE_IMG,
+  CHAIN_ID,
+  TOKEN_NAME,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
@@ -85,7 +87,7 @@ export default function DashboardNew() {
   // 'wallet', 'sms', 'email', 'google', 'twitter'
 
   const loginMethod = user?.linkedAccounts[1]?.type
-  let username
+  let username: any
   let loginAccount
 
   if (loginMethod === 'email') {
@@ -108,25 +110,27 @@ export default function DashboardNew() {
   const { wallets } = useWallets()
   // search for embedded wallet and pull address
   const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
+
+  const setToDefaultChain = async () => {
+    await embeddedWallet?.switchChain(CHAIN_ID)
+  }
+
   const embeddedWalletAddress = embeddedWallet?.address
-  const embeddedWalletChain = embeddedWallet?.chainId
+  const embeddedWalletChain = embeddedWallet?.chainId || 0
   const chainWithoutPrefix = embeddedWalletChain
     ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
     : null
-  console.log(embeddedWalletChain)
-  console.log(chainWithoutPrefix)
-  console.log(typeof embeddedWalletChain)
 
   // const chainName = chainWithoutPrefix ? findChainName(chainWithoutPrefix).then : null
   // console.log(chainName)
 
   const [chainName, setChainName] = useState('')
   useEffect(() => {
+    setToDefaultChain()
     if (chainWithoutPrefix !== null) {
       findChainName(chainWithoutPrefix)
         .then((result) => {
           setChainName(result)
-          console.log(chainName)
         })
         .catch((error) => {
           console.error(error)
@@ -204,6 +208,7 @@ export default function DashboardNew() {
     },
   })
 
+  /* remove ENS integration
   const { data: ensName } = useEnsName({
     address: address,
     chainId: 1,
@@ -213,6 +218,7 @@ export default function DashboardNew() {
     name: ensName,
     chainId: 1,
   })
+  */
 
   const { data: balanceData, refetch: refetchETH } = useBalance({
     address: address,
@@ -237,6 +243,10 @@ export default function DashboardNew() {
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
       },
+      {
+        ...defaultContractObj,
+        functionName: 'randNumber',
+      },
     ],
   })
 
@@ -244,6 +254,7 @@ export default function DashboardNew() {
   const playCount = data?.[0].result || BigInt(0)
   const sideQuestCount = data?.[1].result || BigInt(0)
   const balanceOf = data?.[2].result || BigInt(0)
+  const randNumber = Number(data?.[3].result || 0)
   const tokenBalance = formatUnits(balanceOf, 18)
 
   function copyAddress() {
@@ -252,6 +263,15 @@ export default function DashboardNew() {
       variant: 'success',
       title: 'Address copied',
       description: 'Address copied to clipboard',
+    })
+  }
+
+  function copyUsername() {
+    copyToClipboard(username)
+    toast({
+      variant: 'success',
+      title: 'Username copied',
+      description: 'Username copied to clipboard',
     })
   }
 
@@ -322,8 +342,13 @@ export default function DashboardNew() {
 
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">User</p>
-                  <p className="text-right">
-                    {authenticated ? username : <p className="text-right"> Not logged in</p>}
+                  <p className="text-right flex justify-end">
+                    <div className="flex justify-center items-center">
+                      {authenticated ? username : <p className="text-right"> Not logged in</p>}
+                      {/* <span onClick={copyUsername}>
+                        <Copy size={18} className="cursor-pointer ml-2" />
+                      </span> */}
+                    </div>
                   </p>
                 </div>
               </div>
@@ -384,28 +409,34 @@ export default function DashboardNew() {
                   </div>
                   <div className="grid grid-cols-2 gap-1">
                     <p className="text-left">ETH in wallet</p>
-                    <p className="text-right">
-                      {' '}
-                      {formatNumber(ethBalance, {
-                        maximumFractionDigits: 3,
-                        minimumFractionDigits: 0,
-                      })}{' '}
-                      ETH{' '}
+                    <div className="flex justify-end">
+                      <p className="flex text-right">
+                        {' '}
+                        <p className="text-right text-[#11140C] dark:text-[#FCFC03]">
+                          {formatNumber(ethBalance, {
+                            maximumFractionDigits: 3,
+                            minimumFractionDigits: 0,
+                          })}
+                        </p>{' '}
+                        <p className="ml-1"> ETH </p>
+                      </p>
                       <button onClick={refetchETHHandler}>
                         <RefreshCcw size={16} className="text-sm ml-1 rounded-full"></RefreshCcw>
                       </button>
-                    </p>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-1">
-                    <p className="text-left">LAST in wallet</p>
-                    <p className="text-right">
+                    <p className="text-left">{TOKEN_NAME} in wallet</p>
+                    <p className="flex justify-end text-right">
                       {' '}
-                      {formatNumber(tokenBalance, {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 0,
-                      })}{' '}
-                      LAST{' '}
+                      <p className="text-right text-[#11140C] dark:text-[#FCFC03]">
+                        {formatNumber(tokenBalance, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}
+                      </p>{' '}
+                      <p className="ml-1"> {TOKEN_NAME} </p>
                     </p>
                   </div>
 
@@ -500,11 +531,15 @@ export default function DashboardNew() {
                   <p className="text-right">Desert</p>
                 </div>
                 <div className="grid grid-cols-2 gap-1">
+                  <p className="text-left">Rand</p>
+                  <p className="text-right">{randNumber}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Current Chain</p>
-                  <p className="text-right">{chainName}</p>
+                  <p className="text-right text-[#11140C] dark:text-[#FCFC03]">{chainName}</p>
                 </div>
 
-                <div className="underline flex justify-center">Play count</div>
+                <div className="underline flex justify-center mt-6">Play count</div>
                 <div className="grid grid-cols-2 gap-1">
                   <p className="text-left">Game play</p>
                   <p className="text-right">{Number(playCount)}</p>

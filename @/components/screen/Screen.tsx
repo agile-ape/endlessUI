@@ -797,7 +797,8 @@ export default function Screen() {
                   align="end"
                   className="header-last bg-[#9BA885] dark:bg-[#404833] border-2 border-[#FCFC03] dark:border-[#FCFC03]"
                 >
-                  <div className="flex flex-col gap-2 py-2 px-0">
+                  <div className="flex flex-col justify-center items-center gap-2 py-2 px-0">
+                    <Logo />
                     <Indicator />
                     <Round />
                     <div className="flex items-center justify-center">
@@ -836,13 +837,36 @@ export default function Screen() {
       ) : (
         <div className="mx-auto">
           <div className="sm:hidden flex justify-center mx-auto py-3">
-            <Logo />
+            <Logo isMenu={true} />
           </div>
           <div className="text-center text-4xl font-digit text-[#404833] dark:text-[#FCFC03]">
             Welcome to Lastman
           </div>
           <div className="flex flex-col gap-1 my-2 text-center body-last sm:text-2xl">
-            <p className="">Battle royale on Blast</p>
+            <p className="flex justify-center items-center">
+              Battle royale on{' '}
+              <span>
+                {forcedTheme == 'light' ? (
+                  <Image
+                    priority
+                    src="/logo/blast_black.svg"
+                    className="ml-2"
+                    height={200}
+                    width={100}
+                    alt="blast-logo"
+                  />
+                ) : (
+                  <Image
+                    priority
+                    src="/logo/blast_yellow.svg"
+                    className="ml-2"
+                    height={200}
+                    width={100}
+                    alt="blast-logo"
+                  />
+                )}
+              </span>
+            </p>
             <p className="">Play, Yield, Outlast</p>
             <p className="">How long can you last?</p>
           </div>

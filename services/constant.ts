@@ -21,10 +21,14 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://sepolia.blast.io'],
+      http: [
+        'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+      ],
     },
     public: {
-      http: ['https://sepolia.blast.io'],
+      http: [
+        'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+      ],
     },
   },
   blockExplorers: {
@@ -40,7 +44,15 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 // export const CHAIN_ID = 84531
 
 export const CHAIN = blastSepolia
-export const CHAIN_ID = 168_587_773
+export const CHAIN_ID = blastSepolia.id
+
+export let TOKEN_NAME: string
+
+if (CHAIN_ID === 168_587_773) {
+  TOKEN_NAME = 'tLAST'
+} else {
+  TOKEN_NAME = 'LAST'
+}
 
 export const BLOCK_EXPLORER = isDevelopment
   ? 'https://testnet.blastscan.io'
@@ -61,7 +73,7 @@ export const WEBSOCKET_ENDPOINT = isDevelopment
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
-export const RELAYER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const // to be updated
+export const RELAYER_ADDRESS = '0xe973a9E8f568f64fAA8696a762427972Ee9f8446' as const // to be updated
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
 export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
 export const ADMIN_ADDRESSES = [

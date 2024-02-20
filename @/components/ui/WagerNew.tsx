@@ -407,11 +407,21 @@ const WagerNew = () => {
           <div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Current bet fee</p>
-              <p className="text-right"> {fee}%</p>
+              <p className="text-right">
+                {' '}
+                {stage > 1 ? <p className="digit-last fon">no more bets</p> : <p>{fee}%</p>}{' '}
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Next round bet fee</p>
-              <p className="text-right"> {nextRoundFee}%</p>
+              <p className="text-right">
+                {' '}
+                {stage > 1 ? (
+                  <p className="digit-last fon">no more bets</p>
+                ) : (
+                  <p>{nextRoundFee}%</p>
+                )}{' '}
+              </p>
             </div>
           </div>
         </div>
