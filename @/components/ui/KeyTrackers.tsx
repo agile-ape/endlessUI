@@ -61,7 +61,7 @@ const KeyTrackers = () => {
               <div className="flex flex-row gap-3 items-center py-0 sm:py-2 ">
                 <div className="flex flex-row items-center align-middle text-2xl digit-last">
                   {/* <Hexagon size={36} strokeWidth={3} /> */}
-                  Arena
+                  🏟 Arena
                 </div>
 
                 <div className="flex flex-row items-center cursor-default tracking-wide">

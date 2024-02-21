@@ -684,8 +684,8 @@ export default function Screen() {
                     className="flex flex-col justify-center items-center"
                     onClick={() => selectMenuComponent('list')}
                   >
-                    {menuComponent === 'list' && <Hexagon size={36} strokeWidth={3} />}
-                    {menuComponent !== 'list' && <Hexagon size={36} />}
+                    {menuComponent === 'list' && <Users size={36} strokeWidth={3} />}
+                    {menuComponent !== 'list' && <Users size={36} />}
                   </button>
                   <div></div>
                   <button
@@ -795,7 +795,8 @@ export default function Screen() {
                 <PopoverContent
                   side="right"
                   align="end"
-                  className="header-last bg-[#9BA885] dark:bg-[#404833] border-2 border-[#FCFC03] dark:border-[#FCFC03]"
+                  className="header-last bg-slate-200 dark:bg-slate-800 border-2 border-slate-400/50"
+                  // bg-[#9BA885] dark:bg-[#404833]
                 >
                   <div className="flex flex-col justify-center items-center gap-2 py-2 px-0">
                     <Logo />
