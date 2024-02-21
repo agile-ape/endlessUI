@@ -100,22 +100,56 @@ export const WagerActive = () => {
   // Active condition - place bets before stage 2 || claim reward when ending is found
   const { phase, stage, playerBet } = useStore()
 
-  let wagerActive: boolean
-  let wagerStatus: number
+  let playerEndingPhase: string = ''
 
-  if (
-    (stage === 0 || stage === 1) &&
-    !(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') &&
-    playerBet === 0
-  ) {
-    wagerStatus = 1
-  } else if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
-    wagerStatus = 2
-  } else {
-    wagerStatus = 0
+  if (playerBet === 4) {
+    playerEndingPhase = 'lastmanfound'
+  } else if (playerBet === 5) {
+    playerEndingPhase = 'peacefound'
+  } else if (playerBet === 6) {
+    playerEndingPhase = 'drain'
   }
 
-  wagerStatus === 1 || wagerStatus === 2 ? (wagerActive = true) : (wagerActive = false)
+  let wagerActive: boolean = false
+  let wagerStatus: number = 0
+
+  if (phase === 'deployed' || phase === 'gameclosed') {
+    wagerStatus = 0 // game hasn't begin or it's closed
+  }
+
+  if (phase === 'start' || phase === 'day' || phase === 'night') {
+    if (stage < 2) {
+      if (playerBet === 0) {
+        wagerStatus = 1 // game is ongoing and player hasn't bet yet
+        wagerActive = true
+      } else {
+        wagerStatus = 2 // player bet already
+      }
+    }
+
+    if (stage >= 2) {
+      if (playerBet === 0) {
+        wagerStatus = 3 // player did not make a bet for this game
+      } else {
+        wagerStatus = 2 // player bet already
+      }
+    }
+  }
+
+  // if game ends
+  if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
+    wagerActive = true
+    if (playerBet === 0) {
+      wagerStatus = 3
+      // wagerStatus = 5
+    } else {
+      if (playerEndingPhase === phase) {
+        wagerStatus = 4
+      } else {
+        wagerStatus = 5
+      }
+    }
+  }
 
   return { wagerActive, wagerStatus }
 }
@@ -212,19 +246,24 @@ const WagerNew = () => {
     fee = feeMultiplier * round
   }
 
+  // playerEndingIndicator string matches phase string options
   let playerEnding: string = ''
   let playerEndingIndicator: string = ''
+  let playerEndingPhase: string = ''
   let playerPayoffRatio: number = 0
   if (playerBet === 4) {
     playerEnding = 'Lastman'
+    playerEndingPhase = 'lastmanfound'
     playerEndingIndicator = 'lastmanfoundIndicator'
     playerPayoffRatio = lmfOdds
   } else if (playerBet === 5) {
     playerEnding = 'Peace'
+    playerEndingPhase = 'peacefound'
     playerEndingIndicator = 'peacefoundIndicator'
     playerPayoffRatio = pfOdds
   } else if (playerBet === 6) {
     playerEnding = 'Drained'
+    playerEndingPhase = 'drain'
     playerEndingIndicator = 'drainIndicator'
     playerPayoffRatio = dOdds
   }
@@ -633,12 +672,14 @@ const WagerNew = () => {
           </RadioGroup>
           {/* </div> */}
 
-          {/* Your bet */}
-          {playerBet === 0 ? (
+          {status === 0 ? (
+            // Bets are not open
+            <div className="digit-last">Bets are not open</div>
+          ) : status === 1 ? (
+            // time to bet
             <div
-              className="rounded-xl p-3 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 flex flex-col
-          gap-4 justify-center items-center h2-last
-          "
+              className="bg-slate-200 dark:bg-slate-700 border-slate-400 text-zinc-700 dark:text-zinc-100 rounded-xl text-3xl sm-text-2xl p-3 border-[2px] flex flex-col \
+            gap-4 justify-center items-center"
             >
               <label htmlFor="bet">Bet Amount (ETH) </label>
 
@@ -683,65 +724,65 @@ const WagerNew = () => {
                 {!(active && status === 1) && <Prompt docLink={DOCS_URL_safehouse} />}
               </div>
             </div>
-          ) : (
-            <>
-              <div
-                className="rounded-xl p-3 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 flex flex-col
+          ) : status === 2 ? (
+            // player bet already - show their bet info
+            <div
+              className="rounded-xl p-3 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 flex flex-col
                 gap-4 justify-center items-center h2-last
                 "
-              >
-                <div className="capitalize text-center h2-last">Your Bet</div>
-                <div className="mx-auto flex flex-col gap-2 text-2xl justify-center items-center">
-                  <div className="flex flex-col gap-2">
-                    <div className="grid grid-cols-2 gap-1">
-                      <p className="text-left flex items-center">Bet Ending</p>
-                      <div className="text-right flex flex-col justify-center items-center">
-                        <Image
-                          priority
-                          src={`/indicator/${playerEndingIndicator}.svg`}
-                          height={300}
-                          width={100}
-                          alt="last-man-found-ending"
-                          className="shrink-0 mb-1"
-                        />
-                        {playerEnding}
-                      </div>
+            >
+              <div className="capitalize text-center h2-last">Your Bet</div>
+              <div className="mx-auto flex flex-col gap-2 text-2xl justify-center items-center">
+                <div className="flex flex-col gap-2">
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left flex items-center">Bet Ending</p>
+                    <div className="text-right flex flex-col justify-center items-center">
+                      <Image
+                        priority
+                        src={`/indicator/${playerEndingIndicator}.svg`}
+                        height={300}
+                        width={100}
+                        alt="player-ending-bet"
+                        className="shrink-0 mb-1"
+                      />
+                      {playerEnding}
                     </div>
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-1">
-                      <p className="text-left">Bet Size</p>
-                      <p className="text-right">
-                        {formatNumber(playerSize, {
-                          maximumFractionDigits: 5,
-                          minimumFractionDigits: 0,
-                        })}{' '}
-                        ETH
-                      </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1">
-                      <p className="text-left">Payout if win</p>
-                      <p className="text-right">
-                        {formatNumber(playerPayoff, {
-                          maximumFractionDigits: 5,
-                          minimumFractionDigits: 0,
-                        })}{' '}
-                        ETH
-                      </p>
-                    </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left">Bet Size</p>
+                    <p className="text-right">
+                      {formatNumber(playerSize, {
+                        maximumFractionDigits: 5,
+                        minimumFractionDigits: 0,
+                      })}{' '}
+                      ETH
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    <p className="text-left">Payout if win</p>
+                    <p className="text-right">
+                      {formatNumber(playerPayoff, {
+                        maximumFractionDigits: 5,
+                        minimumFractionDigits: 0,
+                      })}{' '}
+                      ETH
+                    </p>
                   </div>
                 </div>
               </div>
-            </>
-          )}
-
-          {/* Claim */}
-          <div className="m-1 capitalize text-center h2-last">Claim your winnings</div>
-          {status === 2 && (
+            </div>
+          ) : status === 3 ? (
+            // player did not make a bet for this game
+            <div className="digit-last">You did not bet for this game</div>
+          ) : status === 4 ? (
+            // won - can claim winnings
             <div
               className="rounded-xl p-3 border border-zinc-300 dark:border-zinc-100 flex flex-col
           gap-4 justify-center items-center h2-last
           "
             >
+              {phase === phase}
               <label htmlFor="bet">You won </label>
               {/* If win. If lose */}
 
@@ -766,9 +807,10 @@ const WagerNew = () => {
               </Button>
               <Prompt docLink={DOCS_URL_safehouse} />
             </div>
+          ) : (
+            // lose - nothing to claim
+            <div className="digit-last">So sorry you lost</div>
           )}
-
-          {status !== 2 && <div className="digit-last">It's not time to claim winnings</div>}
         </div>
       </div>
     </div>
