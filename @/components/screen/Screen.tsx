@@ -247,7 +247,7 @@ const actionColor: Record<string, string> = {
   submit: 'text-green-300 mr-1',
   // splitIt: 'text-amber-400 dark:text-amber-100 mr-1',
   // splitIt: 'text-green-600 dark:text-green-300 mr-1',
-  splitIt: 'text-green-300 mr-1',
+  splitIt: 'text-amber-300 mr-1',
 
   // checkIn: 'text-blue-600 dark:text-blue-300 mr-1',
   checkIn: 'text-blue-300 mr-1',
@@ -305,6 +305,21 @@ const iconMapping: { [key: string]: JSX.Element } = {
   // admin: <Sparkle className="text-pink-700 dark:text-pink-400 mr-1" />,
   admin: <Sparkle className="text-pink-400 mr-1" />,
   // dashboard: <Send className="text-green-50 mr-1" />,
+}
+
+const emojiMapping: { [key: string]: string } = {
+  submit: '✅',
+  splitIt: '🍻',
+  checkIn: '🛏',
+  checkOut: '🧳',
+  buyTicket: '🎟',
+  exitGame: '🚪',
+  attack: '🥊',
+  kickOut: '🪓',
+  wager: '🎲',
+  phaseChange: '🔔',
+  token: '🎁',
+  admin: '🔑',
 }
 
 export default function Screen() {
@@ -491,22 +506,86 @@ export default function Screen() {
                 className="sticky top-0 header-last flex flex-col py-2 items-center z-[1]"
               >
                 <div className="font-digit text-3xl text-center">
-                  {actionView === 'submit' && <p>Submit</p>}
-                  {actionView === 'exitGame' && <p>Exit Arena</p>}
-                  {actionView === 'checkIn' && <p>Check In</p>}
-                  {actionView === 'checkOut' && <p>Check Out</p>}
-                  {actionView === 'splitIt' && <p>Split Pot</p>}
-                  {actionView === 'attack' && <p>Attack</p>}
-                  {actionView === 'kickOut' && <p>Kick Out</p>}
-                  {actionView === 'buyTicket' && <p>Enter Arena</p>}
-                  {actionView === 'wager' && <p>Place Bet</p>}
-                  {actionView === 'phaseChange' && <p>Change Phase</p>}
-                  {actionView === 'token' && <p>Send Token</p>}
-                  {actionView === 'admin' && <p>Gamemaster</p>}
-                  {menuComponent === 'you' && <p>Profile</p>}
-                  {menuComponent === 'events' && <p>Feed</p>}
-                  {menuComponent === 'list' && <p>Arena</p>}
-                  {menuComponent === 'menu' && <p>Links</p>}
+                  {actionView === 'submit' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">✅</span> Submit
+                    </p>
+                  )}
+                  {actionView === 'exitGame' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🚪</span> Exit Arena
+                    </p>
+                  )}
+                  {actionView === 'checkIn' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🛏</span> Check In
+                    </p>
+                  )}
+                  {actionView === 'checkOut' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🧳</span> Check Out
+                    </p>
+                  )}
+                  {actionView === 'splitIt' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🍻</span> Split Pot
+                    </p>
+                  )}
+                  {actionView === 'attack' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🥊</span> Attack
+                    </p>
+                  )}
+                  {actionView === 'kickOut' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🪓</span> Kick Out
+                    </p>
+                  )}
+                  {actionView === 'buyTicket' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🎟</span> Enter Arena
+                    </p>
+                  )}
+                  {actionView === 'wager' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🎲</span> Place Bets
+                    </p>
+                  )}
+                  {actionView === 'phaseChange' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🔔</span> Change Phase
+                    </p>
+                  )}
+                  {actionView === 'token' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🎁</span> Send Token
+                    </p>
+                  )}
+                  {actionView === 'admin' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🔑</span> Gamemaster
+                    </p>
+                  )}
+                  {menuComponent === 'you' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🪖</span> Profile
+                    </p>
+                  )}
+                  {menuComponent === 'events' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">📡</span> Feed
+                    </p>
+                  )}
+                  {menuComponent === 'list' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🏟</span> Arena
+                    </p>
+                  )}
+                  {menuComponent === 'menu' && (
+                    <p className="flex justify-center items-center">
+                      <span className="text-lg mr-1">🔗</span> Links
+                    </p>
+                  )}
                 </div>
               </button>
 
@@ -763,9 +842,10 @@ export default function Screen() {
                                     width={actionView === action.mobileAction ? 36 : 34}
                                     alt="player-action"
                                   /> */}
-                                {React.cloneElement(iconMapping[action.mobileAction], {
+                                {/* {React.cloneElement(iconMapping[action.mobileAction], {
                                   size: actionView === action.mobileAction ? 40 : 36,
-                                })}
+                                })} */}
+                                <div className="text-2xl">{emojiMapping[action.mobileAction]}</div>
 
                                 <div className="whitespace-nowrap">{action.label}</div>
                               </button>
@@ -803,7 +883,11 @@ export default function Screen() {
                     <Indicator />
                     <Round />
                     <div className="flex items-center justify-center">
-                      <KeyTrackers />
+                      {phase === 'gameclosed' ? (
+                        <div className="text-2xl sm:text-2xl">Game ended</div>
+                      ) : (
+                        <KeyTrackers />
+                      )}
                     </div>
                     <Countdown />
                   </div>
@@ -917,7 +1001,6 @@ export default function Screen() {
             >
               Explore
             </Button>
-
             <Button
               variant="secondary"
               className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}

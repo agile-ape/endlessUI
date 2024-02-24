@@ -127,7 +127,7 @@ function Header() {
               <SideMenu />
             </div> */}
             {/* <div className={`hidden xl:flex items-center space-x-4`}> */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               {/* custom styling */}
               {/* border border-white/40 rounded-md */}
               {/* <Link
@@ -139,9 +139,9 @@ function Header() {
               >
               Quickstart
             </Link> */}
-              <Button variant="link" className={`px-2 text-lg`} size="sm">
+              {/* <Button variant="link" className={`px-2 text-lg`} size="sm">
                 <PWADrawer />
-              </Button>
+              </Button> */}
 
               <a href={DOCS_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">

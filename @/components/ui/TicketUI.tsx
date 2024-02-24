@@ -443,7 +443,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       value: '- ETH',
     },
     killed: {
-      bgImage: 'deadOverlay',
+      bgImage: 'deadOverlayLight',
       header: 'text-black dark:text-white',
       face: 'angry',
       id: ticketId,
@@ -501,7 +501,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
             <p className="text-right italic flex justify-center items-center">
               <a
                 className="hover:underline"
-                href={`${BLOCK_EXPLORER}address/${ticketAddress}`}
+                href={`${BLOCK_EXPLORER}/address/${ticketAddress}`}
                 target="_blank"
               >
                 {ensName ? ensName : formatAddress(ticketAddress)}
@@ -525,7 +525,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
             <p className="text-right">
               {' '}
               <span className="underline decoration-double">{formatCount(ticketLastSeen)}</span>/
-              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-500' : 'text-red-900')}>
+              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-500' : 'text-red-500')}>
                 {ticketVoteString}
               </span>{' '}
             </p>
@@ -602,7 +602,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
               onClick={toggleAttack}
             >
               <OnSignal active={activeAttack} own={false} />
-              <Sword size={20} className="text-orange-50 mr-1" />
+              {/* <Sword size={20} className="text-orange-50 mr-1" /> */}
+              <span className="text-base mr-1">🥊</span>
               Attack
             </Button>
           )}
@@ -614,7 +615,8 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
               onClick={toggleKickOut}
             >
               <OnSignal active={activeKickOut} own={false} />
-              <Axe size={20} className="text-orange-50 mr-1" />
+              {/* <Axe size={20} className="text-orange-50 mr-1" /> */}
+              <span className="text-base mr-1">🪓</span>
               Kick Out
             </Button>
           )}

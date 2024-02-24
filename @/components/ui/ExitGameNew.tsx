@@ -168,7 +168,7 @@ const ExitGameNew = () => {
   if (ticketStatusString === 'exited') {
     playerClaim = ticketClaimed
   } else if (ticketStatusString === 'dead') {
-    playerClaim = killClaim
+    playerClaim = ticketClaimed
   } else {
     playerClaim = exitClaim
   }

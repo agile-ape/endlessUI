@@ -37,7 +37,8 @@ const buttonVariants = cva(
           // 'text-neutral-50 bg-neutral-600 border-2 border-neutral-800 hover:bg-neutral-700 hover:border-neutral-900 active:bg-neutral-700',
           // 'text-neutral-950 bg-neutral-200 border-2 border-neutral-300 hover:bg-neutral-100 hover:border-neutral-200 active:bg-neutral-300',
           // 'text-stone-950 bg-stone-200 border-2 border-stone-400 hover:bg-stone-100 hover:border-stone-500 active:bg-stone-300',
-          'text-purple-50 bg-purple-700 border-2 border-purple-500 hover:bg-purple-600 hover:border-purple-200 active:bg-purple-500',
+          // 'text-purple-50 bg-purple-700 border-2 border-purple-500 hover:bg-purple-600 hover:border-purple-200 active:bg-purple-500',
+          'text-stone-50 bg-stone-500 border-2 border-stone-700 hover:bg-stone-700 hover:border-stone-200 active:bg-stone-600',
 
         admin:
           'text-pink-50 bg-pink-500 border-2 border-pink-700 hover:bg-pink-700 hover:border-pink-200 active:bg-pink-600',
@@ -70,7 +71,7 @@ const buttonVariants = cva(
           // 'text-white bg-green-600 hover:bg-green-500 active:bg-green-600 border-2 border-green-800 hover:border-green-300 active:bg-green-800',
           // 'text-white bg-pink-500 hover:bg-pink-600 active:bg-pink-500 border-2 border-pink-800 hover:border-pink-300 active:bg-pink-600',
           // 'text-pink-50 bg-pink-500 border-2 border-pink-700 hover:bg-pink-700 hover:border-pink-200 active:bg-pink-600',
-          'text-amber-950 bg-amber-400 border-2 border-amber-700 hover:bg-amber-300 hover:border-amber-950 active:bg-amber-500',
+          'text-amber-950 bg-amber-400 border-2 border-amber-700 hover:bg-amber-500 hover:border-amber-200 active:bg-amber-500',
 
         // checkin and checkout - sky
         // fixed bg. light mode

@@ -116,7 +116,7 @@ export default function DashboardNew() {
   }
 
   const embeddedWalletAddress = embeddedWallet?.address
-  const embeddedWalletChain = embeddedWallet?.chainId || 0
+  const embeddedWalletChain = embeddedWallet?.chainId || null
   const chainWithoutPrefix = embeddedWalletChain
     ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
     : null

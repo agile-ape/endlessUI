@@ -64,29 +64,35 @@ const KeyTrackers = () => {
                   🏟 Arena
                 </div>
 
-                <div className="flex flex-row items-center cursor-default tracking-wide">
-                  <CookingPot size={24} className="mr-1" />
-                  <div className="text-2xl flash tracking-wide">{currentPot}</div>
-                </div>
-
-                <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <Users size={24} className="mr-1" />
-                  <div className="text-2xl flash tracking-wide">{ticketCount}</div>
-                </div>
-
-                {phase === 'deployed' ||
-                  (phase === 'start' && (
-                    <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                      <Ticket size={24} className="mr-1" />
-                      <div className="text-2xl flash tracking-wide">{nextTicketPrice}</div>
+                {phase === 'gameclosed' ? (
+                  <></>
+                ) : (
+                  <>
+                    <div className="flex flex-row items-center cursor-default tracking-wide">
+                      <CookingPot size={24} className="mr-1" />
+                      <div className="text-2xl flash tracking-wide">{currentPot}</div>
                     </div>
-                  ))}
 
-                {!(phase === 'deployed' || phase === 'start') && (
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Vote size={24} className="mr-1" />
-                    <div className="text-2xl flash tracking-wide">{voteCount}</div>
-                  </div>
+                    <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+                      <Users size={24} className="mr-1" />
+                      <div className="text-2xl flash tracking-wide">{ticketCount}</div>
+                    </div>
+
+                    {phase === 'deployed' ||
+                      (phase === 'start' && (
+                        <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+                          <Ticket size={24} className="mr-1" />
+                          <div className="text-2xl flash tracking-wide">{nextTicketPrice}</div>
+                        </div>
+                      ))}
+
+                    {!(phase === 'deployed' || phase === 'start') && (
+                      <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+                        <Vote size={24} className="mr-1" />
+                        <div className="text-2xl flash tracking-wide">{voteCount}</div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </TooltipTrigger>

@@ -59,7 +59,7 @@ const GameFeed = () => {
   }, [])
 
   return (
-    <div className="overflow-auto max-h-screen sm:max-h-[60vh] sm:container-last border-none sm:border-2 rounded-xl sm:mx-0 px-5">
+    <div className="overflow-auto max-h-[100vh] sm:max-h-[60vh] sm:container-last border-none sm:border-2 rounded-xl sm:mx-0 px-5">
       {feeds?.map((item, index) => (
         <div
           key={item.block_number}

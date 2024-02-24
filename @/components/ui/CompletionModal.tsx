@@ -128,7 +128,7 @@ const getAlertLook = (alertLookTest: string) => {
         bgImage: 'burst',
         face: 'exit',
         title: 'bye',
-        message: 'We hope you have fun. We will see you in the next game.',
+        message: 'We hope you had fun. We will see you in the next game.',
       }
 
     /*------  sent to another player ------*/
