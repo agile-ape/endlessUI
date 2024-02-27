@@ -88,13 +88,13 @@ export const tokenContractObj = {
   abi: TOKEN_ABI,
 }
 
-export const GAME_ADDRESS = '0xAe12F4a75c955c82348672F7De3ebbBD332488Dc' as const
+export const GAME_ADDRESS = '0xd224d571444d7dd6b856c2ff1cffee6bb882de0c' as const
 export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
 }
 
-export const BET_ENDING_ADDRESS = '0x703E7072F2fd066aFdee81571c94572F50101223' as const
+export const BET_ENDING_ADDRESS = '0x9A216982c365e6986b16CfC101741b7E445C2577' as const
 export const wagerContractObj = {
   address: BET_ENDING_ADDRESS,
   abi: BET_ENDING_ABI,
