@@ -127,8 +127,8 @@ const UserActions = () => {
           onClick={toggleSubmit}
         >
           <OnSignal active={submitActive} own={true} />
-          <Send size={20} className="text-green-50 mr-1" />
-          Submit
+          {/* <Send size={20} className="text-green-50 mr-1" /> */}
+          <span className="text-base mr-1">✅</span>Submit
         </Button>
 
         <Button
@@ -137,14 +137,14 @@ const UserActions = () => {
           onClick={toggleSplit}
         >
           <OnSignal active={splitActive} own={true} />
-          <Split size={20} className="text-amber-950 mr-1" />
-          Split
+          {/* <Split size={20} className="text-amber-950 mr-1" /> */}
+          <span className="text-base mr-1">🍻</span>Split
         </Button>
       </div>
       <div
         className="w-[240px] rounded-xl px-2 pt-4 pb-2
-    container-last
-    flex flex-col gap-2 mb-5 relative"
+        container-last
+        flex flex-col gap-2 mb-5 relative"
       >
         <div className="text-sm container-last bg-opacity-100 dark:bg-opacity-100 rounded-full w-max mx-auto px-3 absolute inset-x-0 -top-3 h-6">
           Safehouse
@@ -157,7 +157,8 @@ const UserActions = () => {
           onClick={toggleCheckIn}
         >
           <OnSignal active={checkInActive} own={true} />
-          <LogIn size={20} className="text-blue-50 mr-1" />
+          {/* <LogIn size={20} className="text-blue-50 mr-1" /> */}
+          <span className="text-base mr-1">🛏</span>
           Check In
         </Button>
 
@@ -168,7 +169,8 @@ const UserActions = () => {
           onClick={toggleCheckOut}
         >
           <OnSignal active={checkOutActive} own={true} />
-          <LogOut size={20} className="text-blue-950 mr-1" />
+          {/* <LogOut size={20} className="text-blue-950 mr-1" /> */}
+          <span className="text-base mr-1">🧳</span>
           Check Out
         </Button>
       </div>
@@ -188,7 +190,8 @@ const UserActions = () => {
           onClick={toggleWager}
         >
           <OnSignal active={wagerActive} own={true} />
-          <Dices size={20} className="mr-1" />
+          {/* <Dices size={20} className="mr-1" /> */}
+          <span className="text-base mr-1">🎲</span>
           Bet
         </Button>
       </div>
@@ -208,7 +211,8 @@ const UserActions = () => {
             className="rounded-full w-full text-xl flex justify-start"
             onClick={toggleToken}
           >
-            <Gift size={20} className="text-pink-50 mr-1" />
+            {/* <Gift size={20} className="text-pink-50 mr-1" /> */}
+            <span className="text-base mr-1">🎁</span>
             Send
           </Button>
 
@@ -217,7 +221,8 @@ const UserActions = () => {
             className="rounded-full w-full text-xl flex justify-start"
             onClick={toggleAdmin}
           >
-            <Sparkle size={20} className="text-pink-50 mr-1" />
+            {/* <Sparkle size={20} className="text-pink-50 mr-1" /> */}
+            <span className="text-base mr-1">🔑</span>
             Stats
           </Button>
         </div>

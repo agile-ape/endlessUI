@@ -123,13 +123,17 @@ const GameTab = () => {
   return (
     <Tabs value={tabValue} onValueChange={changeTabValue} className="w-[240px] mx-auto">
       <div className="justify-center hidden sm:flex">
-        <TabsList className="rounded-2xl w-3/4 mx-auto mb-2">
-          <TabsTrigger value="ticket" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Player
+        <TabsList className="rounded-xl w-5/6 mx-auto mb-2">
+          <TabsTrigger value="ticket" className="rounded-lg w-[50%] p-1 text-[1rem]">
+            <p className="flex justify-center items-center">
+              <span className="text-base mr-1">🪖</span> Player
+            </p>
           </TabsTrigger>
 
-          <TabsTrigger value="game" className="rounded-xl w-[50%] p-1 text-[1rem]">
-            Feed
+          <TabsTrigger value="game" className="rounded-lg w-[50%] p-1 text-[1rem]">
+            <p className="flex justify-center items-center">
+              <span className="text-base mr-1">📡</span> Feed
+            </p>
           </TabsTrigger>
         </TabsList>
       </div>
