@@ -149,21 +149,21 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
         if (event === 'SafehousePrice') {
           const { price, time } = dataJson
-          const priceRate = formatUnits(price || BigInt(0), 3)
+          // const priceRate = formatUnits(price || BigInt(0), 3)
           toast({
             variant: 'info',
             // title: 'Keyword updated',
-            description: <p>Safehouse price is now {priceRate} $LAST per night </p>,
+            description: <p>Safehouse price is now {price} $LAST per night </p>,
           })
         }
 
         if (event === 'TokenEmission') {
           const { emission, time } = dataJson
-          const emissionRate = formatUnits(emission || BigInt(0), 3)
+          // const emissionRate = formatUnits(emission || BigInt(0), 3)
           toast({
             variant: 'info',
             // title: 'Keyword updated',
-            description: <p>Tokens are now emitted at {emissionRate} $LAST per attack </p>,
+            description: <p>Tokens are now emitted at {emission} $LAST per attack </p>,
           })
         }
 
