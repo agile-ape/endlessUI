@@ -128,7 +128,7 @@ const buttonVariants = cva(
         /*-------------------- TICKET LIST ---------------------*/
         // does not uses size
         filter:
-          'text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:bg-opacity-80',
+          'border border-gray-600/50 dark:border-gray-200/50 text-gray-600 bg-gray-300 dark:bg-gray-600 text-zinc-500 dark:text-zinc-200 hover:bg-gray-400 dark:hover:bg-gray-700 disabled:cursor-default disabled:text-black dark:disabled:text-white disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:bg-opacity-80',
 
         // wallet:
         //   'text-black hover:text-white bg-white hover:bg-blue-400 active-bg-blue-600 border border-blue-950',

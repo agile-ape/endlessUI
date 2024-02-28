@@ -8,6 +8,7 @@ import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 /*---------------------------------------- ENV ---------------------------------------- */
 const isDevelopment = process.env.NODE_ENV === 'development'
 
+console.log(isDevelopment)
 /*---------------------------------------- CHAIN ---------------------------------------- */
 
 export const blastSepolia = /*#__PURE__*/ defineChain({
@@ -64,21 +65,20 @@ export const BLOCK_EXPLORER = isDevelopment
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
 export const API_ENDPOINT = isDevelopment
-  ? 'https://test2-1e36.onrender.com'
-  : 'https://test2-1e36.onrender.com' // to be updated
+  ? 'https://test-2-be.onrender.com'
+  : 'https://test2-1e36.onrender.com'
 
 export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://test2-1e36.onrender.com/ws'
-  : 'wss://test2-1e36.onrender.com/ws' // to be updated
+  ? 'wss://test-2-be.onrender.com/ws'
+  : 'wss://test2-1e36.onrender.com/ws'
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
-export const RELAYER_ADDRESS = '0xe973a9E8f568f64fAA8696a762427972Ee9f8446' as const // to be updated
+export const RELAYER_ADDRESS = '0xe973a9e8f568f64faa8696a762427972ee9f8446' as const // to be updated
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
 export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
 export const ADMIN_ADDRESSES = [
   '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
-  '0xf03B25a16C013B63c9d385f0a65e3017FcDEa845', // gameMaster
 ]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */

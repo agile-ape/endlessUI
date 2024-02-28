@@ -238,7 +238,7 @@ const TicketList = () => {
             width={xs ? 150 : 250}
             alt="waiting-for-players"
           />
-          <div className="text-center my-2 text-lg sm:text-3xl">No one is here yet</div>
+          <div className="text-center my-2 text-lg sm:text-3xl">No one is here</div>
         </div>
       )}
 

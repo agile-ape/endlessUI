@@ -12,7 +12,7 @@ type TitleType = {
 }
 
 const startPhrase = [
-  'wake up. the matrix has you. follow the white rabbit',
+  'wake up. the matrix has you',
   'Fees are the lowest they will ever be',
   'how long can you endure before breaking',
   'do you think thats air you are breathing now',
