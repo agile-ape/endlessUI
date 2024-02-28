@@ -305,12 +305,6 @@ export const GAME_ABI = [
       {
         indexed: false,
         internalType: 'uint256',
-        name: 'newCountdownTime',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
         name: 'time',
         type: 'uint256',
       },
@@ -329,13 +323,13 @@ export const GAME_ABI = [
       },
       {
         indexed: true,
-        internalType: 'enum LastmanTestGame.Phase',
+        internalType: 'enum LastManGame.Phase',
         name: 'previousPhase',
         type: 'uint8',
       },
       {
         indexed: true,
-        internalType: 'enum LastmanTestGame.Phase',
+        internalType: 'enum LastManGame.Phase',
         name: 'newPhase',
         type: 'uint8',
       },
@@ -909,7 +903,7 @@ export const GAME_ABI = [
     name: 'getEnumValue',
     outputs: [
       {
-        internalType: 'enum LastmanTestGame.Status',
+        internalType: 'enum LastManGame.Status',
         name: '',
         type: 'uint8',
       },
@@ -925,45 +919,6 @@ export const GAME_ABI = [
         internalType: 'uint256[]',
         name: '',
         type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getPhase',
-    outputs: [
-      {
-        internalType: 'enum LastmanTestGame.Phase',
-        name: '',
-        type: 'uint8',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getRound',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getSuddenDeath',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -1029,7 +984,7 @@ export const GAME_ABI = [
             type: 'bytes',
           },
           {
-            internalType: 'enum LastmanTestGame.Status',
+            internalType: 'enum LastManGame.Status',
             name: 'status',
             type: 'uint8',
           },
@@ -1114,7 +1069,7 @@ export const GAME_ABI = [
             type: 'uint256',
           },
         ],
-        internalType: 'struct LastmanTestGame.Ticket',
+        internalType: 'struct LastManGame.Ticket',
         name: '',
         type: 'tuple',
       },
@@ -1373,7 +1328,7 @@ export const GAME_ABI = [
     name: 'phase',
     outputs: [
       {
-        internalType: 'enum LastmanTestGame.Phase',
+        internalType: 'enum LastManGame.Phase',
         name: '',
         type: 'uint8',
       },
@@ -1407,7 +1362,7 @@ export const GAME_ABI = [
         type: 'bytes',
       },
       {
-        internalType: 'enum LastmanTestGame.Status',
+        internalType: 'enum LastManGame.Status',
         name: 'status',
         type: 'uint8',
       },
@@ -1796,7 +1751,7 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
-    name: 'timeReductionFactor',
+    name: 'timeReductionChange',
     outputs: [
       {
         internalType: 'uint256',
@@ -1819,7 +1774,7 @@ export const GAME_ABI = [
     name: 'token',
     outputs: [
       {
-        internalType: 'contract LastManToken',
+        internalType: 'contract ILastManToken',
         name: '',
         type: 'address',
       },
