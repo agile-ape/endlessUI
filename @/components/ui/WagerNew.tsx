@@ -505,7 +505,7 @@ const WagerNew = () => {
 
               <Label
                 htmlFor="option-one"
-                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+                className="mt-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
               >
                 <Image
                   priority
@@ -517,17 +517,17 @@ const WagerNew = () => {
                 />
                 <div>Lastman</div>
               </Label>
-              <RadioGroupItem value="4" id="option-one" />
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(ETH) </p>
-                <p className=""> {Number(lmfPot)}</p>
+              <RadioGroupItem value="4" id="option-one" className="my-2" />
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total betted</p>
+                <p className=""> {Number(lmfPot)} ETH</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(#) </p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total bets placed (#) </p>
                 <p className=""> {Number(lmfBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Payoff</p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Current payoff</p>
                 <p className="">
                   {' '}
                   {formatNumber(lmfOdds, {
@@ -571,7 +571,7 @@ const WagerNew = () => {
               </TooltipProvider> */}
               <Label
                 htmlFor="option-two"
-                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+                className="mt-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
               >
                 <Image
                   priority
@@ -583,17 +583,17 @@ const WagerNew = () => {
                 />
                 <div>Peace</div>
               </Label>
-              <RadioGroupItem value="5" id="option-two" />
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(ETH) </p>
-                <p className=""> {Number(pfPot)}</p>
+              <RadioGroupItem value="5" id="option-two" className="my-2" />
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total betted </p>
+                <p className=""> {Number(pfPot)} ETH</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(#) </p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total bets placed (#) </p>
                 <p className=""> {Number(pfBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Payoff </p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Current payoff </p>
                 <p className="">
                   {' '}
                   {formatNumber(pfOdds, {
@@ -637,7 +637,7 @@ const WagerNew = () => {
               </TooltipProvider> */}
               <Label
                 htmlFor="option-three"
-                className="my-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
+                className="mt-2 mx-8 cursor-pointer p-2 rounded-md flex flex-col justify-center items-center text-center text-2xl"
               >
                 <Image
                   priority
@@ -649,17 +649,17 @@ const WagerNew = () => {
                 />
                 <div>Drained</div>
               </Label>
-              <RadioGroupItem value="6" id="option-three" />
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(ETH) </p>
-                <p className=""> {Number(dPot)}</p>
+              <RadioGroupItem value="6" id="option-three" className="my-2" />
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total betted </p>
+                <p className=""> {Number(dPot)} ETH</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Bets(#) </p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Total bets placed (#) </p>
                 <p className=""> {Number(dBetCount)}</p>
               </div>
-              <div className="w-[100%] flex justify-between gap-1 h3-last px-2">
-                <p className="">Payoff </p>
+              <div className="w-[100%] flex justify-between gap-8 h3-last px-2">
+                <p className="">Current payoff </p>
                 <p className="">
                   {' '}
                   {formatNumber(dOdds, {

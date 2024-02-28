@@ -63,11 +63,11 @@ const GameFeed = () => {
       {feeds?.map((item, index) => (
         <div
           key={item.block_number}
-          className="flex flex-col justify-between py-1 tracking-wide
+          className="flex flex-col justify-between py-1
       border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300"
         >
           <div className="text-left leading-5">{replacePlaceholders(item.message)}</div>
-          <div className="text-xs text-right whitespace-nowrap text-neutral-600 dark:text-neutral-300">
+          <div className="text-xs font-digit text-right whitespace-nowrap text-neutral-600 dark:text-neutral-300">
             {formatDistanceToNow(new Date(item.datetime), { addSuffix: false })}
           </div>
         </div>

@@ -3,21 +3,6 @@ export const BET_ENDING_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_gameMaster',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_teamWallet',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_nextPotWallet',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
         name: '_game',
         type: 'address',
       },
@@ -164,6 +149,32 @@ export const BET_ENDING_ABI = [
   },
   {
     inputs: [],
+    name: 'blast',
+    outputs: [
+      {
+        internalType: 'contract IBlast',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'blastAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'claimWinnings',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -264,33 +275,7 @@ export const BET_ENDING_ABI = [
     name: 'game',
     outputs: [
       {
-        internalType: 'contract LastManGame',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'gameMaster',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'nextPotWallet',
-    outputs: [
-      {
-        internalType: 'address payable',
+        internalType: 'contract ILastManGame',
         name: '',
         type: 'address',
       },
@@ -357,23 +342,10 @@ export const BET_ENDING_ABI = [
   },
   {
     inputs: [],
-    name: 'teamWallet',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'token',
     outputs: [
       {
-        internalType: 'contract LastManToken',
+        internalType: 'contract ILastManToken',
         name: '',
         type: 'address',
       },

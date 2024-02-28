@@ -207,7 +207,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
-    <Sword key={index} size={16} className="text-black"></Sword>
+    // <Sword key={index} size={16} className="text-black"></Sword>
+    <span key={index} size={16}>
+      🥊
+    </span>
   ))
 
   /*-------------------------------------- TICKET LOOK -----------------------------------*/

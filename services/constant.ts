@@ -8,6 +8,7 @@ import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 /*---------------------------------------- ENV ---------------------------------------- */
 const isDevelopment = process.env.NODE_ENV === 'development'
 
+console.log(isDevelopment)
 /*---------------------------------------- CHAIN ---------------------------------------- */
 
 export const blastSepolia = /*#__PURE__*/ defineChain({
@@ -64,21 +65,20 @@ export const BLOCK_EXPLORER = isDevelopment
 export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
 export const API_ENDPOINT = isDevelopment
-  ? 'https://test2-1e36.onrender.com'
-  : 'https://test2-1e36.onrender.com' // to be updated
+  ? 'https://test-2-be.onrender.com'
+  : 'https://test2-1e36.onrender.com'
 
 export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://test2-1e36.onrender.com/ws'
-  : 'wss://test2-1e36.onrender.com/ws' // to be updated
+  ? 'wss://test-2-be.onrender.com/ws'
+  : 'wss://test2-1e36.onrender.com/ws'
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
-export const RELAYER_ADDRESS = '0xe973a9E8f568f64fAA8696a762427972Ee9f8446' as const // to be updated
+export const RELAYER_ADDRESS = '0xe973a9e8f568f64faa8696a762427972ee9f8446' as const // to be updated
 export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
 export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
 export const ADMIN_ADDRESSES = [
   '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
-  '0xf03B25a16C013B63c9d385f0a65e3017FcDEa845', // gameMaster
 ]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
@@ -88,13 +88,19 @@ export const tokenContractObj = {
   abi: TOKEN_ABI,
 }
 
-export const GAME_ADDRESS = '0xd224d571444d7dd6b856c2ff1cffee6bb882de0c' as const
+// const testnet_address = '0xd224d571444d7dd6b856c2ff1cffee6bb882de0c'
+// const test_2_address = '0x7B10015AF4D566377af6313c72640a3A96390c6C'
+
+export const GAME_ADDRESS = '0x7B10015AF4D566377af6313c72640a3A96390c6C' as const
 export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
 }
 
-export const BET_ENDING_ADDRESS = '0x9A216982c365e6986b16CfC101741b7E445C2577' as const
+// const testnet_address = '0x9A216982c365e6986b16CfC101741b7E445C2577'
+// const test_2_address = '0x8B0ae68d9a19C444a6E281c99F68a9c3a1Bd1E3e'
+
+export const BET_ENDING_ADDRESS = '0x8B0ae68d9a19C444a6E281c99F68a9c3a1Bd1E3e' as const
 export const wagerContractObj = {
   address: BET_ENDING_ADDRESS,
   abi: BET_ENDING_ABI,
