@@ -250,12 +250,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     }
 
     if (phase == 'night') {
-      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-        ticketLook = 'submittedNight'
-      } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
+      // if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
+      //   ticketLook = 'submittedNight'
+      // }
+
+      if (ticketStatusString == 'checked' && ticketLastSeen == round) {
         ticketLook = 'attackedButSafu'
       } else {
-        ticketLook = 'neverSubmit'
+        ticketLook = 'nightFight'
       }
     }
 
@@ -363,15 +365,15 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
-    submittedNight: {
-      bgImage: 'motif',
-      header: 'bg-zinc-300/70 text-black',
-      face: 'attack',
-      id: ticketId,
-      status: 'attack the unprotected',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
+    // submittedNight: {
+    //   bgImage: 'motif',
+    //   header: 'bg-zinc-300/70 text-black',
+    //   face: 'attack',
+    //   id: ticketId,
+    //   status: 'attack the unprotected',
+    //   label: 'ticket value',
+    //   value: ticketValue + ' ETH',
+    // },
     attackedButSafu: {
       bgImage: 'combine',
       header: 'bg-zinc-300/80 text-black',
@@ -381,12 +383,12 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
-    neverSubmit: {
+    nightFight: {
       bgImage: 'rainbow',
       header: 'bg-zinc-300/20 text-black',
       face: 'attack',
       id: ticketId,
-      status: 'unprotected thee are',
+      status: 'who dares win',
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },

@@ -11,10 +11,8 @@ import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 // process.env.CHAIN_ID
 
 // const GAME_ENV = '0x7B10015AF4D566377af6313c72640a3A96390c6C' as const
-const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT
+const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
 const CHAIN_ENV = 168587773
-
-console.log(CHAIN_ENV)
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -56,7 +54,6 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 
 // used for server utils
 export const CHAIN = blastSepolia
-console.log(CHAIN)
 export const CHAIN_ID = Number(CHAIN_ENV)
 
 export let TOKEN_NAME: string
