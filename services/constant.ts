@@ -6,6 +6,16 @@ import { defineChain } from 'viem'
 import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 
 /*---------------------------------------- ENV ---------------------------------------- */
+
+// process.env.NEXT_PUBLIC_CONTRACT
+// process.env.CHAIN_ID
+
+// const GAME_ENV = '0x7B10015AF4D566377af6313c72640a3A96390c6C' as const
+const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT
+const CHAIN_ENV = 168587773
+
+console.log(CHAIN_ENV)
+
 const isDevelopment = process.env.NODE_ENV === 'development'
 
 console.log(isDevelopment)
@@ -44,12 +54,14 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 // export const CHAIN = baseGoerli
 // export const CHAIN_ID = 84531
 
+// used for server utils
 export const CHAIN = blastSepolia
-export const CHAIN_ID = blastSepolia.id
+console.log(CHAIN)
+export const CHAIN_ID = Number(CHAIN_ENV)
 
 export let TOKEN_NAME: string
 
-if (CHAIN_ID === 168_587_773) {
+if (CHAIN_ID === 168587773) {
   TOKEN_NAME = 'tLAST'
 } else {
   TOKEN_NAME = 'LAST'
@@ -88,17 +100,11 @@ export const tokenContractObj = {
   abi: TOKEN_ABI,
 }
 
-// const testnet_address = '0xd224d571444d7dd6b856c2ff1cffee6bb882de0c'
-// const test_2_address = '0x7B10015AF4D566377af6313c72640a3A96390c6C'
-
-export const GAME_ADDRESS = '0xd224d571444d7dd6b856c2ff1cffee6bb882de0c' as const
+export const GAME_ADDRESS = GAME_ENV
 export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
 }
-
-// const testnet_address = '0x9A216982c365e6986b16CfC101741b7E445C2577'
-// const test_2_address = '0x8B0ae68d9a19C444a6E281c99F68a9c3a1Bd1E3e'
 
 export const BET_ENDING_ADDRESS = '0x9A216982c365e6986b16CfC101741b7E445C2577' as const
 export const wagerContractObj = {

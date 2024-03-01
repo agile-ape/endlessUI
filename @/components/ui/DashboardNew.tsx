@@ -111,6 +111,7 @@ export default function DashboardNew() {
   // search for embedded wallet and pull address
   const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
 
+  console.log(CHAIN_ID)
   const setToDefaultChain = async () => {
     await embeddedWallet?.switchChain(CHAIN_ID)
   }

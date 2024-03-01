@@ -116,7 +116,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const events: Event[] = [
     {
-      name: `tickets-${CHAIN_ID}`,
+      name: `tickets-${CHAIN_ID}-${GAME_ADDRESS}`,
       handler(data) {
         if (!data?.id) return
 
