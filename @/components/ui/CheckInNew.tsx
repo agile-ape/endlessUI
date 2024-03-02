@@ -54,6 +54,7 @@ import {
   CHECK_INTO_SAFEHOUSE_MOBILE_IMG,
   CHAIN_ID,
   TOKEN_NAME,
+  GAME_ADDRESS,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import { toast } from './use-toast'
@@ -115,7 +116,7 @@ const CheckInNew = () => {
 
   const events: Event[] = [
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       async handler(data) {
         const { event, dataJson } = data
 

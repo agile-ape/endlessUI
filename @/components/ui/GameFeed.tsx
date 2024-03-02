@@ -44,7 +44,7 @@ const GameFeed = () => {
   }, [data])
 
   useEffect(() => {
-    socket.on(`events-${CHAIN_ID}`, (data) => {
+    socket.on(`events-${CHAIN_ID}-${GAME_ADDRESS}`, (data) => {
       console.log('events', data)
       setFeeds((prev) => [data, ...prev])
     })

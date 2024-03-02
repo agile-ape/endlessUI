@@ -134,7 +134,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
     },
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       async handler(data) {
         const { event, dataJson } = data
 

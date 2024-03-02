@@ -31,6 +31,7 @@ import {
   KICK_OUT_IMG,
   KICK_OUT_MOBILE_IMG,
   CHAIN_ID,
+  GAME_ADDRESS,
 } from '../../../services/constant'
 import { statusPayload } from '@/lib/utils'
 import {
@@ -131,7 +132,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
 
   const events: Event[] = [
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       handler(data) {
         const { event, dataJson } = data
 

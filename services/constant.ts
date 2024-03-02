@@ -54,7 +54,7 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 
 // used for server utils
 export const CHAIN = blastSepolia
-export const CHAIN_ID = Number(CHAIN_ENV)
+export const CHAIN_ID = CHAIN_ENV
 
 export let TOKEN_NAME: string
 

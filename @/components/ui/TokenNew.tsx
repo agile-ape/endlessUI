@@ -91,7 +91,7 @@ function TokenNew() {
 
   const events: Event[] = [
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       handler(data) {
         const { event, dataJson } = data
 
