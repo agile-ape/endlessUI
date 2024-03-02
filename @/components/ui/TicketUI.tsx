@@ -650,10 +650,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
                 <span className="block"> Not In Game </span>
               ) : (
                 <>
-                  <span className="text-base sm:text-xs">🪖</span>Player{' '}
+                  <span className="text-base sm:text-xs"></span>Player{' '}
                   <span className="font-digit">
                     {' '}
-                    <span className={h2}>#{String(id)}</span>
+                    <span className={h2}>🪖{String(id)}</span>
                   </span>
                 </>
               )}

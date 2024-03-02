@@ -501,7 +501,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
                       isLoading={attackListIsLoading}
                       disabled={!attackListActive}
                     >
-                      Attack Player #{idList}
+                      Attack Player 🪖{idList}
                     </Button>
                     {!attackListActive && <Prompt docLink={DOCS_URL_attack} />}
                   </>
@@ -520,7 +520,7 @@ const AttackNew: FC<AttackType> = ({ idList }) => {
             {!idList && (
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <label htmlFor="attack" className="text-2xl">
-                  Attack Player #
+                  Attack Player 🪖
                 </label>
                 <input
                   type="text"

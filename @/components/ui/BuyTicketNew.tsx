@@ -242,7 +242,7 @@ const BuyTicketNew = () => {
           {/* <div className="w-[100%] rounded-lg flex gap-1 flex flex-col justify-center items-center text-lg md:text-xl text-zinc-800 dark:text-zinc-200 p-2 border border-zinc-500 dark:border-zinc-400"> */}
           <div className="flex flex-col justify-center items-center">
             <label htmlFor="buddy" className="text-2xl">
-              (Optional) Buddy #
+              (Optional) Input buddy 🪖
             </label>
             <input
               type="text"

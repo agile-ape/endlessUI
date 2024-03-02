@@ -362,7 +362,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
                   isLoading={kickOutListIsLoading}
                   disabled={!kickOutListActive}
                 >
-                  Kick Out Player #{idList}
+                  Kick Out Player 🪖{idList}
                 </Button>
                 {/* {!kickOutListActive && <Prompt docLink={DOCS_URL_kickout} />} */}
                 {kickOutListActive ? '' : <Prompt docLink={DOCS_URL_kickout} />}
@@ -372,7 +372,7 @@ const KickOut: FC<KickOutType> = ({ idList }) => {
             {!idList && (
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <label htmlFor="kickOut" className="text-2xl">
-                  Kick Player #
+                  Kick Player 🪖
                 </label>
                 <input
                   type="text"
