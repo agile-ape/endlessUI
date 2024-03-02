@@ -116,7 +116,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const events: Event[] = [
     {
-      name: `tickets-${CHAIN_ID}`,
+      name: `tickets-${CHAIN_ID}-${GAME_ADDRESS}`,
       handler(data) {
         if (!data?.id) return
 
@@ -134,7 +134,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
       },
     },
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       async handler(data) {
         const { event, dataJson } = data
 

@@ -11,6 +11,7 @@ import {
   DOCS_URL,
   WEBSOCKET_ENDPOINT,
   CHAIN_ID,
+  GAME_ADDRESS,
 } from '../../../services/constant'
 import { toast } from '@/components/ui/use-toast'
 import Modal from './Modal'
@@ -127,7 +128,7 @@ export default function Countdown() {
 
   const events: Event[] = [
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       async handler(data) {
         const { event, dataJson } = data
 
@@ -141,7 +142,7 @@ export default function Countdown() {
       },
     },
     {
-      name: `events-${CHAIN_ID}`,
+      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
       async handler(data) {
         const { event, dataJson } = data
 

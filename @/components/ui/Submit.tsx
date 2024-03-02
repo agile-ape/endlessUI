@@ -148,9 +148,10 @@ const Submit = () => {
 
   const submitKeyword = async (input: string) => {
     try {
-      if (!input) return
+      const inputLowerCase = input.toLowerCase()
+      if (!inputLowerCase) return
 
-      const verifyResult = await verifyKeyword(input)
+      const verifyResult = await verifyKeyword(inputLowerCase)
       if (verifyResult?.error) {
         toast({
           variant: 'destructive',
@@ -161,7 +162,7 @@ const Submit = () => {
         return
       }
 
-      const hashedMessage = keccak256(encodePacked(['string'], [input.toLowerCase()]))
+      const hashedMessage = keccak256(encodePacked(['string'], [inputLowerCase]))
       // console.log(hashedMessage)
 
       const signature = await walletClient?.signMessage({

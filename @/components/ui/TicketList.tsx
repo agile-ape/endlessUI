@@ -221,7 +221,7 @@ const TicketList = () => {
             .map((item, i) => (
               <TicketUI
                 key={item.id}
-                ticketSize={xs ? 2 : 3}
+                ticketSize={xs ? 4 : 3}
                 ticketNumber={item.id}
                 ticket={item}
               />
