@@ -269,7 +269,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       ticketLook = 'inSafehouse'
     }
 
-    if (phase === 'lastManFound') {
+    if (phase === 'lastmanfound') {
       ticketLook = 'lastManStanding'
     }
 
