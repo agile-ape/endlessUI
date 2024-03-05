@@ -15,118 +15,87 @@ import Metadata from '@/components/Metadata'
 import useSWR from 'swr'
 import { infuraProvider } from 'wagmi/providers/infura'
 import 'wagmi/window'
+import { type Chain, defineChain } from 'viem'
 
-import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
-import { PrivyProvider } from '@privy-io/react-auth'
-import { blastSepolia } from '../services/constant'
+// import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
+// import { PrivyProvider } from '@privy-io/react-auth'
+// import { blastSepolia } from '../services/constant'
 
-const chainsConfig = [
-  ...(process.env.NODE_ENV === 'production' ? [arbitrum] : [arbitrumGoerli, mainnet]),
-]
+export const blastSepolia = {
+  id: 168_587_773,
+  name: 'Blast Sepolia',
+  network: 'Blast Sepolia',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: [
+        'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+      ],
+    },
+    public: {
+      http: [
+        'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+      ],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Blastscan',
+      url: 'https://testnet.blastscan.io',
+    },
+  },
+  testnet: true,
+} as const satisfies Chain
 
-// const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
-//   // infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
-//   publicProvider(),
-// ])
+const chainsConfig = [...(process.env.NODE_ENV === 'production' ? [blastSepolia] : [blastSepolia])]
 
-// const { connectors } = getDefaultWallets({
-//   appName: 'Last Man Standing',
-//   projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
-//   chains,
-// })
+const { chains, publicClient, webSocketPublicClient } = configureChains(chainsConfig, [
+  // infuraProvider({ apiKey: 'b7ba7966518f48eeb4de662fbc51b03e' }),
+  publicProvider(),
+])
 
-// const wagmiConfig = createConfig({
-//   autoConnect: true,
-//   connectors,
-//   publicClient,
-//   // webSocketPublicClient,
-// })
+const { connectors } = getDefaultWallets({
+  appName: 'Last Man Standing',
+  projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
+  chains,
+})
 
-const configureChainsConfig = configureChains(
-  [blastSepolia],
-  [
-    publicProvider(),
-    // alchemyProvider({ apiKey: "your-alchemy-api-key" }),
-    // infuraProvider({ apiKey: "b7ba7966518f48eeb4de662fbc51b03e" }),
-  ],
-)
-
-const phaseTheme: Record<IApp['phase'], 'light' | 'dark'> = {
-  deployed: 'dark',
-  start: 'dark',
-  day: 'light',
-  night: 'dark',
-  lastmanfound: 'light',
-  drain: 'dark',
-  peacefound: 'light',
-  gameclosed: 'dark',
-}
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient,
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { data } = useSWR('phase', async () => {
-    const res = await fetch('/api/phase')
-    const json = await res.json()
-
-    if (res.status !== 200) {
-      throw new Error(json.message)
-    }
-
-    return {
-      phase: json?.message as IApp['phase'],
-    }
-  })
-
   return (
-    <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      config={{
-        appearance: {
-          theme: '#404833',
-          accentColor: '#FCFC03',
-          // logo:,
-          showWalletLoginFirst: true,
-        },
-        loginMethods: ['wallet', 'sms', 'email', 'google', 'twitter'],
-        defaultChain: blastSepolia,
-        supportedChains: [blastSepolia],
-
-        embeddedWallets: {
-          createOnLogin: 'all-users', // or 'users-without-wallets'
-          // noPromptOnSignature: true, // defaults to false
-        },
-      }}
-    >
-      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
-        {/* <WagmiConfig config={wagmiConfig}> */}
-        {/* <RainbowKitProvider
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider
         chains={chains}
         theme={lightTheme({
-          accentColor: 'linear-gradient(to right, #7dd3fc, #6366f1)',
-          accentColorForeground: 'white',
+          accentColor: '#FCFC03',
+          accentColorForeground: '#404833',
           borderRadius: 'large',
           fontStack: 'system',
           overlayBlur: 'small',
         })}
         coolMode
         modalSize="compact"
-      > */}
+      >
         <StoreProvider store={appStore}>
-          <ThemeProvider
-            attribute="class"
-            enableSystem
-            forcedTheme={data?.phase ? phaseTheme[data?.phase] : 'dark'}
-          >
+          <ThemeProvider attribute="class" enableSystem>
             <Metadata {...pageProps.metadata} />
-            <Layout metadata={pageProps.metadata} phase={data?.phase || 'deployed'}>
+            <Layout metadata={pageProps.metadata}>
               <Component {...pageProps} />
               <Toaster />
             </Layout>
           </ThemeProvider>
         </StoreProvider>
-        {/* </RainbowKitProvider> */}
-        {/* </WagmiConfig> */}
-      </PrivyWagmiConnector>
-    </PrivyProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   )
 }
 

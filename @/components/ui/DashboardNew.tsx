@@ -71,8 +71,8 @@ import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
-import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
-import { usePrivyWagmi } from '@privy-io/wagmi-connector'
+// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
+// import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 
 import { connect } from 'http2'
@@ -82,70 +82,70 @@ export default function DashboardNew() {
   const { address, isConnected } = useAccount()
   const { xs } = useWindowSize()
 
-  const { ready, authenticated, user, createWallet, setWalletPassword, exportWallet } = usePrivy()
+  // const { ready, authenticated, user, createWallet, setWalletPassword, exportWallet } = usePrivy()
 
   // 'wallet', 'sms', 'email', 'google', 'twitter'
 
-  const loginMethod = user?.linkedAccounts[1]?.type
-  let username: any
-  let loginAccount
+  // const loginMethod = user?.linkedAccounts[1]?.type
+  // let username: any
+  // let loginAccount
 
-  if (loginMethod === 'email') {
-    username = user?.linkedAccounts[1].address
-    loginAccount = 'Email'
-  } else if (loginMethod === 'phone') {
-    username = user?.linkedAccounts[1].number
-    loginAccount = 'Phone'
-  } else if (loginMethod === 'google_oauth') {
-    username = user?.linkedAccounts[1].email
-    loginAccount = 'Google'
-  } else if (loginMethod === 'twitter_oauth') {
-    username = user?.linkedAccounts[1].username
-    loginAccount = 'Twitter'
-  } else if (loginMethod === 'wallet') {
-    username = formatAddress(String(user?.linkedAccounts[1].address))
-    loginAccount = 'Web3 Wallet'
-  }
+  // if (loginMethod === 'email') {
+  //   username = user?.linkedAccounts[1].address
+  //   loginAccount = 'Email'
+  // } else if (loginMethod === 'phone') {
+  //   username = user?.linkedAccounts[1].number
+  //   loginAccount = 'Phone'
+  // } else if (loginMethod === 'google_oauth') {
+  //   username = user?.linkedAccounts[1].email
+  //   loginAccount = 'Google'
+  // } else if (loginMethod === 'twitter_oauth') {
+  //   username = user?.linkedAccounts[1].username
+  //   loginAccount = 'Twitter'
+  // } else if (loginMethod === 'wallet') {
+  //   username = formatAddress(String(user?.linkedAccounts[1].address))
+  //   loginAccount = 'Web3 Wallet'
+  // }
 
-  const { wallets } = useWallets()
+  // const { wallets } = useWallets()
   // search for embedded wallet and pull address
-  const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
+  // const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy')
 
-  console.log(CHAIN_ID)
-  const setToDefaultChain = async () => {
-    await embeddedWallet?.switchChain(CHAIN_ID)
-  }
+  // console.log(CHAIN_ID)
+  // const setToDefaultChain = async () => {
+  //   await embeddedWallet?.switchChain(CHAIN_ID)
+  // }
 
-  const embeddedWalletAddress = embeddedWallet?.address
-  const embeddedWalletChain = embeddedWallet?.chainId || null
-  const chainWithoutPrefix = embeddedWalletChain
-    ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
-    : null
+  // const embeddedWalletAddress = embeddedWallet?.address
+  // const embeddedWalletChain = embeddedWallet?.chainId || null
+  // const chainWithoutPrefix = embeddedWalletChain
+  //   ? Number(embeddedWalletChain.replace(/^eip155:/i, ''))
+  //   : null
 
   // const chainName = chainWithoutPrefix ? findChainName(chainWithoutPrefix).then : null
   // console.log(chainName)
 
-  const [chainName, setChainName] = useState('')
-  useEffect(() => {
-    setToDefaultChain()
-    if (chainWithoutPrefix !== null) {
-      findChainName(chainWithoutPrefix)
-        .then((result) => {
-          setChainName(result)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    } else {
-      console.error('embeddedWalletChain is undefined or null')
-    }
-  }, [chainWithoutPrefix, chainName])
+  // const [chainName, setChainName] = useState('')
+  // useEffect(() => {
+  //   setToDefaultChain()
+  //   if (chainWithoutPrefix !== null) {
+  //     findChainName(chainWithoutPrefix)
+  //       .then((result) => {
+  //         setChainName(result)
+  //       })
+  //       .catch((error) => {
+  //         console.error(error)
+  //       })
+  //   } else {
+  //     console.error('embeddedWalletChain is undefined or null')
+  //   }
+  // }, [chainWithoutPrefix, chainName])
 
-  // const wallet = wallets.find((wallet) => wallet.address === address)
+  // // const wallet = wallets.find((wallet) => wallet.address === address)
 
-  // link to Wagmi hooks
-  const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
-  setActiveWallet(embeddedWallet)
+  // // link to Wagmi hooks
+  // const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
+  // setActiveWallet(embeddedWallet)
 
   // const connector = user?.wallet?.connectorType
   // let connectorType: string
@@ -163,51 +163,51 @@ export default function DashboardNew() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const setPasswordHandler = async () => {
-    try {
-      await setWalletPassword()
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        description: <p>{error.message}</p>,
-      })
-    }
-  }
+  // const setPasswordHandler = async () => {
+  //   try {
+  //     await setWalletPassword()
+  //   } catch (error: any) {
+  //     toast({
+  //       variant: 'destructive',
+  //       description: <p>{error.message}</p>,
+  //     })
+  //   }
+  // }
 
-  const exportKeyHandler = async () => {
-    try {
-      await exportWallet()
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        description: <p>{error.message}</p>,
-      })
-    }
-  }
+  // const exportKeyHandler = async () => {
+  //   try {
+  //     await exportWallet()
+  //   } catch (error: any) {
+  //     toast({
+  //       variant: 'destructive',
+  //       description: <p>{error.message}</p>,
+  //     })
+  //   }
+  // }
 
-  const { logout } = useLogout({
-    onSuccess: () => {
-      console.log('User logged out')
-      setIsModalOpen(false)
-      toast({
-        variant: 'destructive',
-        // title: 'Keyword updated',
-        description: <p>You are logged out.</p>,
-      })
-    },
-  })
+  // const { logout } = useLogout({
+  //   onSuccess: () => {
+  //     console.log('User logged out')
+  //     setIsModalOpen(false)
+  //     toast({
+  //       variant: 'destructive',
+  //       // title: 'Keyword updated',
+  //       description: <p>You are logged out.</p>,
+  //     })
+  //   },
+  // })
 
-  const { login } = useLogin({
-    onComplete: () => {
-      console.log('User logged in')
-      setIsModalOpen(false)
-      toast({
-        variant: 'success',
-        // title: 'Keyword updated',
-        description: <p>You are logged in.</p>,
-      })
-    },
-  })
+  // const { login } = useLogin({
+  //   onComplete: () => {
+  //     console.log('User logged in')
+  //     setIsModalOpen(false)
+  //     toast({
+  //       variant: 'success',
+  //       // title: 'Keyword updated',
+  //       description: <p>You are logged in.</p>,
+  //     })
+  //   },
+  // })
 
   /* remove ENS integration
   const { data: ensName } = useEnsName({
@@ -258,23 +258,23 @@ export default function DashboardNew() {
   const randNumber = Number(data?.[3].result || 0)
   const tokenBalance = formatUnits(balanceOf, 18)
 
-  function copyAddress() {
-    copyToClipboard(embeddedWallet?.address || '')
-    toast({
-      variant: 'success',
-      title: 'Address copied',
-      description: 'Address copied to clipboard',
-    })
-  }
+  // function copyAddress() {
+  //   copyToClipboard(embeddedWallet?.address || '')
+  //   toast({
+  //     variant: 'success',
+  //     title: 'Address copied',
+  //     description: 'Address copied to clipboard',
+  //   })
+  // }
 
-  function copyUsername() {
-    copyToClipboard(username)
-    toast({
-      variant: 'success',
-      title: 'Username copied',
-      description: 'Username copied to clipboard',
-    })
-  }
+  // function copyUsername() {
+  //   copyToClipboard(username)
+  //   toast({
+  //     variant: 'success',
+  //     title: 'Username copied',
+  //     description: 'Username copied to clipboard',
+  //   })
+  // }
 
   const dashboardBackupImg = (event: any) => {
     event.target.src = '/lore/Dashboard.png'

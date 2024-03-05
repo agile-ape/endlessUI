@@ -32,7 +32,7 @@ import Image from 'next/image'
 import { useStoreState } from '../../../store'
 import CustomConnectButton from '@/components/ui/connect-button'
 import GameFeed from '@/components/ui/GameFeed'
-import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
+// import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ExternalLink } from 'lucide-react'
@@ -326,10 +326,10 @@ export default function Screen() {
   const phase = useStoreState((state) => state.phase)
 
   const { isConnected, address } = useAccount()
-  const { user, connectWallet, ready, authenticated } = usePrivy()
+  // const { user, connectWallet, ready, authenticated } = usePrivy()
   const { xs } = useWindowSize()
 
-  const { forcedTheme } = useTheme()
+  // const { forcedTheme } = useTheme()
 
   // Menu
   const [menuComponent, setMenuComponent] = useState<ComponentType | null>('you')
@@ -368,35 +368,35 @@ export default function Screen() {
 
   const [expanded, setExpanded] = useState<boolean>(false)
 
-  const { logout } = useLogout({
-    onSuccess: () => {
-      console.log('User logged out')
-      toast({
-        variant: 'destructive',
-        // title: 'Keyword updated',
-        description: <p>You are logged out. Thanks for visiting.</p>,
-      })
-    },
-  })
+  // const { logout } = useLogout({
+  //   onSuccess: () => {
+  //     console.log('User logged out')
+  //     toast({
+  //       variant: 'destructive',
+  //       // title: 'Keyword updated',
+  //       description: <p>You are logged out. Thanks for visiting.</p>,
+  //     })
+  //   },
+  // })
 
-  const { login } = useLogin({
-    onComplete: () => {
-      console.log('User logged in')
+  // const { login } = useLogin({
+  //   onComplete: () => {
+  //     console.log('User logged in')
 
-      setTimeout(() => {
-        socket.connect()
-      }, 2000)
+  //     setTimeout(() => {
+  //       socket.connect()
+  //     }, 2000)
 
-      setExpanded(true)
-      // localStorage.setItem('expanded', 'true')
+  //     setExpanded(true)
+  //     // localStorage.setItem('expanded', 'true')
 
-      toast({
-        variant: 'success',
-        // title: 'Keyword updated',
-        description: <p>You are logged in.</p>,
-      })
-    },
-  })
+  //     toast({
+  //       variant: 'success',
+  //       // title: 'Keyword updated',
+  //       description: <p>You are logged in.</p>,
+  //     })
+  //   },
+  // })
 
   // Custom
   const [isPressed, setIsPressed] = useState(false)
@@ -424,15 +424,15 @@ export default function Screen() {
     setTimeout(() => {
       setIsPressed(false)
     }, 10)
-    login()
-  }
-
-  function guest() {
     setExpanded(true)
-    // localStorage.setItem('expanded', 'true')
   }
 
-  function pwa() {}
+  // function guest() {
+  //   setExpanded(true)
+  //   // localStorage.setItem('expanded', 'true')
+  // }
+
+  // function pwa() {}
 
   const [isToggled, setIsToggled] = useState(false)
 
@@ -589,7 +589,7 @@ export default function Screen() {
                 </div>
               </button>
 
-              {/* Viewport */}
+              {/* Show what on phone */}
               <div className="mt-4 mb-36">
                 {menuComponent === 'you' && (
                   <>
@@ -597,7 +597,7 @@ export default function Screen() {
                       <Title />
                     </div>
                     <div className="flex justify-center items-center ">
-                      {authenticated ? (
+                      {isConnected ? (
                         <div className="flex flex-col justify-center items-center">
                           <TicketUI ticketSize={1} ticketNumber={id} ticket={ticket} />
                           {id === 0 ? (
@@ -929,41 +929,22 @@ export default function Screen() {
           </div>
           <div className="flex flex-col gap-1 my-2 text-center body-last sm:text-2xl">
             <p className="flex justify-center items-center">
-              Battle royale on{' '}
+              Degen games on{' '}
               <span>
-                {forcedTheme == 'light' ? (
-                  <Image
-                    priority
-                    src="/logo/blast_black.svg"
-                    className="ml-2"
-                    height={200}
-                    width={100}
-                    alt="blast-logo"
-                  />
-                ) : (
-                  <Image
-                    priority
-                    src="/logo/blast_yellow.svg"
-                    className="ml-2"
-                    height={200}
-                    width={100}
-                    alt="blast-logo"
-                  />
-                )}
+                <Image
+                  priority
+                  src="/logo/blast_yellow.svg"
+                  className="ml-2"
+                  height={200}
+                  width={100}
+                  alt="blast-logo"
+                />
               </span>
             </p>
-            <p className="">Play, Yield, Outlast</p>
-            <p className="">How long can you last?</p>
+            <p className="">Current Game:</p>
+            <p className="">Pass The Pot</p>
           </div>
           <div className=" flex justify-center items-center">
-            {/* <Image
-              priority
-              src="/pepe/portal-welcome.svg"
-              className=""
-              height={300}
-              width={200}
-              alt="sneak-a-peek-pepe"
-            /> */}
             <div className="relative flex flex-col">
               <Image
                 priority
@@ -991,22 +972,22 @@ export default function Screen() {
               variant="primary"
               className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
             >
-              Log In
+              Enter
             </Button>
 
-            <Button
-              onClick={guest}
-              variant="primary"
-              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
-            >
-              Explore
-            </Button>
-            <Button
-              variant="secondary"
-              className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
-            >
-              <PWADrawer />
-            </Button>
+            {/* <Button
+            onClick={guest}
+            variant="primary"
+            className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
+          >
+            Explore
+          </Button>
+          <Button
+            variant="secondary"
+            className={`h-12 w-[100%] rounded-xl px-6 py-2 text-2xl font-digit`}
+          >
+            <PWADrawer />
+          </Button> */}
           </div>
         </div>
       )}

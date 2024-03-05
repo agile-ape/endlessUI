@@ -25,8 +25,8 @@ import { toast } from '../components/ui/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
-import { usePrivyWagmi } from '@privy-io/wagmi-connector'
-import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
+// import { usePrivyWagmi } from '@privy-io/wagmi-connector'
+// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 
 const typeStage: Record<IApp['phase'], string> = {
   deployed: 'Deployed',
@@ -42,10 +42,10 @@ const typeStage: Record<IApp['phase'], string> = {
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
-  phase: IApp['phase']
+  // phase: IApp['phase']
 }
 
-const Layout = ({ children, metadata, phase }: LayoutProps) => {
+const Layout = ({ children, metadata }: LayoutProps) => {
   const updateRound = useStoreActions((actions) => actions.updateRound)
   const updatePhase = useStoreActions((actions) => actions.updatePhase)
   const updateStage = useStoreActions((actions) => actions.updateStage)
@@ -84,7 +84,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
 
   const router = useRouter()
   // const { wallet: activeWallet } = usePrivyWagmi()
-  const { authenticated } = usePrivy()
+  // const { authenticated } = usePrivy()
   const { address, isConnected } = useAccount()
 
   const {
@@ -354,58 +354,22 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
     router.replace(router.asPath)
   }
 
-  // let background: string
-  // let backgroundMobile: string
-
-  // if (router.pathname.includes('404')) {
-  //   background = 'Deployed.svg'
-  //   backgroundMobile = 'DeployedMobile.svg'
-  // } else if (phase === 'gameclosed') {
-  // } else {
-  //   background = `${typeStage[phase]}.svg`
-  //   backgroundMobile = `${typeStage[phase]}.svg`
-  // }
-
-  const background = router.pathname.includes('404') ? 'Deployed.svg' : `${typeStage[phase]}.svg`
-  const backgroundMobile = router.pathname.includes('404')
-    ? 'DeployedMobile.svg'
-    : `${typeStage[phase]}Mobile.svg`
-
   return (
     <>
-      {xs && (
-        <main
-          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
-          style={{
-            backgroundImage: `url(/background/${backgroundMobile})`,
-          }}
-        >
-          <div className="container mx-auto p-0">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-            {/* <Header /> */}
-            {children}
-            <Analytics />
-            <CompletionModal alertLookTest="afterPurchase" />
-          </div>
-        </main>
-      )}
-
-      {!xs && (
-        <main
-          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
-          style={{
-            backgroundImage: `url(/background/${background})`,
-          }}
-        >
-          <div className="container mx-auto">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-            <Header />
-            {children}
-            <Analytics />
-            <CompletionModal alertLookTest="afterPurchase" />
-          </div>
-        </main>
-      )}
+      <main
+        className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+        style={{
+          backgroundImage: xs ? `url(/background/StartMobile.svg)` : `url(/background/Start.svg)`,
+        }}
+      >
+        <div className="container mx-auto p-0">
+          {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+          {/* <Header /> */}
+          {children}
+          <Analytics />
+          <CompletionModal alertLookTest="afterPurchase" />
+        </div>
+      </main>
     </>
   )
 }
