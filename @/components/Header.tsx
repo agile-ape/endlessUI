@@ -37,7 +37,9 @@ import {
 } from '../../services/constant'
 import { useRouter } from 'next/router'
 import Admin from './ui/_Admin'
-import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
+import HowToPlay from './ui/HowToPlay'
+
+// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 import { toast } from '../components/ui/use-toast'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { User, Menu, Users, Clock, Move } from 'lucide-react'
@@ -53,28 +55,19 @@ function Header() {
 
           <div className="flex justify-self-end gap-3 order-3">
             <div className="flex items-center space-x-4">
-              <a href={DOCS_URL} target="_blank">
-                <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  How To Play
-                </Button>
-              </a>
+              <HowToPlay />
               <a href={TWITTER_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  Follow
+                  Follow 🐦
                 </Button>
               </a>
               <a href={TELEGRAM_URL} target="_blank">
                 <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  Telegram
-                </Button>
-              </a>
-              <a href={BLOG_URL} target="_blank">
-                <Button variant="link" className={`px-2 text-lg`} size="sm">
-                  Blog
+                  Telegram 🧑‍🤝‍🧑
                 </Button>
               </a>
 
-              <ConnectButton />
+              <ConnectButton label="Connect" />
             </div>
           </div>
         </div>

@@ -21,6 +21,8 @@ const buttonVariants = cva(
         // style text only. no bg. underline
         link: 'text-gray-100 bg-transparent active:underline hover:text-gray-100/50 hover:underline underline-offset-4',
 
+        play: 'text-[#FCFC03] hover:text-[#FCFC03]/80 text-xl bg-transparent',
+
         /*-------------------- GAME TAB ---------------------*/
         // enter and exit - purple
         // fixed bg. dark mode

@@ -16,7 +16,7 @@ import {
 } from '@/lib/utils'
 import { useStoreState } from '../../../store'
 import Attack from './_Attack'
-import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
+// import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 
 import AttackNew from './AttackNew'
 import { AttackActive } from './AttackNew'
@@ -115,7 +115,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
   const { xs } = useWindowSize()
-  const { user, connectWallet, ready, authenticated } = usePrivy()
+  // const { user, connectWallet, ready, authenticated } = usePrivy()
 
   const activeAttack = AttackActive()
   const activeKickOut = KickOutActive()

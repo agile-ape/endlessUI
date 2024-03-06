@@ -20,6 +20,7 @@ import AdminNew from '../ui/AdminNew'
 import PWADrawer from '../ui/PWADrawer'
 import Modal from '../ui/Modal'
 import BuyTicketNew from '../ui/BuyTicketNew'
+import OnSignal from '../ui/OnSignal'
 
 import DashboardNew from '../ui/DashboardNew'
 import ExitGameNew from '../ui/ExitGameNew'
@@ -899,25 +900,28 @@ export default function Screen() {
       ) : (
         // If on desktop
         <>
-          <div className=""></div>
-
           <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
-            <Title />
-            <Countdown />
-            <Button
-              variant="enter"
-              // className="px-1 py-1 leading-10 h-14 w-full "
-
-              className="
-                        my-4 h-14 w-full leading-10 p-1 z-2"
-              onClick={toggleBuy}
-            >
-              {/* <OnSignal active={buyActive} own={true} /> */}
-              {/* <Ticket2 size={28} className=" mr-1" /> */}
-              🎟 Buy Ticket
-            </Button>
-            {/* <Round /> */}
-            {/* <Indicator /> */}
+            <div className="flex flex-col justify-center mx-auto gap-2">
+              {/* TODOS - link to ticketPrice */}
+              <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot</div>
+              <div className="text-xl">Price: [1] ETH </div>
+              <div className="bg-[#FCFC03]/80 rounded-xl">
+                <Button
+                  className="
+                  rounded-xl px-4 py-2
+                  bg-[#404833] shadow-sm
+                  font-digit text-2xl text-[#FCFDC7] border border-[#FCFDC7]
+                  hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03] 
+                active:-translate-y-0 active:brightness-200
+                "
+                  onClick={toggleBuy}
+                >
+                  {/* TODOS - link to canBuyTicket */}
+                  <OnSignal active={true} own={true} />
+                  🎟 Join game
+                </Button>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">

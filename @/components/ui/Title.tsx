@@ -5,7 +5,7 @@ import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
 import { useAccount } from 'wagmi'
-import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
+// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
 
 type TitleType = {
   stageType: IApp['phase']
@@ -64,7 +64,7 @@ const Title = () => {
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
   const phase = useStoreState((state) => state.phase)
-  const { ready, authenticated, user, createWallet } = usePrivy()
+  // const { ready, authenticated, user, createWallet } = usePrivy()
 
   // const { isConnected } = useAccount()
 

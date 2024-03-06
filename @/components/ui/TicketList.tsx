@@ -15,6 +15,7 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import type { Ticket } from 'types/app'
 import { ArrowUpToLine } from 'lucide-react'
+import Countdown from './Countdown'
 
 const TicketList = () => {
   const currentPot = useStoreState((state) => state.currentPot)
@@ -64,71 +65,7 @@ const TicketList = () => {
         <div className="flex flex-col items-center 2xl:flex-row justify-between">
           <div className="grow">{xs ? '' : <KeyTrackers />}</div>
 
-          {/* <div className="flex text-2xl gap-3 text-zinc-500 dark:text-zinc-200 items-center grow leading-7 capitalize py-0 sm:py-2">
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    {forcedTheme === 'dark' ? (
-                      <Image
-                        priority
-                        src="/logo/eth-dark.png"
-                        className="mr-1"
-                        height={14}
-                        width={xs ? 10 : 14}
-                        alt="eth"
-                      />
-                    ) : (
-                      <Image
-                        priority
-                        src="/logo/eth-gradient.png"
-                        className="mr-1"
-                        height={14}
-                        width={xs ? 10 : 14}
-                        alt="eth"
-                      />
-                    )}
-                    <div className="text-2xl sm:text-3xl flash text-purple-900 dark:text-purple-300 tracking-wide">
-                      {currentPot}
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center" className="hidden sm:block">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Value in Pot</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Users size={xs ? 18 : 24} className="mr-1" />
-                    <div className="text-2xl sm:text-3xl flash tracking-wide">{ticketCount}</div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center" className="hidden sm:block">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Players left</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Vote size={xs ? 18 : 24} className="mr-1" />
-                    <div className="text-2xl sm:text-3xl flash tracking-wide">{voteCount}</div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center" className="hidden sm:block">
-                  <p className="px-3 py-1 max-w-[240px] text-sm">Yes votes.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div> */}
-
-          <div className="flex gap-2 justify-center my-0 sm:my-2">
+          {/* <div className="flex gap-2 justify-center my-0 sm:my-2">
             <Button
               onClick={() => toggleTab('aroundMe')}
               variant="filter"
@@ -162,45 +99,10 @@ const TicketList = () => {
             >
               In Safehouse
             </Button>
-          </div>
+          </div> */}
+          <Countdown />
         </div>
       </summary>
-
-      {/* {!totalTicketCount && (
-        <div className="flex flex-col justify-center items-center my-8">
-          <Image
-            priority
-            src="/pepe/waiting.png"
-            className=""
-            height={400}
-            width={xs ? 150 : 250}
-            alt="waiting-for-players"
-          />
-          <div className="text-center my-2 text-lg sm:text-3xl">hmm...</div>
-        </div>
-      )}
-
-      {totalTicketCount && (
-        <div
-          className="
-            flex
-            w-[100%]
-            justify-evenly
-            sm:justify-start
-            gap-x-6
-            gap-y-6
-            flex-wrap
-            px-6 py-6
-            overflow-y-scroll
-          "
-        >
-          {ticketListState
-            .sort((a, b) => a.id - b.id)
-            .map((item, i) => (
-              <TicketUI key={item.id} ownTicket={false} ticketNumber={item.id} ticket={item} />
-            ))}
-        </div>
-      )} */}
 
       {totalTicketCount ? (
         <div
@@ -241,13 +143,6 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">No one is here</div>
         </div>
       )}
-
-      {/* <button
-        className="sm:hidden fixed bottom-24 right-2 rounded-full border border-black dark:border-white p-1 cursor-pointer"
-        onClick={scrollToTop}
-      >
-        <ArrowUpToLine size={18} className="" />
-      </button> */}
     </div>
   )
 }

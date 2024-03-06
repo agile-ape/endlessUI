@@ -54,101 +54,21 @@ const KeyTrackers = () => {
 
   return (
     <div className="">
-      <span className="hidden sm:inline">
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className="flex flex-row gap-3 items-center py-0 sm:py-2 ">
-                <div className="flex flex-row items-center align-middle text-2xl digit-last">
-                  {/* <Hexagon size={36} strokeWidth={3} /> */}
-                  🏟 Arena
-                </div>
+      <div className="flex flex-row gap-3 items-center py-0 sm:py-2 ">
+        <>
+          <div className="flex flex-row items-center cursor-default tracking-wide">
+            <div className="text-2xl flash tracking-wide">Round [1] </div>
+          </div>
 
-                {phase === 'gameclosed' ? (
-                  <></>
-                ) : (
-                  <>
-                    <div className="flex flex-row items-center cursor-default tracking-wide">
-                      <CookingPot size={24} className="mr-1" />
-                      <div className="text-2xl flash tracking-wide">{currentPot}</div>
-                    </div>
+          <div className="flex flex-row items-center cursor-default tracking-wide">
+            <div className="text-2xl flash tracking-wide">Pot [21 ETH]</div>
+          </div>
 
-                    <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                      <Users size={24} className="mr-1" />
-                      <div className="text-2xl flash tracking-wide">{ticketCount}</div>
-                    </div>
-
-                    {phase === 'deployed' ||
-                      (phase === 'start' && (
-                        <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                          <Ticket size={24} className="mr-1" />
-                          <div className="text-2xl flash tracking-wide">{nextTicketPrice}</div>
-                        </div>
-                      ))}
-
-                    {!(phase === 'deployed' || phase === 'start') && (
-                      <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                        <Vote size={24} className="mr-1" />
-                        <div className="text-2xl flash tracking-wide">{voteCount}</div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="top" align="center" className="hidden sm:block">
-              <p className="px-3 py-1 max-w-[260px] text-sm">
-                {`Value in Pot | Players Left | ${
-                  phase === 'start' ? 'Next Ticket Price' : 'Yes Votes'
-                } `}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </span>
-
-      <span className="inline sm:hidden">
-        <Popover>
-          <PopoverTrigger>
-            <div className="flex flex-row gap-3 items-center py-0 sm:py-2">
-              <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                <CookingPot size={24} className="mr-1" />
-                <div className="text-2xl flash tracking-wide">{currentPot}</div>
-              </div>
-
-              <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                <Users size={24} className="mr-1" />
-                <div className="text-2xl flash tracking-wide">{ticketCount}</div>
-              </div>
-
-              {phase === 'deployed' ||
-                (phase === 'start' && (
-                  <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                    <Ticket size={24} className="mr-1" />
-                    <div className="text-2xl flash tracking-wide">
-                      {nextTicketPrice}
-                      {/* <span className="text-lg sm:text-xl">ETH</span> */}
-                    </div>
-                  </div>
-                ))}
-
-              {!(phase === 'deployed' || phase === 'start') && (
-                <div className="flex flex-row items-center cursor-default text-md tracking-wide">
-                  <Vote size={24} className="mr-1" />
-                  <div className="text-2xl flash tracking-wide">{voteCount}</div>
-                </div>
-              )}
-            </div>
-          </PopoverTrigger>
-          <PopoverContent side="top" align="center">
-            <p className="px-3 py-1 max-w-[240px] text-sm">
-              {`Value in Pot | Players Left | ${
-                phase === 'start' ? 'Next Ticket Price' : 'Yes Votes'
-              } `}
-            </p>
-          </PopoverContent>
-        </Popover>
-      </span>
+          <div className="flex flex-row items-center cursor-default text-md tracking-wide">
+            <div className="text-2xl flash tracking-wide">Active [30]</div>
+          </div>
+        </>
+      </div>
     </div>
   )
 }

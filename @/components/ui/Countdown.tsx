@@ -208,70 +208,64 @@ export default function Countdown() {
   }, [endTime])
 
   return (
-    <>
-      {phase === 'deployed' || phase === 'gameclosed' ? (
-        <></>
-      ) : (
-        <div className="text-[#FCFDC7] gap-1">
-          <div className="flex justify-center items-end">
-            {timeLeft && !isNaN(timeLeft) ? (
-              <TooltipProvider delayDuration={10}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div className="p-1 bg-[#39402e] rounded-md cursor-default">
-                      <div className="font-digit text-2xl shadow-xl rounded-md px-4 py-0 flex flex-row gap-1 bg-[#404833] border-2 border-[#404833]">
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).hours}
-                          <div className="uppercase text-sm text-center">hr</div>
-                        </div>
-                        :
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).minutes}
-                          <div className="uppercase text-sm text-center">min</div>
-                        </div>
-                        :
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).seconds}
-                          <div className="uppercase text-sm text-center">sec</div>
-                        </div>
-                      </div>
+    <div className="text-[#FCFDC7] gap-1">
+      <div className="flex justify-center items-end">
+        {timeLeft && !isNaN(timeLeft) ? (
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="p-1 bg-[#39402e] rounded-md cursor-default">
+                  <div className="font-digit text-2xl shadow-xl rounded-md px-4 py-0 flex flex-row gap-1 bg-[#404833] border-2 border-[#404833]">
+                    <div className="flex flex-col text-center">
+                      {formatTime(timeLeft).hours}
+                      <div className="uppercase text-sm text-center">hr</div>
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    align="center"
-                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:block cursor-default"
-                  >
-                    {phase === 'start' && <p>{timeAdded} mins is added for every new player</p>}
-                    {phase === 'day' && (
-                      <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
-                    )}
-                    {phase === 'night' && (
-                      <p>
-                        Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends
-                      </p>
-                    )}
-                    {(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') && (
-                      <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
-                    )}
-                    <div>
-                      <a href={DOCS_URL} target="_blank" className="text-xs link">
-                        Learn more
-                      </a>
+                    :
+                    <div className="flex flex-col text-center">
+                      {formatTime(timeLeft).minutes}
+                      <div className="uppercase text-sm text-center">min</div>
                     </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <div className="">
-                {/* <PhaseChange /> */}
+                    :
+                    <div className="flex flex-col text-center">
+                      {formatTime(timeLeft).seconds}
+                      <div className="uppercase text-sm text-center">sec</div>
+                    </div>
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                align="center"
+                className="px-3 py-1 max-w-[240px] text-sm hidden sm:block cursor-default"
+              >
+                {phase === 'start' && <p>{timeAdded} mins is added for every new player</p>}
+                {phase === 'day' && (
+                  <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
+                )}
+                {phase === 'night' && (
+                  <p>Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends</p>
+                )}
+                {(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') && (
+                  <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
+                )}
+                <div>
+                  <a href={DOCS_URL} target="_blank" className="text-xs link">
+                    Learn more
+                  </a>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <div className="">
+            {/* <PhaseChange /> */}
 
-                {xs ? (
-                  <div className="flex text-xl text-[#404833] dark:text-[#FCFC03]">
-                    <span>Use </span>
-                    <span className="flex mr-1">
-                      {' '}
-                      {/* <Image
+            {xs ? (
+              <div className="flex text-xl text-[#404833] dark:text-[#FCFC03]">
+                <span>Use </span>
+                <span className="flex mr-1">
+                  {' '}
+                  {/* <Image
                         priority
                         src={
                           forcedTheme === 'light' ? `/icon/phaseLight.svg` : `/icon/phaseNight.svg`
@@ -281,30 +275,28 @@ export default function Countdown() {
                         width={20}
                         alt="change-phase"
                       /> */}
-                      <p className="flex justify-center items-center">
-                        <ChevronsRight className="" />
-                        Phase
-                      </p>
-                    </span>
-                    to change phase
-                  </div>
-                ) : (
-                  <Button
-                    variant="primary"
-                    className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
-                    onClick={togglePhaseChange}
-                  >
-                    <OnSignal active={phaseChangeActive} own={true} />
-                    <ChevronsRight size={20} className="mr-1" />
-                    Change phase
-                  </Button>
-                )}
+                  <p className="flex justify-center items-center">
+                    <ChevronsRight className="" />
+                    Phase
+                  </p>
+                </span>
+                to change phase
               </div>
+            ) : (
+              <Button
+                variant="primary"
+                className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
+                onClick={togglePhaseChange}
+              >
+                <OnSignal active={phaseChangeActive} own={true} />
+                <ChevronsRight size={20} className="mr-1" />
+                Change phase
+              </Button>
             )}
           </div>
-          {showPhaseChangeModal && <Modal action={'phaseChange'} toggle={togglePhaseChange} />}
-        </div>
-      )}
-    </>
+        )}
+      </div>
+      {showPhaseChangeModal && <Modal action={'phaseChange'} toggle={togglePhaseChange} />}
+    </div>
   )
 }

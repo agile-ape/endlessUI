@@ -1,6 +1,12 @@
 import '../styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
-import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import {
+  getDefaultWallets,
+  lightTheme,
+  darkTheme,
+  midnightTheme,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit'
 import type { AppProps } from 'next/app'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, arbitrumGoerli, goerli, mainnet, base, baseGoerli } from 'wagmi/chains'
@@ -75,11 +81,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         chains={chains}
-        theme={lightTheme({
+        theme={darkTheme({
           accentColor: '#404833',
           accentColorForeground: '#FCFDC7',
           borderRadius: 'medium',
-          fontStack: 'system',
+          fontStack: 'rounded',
           overlayBlur: 'small',
         })}
         coolMode
