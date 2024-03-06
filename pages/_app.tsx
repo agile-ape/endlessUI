@@ -76,14 +76,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider
         chains={chains}
         theme={lightTheme({
-          accentColor: '#FCFC03',
-          accentColorForeground: '#404833',
-          borderRadius: 'large',
+          accentColor: '#404833',
+          accentColorForeground: '#FCFDC7',
+          borderRadius: 'medium',
           fontStack: 'system',
           overlayBlur: 'small',
         })}
         coolMode
         modalSize="compact"
+        initialChain={blastSepolia}
       >
         <StoreProvider store={appStore}>
           <ThemeProvider attribute="class" enableSystem>
