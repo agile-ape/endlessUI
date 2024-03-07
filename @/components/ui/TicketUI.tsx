@@ -108,24 +108,19 @@ const getTicketSize = (ticketSize) => {
   }
 }
 
+const useStore = () => {
+  const round = useStoreState((state) => state.round)
+  return {
+    round,
+  }
+}
+
 const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLookOverwrite }) => {
   // set overlay
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
   const playerTickets = useStoreState((state) => state.tickets)
-  const stage = useStoreState((state) => state.stage)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
   const { xs } = useWindowSize()
-  // const { user, connectWallet, ready, authenticated } = usePrivy()
-
-  const activeAttack = AttackActive()
-  const activeKickOut = KickOutActive()
-
-  // const attackActive = AttackActive()
-  const [showAttackModal, setShowAttackModal] = React.useState<boolean>(false)
-  const toggleAttack = () => setShowAttackModal((prevState) => !prevState)
-
-  const [showKickOutModal, setShowKickOutModal] = React.useState<boolean>(false)
-  const toggleKickOut = () => setShowKickOutModal((prevState) => !prevState)
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -141,18 +136,12 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
 
   const { address } = useAccount()
 
-  const { data: ensName } = useEnsName({
-    address: ticket?.user,
-    chainId: 1,
-  })
+  const { round } = useStore()
 
-  // const playerTicket = data?.[0].result || BigInt(0)
-  const nextTicketId = ticket?.id || 0
-  // const suddenDeath = data?.[0].result || 0
-
+  /*
+  
   let ticketId = ticket?.id
   let ticketAddress = ticket?.user
-
   // let ticketSignature = playerTicket?.[2] || 0
   let ticketStatus = ticket?.status
   let ticketLastSeen = Number(ticket?.lastSeen || 0)
@@ -180,43 +169,58 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   const valueBought = ticketPurchasePrice
   const valueRedeemed = ticketRedeemValue
 
-  const phase = useStoreState((state) => state.phase)
-  const round = useStoreState((state) => state.round)
-
   const totalTicketCount = playerTickets.length
-
-  const quartile = (ticketRank / totalTicketCount) * 100
-
-  const ticketStatusString: string = statusPayload[ticketStatus] || 'unknown'
-
-  /*-------------------------------------- STANDALONE VARIATION -----------------------------------*/
-
-  /*
-  let rankColor: string
-  if (quartile < 25) {
-    rankColor = 'bg-black'
-  } else if (quartile < 50) {
-    // rankColor = 'bg-gradient-to-r from-orange-800 via-amber-900 to-yellow-950'
-    rankColor = 'bg-gradient-to-r from-orange-500 via-amber-600 to-yellow-700'
-  } else if (quartile < 75) {
-    rankColor = 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-500'
-  } else if (quartile <= 100) {
-    rankColor = 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500'
-  }
+  
   */
 
-  // user input size
   const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
-  const swords = Array.from({ length: ticketAttacks }).map((_, index) => (
-    // <Sword key={index} size={16} className="text-black"></Sword>
-    <span key={index} size={16}>
-      🥊
-    </span>
-  ))
-
   /*-------------------------------------- TICKET LOOK -----------------------------------*/
+
+  let ticketId = ticket?.id
+  let ticketPlayer = ticket?.player
+  let ticketIsInPlay = ticket?.isInPlay
+  let ticketValue = ticket?.value
+  let ticketPurchasePrice = ticket?.purchasePrice
+  let ticketRedeemValue = ticket?.redeemValue
+  let ticketPotClaimCount = ticket?.potClaimCount
+  let ticketPassRate = ticket?.passRate
+  let ticketJoinRound = ticket?.joinRound
+  let ticketExitRound = ticket?.exitRound
+  let ticketLastCount = ticket?.lastCount
+
   let ticketLook: string
+
+  // just joined this round
+
+  if (ticketIsInPlay) {
+    if (ticketJoinRound == round) {
+      ticketLook = 'justJoined'
+    }
+
+    // passing value
+    if (ticketJoinRound < round && ticketValue < ticketPurchasePrice) {
+      ticketLook = 'inLoss'
+    }
+
+    if (ticketJoinRound < round && ticketValue >= ticketPurchasePrice) {
+      ticketLook = 'inProfit'
+    }
+
+    // holding pot
+    if (ticketId == potFlag) {
+      ticketLook = 'holdPot'
+    }
+
+    // pass pot
+    if (ticketId < potFlag) {
+      ticketLook = 'passPot'
+    }
+  } else {
+    ticketLook = 'exitGame'
+  }
+
+  /*
 
   if (phase === 'deployed') {
     ticketLook = 'beforePurchase'
@@ -300,39 +304,84 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     return null
   }
 
+  */
+
   let ticketLookFinal: string
   ticketLookFinal = ticketLookOverwrite ?? ticketLook
 
   const ticketLookMapping = {
-    // ticket in play
-    beforePurchase: {
-      bgImage: 'burst',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'copium',
-      id: '-',
-      status: 'prepare to enter arena',
-      label: 'ticket value',
-      value: ' - ETH',
-    },
-    afterPurchase: {
+    justJoined: {
       bgImage: 'rainbow',
       header: 'bg-zinc-300/20 text-black',
-      face: 'happy',
+      face: 'enter',
       id: ticketId,
-      status: 'a warrior enters',
+      passRate: ticketPassRate,
+      status: 'welcome ser',
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
-    submittedDay: {
+    inProfit: {
       bgImage: 'motif',
       header: 'bg-zinc-300/70 text-black',
-      face: 'handsup',
+      face: 'happy',
       id: ticketId,
-      status: 'received Pepe Protection',
+      status: 'giveth and receiveth',
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
+
+    inLoss: {
+      bgImage: 'motif',
+      header: 'bg-zinc-300/70 text-black',
+      face: 'worried',
+      id: ticketId,
+      status: 'giveth and receiveth',
+      label: 'ticket value',
+      value: ticketValue + ' ETH',
+    },
+
+    holdPot: {
+      bgImage: 'burst',
+      header: 'bg-zinc-300/70 text-black',
+      face: 'surprised',
+      id: ticketId,
+      status: 'slurp',
+      label: 'ticket value',
+      value: ticketValue + ' ETH',
+    },
+
+    passPot: {
+      bgImage: 'safeOverlay',
+      header: 'bg-zinc-100/50 text-black',
+      face: 'warm',
+      id: ticketId,
+      status: 'taking a break',
+      label: 'ticket value',
+      value: ticketValue + ' ETH',
+    },
+
+    exitGame: {
+      bgImage: '',
+      header: 'text-black',
+      face: 'exit',
+      id: ticketId,
+      status: 'to fight another day',
+      label: 'exit value',
+      value: ticketRedeemValue,
+    },
+
+    // ticket in play
+    // beforePurchase: {
+    //   bgImage: 'burst',
+    //   header: 'bg-zinc-300/20 text-black',
+    //   face: 'copium',
+    //   id: '-',
+    //   status: 'prepare to enter arena',
+    //   label: 'ticket value',
+    //   value: ' - ETH',
+    // },
+
     makePeace: {
       bgImage: 'rainbow',
       header: 'bg-zinc-300/20 text-black',
@@ -396,15 +445,6 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
-    inSafehouse: {
-      bgImage: 'safeOverlay',
-      header: 'bg-zinc-100/50 text-black',
-      face: 'warm',
-      id: ticketId,
-      status: 'taking a break',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
     lastManStanding: {
       bgImage: 'burst',
       header: 'bg-zinc-300/20 text-black',
@@ -457,15 +497,6 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       face: 'angry',
       id: ticketId,
       status: 'vengeance in my next life',
-      label: 'rank',
-      value: ticketRank,
-    },
-    exitGame: {
-      bgImage: '',
-      header: 'text-black dark:text-white',
-      face: 'exit',
-      id: ticketId,
-      status: 'to fight another day',
       label: 'rank',
       value: ticketRank,
     },
@@ -650,10 +681,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
                 <span className="block"> Not In Game </span>
               ) : (
                 <>
-                  <span className="text-base sm:text-xs"></span>Player{' '}
+                  {/* <span className="text-base sm:text-xs"></span>Player{' '} */}
                   <span className="font-digit">
                     {' '}
-                    <span className={h2}>🪖{String(id)}</span>
+                    <span className={h2}>🎟{String(id)}</span>
                   </span>
                 </>
               )}
@@ -698,10 +729,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
         </>
       )}
 
-      {showAttackModal && <Modal action={'attack'} toggle={toggleAttack} id={Number(ticketId)} />}
+      {/* {showAttackModal && <Modal action={'attack'} toggle={toggleAttack} id={Number(ticketId)} />}
       {showKickOutModal && (
         <Modal action={'kickOut'} toggle={toggleKickOut} id={Number(ticketId)} />
-      )}
+      )} */}
     </div>
   )
 }
