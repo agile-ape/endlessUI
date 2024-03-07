@@ -904,14 +904,14 @@ export default function Screen() {
             <div className="flex flex-col justify-center mx-auto gap-2">
               {/* TODOS - link to ticketPrice */}
               <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot</div>
-              <div className="text-xl">Price: [1] ETH </div>
+              <div className="text-xl text-gray-100">Price: [1] ETH </div>
               <div className="bg-[#FCFC03]/80 rounded-xl">
                 <Button
                   className="
                   rounded-xl px-4 py-2
                   bg-[#404833] shadow-sm
                   font-digit text-2xl text-[#FCFDC7] border border-[#FCFDC7]
-                  hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03] 
+                  hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03]
                 active:-translate-y-0 active:brightness-200
                 "
                   onClick={toggleBuy}

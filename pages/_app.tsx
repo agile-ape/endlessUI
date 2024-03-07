@@ -93,7 +93,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         initialChain={blastSepolia}
       >
         <StoreProvider store={appStore}>
-          <ThemeProvider attribute="class" enableSystem>
+          <ThemeProvider attribute="class" forcedTheme="dark" enableSystem>
             <Metadata {...pageProps.metadata} />
             <Layout metadata={pageProps.metadata}>
               <Component {...pageProps} />

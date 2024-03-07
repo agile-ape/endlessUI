@@ -62,8 +62,8 @@ const TicketList = () => {
         className="list-none
         relative px-6 py-0 flex flex-col"
       >
-        <div className="flex flex-col items-center 2xl:flex-row justify-between">
-          <div className="grow">{xs ? '' : <KeyTrackers />}</div>
+        <div className="flex flex-col items-center 2xl:flex-row justify-between mt-2">
+          {/* <div className="grow">{xs ? '' : <KeyTrackers />}</div> */}
 
           {/* <div className="flex gap-2 justify-center my-0 sm:my-2">
             <Button
