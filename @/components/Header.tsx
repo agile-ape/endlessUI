@@ -2,13 +2,13 @@ import Image from 'next/image'
 import React, { useRef, useState } from 'react'
 import CustomConnectButton from '@/components/ui/connect-button'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import type { MouseEventHandler, FC } from 'react'
 
 import Logo from './ui/Logo'
 import { Button } from './ui/button'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Indicator from './ui/Indicator'
-import DashboardNew from './ui/DashboardNew'
 import Modal from '../components/ui/Modal'
 import { useStoreActions, useStoreState } from '../../store'
 
@@ -45,12 +45,26 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { User, Menu, Users, Clock, Move } from 'lucide-react'
 
 function Header() {
+  const handleOnMouseDown: MouseEventHandler = () => {
+    location.reload()
+  }
+
   return (
     <>
       <div className="hidden sm:block">
         <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
           <div className="flex justify-start order-1">
-            <Logo />
+            {/* <Logo /> */}
+            <div
+              className="
+            py-4 sm:py-0 \
+        text-[36px] sm:text-[28px] \
+         text-[#FCFDC7] \
+        capitalized font-digit text-center cursor-pointer"
+              onMouseDown={handleOnMouseDown}
+            >
+              last
+            </div>
           </div>
 
           <div className="flex justify-self-end gap-3 order-3">

@@ -29,6 +29,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import { Button } from './button'
 import Link from 'next/link'
+import { DOCS_URL_attack } from '../../../services/constant'
 
 function HowToPlay() {
   return (
@@ -39,10 +40,37 @@ function HowToPlay() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader>
-            <DialogTitle className="text-3xl">Last Man Standing</DialogTitle>
-            <ScrollArea className="h-[400px] lg:h-[500px] rounded-md border p-4">
+            <DialogTitle className="text-center text-3xl font-digit text-[#FCFC03]">
+              Pass the pot 🍯
+            </DialogTitle>
+            <ScrollArea className="h-[400px] lg:h-[600px] rounded-md border p-4">
               <DialogDescription>
-                <Accordion type="multiple">
+                <div className="text-[#FCFCD7] text-2xl">
+                  <p className="mb-6">A pot 🍯 is funded with ETH.</p>
+                  <p className="mb-6">Players buy tickets 🎟 to join the game.</p>
+                  <p className="mb-6">The game goes in increasing rounds 🪜. </p>
+                  <p>At the end of each round: </p>
+                  <ol>
+                    <li className="ml-4 mb-4">
+                      1. Every ticket pass 10% of its value to the ticket after them
+                    </li>
+                    <li className="ml-4 mb-4">
+                      2. Ticket that holds the pot claims the value they joined game with
+                    </li>
+                    <li className="ml-4 mb-6">
+                      3. The pot is then passed to the next ticket to hold for the next round
+                    </li>
+                    <li className="mb-4">P.S. $LAST tokens help reduce % of value passed</li>
+                  </ol>
+                </div>
+
+                <a href={DOCS_URL_attack} target="_blank">
+                  <Button variant="primary" className={`w-full text-3xl py-8`}>
+                    Learn more
+                  </Button>
+                </a>
+
+                {/* <Accordion type="multiple">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>Buy a ticket.</AccordionTrigger>
                     <AccordionContent>
@@ -188,7 +216,7 @@ function HowToPlay() {
                       <p>Good luck.</p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
+                </Accordion> */}
               </DialogDescription>
             </ScrollArea>
           </DialogHeader>

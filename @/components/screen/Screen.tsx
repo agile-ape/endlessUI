@@ -21,10 +21,10 @@ import PWADrawer from '../ui/PWADrawer'
 import Modal from '../ui/Modal'
 import BuyTicketNew from '../ui/BuyTicketNew'
 import OnSignal from '../ui/OnSignal'
-
-import DashboardNew from '../ui/DashboardNew'
 import ExitGameNew from '../ui/ExitGameNew'
 import KeyTrackers from '../ui/KeyTrackers'
+
+import JoinGame from '../ui/JoinGame'
 
 import TicketUI from '../ui/TicketUI'
 import TicketList from '../ui/TicketList'
@@ -483,8 +483,8 @@ export default function Screen() {
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setCarouselVisibility(false))
 
-  const [showBuyModal, setShowBuyModal] = React.useState<boolean>(false)
-  const toggleBuy = () => setShowBuyModal((prevState) => !prevState)
+  const [showJoinModal, setShowJoinModal] = React.useState<boolean>(false)
+  const toggleJoin = () => setShowJoinModal((prevState) => !prevState)
 
   return (
     <div className="flex flex-col xl:mx-[100px] pb-8">
@@ -903,8 +903,8 @@ export default function Screen() {
           <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
             <div className="flex flex-col justify-center mx-auto gap-2">
               {/* TODOS - link to ticketPrice */}
-              <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot</div>
-              <div className="text-xl text-gray-100">Price: [1] ETH </div>
+              <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot 🍯</div>
+              {/* <div className="text-xl text-gray-100">Price: [1] ETH </div> */}
               <div className="bg-[#FCFC03]/80 rounded-xl">
                 <Button
                   className="
@@ -914,7 +914,8 @@ export default function Screen() {
                   hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03]
                 active:-translate-y-0 active:brightness-200
                 "
-                  onClick={toggleBuy}
+                  onClick={toggleJoin}
+                  disabled={false}
                 >
                   {/* TODOS - link to canBuyTicket */}
                   <OnSignal active={true} own={true} />
@@ -933,7 +934,7 @@ export default function Screen() {
               <TicketList />
             </div>
           </div>
-          {showBuyModal && <Modal action={'buyTicket'} toggle={toggleBuy} />}
+          {showJoinModal && <Modal action={'joinGame'} toggle={toggleJoin} />}
         </>
       )}
     </div>

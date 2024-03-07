@@ -58,50 +58,14 @@ const TicketList = () => {
 
   return (
     <div className="">
-      <summary
-        className="list-none
-        relative px-6 py-0 flex flex-col"
-      >
-        <div className="flex flex-col items-center 2xl:flex-row justify-between mt-2">
-          {/* <div className="grow">{xs ? '' : <KeyTrackers />}</div> */}
-
-          {/* <div className="flex gap-2 justify-center my-0 sm:my-2">
-            <Button
-              onClick={() => toggleTab('aroundMe')}
-              variant="filter"
-              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
-              disabled={ticketState === 'aroundMe'}
-            >
-              Around Me
-            </Button>
-            <Button
-              onClick={() => toggleTab('inPlay')}
-              variant="filter"
-              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
-              disabled={ticketState === 'inPlay'}
-            >
-              In Play
-            </Button>
-
-            <Button
-              onClick={() => toggleTab('mostValue')}
-              variant="filter"
-              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
-              disabled={ticketState === 'mostValue'}
-            >
-              Not In Play
-            </Button>
-            <Button
-              onClick={() => toggleTab('safehouse')}
-              variant="filter"
-              className="text-base sm:text-sm rounded-full h-8 px-3 py-1"
-              disabled={ticketState === 'safehouse'}
-            >
-              In Safehouse
-            </Button>
-          </div> */}
-          <Countdown />
+      <summary className="px-6 py-2 flex flex-col justify-center items-center">
+        <div className="flex flex-row font-digit text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
+          <div className="flash">🪜 Round 1 </div>
+          <div className="flash">🍯 Pot 21 ETH</div>
+          <div className="flash">🎟️ Active 30</div>
         </div>
+
+        <Countdown />
       </summary>
 
       {totalTicketCount ? (

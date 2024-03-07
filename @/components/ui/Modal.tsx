@@ -17,7 +17,7 @@ import { Button } from './button'
 import Prompt from './Prompt'
 import OnSignal from './OnSignal'
 import Submit from './Submit'
-import DashboardNew from './DashboardNew'
+// import DashboardNew from './DashboardNew'
 import CheckInNew from './CheckInNew'
 import CheckOutNew from './CheckOutNew'
 import SplitPotNew from './SplitPotNew'
@@ -29,6 +29,10 @@ import ExitGameNew from './ExitGameNew'
 import TokenNew from './TokenNew'
 import PhaseChangeNew from './PhaseChangeNew'
 import AdminNew from './AdminNew'
+import RoundChange from './RoundChange'
+import JoinGame from './JoinGame'
+import LoadLast from './LoadLast'
+import ExitGame from './ExitGame'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -39,9 +43,13 @@ type ModalType = {
 }
 
 const titleMapping: { [key: string]: string } = {
+  roundChange: '🪜 Change round',
+  joinGame: '🎟 Buy ticket',
+  loadLast: '🛡️ Reduce pass rate',
+  exitGame: '🚪 Exit Game',
+
   phaseChange: '🔔 Trigger phase change',
   buyTicket: '🎟 Enter Arena',
-  exitGame: '🚪 Exit Game',
   submit: '✅ Submit keyword of the day',
   checkIn: '🛏 Check into Safehouse',
   checkOut: '🧳 Check out from Safehouse',
@@ -54,33 +62,21 @@ const titleMapping: { [key: string]: string } = {
   admin: 'Stats',
 }
 
-const indicatorMapping: { [key: string]: string } = {
-  phaseChange: '',
-  buyTicket: 'start',
-  exitGame: 'day',
-  submit: 'day',
-  checkIn: 'day',
-  checkOut: 'day',
-  splitIt: 'day',
-  wager: '',
-  attack: 'night',
-  kickOut: 'night',
-  token: '',
-  dashboard: '',
-  admin: '',
-}
-
 const modalMapping: { [key: string]: JSX.Element } = {
+  roundChange: <RoundChange />,
+  joinGame: <JoinGame />,
+  loadLast: <LoadLast />,
+  exitGame: <ExitGame />,
+
   phaseChange: <PhaseChangeNew />,
   buyTicket: <BuyTicketNew />,
-  exitGame: <ExitGameNew />,
   submit: <Submit />,
   checkIn: <CheckInNew />,
   checkOut: <CheckOutNew />,
   splitIt: <SplitPotNew />,
   wager: <WagerNew />,
   token: <TokenNew />,
-  dashboard: <DashboardNew />,
+  // dashboard: <DashboardNew />,
   admin: <AdminNew />,
 }
 
@@ -108,16 +104,6 @@ const Modal: FC<ModalType> = ({ action, toggle, id }) => {
               <div className="items-center pt-10">
                 <div className="w-[85%] mx-auto flex justify-between p-2 items-center text-center h1-last">
                   <div className="">{titleMapping[action]}</div>
-                  {indicatorMapping[action] && (
-                    <Image
-                      priority
-                      src={`/indicator/${indicatorMapping[action]}Indicator.svg`}
-                      height={300}
-                      width={60}
-                      className=""
-                      alt={`indicator`}
-                    />
-                  )}
                 </div>
                 <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
                   {action === 'attack' && <AttackNew idList={id} />}

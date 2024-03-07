@@ -3,7 +3,7 @@ import React from 'react'
 import type { FC } from 'react'
 import type { IApp, Ticket } from 'types/app'
 import Image from 'next/image'
-import { useAccount, useEnsName } from 'wagmi'
+import { useAccount, useContractRead, useEnsName } from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import {
   cn,
@@ -73,12 +73,11 @@ const getTicketSize = (ticketSize) => {
         size: 'w-[260px] h-[280px]',
         edge: 'rounded-xl',
         h1: 'text-2xl',
-        h2: 'text-xl',
-        h3: 'text-base',
+        h2: 'text-base',
+        h3: 'text-xl',
         imgh: '140',
         imgw: '180',
         mt: 'mt-0 mb-0',
-        gap: '',
       }
     case 2:
     case 4:
@@ -86,24 +85,23 @@ const getTicketSize = (ticketSize) => {
         size: 'w-[220px] h-[240px]',
         edge: 'rounded-xl',
         h1: 'text-xl',
-        h2: 'text-xl',
-        h3: 'text-sm',
+        h2: 'text-sm',
+        h3: 'text-xl',
         imgh: '110',
         imgw: '150',
         mt: 'mt-0 mb-0',
-        gap: '',
       }
     case 3:
       return {
         size: 'w-[160px] h-[180px]',
         edge: 'rounded-md',
         h1: 'text-md',
-        h2: 'text-sm',
-        h3: 'text-xs',
-        imgh: '75',
+        h2: 'text-xs',
+        h3: 'text-xl',
+        h4: 'text-md',
+        imgh: '85',
         imgw: '95',
         mt: 'mt-0 mb-2',
-        gap: '',
       }
   }
 }
@@ -116,11 +114,9 @@ const useStore = () => {
 }
 
 const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLookOverwrite }) => {
-  // set overlay
-  const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
-  const playerTickets = useStoreState((state) => state.tickets)
   const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
-  const { xs } = useWindowSize()
+
+  const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -134,46 +130,14 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     setIsOverlayInspect(!isOverlayInspect)
   }
 
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
+
+  const { data: idArray } = useContractRead({
+    ...defaultContractObj,
+    functionName: 'playerToIdArray',
+  })
 
   const { round } = useStore()
-
-  /*
-  
-  let ticketId = ticket?.id
-  let ticketAddress = ticket?.user
-  // let ticketSignature = playerTicket?.[2] || 0
-  let ticketStatus = ticket?.status
-  let ticketLastSeen = Number(ticket?.lastSeen || 0)
-  let ticketIsInPlay = Boolean(ticket?.isInPlay || 0)
-  // let ticketIsInPlay = true
-  let ticketVote = Boolean(ticket?.vote || 0)
-  let ticketValue = Number(ticket?.value) || 0
-  let ticketPurchasePrice = ticket?.purchasePrice || 0
-  let ticketPotClaim = ticket?.potClaim || 0
-  let ticketRedeemValue = ticket?.redeemValue || 0
-  // used
-  let ticketAttacks = Number(ticket?.attacks) || 0
-
-  let ticketAttackCount = Number(ticket?.attackCount || 0)
-  let ticketKillCount = Number(ticket?.killCount || 0)
-  let ticketKilledBy = ticket?.killedBy || 0
-  let ticketSafehouseNights = ticket?.safehouseNights || 0
-  let ticketcheckOutRound = Number(ticket?.checkOutRound || 0)
-  let ticketBuddy = ticket?.buddy || 0
-  let ticketBuddyCount = ticket?.buddyCount || 0
-  let ticketRank = Number(ticket?.rank || 0)
-
-  let ticketVoteString = ticketId ? (ticketVote ? 'Yes' : 'No') : '-'
-
-  const valueBought = ticketPurchasePrice
-  const valueRedeemed = ticketRedeemValue
-
-  const totalTicketCount = playerTickets.length
-  
-  */
-
-  const { size, edge, h1, h2, h3, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   /*-------------------------------------- TICKET LOOK -----------------------------------*/
 
@@ -189,16 +153,24 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   let ticketExitRound = ticket?.exitRound
   let ticketLastCount = ticket?.lastCount
 
-  let ticketLook: string
+  // compute nextPassRate
+  // TODOs: check for other conditions - lastman. no one alive behind, exited...
+  let nextPassRate: number
 
-  // just joined this round
+  if (!ticketIsInPlay || ticketLastCount >= ticketPassRate) {
+    nextPassRate = 0
+  } else {
+    nextPassRate = ticketPassRate - ticketLastCount
+  }
+
+  // ticketLook
+  let ticketLook: string
 
   if (ticketIsInPlay) {
     if (ticketJoinRound == round) {
       ticketLook = 'justJoined'
     }
 
-    // passing value
     if (ticketJoinRound < round && ticketValue < ticketPurchasePrice) {
       ticketLook = 'inLoss'
     }
@@ -207,12 +179,10 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       ticketLook = 'inProfit'
     }
 
-    // holding pot
     if (ticketId == potFlag) {
       ticketLook = 'holdPot'
     }
 
-    // pass pot
     if (ticketId < potFlag) {
       ticketLook = 'passPot'
     }
@@ -220,302 +190,92 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     ticketLook = 'exitGame'
   }
 
-  /*
-
-  if (phase === 'deployed') {
-    ticketLook = 'beforePurchase'
-  }
-
-  if (phase === 'start') {
-    if (ticketId === 0) {
-      ticketLook = 'beforePurchase'
-    } else if (ticketId != 0) {
-      ticketLook = 'afterPurchase'
-    }
-  }
-
-  if (!(phase === 'start' || phase === 'deployed') && ticketId === 0) {
-    ticketLook = 'notPlaying'
-  }
-
-  if (ticketIsInPlay) {
-    if (phase == 'day') {
-      if (ticketStatusString == 'submitted' && ticketLastSeen == round) {
-        ticketLook = 'submittedDay'
-      } else if (ticketVote === true) {
-        ticketLook = 'makePeace'
-      } else {
-        if (stage === 1) {
-          ticketLook = 'stage1New'
-        } else if (stage === 2) {
-          ticketLook = 'stage2New'
-        } else if (stage === 3) {
-          ticketLook = 'stage3New'
-        }
-      }
-    }
-
-    if (phase == 'night') {
-      if (
-        ticketStatusString == 'submitted' &&
-        ticketLastSeen == round &&
-        (ticketSize === 1 || ticketSize === 2)
-      ) {
-        ticketLook = 'submittedNight'
-      } else if (ticketStatusString == 'checked' && ticketLastSeen == round) {
-        ticketLook = 'attackedButSafu'
-      } else {
-        ticketLook = 'nightFight'
-      }
-    }
-
-    if (ticketStatusString === 'safe') {
-      ticketLook = 'inSafehouse'
-    }
-
-    if (phase === 'lastmanfound') {
-      ticketLook = 'lastManStanding'
-    }
-
-    if (phase === 'peacefound') {
-      ticketLook = 'agreedToSplitPot'
-    }
-
-    if (phase === 'drain') {
-      ticketLook = 'noMorePot'
-    }
-
-    if (phase === 'start') {
-      ticketLook = 'afterPurchase'
-    }
-  }
-
-  if (!ticketIsInPlay) {
-    if (ticketStatusString == 'dead') {
-      ticketLook = 'killed'
-    }
-
-    if (ticketStatusString == 'exited') {
-      ticketLook = 'exitGame'
-    }
-  }
-
-  if (!ticketLook && !ticketIsInPlay) {
-    return null
-  }
-
-  */
-
   let ticketLookFinal: string
-  ticketLookFinal = ticketLookOverwrite ?? ticketLook
+  // ticketLookFinal = ticketLookOverwrite ?? ticketLook
+  ticketLookFinal = 'passPot'
 
   const ticketLookMapping = {
     justJoined: {
       bgImage: 'rainbow',
       header: 'bg-zinc-300/20 text-black',
+      blinker: 'opacity-80 text-[#FCFDC7] border-[#FCFDC7] bg-[#404833]',
+      back: 'text-black',
       face: 'enter',
       id: ticketId,
-      passRate: ticketPassRate,
-      status: 'welcome ser',
+      passRate: nextPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
     inProfit: {
       bgImage: 'motif',
-      header: 'bg-zinc-300/70 text-black',
+      header: 'bg-zinc-300/20 text-black',
+      blinker: 'opacity-80 text-[#FCFDC7] border-[#FCFDC7] bg-[#404833]',
+      back: 'text-black',
       face: 'happy',
       id: ticketId,
-      status: 'giveth and receiveth',
+      passRate: nextPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
     inLoss: {
       bgImage: 'motif',
-      header: 'bg-zinc-300/70 text-black',
+      header: 'bg-zinc-300/20 text-black',
+      blinker: 'opacity-80 text-[#FCFDC7] border-[#FCFDC7] bg-[#404833]',
+      back: 'text-black',
       face: 'worried',
       id: ticketId,
-      status: 'giveth and receiveth',
+      passRate: nextPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
     holdPot: {
       bgImage: 'burst',
-      header: 'bg-zinc-300/70 text-black',
+      header: 'bg-zinc-300/20 text-black',
+      blinker: 'opacity-80 text-[#FCFDC7] border-[#FCFDC7] bg-[#404833]',
+      back: 'text-black',
       face: 'surprised',
       id: ticketId,
-      status: 'slurp',
+      passRate: nextPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
     passPot: {
       bgImage: 'safeOverlay',
-      header: 'bg-zinc-100/50 text-black',
+      header: 'opacity-60 bg-zinc-300/20 text-black',
+      blinker: 'opacity-80 text-[#FCFDC7] border-[#FCFDC7] bg-[#404833]',
+      back: 'text-black',
       face: 'warm',
       id: ticketId,
-      status: 'taking a break',
+      passRate: nextPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
 
     exitGame: {
       bgImage: '',
-      header: 'text-black',
+      header: 'opacity-80 text-[#FCFDC7]',
+      blinker: 'opacity-80 text-[#FCFC03] border-[#FCFC03]',
+      back: 'text-white',
       face: 'exit',
       id: ticketId,
-      status: 'to fight another day',
+      passRate: nextPassRate,
       label: 'exit value',
-      value: ticketRedeemValue,
-    },
-
-    // ticket in play
-    // beforePurchase: {
-    //   bgImage: 'burst',
-    //   header: 'bg-zinc-300/20 text-black',
-    //   face: 'copium',
-    //   id: '-',
-    //   status: 'prepare to enter arena',
-    //   label: 'ticket value',
-    //   value: ' - ETH',
-    // },
-
-    makePeace: {
-      bgImage: 'rainbow',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'prettyplease',
-      id: ticketId,
-      status: 'i fight for peace',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    stage1New: {
-      bgImage: 'rainbow',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'confident',
-      id: ticketId,
-      status: 'nice and slow',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    stage2New: {
-      bgImage: 'rainbow',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'worried',
-      id: ticketId,
-      status: 'fight or flight?',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    stage3New: {
-      bgImage: 'rainbow',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'anxious',
-      id: ticketId,
-      status: 'do we all lose?',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    submittedNight: {
-      bgImage: 'motif',
-      header: 'bg-zinc-300/70 text-black',
-      face: 'attack',
-      id: ticketId,
-      status: 'you are safu',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    attackedButSafu: {
-      bgImage: 'combine',
-      header: 'bg-zinc-300/80 text-black',
-      face: 'pray',
-      id: ticketId,
-      status: 'pepe protects thee',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    nightFight: {
-      bgImage: 'rainbow',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'attack',
-      id: ticketId,
-      status: 'who dares win',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    lastManStanding: {
-      bgImage: 'burst',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'lastman',
-      id: ticketId,
-      status: 'the last man stands',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    agreedToSplitPot: {
-      bgImage: 'burst',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'beers',
-      id: ticketId,
-      status: 'WAGMI i guess?',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    noMorePot: {
-      bgImage: 'burst',
-      header: 'bg-zinc-300/20 text-black',
-      face: 'watchitburn',
-      id: ticketId,
-      status: 'let it all burn',
-      label: 'ticket value',
-      value: ticketValue + ' ETH',
-    },
-    // not in play
-    guest: {
-      bgImage: '',
-      header: 'text-black dark:text-white',
-      face: 'eatchips',
-      id: '',
-      status: 'login to play',
-      label: 'ticket value',
-      value: '- ETH',
-    },
-    notPlaying: {
-      bgImage: '',
-      header: 'text-black dark:text-white',
-      face: 'sad',
-      id: '',
-      status: 'feeling fomo?',
-      label: 'ticket value',
-      value: '- ETH',
-    },
-    killed: {
-      bgImage: 'deadOverlayLight',
-      header: 'text-black dark:text-white',
-      face: 'angry',
-      id: ticketId,
-      status: 'vengeance in my next life',
-      label: 'rank',
-      value: ticketRank,
+      value: ticketRedeemValue + ' ETH',
     },
   }
 
-  const { bgImage, header, face, id, status, label, value } = ticketLookMapping[ticketLookFinal]
+  const { bgImage, header, blinker, face, id, passRate, label, value, back } =
+    ticketLookMapping[ticketLookFinal]
 
-  function copyAddress() {
-    copyToClipboard(ticketAddress || '')
-    toast({
-      variant: 'success',
-      title: 'Address copied',
-      description: 'Address copied to clipboard',
-    })
-  }
+  const { size, edge, h1, h2, h3, h4, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   return (
     <div
-      className={`flex flex-col wiggle  mx-auto relative justify-center shadow-xl ${size} ${edge} ${
+      className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge} ${
         ticket.id === lastChangedTicket ? 'triggered-wiggle' : ''
       }`}
       style={{
@@ -531,208 +291,112 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
         }
       }}
     >
-      {/* overlay */}
-      {isOverlayInspect && (
+      {/* back */}
+      {isOverlayInspect ? (
         <div
-          className={`flex flex-col mx-auto gap-x-2 ${gap} px-4 ${h2} justify-center h-[100%] w-[100%] ${header} shadow-xl text-center ${edge}`}
+          className={`${h4} ${back} ${edge} flex flex-col mx-auto gap-x-2 px-4 justify-center h-[100%] w-[100%]  shadow-xl text-center`}
         >
           <div className="flex justify-between gap-6">
-            <p className="text-left"> User</p>
+            <p className="text-left"> Owner</p>
             <p className="text-right italic flex justify-center items-center">
               <a
                 className="hover:underline"
-                href={`${BLOCK_EXPLORER}/address/${ticketAddress}`}
+                href={`${BLOCK_EXPLORER}/address/${ticketPlayer}`}
                 target="_blank"
-              >
-                {ensName ? ensName : formatAddress(ticketAddress)}
-              </a>{' '}
-              <span onClick={copyAddress}>
-                <Copy size={12} className="ml-1 cursor-pointer" />
-              </span>
+              ></a>
             </p>
           </div>
 
           <div className="flex justify-between gap-6">
-            <p className="text-left">Attacks/Kills</p>
+            <p className="text-left">Joined at</p>
             <p className="text-right">
-              {' '}
-              {formatCount(ticketAttackCount)}/{formatCount(ticketKillCount)}{' '}
+              <span className="text-sm">Round </span>
+              {ticketJoinRound}
             </p>
           </div>
 
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Seen/Vote</p>
-            <p className="text-right">
-              {' '}
-              <span className="underline decoration-double">{formatCount(ticketLastSeen)}</span>/
-              <span className={cn(ticketVoteString === 'Yes' ? 'text-green-500' : 'text-red-500')}>
-                {ticketVoteString}
-              </span>{' '}
-            </p>
-          </div>
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Safe nights </p>
-            <p className="text-right"> {formatCount(ticketSafehouseNights)} </p>
-          </div>
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Bud/Bud Count </p>
-            <p className="text-right">
-              {' '}
-              #{formatCount(ticketBuddy)}/{formatCount(ticketBuddyCount)}
-            </p>
-          </div>
-
-          {ticketLookFinal == 'inSafehouse' && (
-            <div className={`${h2} flex justify-between text-lg text-amber-600 gap-6`}>
-              <p className="text-left">Check out by</p>
-              <p className="text-right underline"> {ticketcheckOutRound}</p>
+          {ticketLookFinal === 'exitGame' && (
+            <div className="flex justify-between gap-6">
+              <p className="text-left">Exited at</p>
+              <p className="text-right">
+                <span className="text-sm">Round </span>
+                {ticketExitRound}
+              </p>
             </div>
           )}
 
-          {(ticketLookFinal == 'exitGame' || ticketLookFinal == 'killed') && (
-            <div className={`${h2} flex justify-between gap-6`}>
-              <p className="text-left">Killed By</p>
-              <p className="text-right"> #{formatCount(ticketKilledBy)}</p>
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Join value</p>
+            <p className="text-right">
+              {formatNumber(ticketPurchasePrice, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+              <span className="text-xs">ETH</span>
+            </p>
+          </div>
+
+          {ticketLookFinal === 'exitGame' && (
+            <div className="flex justify-between gap-6">
+              <p className="text-left">Exit value</p>
+              <p className="text-right">
+                <span className="text-sm">{ticketRedeemValue}</span>
+              </p>
             </div>
           )}
 
-          {ticketLookFinal == 'exitGame' && (
-            <>
-              <div className={`${h2} flex justify-between gap-6`}>
-                <p className="text-left">Bought for</p>
-                <p className="text-right">
-                  {' '}
-                  {/* {ticketRedeemValue} */}
-                  {formatNumber(valueBought, {
-                    maximumFractionDigits: 3,
-                    minimumFractionDigits: 3,
-                  })}
-                  <span className="text-[0.5rem]">ETH</span>
-                </p>
-              </div>
+          <div className="flex justify-between gap-6">
+            <p className="text-left">$LAST</p>
+            <p className="text-right">{ticketLastCount}</p>
+          </div>
 
-              <div className={`${h2} flex justify-between gap-6`}>
-                <p className="text-left">Exited with</p>
-                <p className="text-right">
-                  {' '}
-                  {/* {ticketRedeemValue} */}
-                  {formatNumber(valueRedeemed, {
-                    maximumFractionDigits: 3,
-                    minimumFractionDigits: 3,
-                  })}
-                  <span className="text-[0.5rem]">ETH</span>
-                </p>
-              </div>
-            </>
-          )}
-
-          {!(
-            ticketSize === 1 ||
-            ticketSize === 2 ||
-            ticketLookFinal == 'inSafehouse' ||
-            ticketLookFinal == 'killed' ||
-            ticketLookFinal == 'exitGame' ||
-            xs
-          ) && (
-            <Button
-              variant="attack"
-              className="w-full py-1 text-lg h-8 mt-2"
-              onClick={toggleAttack}
-            >
-              <OnSignal active={activeAttack} own={false} />
-              {/* <Sword size={20} className="text-orange-50 mr-1" /> */}
-              <span className="text-base mr-1">🥊</span>
-              Attack
-            </Button>
-          )}
-
-          {ticketSize === 3 && ticketLookFinal == 'inSafehouse' && !xs && (
-            <Button
-              variant="kickOut"
-              className="w-full py-1 text-lg h-8 rounded-md"
-              onClick={toggleKickOut}
-            >
-              <OnSignal active={activeKickOut} own={false} />
-              {/* <Axe size={20} className="text-orange-50 mr-1" /> */}
-              <span className="text-base mr-1">🪓</span>
-              Kick Out
-            </Button>
-          )}
+          <div className="flex justify-between gap-6">
+            <p className="text-left">Claim count</p>
+            <p className="text-right">
+              {ticketPotClaimCount}
+              <span className="text-sm">x</span>
+            </p>
+          </div>
         </div>
-      )}
-
-      {/* default */}
-      {!isOverlayInspect && (
+      ) : (
         <>
           {/* top header */}
+          {/* TODOS - ADJUST TO PULL ID FROM ARRAY */}
           {ticketSize === 3 && address?.toLowerCase() === ticket?.user && (
             <div className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 rounded-full motion-safe:animate-bounce w-max mx-auto px-3 absolute inset-x-0 -top-3 h-5">
               Hello there
             </div>
           )}
 
-          <div className={`${header} shadow-xl text-center m-2 rounded-lg`}>
-            <p className={`uppercase ${h1} leading-tight`}>
-              {ticketLookFinal === 'guest' ? (
-                <span className="block"> Guest </span>
-              ) : ticketLookFinal === 'notPlaying' ? (
-                <span className="block"> Not In Game </span>
-              ) : (
-                <>
-                  {/* <span className="text-base sm:text-xs"></span>Player{' '} */}
-                  <span className="font-digit">
-                    {' '}
-                    <span className={h2}>🎟{String(id)}</span>
-                  </span>
-                </>
-              )}
-            </p>
-            <p className={`lowercase ${h3} italic`}>{status}</p>
+          <div
+            className={`${h1} ${header} font-digit text-center uppercase shadow-xl m-2 rounded-lg`}
+          >
+            🎟 TICKET {String(id)}
           </div>
-          {/* image */}
-          <div className="flex justify-center">
+          {/* main image */}
+          <div className="flex flex-row items-start justify-center">
             <Image
               priority
               src={`/faces/${face}.svg`}
               height={imgh}
               width={imgw}
               className={`h-auto ${mt}`}
-              // layout="fixed"
               alt={`${face} pepe`}
             />
+            <div className={`${blinker} font-digit px-1 border`}>{passRate}</div>
           </div>
-          {/* need a mapping to list ticketAttacks */}
-          {(ticketSize === 1 || ticketSize === 2) && ticketIsInPlay == true && (
-            <div className="flex flex-row-reverse mx-3 ">{swords}</div>
-          )}
-          {/* rank */}
-          {(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
-            <div
-              // className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end ${rankColor} text-transparent bg-clip-text`}
-              className={`flex justify-center font-digit text-xl mt-3 mb-2 items-end`}
-            >
-              {/* <div className={`capitalize ${h3} leading-tight mr-1`}>{label}</div> */}
-              <div className={`uppercase font-semibold tracking-wider ${h1}`}>
-                {label} {value}
-              </div>
-            </div>
-          )}
-          {/* not killed or exitGame */}
-          {!(ticketLookFinal == 'killed' || ticketLookFinal == 'exitGame') && (
-            <div className={`${header} shadow-xl text-center m-2 mt-0 rounded-lg text-black`}>
-              <div className={`capitalize ${h3} opacity-50 leading-tight`}>{label}</div>
-              <div className={`uppercase font-digit ${h1}`}>{value}</div>
-            </div>
-          )}
+          {/* ticket value */}
+          <div
+            className={cn(
+              ticketLookFinal === 'exitGame' ? 'opacity-70' : '',
+              `${header} ${edge} shadow-xl text-center m-2 mt-0`,
+            )}
+          >
+            <div className={`capitalize ${h2} opacity-60 leading-tight`}>{label}</div>
+            <div className={`uppercase font-digit ${h3}`}>{value}</div>
+          </div>
         </>
       )}
-
-      {/* {showAttackModal && <Modal action={'attack'} toggle={toggleAttack} id={Number(ticketId)} />}
-      {showKickOutModal && (
-        <Modal action={'kickOut'} toggle={toggleKickOut} id={Number(ticketId)} />
-      )} */}
     </div>
   )
 }

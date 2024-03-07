@@ -22,14 +22,20 @@ import { defaultContractObj, DOCS_URL, GAME_ADDRESS, TWITTER_URL } from '../../.
 import { toast } from './use-toast'
 
 import Modal from './Modal'
-// import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
+import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 
 import BuyTicketNew from './BuyTicketNew'
 import { BuyTicketActive } from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
 import { ExitGameActive } from './ExitGameNew'
 import OnSignal from './OnSignal'
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 import CustomConnectButton from './connect-button'
 import type { Ticket } from 'types/app'
 import { fetcher, transformPlayerTicket, statusPayload } from '@/lib/utils'
@@ -59,17 +65,18 @@ import {
   DoorOpen,
   Ticket as Ticket2,
 } from 'lucide-react'
+
 const GameTab = () => {
   const tabValue = useStoreState((state) => state.gameTab)
   const updateTabValue = useStoreActions((actions) => actions.updateGameTab)
   const phase = useStoreState((state) => state.phase)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   const { xs } = useWindowSize()
-  // const { user, connectWallet, ready, authenticated } = usePrivy()
+  const { user, connectWallet, ready, authenticated } = usePrivy()
 
   const buyActive = BuyTicketActive()
-  const [showBuyModal, setShowBuyModal] = React.useState<boolean>(false)
-  const toggleBuy = () => setShowBuyModal((prevState) => !prevState)
+  const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)
+  const toggleLoad = () => setShowLoadModal((prevState) => !prevState)
 
   const exitActive = ExitGameActive()
   const [showExitModal, setShowExitModal] = React.useState<boolean>(false)
@@ -106,111 +113,116 @@ const GameTab = () => {
   let ticketStatus = ownedTicket?.status || 0
   const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
 
-  useEffect(() => {
-    if (isConnected) {
-      updateTabValue('ticket')
-    } else {
-      updateTabValue('game')
-    }
-  }, [isConnected])
-
-  function changeTabValue(value: string) {
-    updateTabValue(value as 'ticket' | 'game')
-  }
-
-  const [isPressed, setIsPressed] = useState(false)
+  // const yourTicketArray: Ticket[] = [tickets]
 
   return (
-    <Tabs value={tabValue} onValueChange={changeTabValue} className="w-[240px] mx-auto">
-      <div className="justify-center hidden sm:flex">
-        <TabsList className="rounded-xl w-5/6 mx-auto mb-2">
-          <TabsTrigger value="ticket" className="rounded-lg w-[50%] p-1 text-[1rem]">
-            <p className="flex justify-center items-center">
-              <span className="text-base mr-1">🪖</span> Player
-            </p>
-          </TabsTrigger>
-
-          <TabsTrigger value="game" className="rounded-lg w-[50%] p-1 text-[1rem]">
-            <p className="flex justify-center items-center">
-              <span className="text-base mr-1">📡</span> Feed
-            </p>
-          </TabsTrigger>
-        </TabsList>
-      </div>
-
-      <div className="flex justify-center">
-        <TabsContent value="ticket" className="flex flex-col gap-3">
+    <div className="flex justify-center w-[280px] mx-auto">
+      <>
+        {isConnected ? (
           <>
-            {isConnected ? (
-              <>
-                <div className="mb-2">
-                  <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
+            <div className="mb-2">
+              <p
+                className="
+              pb-2 \
+              text-[36px] sm:text-[28px] \
+              text-[#FCFDC7] \
+              capitalized font-digit \
+              text-center\
+              flex justify-center"
+              >
+                Your Tickets
+              </p>
 
-                  {id === 0 && (phase === 'deployed' || phase === 'start') && (
+              <div className="flex justify-center">
+                <Carousel orientation="horizontal" className="w-full mx-auto">
+                  <CarouselContent className="">
+                    {/* {yourTicketArray.map((index) => (
+                    <CarouselItem key={index} className="basis-1/4 justify-items-center">
+                      <div className="flex items-center justify-center mx-auto"></div>
+                    </CarouselItem>
+                  ))} */}
+                    <TicketUI ticketSize={2} ticketNumber={id} ticket={ticket} />
+                  </CarouselContent>
+                  <CarouselPrevious className="h-6 w-6 -left-[20px]" />
+                  <CarouselNext className="h-6 w-6 -right-[20px]" />
+                </Carousel>
+              </div>
+
+              <div className="flex justify-center">
+                <div
+                  className="w-[240px] rounded-xl px-2
+                  container-last
+                  flex flex-col my-6 relative"
+                >
+                  <div className="bg-[#FCFC03]/80 rounded-md mt-2">
                     <Button
-                      variant="enter"
-                      // className="px-1 py-1 leading-10 h-14 w-full "
-
-                      className="
-                        my-4 h-14 w-full leading-10 p-1 z-2"
-                      onClick={toggleBuy}
+                      variant="primary"
+                      className="p-1 h-12 w-full text-2xl shadow-sm
+                      hover:-translate-y-1 hover:brightness-100
+                  active:-translate-y-0 active:brightness-200"
+                      onClick={toggleLoad}
                     >
-                      {/* <OnSignal active={buyActive} own={true} /> */}
-                      {/* <Ticket2 size={28} className=" mr-1" /> */}
-                      ENTER
+                      🛡️ Load LAST
                     </Button>
-                  )}
+                  </div>
 
-                  {id !== 0 && (
+                  <div className="bg-[#FCFC03]/80 rounded-md mt-4 mb-2">
                     <Button
-                      variant="exit"
-                      className="px-1 py-1 leading-10 h-12 w-full mt-4 text-2xl"
+                      variant="primary"
+                      className="p-1 h-12 w-full text-2xl shadow-sm
+                      hover:-translate-y-1 hover:brightness-100
+                  active:-translate-y-0 active:brightness-200"
                       onClick={toggleExit}
                     >
-                      <OnSignal active={exitActive} own={true} />
-                      <DoorOpen size={24} className="mr-1" />
-                      {ticketStatusString !== 'exited' && <div>Exit arena</div>}
-                      {ticketStatusString === 'exited' && <div>You have exited</div>}
+                      🚪 Exit Game
                     </Button>
-                  )}
-                </div>
-              </>
-            ) : (
-              <div className="mb-4">
-                <div className="flex flex-col gap-4 items-center justify-center">
-                  <div className="digit-last text-center px-10 py-1 leading-10 h-12 text-2xl">
-                    Not logged in
-                  </div>
-                  <Image
-                    priority
-                    src={`/faces/eatchips.svg`}
-                    height={110}
-                    width={150}
-                    className={`h-auto mt-0 mb-0`}
-                    // layout="fixed"
-                    alt={`guest pepe`}
-                  />
-                  <div className="text-center text-lg underline">
-                    <a href={TWITTER_URL} target="_blank">
-                      Follow for updates
-                    </a>
                   </div>
                 </div>
               </div>
-            )}
-            <div className="hidden sm:flex">
-              <UserActions />
+
+              <div>
+                <div
+                  className="
+              pb-2 \
+              text-[36px] sm:text-[28px] \
+              text-[#FCFDC7] \
+              capitalized font-digit \
+              text-center\
+              flex justify-center"
+                >
+                  Ticket Log
+                </div>
+                <GameFeed />
+              </div>
             </div>
           </>
-        </TabsContent>
-        <TabsContent value="game" className="hidden sm:flex">
-          <GameFeed />
-        </TabsContent>
-      </div>
+        ) : (
+          <div className="mb-4">
+            <div className="flex flex-col gap-4 items-center justify-center">
+              <div className="digit-last text-center px-10 py-1 leading-10 h-12 text-2xl">
+                Not logged in
+              </div>
+              <Image
+                priority
+                src={`/faces/eatchips.svg`}
+                height={110}
+                width={150}
+                className={`h-auto mt-0 mb-0`}
+                alt={`guest pepe`}
+              />
+              <div className="text-center text-lg underline">
+                <a href={TWITTER_URL} target="_blank">
+                  Follow for updates
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
 
-      {showBuyModal && <Modal action={'buyTicket'} toggle={toggleBuy} />}
+      {showLoadModal && <Modal action={'loadLast'} toggle={toggleLoad} />}
       {showExitModal && <Modal action={'exitGame'} toggle={toggleExit} />}
-    </Tabs>
+    </div>
   )
 }
 
