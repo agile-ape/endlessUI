@@ -22,7 +22,7 @@ import { defaultContractObj, DOCS_URL, GAME_ADDRESS, TWITTER_URL } from '../../.
 import { toast } from './use-toast'
 
 import Modal from './Modal'
-import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
+// import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 
 import BuyTicketNew from './BuyTicketNew'
 import { BuyTicketActive } from './BuyTicketNew'
@@ -72,7 +72,7 @@ const GameTab = () => {
   const phase = useStoreState((state) => state.phase)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   const { xs } = useWindowSize()
-  const { user, connectWallet, ready, authenticated } = usePrivy()
+  // const { user, connectWallet, ready, authenticated } = usePrivy()
 
   const buyActive = BuyTicketActive()
   const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)

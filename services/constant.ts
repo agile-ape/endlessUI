@@ -1,6 +1,5 @@
 import { TOKEN_ABI } from './abi/token'
 import { GAME_ABI } from './abi/game'
-import { BET_ENDING_ABI } from './abi/bet'
 
 import { defineChain } from 'viem'
 import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
@@ -8,11 +7,11 @@ import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
 /*---------------------------------------- ENV ---------------------------------------- */
 
 // process.env.NEXT_PUBLIC_CONTRACT
-// process.env.CHAIN_ID
+// process.env.CHAIN_ID 168587773
 
 // const GAME_ENV = '0x7B10015AF4D566377af6313c72640a3A96390c6C' as const
 const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
-const CHAIN_ENV = 168587773
+const CHAIN_ENV = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -54,7 +53,7 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
 
 // used for server utils
 export const CHAIN = blastSepolia
-export const CHAIN_ID = CHAIN_ENV
+export const CHAIN_ID = Number(CHAIN_ENV)
 
 export let TOKEN_NAME: string
 
@@ -83,12 +82,12 @@ export const WEBSOCKET_ENDPOINT = isDevelopment
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
-export const RELAYER_ADDRESS = '0xe973a9e8f568f64faa8696a762427972ee9f8446' as const // to be updated
-export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
-export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
-export const ADMIN_ADDRESSES = [
-  '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
-]
+// export const RELAYER_ADDRESS = '0xe973a9e8f568f64faa8696a762427972ee9f8446' as const // to be updated
+// export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
+// export const GAMEMASTER_ADDRESS = '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4' as const
+// export const ADMIN_ADDRESSES = [
+//   '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
+// ]
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
 export const TOKEN_ADDRESS = '0xe3e6133c3930c265757a6429ab5e53f30c19d70e' as const
@@ -101,12 +100,6 @@ export const GAME_ADDRESS = GAME_ENV
 export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
-}
-
-export const BET_ENDING_ADDRESS = '0x9A216982c365e6986b16CfC101741b7E445C2577' as const
-export const wagerContractObj = {
-  address: BET_ENDING_ADDRESS,
-  abi: BET_ENDING_ABI,
 }
 
 // export const WHITELIST_DEV_ADDRESS = '0x68EEf6bb643efa224E804a8D604e511d1F8fa032' as const

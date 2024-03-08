@@ -210,6 +210,7 @@ const JoinGame = () => {
           "
         >
           <div className="w-full">
+            <div className="font-digit flex justify-center my-2">Your stats</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH in wallet</p>
               <p className="text-right">
@@ -223,7 +224,7 @@ const JoinGame = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Tickets bought</p>
+              <p className="text-left">Total tickets bought</p>
               <p className="text-right">
                 {' '}
                 {formatNumber(ethBalance, {
@@ -233,8 +234,10 @@ const JoinGame = () => {
               </p>
             </div>
 
+            <div className="font-digit flex justify-center my-2">Game</div>
+
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Active tickets</p>
+              <p className="text-left">Tickets till hold pot</p>
               <p className="text-right">
                 {' '}
                 {formatNumber(ethBalance, {

@@ -148,6 +148,8 @@ import type { Ticket } from 'types/app'
 import { socket } from '@/lib/socket'
 import is from 'date-fns/esm/locale/is/index.js'
 
+import DesktopScreen from './DesktopScreen'
+
 type MobileActionType = {
   label: string
   // lightIcon: string
@@ -899,43 +901,44 @@ export default function Screen() {
         </div>
       ) : (
         // If on desktop
-        <>
-          <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
-            <div className="flex flex-col justify-center mx-auto gap-2">
-              {/* TODOS - link to ticketPrice */}
-              <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot 🍯</div>
-              {/* <div className="text-xl text-gray-100">Price: [1] ETH </div> */}
-              <div className="bg-[#FCFC03]/80 rounded-xl">
-                <Button
-                  className="
-                  rounded-xl px-4 py-2
-                  bg-[#404833] shadow-sm
-                  font-digit text-2xl text-[#FCFDC7] border border-[#FCFDC7]
-                  hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03]
-                active:-translate-y-0 active:brightness-200
-                "
-                  onClick={toggleJoin}
-                  disabled={false}
-                >
-                  {/* TODOS - link to canBuyTicket */}
-                  <OnSignal active={true} own={true} />
-                  🎟 Join game
-                </Button>
-              </div>
-            </div>
-          </div>
+        <DesktopScreen />
+        // <>
+        //   <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
+        //     <div className="flex flex-col justify-center mx-auto gap-2">
+        //       {/* TODOS - link to ticketPrice */}
+        //       <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot 🍯</div>
+        //       {/* <div className="text-xl text-gray-100">Price: [1] ETH </div> */}
+        //       <div className="bg-[#FCFC03]/80 rounded-xl">
+        //         <Button
+        //           className="
+        //           rounded-xl px-4 py-2
+        //           bg-[#404833] shadow-sm
+        //           font-digit text-2xl text-[#FCFDC7] border border-[#FCFDC7]
+        //           hover:-translate-y-1 hover:text-[#FCFC03] hover:border-[#FCFC03]
+        //         active:-translate-y-0 active:brightness-200
+        //         "
+        //           onClick={toggleJoin}
+        //           disabled={false}
+        //         >
+        //           {/* TODOS - link to canBuyTicket */}
+        //           <OnSignal active={true} own={true} />
+        //           🎟 Join game
+        //         </Button>
+        //       </div>
+        //     </div>
+        //   </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
-              <GameTab />
-            </div>
+        //   <div className="flex flex-col lg:flex-row gap-8">
+        //     <div className="flex flex-col items-center gap-3 rounded-xl px-4 py-4 container-last w-min mx-auto">
+        //       <GameTab />
+        //     </div>
 
-            <div className="grow rounded-xl py-2 sm:container-last">
-              <TicketList />
-            </div>
-          </div>
-          {showJoinModal && <Modal action={'joinGame'} toggle={toggleJoin} />}
-        </>
+        //     <div className="grow rounded-xl py-2 sm:container-last">
+        //       <TicketList />
+        //     </div>
+        //   </div>
+        //   {showJoinModal && <Modal action={'joinGame'} toggle={toggleJoin} />}
+        // </>
       )}
     </div>
   )

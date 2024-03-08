@@ -59,10 +59,16 @@ const TicketList = () => {
   return (
     <div className="">
       <summary className="px-6 py-2 flex flex-col justify-center items-center">
-        <div className="flex flex-row font-digit text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
-          <div className="flash">🪜 Round 1 </div>
-          <div className="flash">🍯 Pot 21 ETH</div>
-          <div className="flash">🎟️ Active 30</div>
+        <div className="flex flex-row text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
+          <div className="flash">
+            🪜 Round <span className="font-digit">1</span>{' '}
+          </div>
+          <div className="flash">
+            🍯 Pot <span className="font-digit">21 ETH</span>
+          </div>
+          <div className="flash">
+            🎟️ Active <span className="font-digit">30 </span>{' '}
+          </div>
         </div>
 
         <Countdown />
