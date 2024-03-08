@@ -18,20 +18,12 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const getAlertLook = (alertLookTest: string) => {
   switch (alertLookTest) {
-    case 'changePhase':
+    case 'changeRound':
       return {
         bgImage: 'rainbow',
         face: 'salute',
         title: 'phase changed',
         message: 'We thank you for your service',
-      }
-
-    case 'betMade':
-      return {
-        bgImage: 'rainbow',
-        face: 'scheming',
-        title: 'bet accepted',
-        message: 'Good luck and enjoy the game',
       }
 
     case 'afterPurchase':
@@ -42,12 +34,20 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'A warrior enters the arena',
       }
 
-    case 'checkedIn':
+    case 'lastLoaded':
       return {
         bgImage: 'safeOverlay',
         face: 'warm',
         title: 'checked in',
         message: 'Enjoy your stay. Remember to check out on time. Or else.',
+      }
+
+    case 'betMade':
+      return {
+        bgImage: 'rainbow',
+        face: 'scheming',
+        title: 'bet accepted',
+        message: 'Good luck and enjoy the game',
       }
 
     case 'checkedOut':

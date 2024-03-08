@@ -35,69 +35,62 @@ import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './connect-button'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const useStore = () => {
-  const phase = useStoreState((state) => state.phase)
+  const buyFlag = useStoreState((state) => state.buyFlag)
+  const potFlag = useStoreState((state) => state.potFlag)
+  const ticketId = useStoreState((state) => state.ticketId)
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const ticketPrice = useStoreState((state) => state.ticketPrice)
+  const buyTicketDelay = useStoreState((state) => state.buyTicketDelay)
+  const startingPassRate = useStoreState((state) => state.startingPassRate)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const ownedTicket = useStoreState((state) => state.ownedTicket)
-  const nextTicketPrice = useStoreState((state) => state.nextTicketPrice)
 
   return {
-    phase,
+    buyFlag,
+    potFlag,
+    ticketId,
+    canBuyTicket,
+    ticketPrice,
+    buyTicketDelay,
+    startingPassRate,
     updateCompletionModal,
-    ownedTicket,
-    nextTicketPrice,
   }
 }
 
 const JoinGame = () => {
-  const { phase, updateCompletionModal, ownedTicket, nextTicketPrice } = useStore()
+  const {
+    buyFlag, // build buyDelay?
+    potFlag,
+    ticketId,
+    canBuyTicket,
+    ticketPrice,
+    buyTicketDelay, // build buyDelay
+    startingPassRate,
+    updateCompletionModal,
+  } = useStore()
 
+  // Retrieve player's ETH balance
   const { address, isConnected } = useAccount()
-
   const { data: balanceData } = useBalance({
     address: address,
   })
-  const ethBalance = formatUnits(balanceData?.value || BigInt(0), 18)
 
-  const { data, refetch } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'increaseInPrice',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketsAvailableAtCurrentPrice',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketsCounter',
-      },
-    ],
+  const formattedEthBalance = formatNumber(formatUnits(balanceData?.value || BigInt(0), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
   })
 
-  const increaseInPrice = data?.[0].result || BigInt(0)
-  const ticketsAvailableAtCurrentPrice = Number(data?.[1].result || BigInt(0))
-  const ticketsCounter = Number(data?.[2].result || BigInt(0))
-
-  const ticketsLeft = ticketsAvailableAtCurrentPrice - ticketsCounter + 1
-  const ticketPrice = nextTicketPrice
-  const nextPrice = nextTicketPrice + Number(formatUnits(increaseInPrice, 18))
-
-  const [buddyValue, setBuddyValue] = useState('0')
+  // variables
+  const queueToPot = ticketId - potFlag
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const {
-    data: buyData,
-    writeAsync,
-    isLoading,
-  } = useContractWrite({
+  const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
     functionName: 'buyTicket',
     value: parseUnits(String(ticketPrice), 18),
@@ -105,10 +98,7 @@ const JoinGame = () => {
 
   const buyTicketHandler = async () => {
     try {
-      const tx = await writeAsync({
-        args: [BigInt(buddyValue)],
-      })
-
+      const tx = await writeAsync({})
       const hash = tx.hash
 
       setIsModalOpen(false)
@@ -127,20 +117,6 @@ const JoinGame = () => {
         description: <p>{errorMsg}</p>,
       })
     }
-  }
-
-  const {} = useWaitForTransaction({
-    hash: buyData?.hash,
-    onSuccess(data) {
-      if (data.status === 'success') {
-        refetch()
-      }
-      console.log({ data })
-    },
-  })
-
-  function resetState() {
-    setBuddyValue('')
   }
 
   const buyTicketBackupImg = (event: any) => {
@@ -177,29 +153,12 @@ const JoinGame = () => {
         onError={buyTicketBackupImg}
       />
 
-      {/* <div className="text-center">
-        <p className="mb-2">Buy a ticket to enter arena.</p>
-        <p className="mb-2">
-          Enter before timer ends.
-        </p>
-        <p className="mb-2">Price increase as more enters.</p>
-        <p className="mb-2">Join with buddy to get more $LAST.</p>
-        <a href={DOCS_URL_buy} target="_blank" className="link h6-last align-top">
-          Learn more
-        </a>
-      </div> */}
-
-      {/* Pay for stay */}
-
       <div className="capitalize text-center h2-last">Current price</div>
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
           <p className="font-digit">
-            {formatNumber(ticketPrice, {
-              maximumFractionDigits: 6,
-              minimumFractionDigits: 3,
-            })}{' '}
+            {ticketPrice}
             ETH
           </p>
         </div>
@@ -214,42 +173,26 @@ const JoinGame = () => {
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH in wallet</p>
               <p className="text-right">
-                {' '}
-                {formatNumber(ethBalance, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
-                ETH{' '}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Total tickets bought</p>
-              <p className="text-right">
-                {' '}
-                {formatNumber(ethBalance, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
+                {formattedEthBalance}
+                ETH
               </p>
             </div>
 
             <div className="font-digit flex justify-center my-2">Game</div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Tickets till hold pot</p>
-              <p className="text-right">
-                {' '}
-                {formatNumber(ethBalance, {
-                  maximumFractionDigits: 3,
-                  minimumFractionDigits: 3,
-                })}{' '}
-              </p>
+              <p className="text-left">Next ticket #</p>
+              <p className="text-right"> {ticketId} </p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Next ticket #</p>
-              <p className="text-right"> {ticketPrice} </p>
+              <p className="text-left">Pass rate</p>
+              <p className="text-right"> {startingPassRate}% </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Tickets till hold pot</p>
+              <p className="text-right">{queueToPot}</p>
             </div>
           </div>
 
@@ -258,9 +201,8 @@ const JoinGame = () => {
             size="lg"
             onClick={buyTicketHandler}
             isLoading={isLoading}
-            disabled={false}
+            disabled={!canBuyTicket}
           >
-            {/* TODOS - link to canBuyTicket */}
             Buy Ticket
           </Button>
         </div>

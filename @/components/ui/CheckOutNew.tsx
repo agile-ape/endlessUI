@@ -29,7 +29,7 @@ import { LogOut, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import {
   defaultContractObj,
   DOCS_URL_checkout,

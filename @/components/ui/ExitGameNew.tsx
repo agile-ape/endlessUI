@@ -41,7 +41,7 @@ import {
 import { formatNumber, statusPayload } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import Prompt from './Prompt'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { toast } from './use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits, parseUnits } from 'viem'

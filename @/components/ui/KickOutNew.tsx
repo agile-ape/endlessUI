@@ -21,7 +21,7 @@ import type { FC } from 'react'
 import { LogOut, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import Prompt from './Prompt'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { toast } from './use-toast'
 import {
   defaultContractObj,

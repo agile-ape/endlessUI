@@ -28,7 +28,7 @@ import BuyTicketNew from './BuyTicketNew'
 import { BuyTicketActive } from './BuyTicketNew'
 import ExitGameNew from './ExitGameNew'
 import { ExitGameActive } from './ExitGameNew'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import {
   Carousel,
   CarouselContent,

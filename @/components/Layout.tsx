@@ -3,7 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useContractRead, useContractReads, useWalletClient } from 'wagmi'
+import { useAccount, useBalance, useContractRead, useContractReads, useWalletClient } from 'wagmi'
 import {
   API_ENDPOINT,
   GAME_ADDRESS,
@@ -25,35 +25,27 @@ import { toast } from '../components/ui/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
-// import { usePrivyWagmi } from '@privy-io/wagmi-connector'
-// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
-
-const typeStage: Record<IApp['phase'], string> = {
-  deployed: 'Deployed',
-  start: 'Start',
-  day: 'Day',
-  night: 'Night',
-  lastmanfound: 'LastManFound',
-  drain: 'Drain',
-  peacefound: 'PeaceFound',
-  gameclosed: 'GameClosed',
-}
 
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
-  // phase: IApp['phase']
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
-  const updateRound = useStoreActions((actions) => actions.updateRound)
-  const updatePhase = useStoreActions((actions) => actions.updatePhase)
-  const updateStage = useStoreActions((actions) => actions.updateStage)
-  const updateSuddenDeath = useStoreActions((actions) => actions.updateSuddenDeath)
   const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
+  const updateRound = useStoreActions((actions) => actions.updateRound)
+  const updateTimeFlag = useStoreActions((actions) => actions.updateTimeFlag)
+  const updateBuyFlag = useStoreActions((actions) => actions.updateBuyFlag)
+  const updatePotFlag = useStoreActions((actions) => actions.updatePotFlag)
+  const updateTicketId = useStoreActions((actions) => actions.updateTicketId)
   const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
-  const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
-  const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
+  const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
+  const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
+  const updateBuyTicketDelay = useStoreActions((actions) => actions.updateBuyTicketDelay)
+  const updateRoundTime = useStoreActions((actions) => actions.updateRoundTime)
+  const updateFeeShare = useStoreActions((actions) => actions.updateFeeShare)
+  const updateStartingPassRate = useStoreActions((actions) => actions.updateStartingPassRate)
+  const updateLastMultiplier = useStoreActions((actions) => actions.updateLastMultiplier)
   const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
 
   const updateTickets = useStoreActions((actions) => actions.updateTickets)
@@ -65,26 +57,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
-  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-  //   const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-  //   const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-  //   return result
-  // })
-
-  // const toggleModal = () => {
-  //   setShowWelcomeModal((prevState) => !prevState)
-  //   localStorage.setItem('showWelcomeModal', 'false')
-  // }
-
-  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(true)
-
-  // const toggleModal = () => {
-  //   setShowWelcomeModal((prevState) => !prevState)
-  // }
-
   const router = useRouter()
-  // const { wallet: activeWallet } = usePrivyWagmi()
-  // const { authenticated } = usePrivy()
   const { address, isConnected } = useAccount()
 
   const {
@@ -100,11 +73,11 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   if (ticketsData?.data.length) {
     const ticketList = transformToTicket(ticketsData?.data).filter(
-      (item) => item.user !== '0x0000000000000000000000000000000000000000',
+      (item) => item.player !== '0x0000000000000000000000000000000000000000',
     )
 
     const ownedTicket = ticketList.find(
-      (item) => item.user.toLowerCase() === address?.toLowerCase(),
+      (item) => item.player.toLowerCase() === address?.toLowerCase(),
     )
 
     updateTickets(ticketList)
@@ -250,6 +223,10 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   useSocketEvents(events)
 
+  const { data: balanceData, refetch: refetchBalance } = useBalance({
+    address: GAME_ADDRESS,
+  })
+
   const { data, refetch: refetchInitData } = useContractReads({
     contracts: [
       {
@@ -258,11 +235,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'phase',
+        functionName: 'timeFlag',
       },
       {
         ...defaultContractObj,
-        functionName: 'currentPot',
+        functionName: 'buyFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'potFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketId',
       },
       {
         ...defaultContractObj,
@@ -270,23 +255,31 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'voteCount',
+        functionName: 'canBuyTicket',
       },
       {
         ...defaultContractObj,
-        functionName: 'suddenDeath',
+        functionName: 'ticketPrice',
       },
       {
         ...defaultContractObj,
-        functionName: 'drainStart',
+        functionName: 'buyTicketDelay',
       },
       {
         ...defaultContractObj,
-        functionName: 'drainSwitch',
+        functionName: 'roundTime',
       },
       {
         ...defaultContractObj,
-        functionName: 'nextTicketPrice',
+        functionName: 'feeShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'startingPassRate',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'lastMultiplier',
       },
       {
         ...tokenContractObj,
@@ -297,57 +290,69 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     enabled: isConnected,
   })
 
+  /*
+  round
+  timeFlag
+  buyFlag => JoinGame
+  potFlag => JoinGame, LoadLast
+  ticketId => JoinGame
+  ticketCount
+  canBuyTicket => JoinGame
+  ticketPrice => JoinGame
+  buyTicketDelay => JoinGame
+  roundTime
+  feeShare => RoundChange
+  startingPassRate => JoinGame
+  lastMultiplier => LoadLast
+  tokenBalance => LoadLast
+  */
+
   if (data && data?.length > 0) {
     const round = data[0]?.result || 0
-    const phase = data[1]?.result || 0
-    const currentPot = data[2]?.result || BigInt(0)
-    const ticketCount = data[3]?.result || 0
-    const voteCount = data[4]?.result || 0
-    const suddenDeath = data[5]?.result || 0
-    const drainStart = data[6]?.result || 0
-    const drainSwitch = Boolean(data[7]?.result || 0)
-    const nextTicketPrice = data[8]?.result || BigInt(0)
-    const balanceOf = data?.[9].result || BigInt(0)
+    const timeFlag = data[1]?.result || BigInt(0)
+    const buyFlag = data[2]?.result || BigInt(0)
+    const potFlag = data[3]?.result || BigInt(0)
+    const ticketId = data[4]?.result || 0
+    const ticketCount = data[5]?.result || 0
+    const canBuyTicket = data[6]?.result || false
+    const ticketPrice = data[7]?.result || BigInt(0)
+    const buyTicketDelay = data[8]?.result || BigInt(0)
+    const roundTime = data[9]?.result || 0
+    const feeShare = data[10]?.result || 0
+    const startingPassRate = data[11]?.result || 0
+    const lastMultiplier = data[12]?.result || 0
+    const tokenBalance = data?.[13].result || BigInt(0)
 
-    // compute stage
-    let stage: number
-
-    if (round === 0) {
-      stage = 0
-    } else if (round < suddenDeath) {
-      stage = 1
-    } else if (round >= suddenDeath && drainSwitch === false) {
-      stage = 2
-    } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
-      stage = 3
-    } else {
-      stage = 0
-    }
-
-    const currentPotInEth = formatNumber(formatUnits(currentPot, 18), {
+    const formattedCurrentPot = formatNumber(formatUnits(balanceData?.value || BigInt(0), 18), {
       maximumFractionDigits: 3,
       minimumFractionDigits: 3,
     })
 
-    const nextTicketPriceInEth = formatNumber(formatUnits(nextTicketPrice, 18), {
+    const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
       maximumFractionDigits: 3,
       minimumFractionDigits: 3,
     })
 
-    const tokenBalance = formatNumber(formatUnits(balanceOf, 18), {
+    const formattedTokenBalance = formatNumber(formatUnits(tokenBalance, 18), {
       maximumFractionDigits: 2,
       minimumFractionDigits: 0,
     })
 
+    updateCurrentPot(Number(formattedCurrentPot))
     updateRound(Number(round))
-    updatePhase(Number(phase))
-    updateStage(Number(stage))
-    updateSuddenDeath(Number(suddenDeath))
-    updateCurrentPot(Number(currentPotInEth))
+    updateTimeFlag(Number(timeFlag))
+    updateBuyFlag(Number(buyFlag))
+    updatePotFlag(Number(potFlag))
+    updateTicketId(Number(ticketId))
     updateTicketCount(Number(ticketCount))
-    updateVoteCount(Number(voteCount))
-    updateNextTicketPrice(Number(nextTicketPriceInEth))
-    updateTokenBalance(Number(tokenBalance))
+    updateCanBuyTicket(Boolean(canBuyTicket))
+    updateTicketPrice(Number(formattedTicketPrice))
+    updateBuyTicketDelay(Number(buyTicketDelay))
+    updateRoundTime(Number(roundTime))
+    updateFeeShare(Number(feeShare))
+    updateStartingPassRate(Number(startingPassRate))
+    updateLastMultiplier(Number(lastMultiplier))
+    updateTokenBalance(Number(formattedTokenBalance))
   }
 
   const refreshData = () => {
@@ -363,7 +368,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         }}
       >
         <div className="container mx-auto p-0">
-          {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
           <Header />
           {children}
           <Analytics />

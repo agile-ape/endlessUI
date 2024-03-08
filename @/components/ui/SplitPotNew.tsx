@@ -37,7 +37,7 @@ import {
   GAME_ADDRESS,
 } from '../../../services/constant'
 import { useStoreActions, useStoreState } from '../../../store'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { statusPayload } from '@/lib/utils'
 import {
   useAccount,

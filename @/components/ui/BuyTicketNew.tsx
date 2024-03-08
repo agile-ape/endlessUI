@@ -35,7 +35,7 @@ import { formatUnits, parseUnits } from 'viem'
 import { toast } from './use-toast'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import CustomConnectButton from './connect-button'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const useStore = () => {

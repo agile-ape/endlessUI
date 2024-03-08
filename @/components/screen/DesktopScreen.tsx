@@ -1,12 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import OnSignal from '../ui/OnSignal'
+import OnSignal from '../ui/_OnSignal'
 import TicketList from '../ui/TicketList'
 import { Button } from '@/components/ui/button'
 import Modal from '../ui/Modal'
 import GameTab from '../ui/GameTab'
+import { useStoreActions, useStoreState } from '../../../store'
+
+const useStore = () => {
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+
+  return {
+    canBuyTicket,
+  }
+}
 
 export default function DesktopScreen() {
+  const { canBuyTicket } = useStore()
   const [showJoinModal, setShowJoinModal] = React.useState<boolean>(false)
   const toggleJoin = () => setShowJoinModal((prevState) => !prevState)
 
@@ -14,9 +24,7 @@ export default function DesktopScreen() {
     <>
       <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
         <div className="flex flex-col justify-center mx-auto gap-2">
-          {/* TODOS - link to ticketPrice */}
           <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot 🍯</div>
-          {/* <div className="text-xl text-gray-100">Price: [1] ETH </div> */}
           <div className="bg-[#FCFC03]/80 rounded-xl">
             <Button
               className="
@@ -29,14 +37,12 @@ export default function DesktopScreen() {
               onClick={toggleJoin}
               disabled={false}
             >
-              {/* TODOS - link to canBuyTicket */}
-              <OnSignal active={true} own={true} />
-              {/* <div
+              <div
                 className={cn(
-                  active ? 'bg-[#FCFC03]' : 'bg-yellow-950',
+                  canBuyTicket ? 'bg-[#FCFC03]' : 'bg-yellow-950',
                   `rounded-full shadow-md border-gray-500 h-[0.5rem] w-[0.5rem] mx-2 border-[0.05rem]`,
                 )}
-              ></div> */}
+              ></div>
               🎟 Join game
             </Button>
           </div>

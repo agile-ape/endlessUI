@@ -23,55 +23,28 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
 import Prompt from './Prompt'
-import OnSignal from './OnSignal'
-// type PhaseChangeType = {
-//   phaseType: IApp['phase']
-// }
-import { DOCS_URL_phases } from '../../../services/constant'
-import { useWindowSize } from '../../../hooks/useWindowSize'
-
-const mappedFunction: Record<string, string> = {
-  start: 'changeStartToDay',
-  day: 'changeDayToNight',
-  night: 'changeNightToDay',
-  lastmanfound: 'closeGame',
-  peacefound: 'closeGame',
-  drain: 'closeGame',
-}
-
-// const bgColorPhase: Record<string, string> = {
-//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
-//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
-//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
-//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
-//   peacefound: 'bg-blue-800 hover:bg-blue-900',
-//   drain: 'bg-red-400 hover:bg-red-500',
-// }
+import OnSignal from './_OnSignal'
 
 const useStore = () => {
-  const phase = useStoreState((state) => state.phase)
-  const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const feeShare = useStoreState((state) => state.feeShare)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const ticketId = ownedTicket?.id || 0
 
   return {
-    phase,
+    feeShare,
     updateCompletionModal,
-    ticketId,
   }
 }
 
 const RoundChange = () => {
-  const { phase, updateCompletionModal } = useStore()
+  const { feeShare, updateCompletionModal } = useStore()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
   const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
-    functionName: mappedFunction[phase] as any,
+    functionName: 'changeRound',
   })
 
   const phaseChangeHandler = async () => {
@@ -83,7 +56,7 @@ const RoundChange = () => {
 
       updateCompletionModal({
         isOpen: true,
-        state: 'changePhase',
+        state: 'changeRound',
       })
     } catch (error: any) {
       const errorMsg =
@@ -108,9 +81,6 @@ const RoundChange = () => {
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        {/* <div className="flex items-center justify-center gap-2 mt-2">
-          <div className="h1-last text-center">Change Phase</div>
-        </div> */}
         <Image
           priority
           src={CHANGE_PHASE_MOBILE_IMG}
@@ -133,23 +103,23 @@ const RoundChange = () => {
         onError={changePhaseBackupImg}
       />
 
-      <div className="text-center">
-        <p className="mb-2">This costs some gas.</p>
-        <p className="mb-2">But you get fees.</p>
-        <p className="mb-2">More players = More gas and fees</p>
-      </div>
+      <div className="capitalize text-center h2-last">Fee share</div>
 
-      <Button
-        variant="primary"
-        size="lg"
-        onClick={phaseChangeHandler}
-        isLoading={isLoading}
-        // className="h-10 px-3 text-xl"
-        // className={cn('h-10 px-3 text-xl', bgColorPhase[phase])}
-      >
-        {/* {playerTicket ? 'Change phase' : 'Hold on'} */}
-        Change round
-      </Button>
+      <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
+        <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
+          <p className="font-digit">{feeShare}%</p>
+        </div>
+
+        <div className="text-center">
+          <p className="mb-2">This costs some gas.</p>
+          <p className="mb-2">But you get fees.</p>
+          <p className="mb-2">More players = More gas and fees</p>
+        </div>
+
+        <Button variant="primary" size="lg" onClick={phaseChangeHandler} isLoading={isLoading}>
+          Change round
+        </Button>
+      </div>
     </div>
   )
 }

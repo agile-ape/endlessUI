@@ -1,14 +1,3 @@
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from '@/components/ui/alert-dialog'
 import {
   Dialog,
   DialogContent,
@@ -29,7 +18,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import { Button } from './button'
 import Link from 'next/link'
-import { DOCS_URL_attack } from '../../../services/constant'
+import { DOCS_URL } from '../../../services/constant'
 
 function HowToPlay() {
   return (
@@ -48,7 +37,7 @@ function HowToPlay() {
                 <div className="text-[#FCFCD7] text-2xl">
                   <p className="mb-6">A pot 🍯 is funded with ETH.</p>
                   <p className="mb-6">Players buy tickets 🎟 to join the game.</p>
-                  <p className="mb-6">The game goes in increasing rounds 🪜. </p>
+                  <p className="mb-6">The game goes in rounds 🪜. </p>
                   <p>At the end of each round: </p>
                   <ol>
                     <li className="ml-4 mb-4">
@@ -64,7 +53,7 @@ function HowToPlay() {
                   </ol>
                 </div>
 
-                <a href={DOCS_URL_attack} target="_blank">
+                <a href={DOCS_URL} target="_blank">
                   <Button variant="primary" className={`w-full text-3xl py-8`}>
                     Learn more
                   </Button>

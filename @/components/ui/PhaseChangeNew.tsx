@@ -23,7 +23,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
 import Prompt from './Prompt'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 // type PhaseChangeType = {
 //   phaseType: IApp['phase']
 // }

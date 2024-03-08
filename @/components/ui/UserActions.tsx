@@ -23,7 +23,7 @@ import { SplitPotActive } from './SplitPotNew'
 import WagerNew from './WagerNew'
 import { WagerActive } from './WagerNew'
 
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import Image from 'next/image'
 import {
   useAccount,

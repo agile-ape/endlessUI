@@ -44,7 +44,7 @@ import Prompt from './Prompt'
 import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import {
   defaultContractObj,
   tokenContractObj,

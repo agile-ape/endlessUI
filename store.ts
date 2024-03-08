@@ -4,55 +4,86 @@ import type { IApp } from 'types/app'
 import { phasePayload, statusPayload } from '@/lib/utils'
 
 export const appStore = createStore<StoreModel>({
-  round: 0,
-  phase: 'deployed',
-  stage: 0,
-  suddenDeath: 0,
   currentPot: 0,
+  round: 0,
+  timeFlag: 0,
+  buyFlag: 0,
+  potFlag: 0,
+  ticketId: 0,
   ticketCount: 0,
-  voteCount: 0,
-  nextTicketPrice: 0,
+
+  canBuyTicket: false,
+  ticketPrice: 0,
+  buyTicketDelay: 0,
+  roundTime: 0,
+  feeShare: 0,
+  startingPassRate: 0,
+  lastMultiplier: 0,
+
   tokenBalance: 0,
 
   tickets: [],
   ownedTicket: null,
-  gameTab: 'game',
   triggerCompletionModal: {
     isOpen: false,
     state: '',
   },
   lastChangedTicket: 0,
 
+  updateCurrentPot: action((state, payload) => {
+    state.currentPot = payload
+  }),
+
   updateRound: action((state, payload) => {
     state.round = payload
   }),
 
-  updatePhase: action((state, payload) => {
-    state.phase = phasePayload[payload]
+  updateTimeFlag: action((state, payload) => {
+    state.timeFlag = payload
   }),
 
-  updateStage: action((state, payload) => {
-    state.stage = payload
+  updateBuyFlag: action((state, payload) => {
+    state.buyFlag = payload
   }),
 
-  updateSuddenDeath: action((state, payload) => {
-    state.suddenDeath = payload
+  updatePotFlag: action((state, payload) => {
+    state.potFlag = payload
   }),
 
-  updateCurrentPot: action((state, payload) => {
-    state.currentPot = payload
+  updateTicketId: action((state, payload) => {
+    state.ticketId = payload
   }),
 
   updateTicketCount: action((state, payload) => {
     state.ticketCount = payload
   }),
 
-  updateVoteCount: action((state, payload) => {
-    state.voteCount = payload
+  updateCanBuyTicket: action((state, payload) => {
+    state.canBuyTicket = payload
   }),
 
-  updateNextTicketPrice: action((state, payload) => {
-    state.nextTicketPrice = payload
+  updateTicketPrice: action((state, payload) => {
+    state.ticketPrice = payload
+  }),
+
+  updateBuyTicketDelay: action((state, payload) => {
+    state.buyTicketDelay = payload
+  }),
+
+  updateRoundTime: action((state, payload) => {
+    state.roundTime = payload
+  }),
+
+  updateFeeShare: action((state, payload) => {
+    state.feeShare = payload
+  }),
+
+  updateStartingPassRate: action((state, payload) => {
+    state.startingPassRate = payload
+  }),
+
+  updateLastMultiplier: action((state, payload) => {
+    state.lastMultiplier = payload
   }),
 
   updateTokenBalance: action((state, payload) => {
@@ -76,10 +107,6 @@ export const appStore = createStore<StoreModel>({
 
   updateOwnedTicket: action((state, payload) => {
     state.ownedTicket = payload
-  }),
-
-  updateGameTab: action((state, payload) => {
-    state.gameTab = payload
   }),
 
   updateTriggerCompletionModal: action((state, payload) => {

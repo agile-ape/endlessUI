@@ -46,7 +46,7 @@ import { toast } from '@/components/ui/use-toast'
 import CompletionModal from './CompletionModal'
 
 import { useStoreActions, useStoreState } from '../../../store'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { statusPayload } from '@/lib/utils'
 import { formatUnits } from 'viem'
 import { io } from 'socket.io-client'

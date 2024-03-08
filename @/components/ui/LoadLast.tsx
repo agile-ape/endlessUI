@@ -45,7 +45,7 @@ import Prompt from './Prompt'
 import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 // import { tokenContractObj } from '../../../services/constant'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import {
   defaultContractObj,
   tokenContractObj,
@@ -66,94 +66,71 @@ import { io } from 'socket.io-client'
 import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 
 const useStore = () => {
-  const phase = useStoreState((state) => state.phase)
-  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
-  const ticketStatus = ownedTicket?.status || 0
-  const ticketIsInPlay = ownedTicket?.isInPlay || false
-  const ticketSafehouseNights = ownedTicket?.safehouseNights || 0
-  const ticketStatusString = statusPayload[ticketStatus] || 'unknown'
+  const potFlag = useStoreState((state) => state.potFlag)
+  const tokenBalance = useStoreState((state) => state.tokenBalance)
+  const lastMultiplier = useStoreState((state) => state.lastMultiplier)
+  const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   return {
-    phase,
-    updateCompletionModal,
     ownedTicket,
-    ticketStatus,
-    ticketIsInPlay,
-    ticketSafehouseNights,
-    ticketStatusString,
+    potFlag,
+    tokenBalance,
+    lastMultiplier,
+    updateCompletionModal,
   }
 }
 
-export const CheckInActive = () => {
-  const { phase, ticketStatusString, ticketIsInPlay } = useStore()
-  const checkInActive: boolean =
-    phase === 'day' && ticketStatusString !== 'safe' && ticketIsInPlay === true
-  return checkInActive
-}
-
 const LoadLast = () => {
-  const { updateCompletionModal, ticketSafehouseNights, ticketStatusString } = useStore()
-  const active = CheckInActive()
+  const { ownedTicket, potFlag, tokenBalance, lastMultiplier, updateCompletionModal } = useStore()
+
   const { address, isConnected } = useAccount()
-  const { data, refetch } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'safehouseCostPerNight',
-      },
-      {
-        ...tokenContractObj,
-        functionName: 'balanceOf',
-        args: [address as `0x${string}`],
-      },
-    ],
+
+  // initialize state
+  const [last, setLast] = React.useState<string>('')
+
+  const totalLast = lastMultiplier * Number(last)
+
+  let ticketId = ownedTicket?.id
+  let ticketPlayer = ownedTicket?.player
+  let ticketIsInPlay = ownedTicket?.isInPlay
+  let ticketValue = ownedTicket?.value || BigInt(0)
+  let ticketPurchasePrice = ownedTicket?.purchasePrice
+  let ticketRedeemValue = ownedTicket?.redeemValue
+  let ticketPotClaimCount = ownedTicket?.potClaimCount
+  let ticketPassRate = ownedTicket?.passRate || 0
+  let ticketJoinRound = ownedTicket?.joinRound
+  let ticketExitRound = ownedTicket?.exitRound
+  let ticketLastCount = ownedTicket?.lastCount || 0
+
+  let netPass: number = 0
+  if (ticketLastCount >= ticketPassRate) {
+    netPass = 0
+  } else {
+    netPass = ticketPassRate - ticketLastCount
+  }
+
+  let estPassValue: number
+  estPassValue = (netPass * Number(ticketValue)) / 100
+
+  const formattedEstPassValue = formatNumber(formatUnits(estPassValue || BigInt(0), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
   })
 
-  const safehouseCostPerNight = data?.[0].result || BigInt(0)
-  const balanceOf = data?.[1].result || BigInt(0)
-
-  const stayCost = formatUnits(safehouseCostPerNight, 3)
-  const tokenBalance = formatUnits(balanceOf, 18)
-
-  const events: Event[] = [
-    {
-      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
-      async handler(data) {
-        const { event, dataJson } = data
-
-        if (!Object.keys(dataJson).length) return
-
-        if (event === 'SafehousePrice') {
-          const { price, time } = dataJson
-          refetch()
-        }
-      },
-    },
-  ]
-
-  useSocketEvents(events)
-
-  const [nights, setNights] = React.useState<string>('')
-  const totalCost = Number(stayCost) * Number(nights)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => setIsModalOpen(false))
 
-  const {
-    data: checkInData,
-    writeAsync,
-    isLoading,
-  } = useContractWrite({
+  const { writeAsync, isLoading } = useContractWrite({
     ...defaultContractObj,
-    functionName: 'checkIntoSafehouse',
+    functionName: 'loadLast',
   })
 
-  const checkInHandler = async () => {
+  const loadLastHandler = async () => {
     try {
       const tx = await writeAsync({
-        args: [BigInt(nights)],
+        args: [BigInt(ownedTicket?.id || 0), BigInt(last)],
       })
       const hash = tx.hash
       console.log(hash)
@@ -162,7 +139,7 @@ const LoadLast = () => {
 
       updateCompletionModal({
         isOpen: true,
-        state: 'checkedIn',
+        state: 'lastLoaded',
       })
     } catch (error: any) {
       const errorMsg =
@@ -170,22 +147,11 @@ const LoadLast = () => {
 
       toast({
         variant: 'destructive',
-        title: 'Check into Safehouse failed',
+        title: 'Fail to load last',
         description: <p>{errorMsg}</p>,
       })
     }
   }
-
-  // update once txn is done
-  const {} = useWaitForTransaction({
-    hash: checkInData?.hash,
-    onSuccess(data) {
-      if (data.status === 'success') {
-        refetch()
-      }
-      console.log({ data })
-    },
-  })
 
   const checkInBackupImg = (event: any) => {
     event.target.src = '/lore/CheckIntoSafehouse.png'
@@ -198,17 +164,6 @@ const LoadLast = () => {
   return (
     <div className="w-[85%] mx-auto flex flex-col gap-3 mb-8 body-last">
       <div className="sm:hidden block flex flex-col">
-        {/* <div className="flex items-center justify-center gap-2 mt-2">
-          <div className="h1-last text-center">Check in</div>
-          <Image
-            priority
-            src={`/indicator/dayIndicator.svg`}
-            height={300}
-            width={60}
-            className=""
-            alt="dayIndicator"
-          />
-        </div> */}
         <Image
           priority
           src={CHECK_INTO_SAFEHOUSE_MOBILE_IMG}
@@ -229,14 +184,14 @@ const LoadLast = () => {
         height={400}
         width={650}
         alt="check-into-safehouse"
-        onError={checkInMobileBackupImg}
+        onError={checkInBackupImg}
       />
 
       <div className="capitalize text-center h2-last">1 $LAST reduces pass rate by</div>
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
-          <p className="font-digit">1.00%</p>
+          <p className="font-digit">{lastMultiplier}%</p>
         </div>
 
         <div
@@ -248,21 +203,15 @@ const LoadLast = () => {
             <div className="w-full">
               <div className="grid grid-cols-3 gap-1">
                 <p className="col-span-2 text-left">Ticket pass rate this round</p>
-                <p className="text-right"> {stayCost} %</p>
+                <p className="text-right"> {netPass} %</p>
               </div>
               <div className="grid grid-cols-3 gap-1">
-                <p className="col-span-2 text-left">Value passed next round</p>
+                <p className="col-span-2 text-left">Est. value passed next round</p>
                 <p className="text-right"> 1 ETH++ </p>
               </div>
               <div className="grid grid-cols-3 gap-1">
                 <p className="col-span-2 text-left">{TOKEN_NAME} in wallet</p>
-                <p className="text-right">
-                  {' '}
-                  {formatNumber(tokenBalance, {
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 0,
-                  })}{' '}
-                </p>
+                <p className="text-right">{tokenBalance}</p>
               </div>
             </div>
 
@@ -273,7 +222,7 @@ const LoadLast = () => {
               <div className="flex gap-2 justify-center items-center">
                 <button
                   className="flex justify-center items-center"
-                  onClick={() => Number(nights) > 0 && setNights(String(Number(nights) - 1))}
+                  onClick={() => Number(last) > 0 && setLast(String(Number(last) - 1))}
                 >
                   <MinusCircle size={28} />
                 </button>
@@ -283,25 +232,25 @@ const LoadLast = () => {
                   id="checkIn"
                   required
                   className="w-[6rem] font-digit text-center text-4xl text-zinc-800 dark:text-zinc-200 border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 rounded-xl flex justify-between items-center p-2 gap-3"
-                  value={nights}
+                  value={last}
                   placeholder="0"
-                  onChange={(e) => setNights(e.target.value)}
+                  onChange={(e) => setLast(e.target.value)}
                 />
 
                 <button
                   className="flex justify-center items-center"
-                  onClick={() => setNights(String(Number(nights) + 1))}
+                  onClick={() => setLast(String(Number(last) + 1))}
                 >
                   <PlusCircle size={28} />
                 </button>
               </div>
             </div>
             <div className="digit-last text-2xl">
-              {totalCost > Number(tokenBalance) ? (
+              {totalLast > Number(tokenBalance) ? (
                 <p className="text-center">You don't have enough tokens</p>
               ) : (
                 <div className="">
-                  <div className="">{totalCost} % of pass rate</div>
+                  <div className="">{totalLast} % of pass rate</div>
                 </div>
               )}
             </div>
@@ -310,14 +259,14 @@ const LoadLast = () => {
               variant="primary"
               size="lg"
               className="w-full"
-              onClick={checkInHandler}
+              onClick={loadLastHandler}
               isLoading={isLoading}
-              // disabled={!active}
+              disabled={!ownedTicket?.isInPlay || ownedTicket?.id < potFlag}
             >
               Load LAST
             </Button>
 
-            <Button variant="secondary" size="lg" className="w-full" disabled={false}>
+            <Button variant="secondary" size="lg" className="w-full" disabled={true}>
               <a
                 href={LIQUIDITY_POOL}
                 target="_blank"

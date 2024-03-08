@@ -29,7 +29,7 @@ import KickOut from './_KickOut'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import Modal from './Modal'
 import { Button } from './button'
-import OnSignal from './OnSignal'
+import OnSignal from './_OnSignal'
 import { toast } from './use-toast'
 import {
   User,

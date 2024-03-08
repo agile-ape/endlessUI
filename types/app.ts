@@ -1,46 +1,34 @@
 interface Ticket {
-  user: string
-  contractAddress: string
   id: number
-  sign: string
-  vote: boolean
-  potClaim: number
-  redeemValue: number
-  attacks: number
-  attackCount: number
-  status: number
-  lastSeen: number
+  player: string
   isInPlay: boolean
   value: number
   purchasePrice: number
-  killCount: number
-  killedBy: number
-  safehouseNights: number
-  checkOutRound: number
-  rank: number
-  buddy: number
-  buddyCount: number
+  redeemValue: number
+  potClaimCount: number
+  passRate: number
+  joinRound: number
+  exitRound: number
+  lastCount: number
 }
 
 interface IApp {
-  round: number
-  phase:
-    | 'deployed'
-    | 'start'
-    | 'day'
-    | 'night'
-    | 'lastmanfound'
-    | 'peacefound'
-    | 'drain'
-    | 'gameclosed'
-  ticketStatus: 'new' | 'submitted' | 'checked' | 'safe' | 'dead' | 'exited'
-
-  stage: number
-  suddenDeath: number
   currentPot: number
+  round: number
+  timeFlag: number
+  buyFlag: number
+  potFlag: number
+  ticketId: number
   ticketCount: number
-  voteCount: number
-  nextTicketPrice: number
+
+  canBuyTicket: boolean
+  ticketPrice: number
+  buyTicketDelay: number
+  roundTime: number
+  feeShare: number
+  startingPassRate: number
+  lastMultiplier: number
+
   tokenBalance: number
 
   tickets: Ticket[]
