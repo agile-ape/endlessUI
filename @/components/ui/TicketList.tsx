@@ -6,6 +6,7 @@ import { useStoreState } from '../../../store'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import type { Ticket } from 'types/app'
 import Countdown from './Countdown'
+import Modal from '../ui/Modal'
 
 const useStore = () => {
   const currentPot = useStoreState((state) => state.currentPot)
@@ -22,7 +23,10 @@ const useStore = () => {
 }
 
 const TicketList = () => {
-  const { currentPot, round, ticketCount, playerTickets } = useStore()
+  const { round, ticketCount, playerTickets } = useStore()
+
+  const [showPotModal, setShowPotModal] = React.useState<boolean>(false)
+  const togglePot = () => setShowPotModal((prevState) => !prevState)
 
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
@@ -53,20 +57,18 @@ const TicketList = () => {
 
   return (
     <div className="">
-      <summary className="px-6 py-2 flex flex-col justify-center items-center">
+      <summary className="px-6 py-2 flex justify-between items-center">
+        <div>🍯 Pot 23 ETH</div>
+
+        <Countdown />
         <div className="flex flex-row text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
           <div className="flash">
             🪜 Round <span className="font-digit">{round}</span>{' '}
           </div>
           <div className="flash">
-            🍯 Pot <span className="font-digit">{currentPot} ETH</span>
-          </div>
-          <div className="flash">
             🎟️ Active <span className="font-digit">{ticketCount}</span>{' '}
           </div>
         </div>
-
-        <Countdown />
       </summary>
 
       {totalTicketCount ? (

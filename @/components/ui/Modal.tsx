@@ -7,6 +7,7 @@ import RoundChange from './RoundChange'
 import JoinGame from './JoinGame'
 import LoadLast from './LoadLast'
 import ExitGame from './ExitGame'
+import AddPot from './AddPot'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
@@ -21,6 +22,7 @@ const titleMapping: { [key: string]: string } = {
   joinGame: '🎟 Buy ticket',
   loadLast: '🛡️ Reduce pass rate',
   exitGame: '🚪 Exit Game',
+  addPot: '🍯 Add to Pot',
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
@@ -28,6 +30,7 @@ const modalMapping: { [key: string]: JSX.Element } = {
   joinGame: <JoinGame />,
   loadLast: <LoadLast />,
   exitGame: <ExitGame />,
+  addPot: <AddPot />,
 }
 
 const Modal: FC<ModalType> = ({ action, toggle, id }) => {
