@@ -30,7 +30,7 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import Modal from './Modal'
 import { Button } from './button'
 import OnSignal from './_OnSignal'
-import { toast } from './use-toast'
+import { toast } from '../shadcn/use-toast'
 import {
   User,
   Menu,

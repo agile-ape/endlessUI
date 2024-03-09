@@ -2,8 +2,6 @@ import { TOKEN_ABI } from './abi/token'
 import { GAME_ABI } from './abi/game'
 
 import { defineChain } from 'viem'
-import { arbitrumGoerli, baseGoerli, mainnet } from 'viem/chains'
-
 /*---------------------------------------- ENV ---------------------------------------- */
 
 // process.env.NEXT_PUBLIC_CONTRACT

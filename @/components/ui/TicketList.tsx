@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import KeyTrackers from './KeyTrackers'
 import { useTheme } from 'next-themes'
-import { Button } from './button'
-import { Gem, Users, Vote } from 'lucide-react'
 import TicketUI from './TicketUI'
 import { useStoreState } from '../../../store'
-import { useAccount, useContractWrite, useContractReads } from 'wagmi'
-import { GAME_ADDRESS, defaultContractObj } from '../../../services/constant'
-import { scrollToTop, fetcher, formatNumber, transformToTicket } from '@/lib/utils'
-import { formatUnits, parseUnits } from 'viem'
-import useSWR from 'swr'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import type { Ticket } from 'types/app'
-import { ArrowUpToLine } from 'lucide-react'
 import Countdown from './Countdown'
 
-const TicketList = () => {
+const useStore = () => {
   const currentPot = useStoreState((state) => state.currentPot)
+  const round = useStoreState((state) => state.round)
   const ticketCount = useStoreState((state) => state.ticketCount)
-  const voteCount = useStoreState((state) => state.voteCount)
-
   const playerTickets = useStoreState((state) => state.tickets)
+
+  return {
+    currentPot,
+    round,
+    ticketCount,
+    playerTickets,
+  }
+}
+
+const TicketList = () => {
+  const { currentPot, round, ticketCount, playerTickets } = useStore()
+
   const [ticketState, setTicketState] = useState<string>('aroundMe')
   const [ticketListState, setTicketListState] = useState<Ticket[]>([])
   const { xs } = useWindowSize()
-  const hideImg = 'https://res.cloudinary.com/dn4hm5vfh/image/upload/v1705457550/last_192.png'
-
-  const { forcedTheme } = useTheme()
 
   useEffect(() => {
     if (playerTickets.length) {
@@ -48,9 +46,6 @@ const TicketList = () => {
     } else if (tab === 'mostValue') {
       const notInPlayList = nextTicketList.filter((item) => !item.isInPlay)
       setTicketListState(notInPlayList)
-    } else if (tab === 'safehouse') {
-      const safehouseList = nextTicketList.filter((item) => item.isInPlay && item.status === 3)
-      setTicketListState(safehouseList)
     } else {
       setTicketListState(playerTickets)
     }
@@ -61,13 +56,13 @@ const TicketList = () => {
       <summary className="px-6 py-2 flex flex-col justify-center items-center">
         <div className="flex flex-row text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
           <div className="flash">
-            🪜 Round <span className="font-digit">1</span>{' '}
+            🪜 Round <span className="font-digit">{round}</span>{' '}
           </div>
           <div className="flash">
-            🍯 Pot <span className="font-digit">21 ETH</span>
+            🍯 Pot <span className="font-digit">{currentPot} ETH</span>
           </div>
           <div className="flash">
-            🎟️ Active <span className="font-digit">30 </span>{' '}
+            🎟️ Active <span className="font-digit">{ticketCount}</span>{' '}
           </div>
         </div>
 

@@ -6,24 +6,13 @@ import {
   CHANGE_PHASE_IMG,
   CHANGE_PHASE_MOBILE_IMG,
 } from '../../../services/constant'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/components/shadcn/use-toast'
 import type { FC } from 'react'
 import type { IApp } from 'types/app'
 import { useStoreActions, useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog-unblur'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/image'
-import Prompt from './Prompt'
-import OnSignal from './_OnSignal'
 
 const useStore = () => {
   const feeShare = useStoreState((state) => state.feeShare)

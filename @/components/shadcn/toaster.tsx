@@ -5,8 +5,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@/components/ui/toast'
-import { useToast } from '@/components/ui/use-toast'
+} from '@/components/shadcn/toast'
+import { useToast } from '@/components/shadcn/use-toast'
 import { AlertCircle, CheckCircle2, AlertTriangle, Info } from 'lucide-react'
 import Image from 'next/image'
 

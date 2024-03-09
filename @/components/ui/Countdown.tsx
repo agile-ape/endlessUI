@@ -1,57 +1,8 @@
-import Image from 'next/image'
-import { HelpCircle } from 'lucide-react'
-
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-
-import { Button } from './button'
 import React, { useEffect, useState } from 'react'
 import type { MouseEventHandler } from 'react'
-import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import {
-  defaultContractObj,
-  DOCS_URL,
-  WEBSOCKET_ENDPOINT,
-  CHAIN_ID,
-  GAME_ADDRESS,
-} from '../../../services/constant'
-import { toast } from '@/components/ui/use-toast'
 import Modal from './Modal'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
-import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
-import OnSignal from './_OnSignal'
-import PhaseChangeNew from './PhaseChangeNew'
-import { PhaseChangeActive } from './PhaseChangeNew'
-import { useWindowSize } from '../../../hooks/useWindowSize'
-import { useTheme } from 'next-themes'
-import {
-  User,
-  Menu,
-  MenuSquare,
-  Link2,
-  Unlink2,
-  Rss,
-  Users,
-  Clock,
-  Monitor,
-  Target,
-  Info,
-  Move,
-  ChevronDown,
-  ChevronUp,
-  Send,
-  Split,
-  LogIn,
-  LogOut,
-  Dices,
-  Gift,
-  Ticket,
-  Sword,
-  RefreshCw,
-  ChevronsRight,
-  Axe,
-} from 'lucide-react'
 
 type TimeLeftType = {
   hours: number
@@ -68,6 +19,16 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
     hours,
     minutes,
     seconds,
+  }
+}
+
+const useStore = () => {
+  const timeFlag = useStoreState((state) => state.timeFlag)
+  const roundTime = useStoreState((state) => state.roundTime)
+
+  return {
+    timeFlag,
+    roundTime,
   }
 }
 
@@ -105,6 +66,8 @@ export default function Countdown() {
 
   // useSocketEvents(events)
 
+  const { timeFlag, roundTime } = useStore()
+
   const [alarmState, setAlarmState] = useState<string>('default')
 
   const handleOnMouseEnter: MouseEventHandler = () => {
@@ -122,22 +85,6 @@ export default function Countdown() {
 
   const [showRoundChangeModal, setShowRoundChangeModal] = React.useState<boolean>(false)
   const toggleRoundChange = () => setShowRoundChangeModal((prevState) => !prevState)
-
-  const { data, refetch } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'timeFlag',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'roundTime',
-      },
-    ],
-  })
-
-  const timeFlag = data?.[0].result || BigInt(0)
-  const roundTime = data?.[1].result || BigInt(0)
 
   // const endTime: Date = new Date((Number(timeFlag) + Number(roundTime)) * 1000)
   // TODO: REMOVE BEFORE FLIGHT

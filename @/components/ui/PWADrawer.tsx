@@ -12,7 +12,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
+} from '@/components/shadcn/drawer'
 import { Share, PlusSquare, Key, MoreVertical, Compass } from 'lucide-react'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 
@@ -23,7 +23,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@/components/shadcn/dialog'
 
 // interface PWADrawerType {
 //   toggleModal: () => void

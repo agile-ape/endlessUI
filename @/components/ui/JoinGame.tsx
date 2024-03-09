@@ -1,17 +1,6 @@
 import React, { useRef, useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog-unblur'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from './button'
 import Image from 'next/image'
-import { LogOut } from 'lucide-react'
-import Prompt from './Prompt'
 import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
 import {
@@ -23,8 +12,6 @@ import {
   useWaitForTransaction,
 } from 'wagmi'
 import dynamic from 'next/dynamic'
-
-import { statusPayload } from '@/lib/utils'
 import {
   defaultContractObj,
   DOCS_URL_buy,
@@ -32,10 +19,7 @@ import {
   BUY_TICKET_MOBILE_IMG,
 } from '../../../services/constant'
 import { formatUnits, parseUnits } from 'viem'
-import { toast } from './use-toast'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import CustomConnectButton from './connect-button'
-import OnSignal from './_OnSignal'
+import { toast } from '../shadcn/use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const useStore = () => {
@@ -182,7 +166,7 @@ const JoinGame = () => {
 
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Next ticket #</p>
-              <p className="text-right"> {ticketId} </p>
+              <p className="text-right"> {ticketId + 1} </p>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
@@ -191,7 +175,7 @@ const JoinGame = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Tickets till hold pot</p>
+              <p className="text-left">Hold pot in _ rounds</p>
               <p className="text-right">{queueToPot}</p>
             </div>
           </div>

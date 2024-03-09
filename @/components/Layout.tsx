@@ -21,7 +21,7 @@ import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
 import WelcomeModal from './ui/PWADrawer'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
-import { toast } from '../components/ui/use-toast'
+import { toast } from './shadcn/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
@@ -291,16 +291,17 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   })
 
   /*
-  round
-  timeFlag
+  currentPot => TicketList
+  round => TicketList
+  timeFlag => Countdown
   buyFlag => JoinGame
   potFlag => JoinGame, LoadLast
   ticketId => JoinGame
-  ticketCount
+  ticketCount => TicketList
   canBuyTicket => JoinGame
   ticketPrice => JoinGame
   buyTicketDelay => JoinGame
-  roundTime
+  roundTime => Countdown
   feeShare => RoundChange
   startingPassRate => JoinGame
   lastMultiplier => LoadLast

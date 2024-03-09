@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import OnSignal from '../ui/_OnSignal'
 import TicketList from '../ui/TicketList'
 import { Button } from '@/components/ui/button'
 import Modal from '../ui/Modal'

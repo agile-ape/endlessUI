@@ -1,48 +1,10 @@
 import Image from 'next/image'
 import React, { useRef, useState } from 'react'
-import CustomConnectButton from '@/components/ui/connect-button'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import type { MouseEventHandler, FC } from 'react'
-
-import Logo from './ui/Logo'
 import { Button } from './ui/button'
-import { ExternalLink } from 'lucide-react'
-import Link from 'next/link'
-import Indicator from './ui/Indicator'
-import Modal from '../components/ui/Modal'
-import { useStoreActions, useStoreState } from '../../store'
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuSubTrigger,
-  DropdownMenuSub,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
-} from '@/components/ui/dropdown-menu'
-import { useAccount } from 'wagmi'
-import PWADrawer from './ui/PWADrawer'
-import CompletionModal from './ui/CompletionModal'
-import { cn, formatAddress, formatShortAddress } from '@/lib/utils'
-import {
-  DOCS_URL,
-  TWITTER_URL,
-  TELEGRAM_URL,
-  BLOG_URL,
-  GAMEMASTER_ADDRESS,
-} from '../../services/constant'
-import { useRouter } from 'next/router'
-import Admin from './ui/_Admin'
+import { DOCS_URL, TWITTER_URL, TELEGRAM_URL, BLOG_URL } from '../../services/constant'
 import HowToPlay from './ui/HowToPlay'
-
-// import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
-import { toast } from '../components/ui/use-toast'
-import { useWindowSize } from '../../hooks/useWindowSize'
-import { User, Menu, Users, Clock, Move } from 'lucide-react'
 
 function Header() {
   const handleOnMouseDown: MouseEventHandler = () => {

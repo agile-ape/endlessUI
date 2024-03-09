@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@/components/shadcn/dialog'
 import { Button } from './button'
 import Image from 'next/image'
 import { Send, CheckCircle2 } from 'lucide-react'
@@ -42,166 +42,12 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'Enjoy your stay. Remember to check out on time. Or else.',
       }
 
-    case 'betMade':
-      return {
-        bgImage: 'rainbow',
-        face: 'scheming',
-        title: 'bet accepted',
-        message: 'Good luck and enjoy the game',
-      }
-
-    case 'checkedOut':
-      return {
-        bgImage: 'rainbow',
-        face: 'happy',
-        title: 'checked out',
-        message: 'We hope you enjoyed your stay. You are back in the game!',
-      }
-
-    case 'claimWin':
-      return {
-        bgImage: 'rainbow',
-        face: 'wine',
-        title: 'winnings claimed',
-        message: 'Congrats on the win!',
-      }
-
-    //used
-    case 'sentTokens':
-      return {
-        bgImage: 'rainbow',
-        face: 'muscle',
-        title: 'tokens sent',
-        message: 'Thanks for spreading the love',
-      }
-    //used
-    case 'submitted':
-      return {
-        bgImage: 'motif',
-        face: 'handsup',
-        title: 'received PPP',
-        message: 'You received Pepe Protection for the day',
-      }
-    //used
-    case 'attackAndKill':
-      return {
-        bgImage: 'deadOverlay',
-        face: 'shoot',
-        title: 'player killed',
-        message: 'Congrats on the kill. You are 1 step nearer to be the last man',
-      }
-    //used
-    case 'attackButFail':
-      return {
-        bgImage: 'rainbow',
-        face: 'sad',
-        title: 'player is safe',
-        message: 'Player has PPP and defended your attack. Try another player?',
-      }
-    //used
-    case 'kickedOut':
-      return {
-        bgImage: 'deadOverlay',
-        face: 'police',
-        title: 'player kicked out',
-        message: 'Thanks for kicking the overstayer out.',
-      }
-    //used
-    case 'voteYes':
-      return {
-        bgImage: 'rainbow',
-        face: 'prettyplease',
-        title: 'voted yes',
-        message: 'Cheers man. Make love not war.',
-      }
-    //used
-    case 'voteNo':
-      return {
-        bgImage: 'rainbow',
-        face: 'smoke',
-        title: 'voted back no',
-        message: 'For honor and glory?',
-      }
-    //used
     case 'exitGame':
       return {
         bgImage: 'burst',
         face: 'exit',
         title: 'bye',
         message: 'We hope you had fun. We will see you in the next game.',
-      }
-
-    /*------  sent to another player ------*/
-
-    //used
-    case 'receivedTokens':
-      return {
-        bgImage: 'rainbow',
-        face: 'surprised',
-        title: '$LAST',
-        message: 'Use it wisely in your journey',
-      }
-
-    //used
-    case 'killed':
-      return {
-        bgImage: 'deadOverlay',
-        face: 'angry',
-        title: 'killed',
-        message: 'Sorry about that. Remember to exit game and claim your share of the pot',
-      }
-
-    // NEXT ITERATION
-    case 'received':
-      return {
-        bgImage: 'motif',
-        face: 'surprised',
-        title: 'value drop',
-        message: 'You received ETH from players above. Congrats!',
-      }
-
-    //used
-    case 'attackedButSafe':
-      return {
-        bgImage: 'combine',
-        face: 'pray',
-        title: 'attacked',
-        message: 'You are untouchable with PPP',
-      }
-
-    /*------  sent to all ------*/
-    //peacefound
-    case 'peacefound':
-      return {
-        bgImage: 'burst',
-        face: 'beers',
-        title: 'peace',
-        message: 'Peace is found. All remaining players share the remaining pot.',
-      }
-    //drain
-    case 'drain':
-      return {
-        bgImage: 'burst',
-        face: 'watchitburn',
-        title: 'drained',
-        message: 'Pot is drained. Was it worth it?',
-      }
-    //lastman
-    case 'lastman':
-      return {
-        bgImage: 'burst',
-        face: 'lastman',
-        title: 'last man found',
-        message: 'All hail the man, the myth, the legend. The lastman stands!',
-      }
-
-    //game closed
-    case 'gameClosed':
-      return {
-        bgImage: 'rainbow',
-        face: 'love',
-        title: 'game end',
-        message: 'Stay tuned for the next game!',
       }
 
     default:
@@ -211,11 +57,9 @@ const getAlertLook = (alertLookTest: string) => {
 
 interface CompletionModalType {
   alertLookTest: string
-  //   children: React.ReactNode | null
 }
 
 const CompletionModal: React.FC<CompletionModalType> = () => {
-  // const alertLookTest: string = emittedEvent
   const modalRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(modalRef, () => closeModal())
 

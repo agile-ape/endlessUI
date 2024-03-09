@@ -3,7 +3,12 @@
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Button } from './button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
 import { LogIn, ChevronUp, ChevronDown, AlertTriangle } from 'lucide-react'
 
 import Image from 'next/image'

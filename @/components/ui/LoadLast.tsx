@@ -1,21 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog-unblur'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import OtpInput from 'react-otp-input'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import dynamic from 'next/dynamic'
 
 import {
@@ -39,13 +22,9 @@ import {
   ExternalLink,
   AlertCircle,
 } from 'lucide-react'
-// import { , ChevronDownIcon } from '@radix-ui/react-icons'
-import Link from 'next/link'
-import Prompt from './Prompt'
+
 import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
-// import { tokenContractObj } from '../../../services/constant'
-import OnSignal from './_OnSignal'
 import {
   defaultContractObj,
   tokenContractObj,
@@ -58,12 +37,8 @@ import {
   GAME_ADDRESS,
   LIQUIDITY_POOL,
 } from '../../../services/constant'
-import { statusPayload } from '@/lib/utils'
-import { toast } from './use-toast'
+import { toast } from '../shadcn/use-toast'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import { formatUnits, parseUnits } from 'viem'
-import { io } from 'socket.io-client'
-import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
 
 const useStore = () => {
   const ownedTicket = useStoreState((state) => state.ownedTicket)
@@ -91,7 +66,7 @@ const LoadLast = () => {
 
   const totalLast = lastMultiplier * Number(last)
 
-  let ticketId = ownedTicket?.id
+  let ticketId = ownedTicket?.id || 0
   let ticketPlayer = ownedTicket?.player
   let ticketIsInPlay = ownedTicket?.isInPlay
   let ticketValue = ownedTicket?.value || BigInt(0)
@@ -110,10 +85,9 @@ const LoadLast = () => {
     netPass = ticketPassRate - ticketLastCount
   }
 
-  let estPassValue: number
-  estPassValue = (netPass * Number(ticketValue)) / 100
+  const estPassValueInEther: number = (netPass * Number(ticketValue)) / 100 / 1e18
 
-  const formattedEstPassValue = formatNumber(formatUnits(estPassValue || BigInt(0), 18), {
+  const formattedEstPassValue = formatNumber(estPassValueInEther, {
     maximumFractionDigits: 3,
     minimumFractionDigits: 3,
   })
@@ -191,7 +165,7 @@ const LoadLast = () => {
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
-          <p className="font-digit">{lastMultiplier}%</p>
+          <p className="font-digit">{lastMultiplier / 100}%</p>
         </div>
 
         <div
@@ -206,8 +180,8 @@ const LoadLast = () => {
                 <p className="text-right"> {netPass} %</p>
               </div>
               <div className="grid grid-cols-3 gap-1">
-                <p className="col-span-2 text-left">Est. value passed next round</p>
-                <p className="text-right"> 1 ETH++ </p>
+                <p className="col-span-2 text-left">Est. value passed this round</p>
+                <p className="text-right"> {formattedEstPassValue}ETH </p>
               </div>
               <div className="grid grid-cols-3 gap-1">
                 <p className="col-span-2 text-left">{TOKEN_NAME} in wallet</p>
@@ -261,7 +235,7 @@ const LoadLast = () => {
               className="w-full"
               onClick={loadLastHandler}
               isLoading={isLoading}
-              disabled={!ownedTicket?.isInPlay || ownedTicket?.id < potFlag}
+              disabled={!ticketIsInPlay || ticketId < potFlag}
             >
               Load LAST
             </Button>

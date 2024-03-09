@@ -1,34 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog-unblur'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@/components/shadcn/scroll-area'
 import type { FC } from 'react'
 import { Cross1Icon } from '@radix-ui/react-icons'
 
-import { cn } from '@/lib/utils'
-import Image from 'next/image'
-import { Button } from './button'
-import Prompt from './Prompt'
-import OnSignal from './_OnSignal'
-import Submit from './Submit'
-// import DashboardNew from './DashboardNew'
-import CheckInNew from './CheckInNew'
-import CheckOutNew from './CheckOutNew'
-import SplitPotNew from './SplitPotNew'
-import WagerNew from './WagerNew'
-import AttackNew from './AttackNew'
-import KickOutNew from './KickOutNew'
-import BuyTicketNew from './BuyTicketNew'
-import ExitGameNew from './ExitGameNew'
-import TokenNew from './TokenNew'
-import PhaseChangeNew from './PhaseChangeNew'
-import AdminNew from './AdminNew'
 import RoundChange from './RoundChange'
 import JoinGame from './JoinGame'
 import LoadLast from './LoadLast'
@@ -47,19 +21,6 @@ const titleMapping: { [key: string]: string } = {
   joinGame: '🎟 Buy ticket',
   loadLast: '🛡️ Reduce pass rate',
   exitGame: '🚪 Exit Game',
-
-  phaseChange: '🔔 Trigger phase change',
-  buyTicket: '🎟 Enter Arena',
-  submit: '✅ Submit keyword of the day',
-  checkIn: '🛏 Check into Safehouse',
-  checkOut: '🧳 Check out from Safehouse',
-  splitIt: '🍻 Vote to Split Pot',
-  wager: '🎲 Place Your Bets',
-  attack: '🥊 Attack Player',
-  kickOut: '🪓 Kick Out Player',
-  token: '🎁 Send Tokens',
-  dashboard: '🪖 Player Profile',
-  admin: 'Stats',
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
@@ -67,17 +28,6 @@ const modalMapping: { [key: string]: JSX.Element } = {
   joinGame: <JoinGame />,
   loadLast: <LoadLast />,
   exitGame: <ExitGame />,
-
-  phaseChange: <PhaseChangeNew />,
-  buyTicket: <BuyTicketNew />,
-  submit: <Submit />,
-  checkIn: <CheckInNew />,
-  checkOut: <CheckOutNew />,
-  splitIt: <SplitPotNew />,
-  wager: <WagerNew />,
-  token: <TokenNew />,
-  // dashboard: <DashboardNew />,
-  admin: <AdminNew />,
 }
 
 const Modal: FC<ModalType> = ({ action, toggle, id }) => {
@@ -106,11 +56,7 @@ const Modal: FC<ModalType> = ({ action, toggle, id }) => {
                   <div className="">{titleMapping[action]}</div>
                 </div>
                 <ScrollArea className="h-[450px] md:h-[650px] rounded-md p-2">
-                  {action === 'attack' && <AttackNew idList={id} />}
-
-                  {action === 'kickOut' && <KickOutNew idList={id} />}
-
-                  {!(action === 'attack' || action === 'kickOut') && modalMapping[action]}
+                  {modalMapping[action]}
                 </ScrollArea>
               </div>
             </div>
