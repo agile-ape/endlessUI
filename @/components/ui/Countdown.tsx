@@ -23,10 +23,12 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 }
 
 const useStore = () => {
+  const round = useStoreState((state) => state.round)
   const timeFlag = useStoreState((state) => state.timeFlag)
   const roundTime = useStoreState((state) => state.roundTime)
 
   return {
+    round,
     timeFlag,
     roundTime,
   }
@@ -66,7 +68,7 @@ export default function Countdown() {
 
   // useSocketEvents(events)
 
-  const { timeFlag, roundTime } = useStore()
+  const { round, timeFlag, roundTime } = useStore()
 
   const [alarmState, setAlarmState] = useState<string>('default')
 
@@ -88,7 +90,7 @@ export default function Countdown() {
 
   // const endTime: Date = new Date((Number(timeFlag) + Number(roundTime)) * 1000)
   // TODO: REMOVE BEFORE FLIGHT
-  const endTime: Date = new Date(171000000 * 1000)
+  const endTime: Date = new Date(1710000000 * 1000)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -117,88 +119,99 @@ export default function Countdown() {
   }, [])
 
   return (
-    <div className="relative sm:h-18 sm:w-48 h-10 w-32 m-2">
-      {/* display */}
-      <div
-        className={cn(
-          'rounded-md \
+    <>
+      {/* <div className="text-sm text-center">Round {round}</div> */}
+      <div className="relative sm:h-12 sm:w-48 h-10 w-32">
+        {/* display */}
+        <div
+          className={cn(
+            'rounded-xl \
               py-4 sm:py-0 \
               text-[36px] sm:text-[28px] \
               bg-[#404833] shadow-sm text-[#FCFDC7] \
               capitalized font-digit \
               border border-[#11140C] text-center\
               flex justify-center',
-          alarmState === 'ready'
-            ? 'border-[#FCFC03] text-[#FCFC03] border-2'
-            : alarmState === 'go'
+            alarmState === 'ready'
               ? 'border-[#FCFC03] text-[#FCFC03] border-2'
-              : '',
-        )}
-      >
-        {isLoading ? (
-          <div>Wait for it </div>
-        ) : timeLeft && !isNaN(timeLeft) ? (
-          <div className="flex">
-            <div className="flex flex-col text-center">
-              {formatTime(timeLeft).hours}
-              <div className="uppercase text-sm text-center">hr</div>
+              : alarmState === 'go'
+                ? 'border-[#FCFC03] text-[#FCFC03] border-2'
+                : '',
+          )}
+        >
+          {isLoading ? (
+            <div>Wait for it </div>
+          ) : timeLeft && !isNaN(timeLeft) ? (
+            <div className="flex flex-col justify-center">
+              <div className="flex">
+                <div className="flex flex-col text-center">
+                  {formatTime(timeLeft).hours}
+                  {/* <div className="uppercase text-sm text-center">hr</div> */}
+                </div>
+                :
+                <div className="flex flex-col text-center">
+                  {formatTime(timeLeft).minutes}
+                  {/* <div className="uppercase text-sm text-center">min</div> */}
+                </div>
+                :
+                <div className="flex flex-col text-center">
+                  {formatTime(timeLeft).seconds}
+                  {/* <div className="uppercase text-sm text-center">sec</div> */}
+                </div>
+              </div>
             </div>
-            :
-            <div className="flex flex-col text-center">
-              {formatTime(timeLeft).minutes}
-              <div className="uppercase text-sm text-center">min</div>
+          ) : (
+            <div
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+              onMouseDown={handleOnMouseDown}
+              onClick={toggleRoundChange}
+              className="cursor-default"
+            >
+              {/* {alarmState === 'default' ? "let's" : alarmState === 'ready' ? 'blast' : 'off'} */}
+              Wait for it
             </div>
-            :
-            <div className="flex flex-col text-center">
-              {formatTime(timeLeft).seconds}
-              <div className="uppercase text-sm text-center">sec</div>
-            </div>
-          </div>
-        ) : (
-          <div
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-            onMouseDown={handleOnMouseDown}
-            onClick={toggleRoundChange}
-            className="cursor-pointer"
-          >
-            {alarmState === 'default' ? "let's" : alarmState === 'ready' ? 'blast' : 'off'}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* button + stem */}
-      <div
-        className={cn(
-          'absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full \
-      flex flex-col justify-center items-center',
-          alarmState === 'ready' ? '' : alarmState === 'go' ? '' : '',
+        {/* button + stem */}
+        {/*
+
+        {!timeLeft && (
+          <div
+            className={cn(
+              'absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full \
+          flex flex-col justify-center items-center',
+              alarmState === 'ready' ? '' : alarmState === 'go' ? '' : '',
+            )}
+          >
+            <div
+              className={cn(
+                'bg-[#404833] z-[5] border border-[#11140C] w-6 h-2 rounded-[0.125rem]',
+                alarmState === 'ready'
+                  ? 'border-[#FCFC03] border-2'
+                  : alarmState === 'go'
+                    ? 'border-[#FCFC03] border-2'
+                    : '',
+              )}
+            ></div>
+            <div
+              className={cn(
+                'bg-[#404833] z-[10] border border-[#11140C] border-t-0 border-b-0 w-2 h-[2px]',
+                alarmState === 'ready'
+                  ? 'h-[6px] border-[#FCFC03] border-2'
+                  : alarmState === 'go'
+                    ? 'h-[0px] border-[#FCFC03] border-2'
+                    : '',
+              )}
+            ></div>
+          </div>
         )}
-      >
-        {/* button */}
-        <div
-          className={cn(
-            'bg-[#404833] z-[5] border border-[#11140C] w-6 h-2 rounded-[0.125rem]',
-            alarmState === 'ready'
-              ? 'border-[#FCFC03] border-2'
-              : alarmState === 'go'
-                ? 'border-[#FCFC03] border-2'
-                : '',
-          )}
-        ></div>
-        {/* stem */}
-        <div
-          className={cn(
-            'bg-[#404833] z-[10] border border-[#11140C] border-t-0 border-b-0 w-2 h-[2px]',
-            alarmState === 'ready'
-              ? 'h-[6px] border-[#FCFC03] border-2'
-              : alarmState === 'go'
-                ? 'h-[0px] border-[#FCFC03] border-2'
-                : '',
-          )}
-        ></div>
+
+        {showRoundChangeModal && <Modal action={'roundChange'} toggle={toggleRoundChange} />}
+
+        */}
       </div>
-      {showRoundChangeModal && <Modal action={'roundChange'} toggle={toggleRoundChange} />}
-    </div>
+    </>
   )
 }

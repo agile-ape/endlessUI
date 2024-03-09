@@ -107,10 +107,10 @@ const buttonVariants = cva(
         //   'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
 
         // fixed bg. light and dark mode
-        primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03]',
+        primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-[#404833]/50',
         // 'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-500 hover:border-indigo-200 active:bg-indigo-500',
 
-        secondary: 'text-[#FCFDC7] bg-[#39402e] border border-[#FCFDC7]',
+        secondary: 'text-[#FCFDC7] bg-[#39402e] border border-[#FCFDC7] hover:bg-[#39402e]/50',
 
         tertiary: 'text-[#404833] bg-[#FCFDC7] border-2 border-[#404833] hover:bg-opacity-50',
         // 'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \

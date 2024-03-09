@@ -25,21 +25,23 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { formatUnits } from 'viem'
 
 const useStore = () => {
+  const potFlag = useStoreState((state) => state.potFlag)
   const ownedTicket = useStoreState((state) => state.ownedTicket)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   return {
+    potFlag,
     ownedTicket,
     updateCompletionModal,
   }
 }
 
 const ExitGame = () => {
-  const { ownedTicket, updateCompletionModal } = useStore()
+  const { potFlag, ownedTicket, updateCompletionModal } = useStore()
 
   const { address, isConnected } = useAccount()
 
-  let ticketId = ownedTicket?.id
+  let ticketId = ownedTicket?.id || BigInt(0)
   let ticketPlayer = ownedTicket?.player
   let ticketIsInPlay = ownedTicket?.isInPlay
   let ticketValue = ownedTicket?.value || BigInt(0)
@@ -53,6 +55,7 @@ const ExitGame = () => {
 
   let exitTitle: string
   let displayValue: string
+  let stillInGame: string
 
   if (ticketIsInPlay) {
     exitTitle = 'Ticket value'
@@ -60,12 +63,14 @@ const ExitGame = () => {
       maximumFractionDigits: 3,
       minimumFractionDigits: 3,
     })
+    stillInGame = 'Yes'
   } else {
     exitTitle = 'Value redeemed'
     displayValue = formatNumber(formatUnits(BigInt(ticketRedeemValue), 18), {
       maximumFractionDigits: 3,
       minimumFractionDigits: 3,
     })
+    stillInGame = 'No'
   }
 
   // Contract write
@@ -148,11 +153,11 @@ const ExitGame = () => {
           <div className="w-full">
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Still in game?</p>
-              <p className="text-right"> {ticketIsInPlay ? 'Yes' : 'No'}</p>
+              <p className="text-right"> {stillInGame}</p>
             </div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Claimed pot?</p>
-              <p className="text-right">{ticketIsInPlay ? 'Yes' : 'No'}</p>
+              <p className="text-right">{ticketIsInPlay && potFlag > ticketId ? 'Yes' : 'No'}</p>
             </div>
           </div>
 

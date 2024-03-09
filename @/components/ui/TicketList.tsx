@@ -7,23 +7,44 @@ import { useWindowSize } from '../../../hooks/useWindowSize'
 import type { Ticket } from 'types/app'
 import Countdown from './Countdown'
 import Modal from '../ui/Modal'
-
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/shadcn/popover'
+import { Settings } from 'lucide-react'
 const useStore = () => {
   const currentPot = useStoreState((state) => state.currentPot)
   const round = useStoreState((state) => state.round)
+  const roundTime = useStoreState((state) => state.roundTime)
+  const potFlag = useStoreState((state) => state.potFlag)
+  const startingPassRate = useStoreState((state) => state.startingPassRate)
+  const ticketPrice = useStoreState((state) => state.ticketPrice)
+  const ticketId = useStoreState((state) => state.ticketId)
+
   const ticketCount = useStoreState((state) => state.ticketCount)
   const playerTickets = useStoreState((state) => state.tickets)
 
   return {
     currentPot,
     round,
+    roundTime,
+    potFlag,
+    startingPassRate,
+    ticketPrice,
+    ticketId,
     ticketCount,
     playerTickets,
   }
 }
 
 const TicketList = () => {
-  const { round, ticketCount, playerTickets } = useStore()
+  const {
+    round,
+    roundTime,
+    potFlag,
+    startingPassRate,
+    ticketPrice,
+    ticketId,
+    ticketCount,
+    playerTickets,
+  } = useStore()
 
   const [showPotModal, setShowPotModal] = React.useState<boolean>(false)
   const togglePot = () => setShowPotModal((prevState) => !prevState)
@@ -58,17 +79,49 @@ const TicketList = () => {
   return (
     <div className="">
       <summary className="px-6 py-2 flex justify-between items-center">
-        <div>🍯 Pot 23 ETH</div>
+        {/* <button onClick={togglePot} className="text-3xl"> */}
+        <div>🍯3ETH</div>
+        {/* </button> */}
 
         <Countdown />
-        <div className="flex flex-row text-xl gap-6 items-center py-0 sm:pb-2 text-[#FCFDC7]">
-          <div className="flash">
-            🪜 Round <span className="font-digit">{round}</span>{' '}
-          </div>
-          <div className="flash">
-            🎟️ Active <span className="font-digit">{ticketCount}</span>{' '}
-          </div>
-        </div>
+
+        <Popover>
+          <PopoverTrigger>
+            <Settings className="text-[#FCFDC7] hover:text-[#FCFC03] hover:rotate-90 active:rotate-180" />
+          </PopoverTrigger>
+          <PopoverContent
+            side="left"
+            align="start"
+            className="bg-slate-700 border border-slate-400/50 px-4 py-2"
+          >
+            <p className="font-digit text-center text-2xl">Game setting</p>
+            {/* buyTicketDelay and feeShare for next time. and canBuyTicket. Everything they need for now is here  */}
+
+            <div className="flex flex-col gap-2 justify-center text-xl">
+              <p>
+                Round: <span className="font-digit">{round}</span>
+              </p>
+              <p>
+                Ticket price: <span className="font-digit">{ticketPrice} ETH</span>
+              </p>
+              <p>
+                Round time: <span className="font-digit">{roundTime}</span>
+              </p>
+              <p>
+                Pass rate: <span className="font-digit">{startingPassRate}</span>
+              </p>
+              <p>
+                Total joined: <span className="font-digit">{ticketId}</span>
+              </p>
+              <p>
+                Still in play: <span className="font-digit">{ticketCount}</span>
+              </p>
+              <p>
+                Pot is at: <span className="font-digit">{potFlag}</span>
+              </p>
+            </div>
+          </PopoverContent>
+        </Popover>
       </summary>
 
       {totalTicketCount ? (
@@ -110,6 +163,7 @@ const TicketList = () => {
           <div className="text-center my-2 text-lg sm:text-3xl">No one is here</div>
         </div>
       )}
+      {showPotModal && <Modal action={'addPot'} toggle={togglePot} />}
     </div>
   )
 }

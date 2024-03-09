@@ -141,10 +141,7 @@ const JoinGame = () => {
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
-          <p className="font-digit">
-            {ticketPrice}
-            ETH
-          </p>
+          <p className="font-digit">{ticketPrice} ETH</p>
         </div>
 
         <div
@@ -153,10 +150,10 @@ const JoinGame = () => {
           "
         >
           <div className="w-full">
-            <div className="font-digit flex justify-center my-2">Your stats</div>
+            <div className="font-digit flex justify-center my-2">You have</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH in wallet</p>
-              <p className="text-right">
+              <p className="text-right font-digit">
                 {formattedEthBalance}
                 ETH
               </p>
@@ -166,17 +163,19 @@ const JoinGame = () => {
 
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Next ticket #</p>
-              <p className="text-right"> {ticketId + 1} </p>
+              <p className="text-right font-digit"> {ticketId + 1} </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-1">
+            {/* <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Pass rate</p>
               <p className="text-right"> {startingPassRate}% </p>
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Hold pot in _ rounds</p>
-              <p className="text-right">{queueToPot}</p>
+              <p className="text-left">Queue till pot</p>
+              <p className="text-right">
+                <span className="font-digit">{queueToPot}</span> players
+              </p>
             </div>
           </div>
 

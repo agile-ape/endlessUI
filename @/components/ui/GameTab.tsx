@@ -84,7 +84,7 @@ const GameTab = () => {
                   container-last
                   flex flex-col my-6 relative"
                 >
-                  <div className="bg-[#FCFC03]/80 rounded-md mt-2">
+                  {/* <div className="bg-[#FCFC03]/80 rounded-md mt-2">
                     <Button
                       variant="primary"
                       className="p-1 h-12 w-full text-2xl shadow-sm
@@ -94,7 +94,7 @@ const GameTab = () => {
                     >
                       🛡️ Load LAST
                     </Button>
-                  </div>
+                  </div> */}
 
                   <div className="bg-[#FCFC03]/80 rounded-md mt-4 mb-2">
                     <Button

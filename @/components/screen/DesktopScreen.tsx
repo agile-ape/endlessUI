@@ -23,7 +23,7 @@ export default function DesktopScreen() {
     <>
       <div className="flex flex-col text-center gap-2 px-5 pb-2 my-2">
         <div className="flex flex-col justify-center mx-auto gap-2">
-          <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot 🍯</div>
+          {/* <div className="text-center text-2xl font-digit text-[#FCFC03]">Pass the pot</div> */}
           <div className="bg-[#FCFC03]/80 rounded-xl">
             <Button
               className="
@@ -42,7 +42,7 @@ export default function DesktopScreen() {
                   `rounded-full shadow-md border-gray-500 h-[0.5rem] w-[0.5rem] mx-2 border-[0.05rem]`,
                 )}
               ></div>
-              🎟 Join game
+              🎟 Buy Ticket
             </Button>
           </div>
         </div>
