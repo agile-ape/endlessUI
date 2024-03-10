@@ -133,9 +133,9 @@ export default function Countdown() {
               border border-[#11140C] text-center\
               flex justify-center',
             alarmState === 'ready'
-              ? 'border-[#FCFC03] text-[#FCFC03] border-2'
+              ? 'border-[#FCFC03] text-[#FCFC03] border'
               : alarmState === 'go'
-                ? 'border-[#FCFC03] text-[#FCFC03] border-2'
+                ? 'border-[#FCFC03] text-[#FCFC03] border'
                 : '',
           )}
         >
