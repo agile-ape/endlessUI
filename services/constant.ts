@@ -55,7 +55,7 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
   testnet: true,
 })
 
-export const API_ENDPOINT = 'https://pepper-obky.onrender.com/'
+export const API_ENDPOINT = 'https://pepper-obky.onrender.com'
 export const WEBSOCKET_ENDPOINT = 'wss://pepper-obky.onrender.com'
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'

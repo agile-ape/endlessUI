@@ -20,6 +20,8 @@ import { Toaster } from '@/components/shadcn/toaster'
 import Metadata from '@/components/Metadata'
 import useSWR from 'swr'
 import 'wagmi/window'
+// import { arbitrumGoerli, baseGoerli, mainnet, blastSepolia } from 'viem/chains'
+
 import { blastSepolia } from '../services/constant'
 
 const chainsConfig = [...(process.env.NODE_ENV === 'production' ? [blastSepolia] : [blastSepolia])]
