@@ -9,7 +9,7 @@ const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
-
+// export const CHAIN_ID = 168587773
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
 export const GAME_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
 export const defaultContractObj = {

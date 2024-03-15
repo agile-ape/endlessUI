@@ -218,7 +218,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     } = useSWR<{
       data: Ticket[]
     }>(
-      `/tickets/${CHAIN_ID}?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
+      `/tickets/${CHAIN_ID}/${GAME_ADDRESS}/?page=1&limit=30&sortOrder=ASC&sortBy=ticketId`,
       fetcher,
     )
 
