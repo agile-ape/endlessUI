@@ -7,7 +7,6 @@ import { Button } from './button'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 
-import GameFeed from './GameFeed'
 import { useAccount, useContractRead } from 'wagmi'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
 import { cn } from '@/lib/utils'

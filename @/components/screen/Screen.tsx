@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import Logo from '../ui/_Logo'
 
 import JoinGame from '../ui/JoinGame'
 
@@ -10,7 +9,6 @@ import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { useStoreState } from '../../../store'
 // import CustomConnectButton from '@/components/ui/connect-button'
-import GameFeed from '@/components/ui/GameFeed'
 // import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 // import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/shadcn/popover'

@@ -46,6 +46,7 @@ const RoundChange = () => {
       updateCompletionModal({
         isOpen: true,
         state: 'changeRound',
+        result: 0,
       })
     } catch (error: any) {
       const errorMsg =

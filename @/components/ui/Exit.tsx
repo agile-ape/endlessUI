@@ -64,14 +64,12 @@ const useStore = () => {
   // const ownedTicket = useStoreState((state) => state.ownedTicket)
   const potFlag = useStoreState((state) => state.potFlag)
   const tokenBalance = useStoreState((state) => state.tokenBalance)
-  const lastMultiplier = useStoreState((state) => state.lastMultiplier)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   return {
     //   ownedTicket,
     potFlag,
     tokenBalance,
-    lastMultiplier,
     updateCompletionModal,
   }
 }
@@ -81,7 +79,7 @@ type ExitType = {
 }
 
 const Exit: FC<ExitType> = ({ id }) => {
-  const { potFlag, tokenBalance, lastMultiplier, updateCompletionModal } = useStore()
+  const { potFlag, tokenBalance, updateCompletionModal } = useStore()
 
   const ticket = useContractRead({
     ...defaultContractObj,
@@ -139,6 +137,7 @@ const Exit: FC<ExitType> = ({ id }) => {
       updateCompletionModal({
         isOpen: true,
         state: 'exitGame',
+        result: 0,
       })
     } catch (error: any) {
       const errorMsg =

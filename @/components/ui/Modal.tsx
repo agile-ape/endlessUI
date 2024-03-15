@@ -5,8 +5,6 @@ import { Cross1Icon } from '@radix-ui/react-icons'
 
 import RoundChange from './RoundChange'
 import JoinGame from './JoinGame'
-import LoadLast from './_LoadLast'
-import ExitGame from './_ExitGame'
 import AddPot from './AddPot'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
@@ -20,16 +18,16 @@ type ModalType = {
 const titleMapping: { [key: string]: string } = {
   roundChange: '🪜 Change round',
   joinGame: '🎟 Buy ticket',
-  loadLast: '🛡️ Reduce pass rate',
-  exitGame: '🚪 Exit Game',
+  // loadLast: '🛡️ Reduce pass rate',
+  // exitGame: '🚪 Exit Game',
   addPot: '🍯 Add to Pot',
 }
 
 const modalMapping: { [key: string]: JSX.Element } = {
   roundChange: <RoundChange />,
   joinGame: <JoinGame />,
-  loadLast: <LoadLast />,
-  exitGame: <ExitGame />,
+  // loadLast: <LoadLast />,
+  // exitGame: <ExitGame />,
   addPot: <AddPot />,
 }
 
