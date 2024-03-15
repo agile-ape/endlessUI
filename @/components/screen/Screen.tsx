@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import Logo from '../ui/Logo'
+import Logo from '../ui/_Logo'
 
 import JoinGame from '../ui/JoinGame'
 
@@ -9,7 +9,7 @@ import TicketList from '../ui/TicketList'
 import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { useStoreState } from '../../../store'
-import CustomConnectButton from '@/components/ui/connect-button'
+// import CustomConnectButton from '@/components/ui/connect-button'
 import GameFeed from '@/components/ui/GameFeed'
 // import { usePrivy, useLogin, useLogout, useWallets } from '@privy-io/react-auth'
 // import { Button } from '@/components/ui/button'
@@ -376,23 +376,23 @@ export default function Screen() {
     setIsToggled(!isToggled)
   }
 
-  const ownedTicket = useStoreState((state) => state.ownedTicket)
+  // const ownedTicket = useStoreState((state) => state.ownedTickets)
 
-  let ticket: Ticket | undefined = ownedTicket || {
-    id: 0,
-    player: address as `0x${string}`,
-    isInPlay: false,
-    value: 0,
-    purchasePrice: 0,
-    redeemValue: 0,
-    potClaimCount: 0,
-    passRate: 0,
-    joinRound: 0,
-    exitRound: 0,
-    lastCount: 0,
-  }
+  // let ticket: Ticket | undefined = ownedTicket || {
+  //   id: 0,
+  //   player: address as `0x${string}`,
+  //   isInPlay: false,
+  //   value: 0,
+  //   purchasePrice: 0,
+  //   redeemValue: 0,
+  //   potClaimCount: 0,
+  //   passRate: 0,
+  //   joinRound: 0,
+  //   exitRound: 0,
+  //   lastCount: 0,
+  // }
 
-  const id = ticket?.id || 0
+  // const id = ticket?.id || 0
 
   const [isLoading, setIsLoading] = useState(true)
 

@@ -5,8 +5,20 @@ import type { MouseEventHandler, FC } from 'react'
 import { Button } from './ui/button'
 import { DOCS_URL, TWITTER_URL, TELEGRAM_URL, BLOG_URL } from '../../services/constant'
 import HowToPlay from './ui/HowToPlay'
+import { useStoreActions, useStoreState } from '../../store'
+
+const useStore = () => {
+  // const ownedTicket = useStoreState((state) => state.ownedTicket)
+  const tokenBalance = useStoreState((state) => state.tokenBalance)
+
+  return {
+    tokenBalance,
+  }
+}
 
 function Header() {
+  const { tokenBalance } = useStore()
+
   const handleOnMouseDown: MouseEventHandler = () => {
     location.reload()
   }
@@ -21,11 +33,11 @@ function Header() {
               className="
             py-4 sm:py-0 \
         text-[36px] sm:text-[28px] \
-         text-[#FCFDC7] \
+         text-[#404833] \
         capitalized font-digit text-center cursor-pointer"
               onMouseDown={handleOnMouseDown}
             >
-              last
+              🐻 pooh
             </div>
           </div>
 
@@ -42,6 +54,17 @@ function Header() {
                   Telegram 🧑‍🤝‍🧑
                 </Button>
               </a>
+
+              {/* token holdings */}
+              <div
+                className="
+                
+                text-[22px] text-[#404833] text-center capitalized \
+                rounded-md px-2 py-0.5 whitespace-nowrap
+                "
+              >
+                POOH: <span className="font-digit">{tokenBalance}</span>
+              </div>
 
               <ConnectButton label="Connect" />
             </div>

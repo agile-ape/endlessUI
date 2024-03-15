@@ -57,10 +57,10 @@ const Metadata = ({
       ></meta>
       <meta property="product:price:amount" content="0.00" />
       <meta property="product:price:currency" content="USD" />
-      <link rel="shortcut icon" href={`/logo/last-logo-short.png`} type="image/png" />
+      <link rel="shortcut icon" href={`/logo/honeyPot.svg`} type="image/png" />
       <link rel="manifest" href="/manifest.json" />
-      <link rel="apple-touch-icon" href="/logo/last-logo-short.png" />
-      <link href="/logo/last-logo-short.png" rel="icon" type="image/png" sizes="128x128" />
+      <link rel="apple-touch-icon" href="/logo/honeyPot.svg" />
+      <link href="/logo/honeyPot.svg" rel="icon" type="image/png" sizes="128x128" />
 
       <meta property="og:site_name" content="Lastman" />
       <meta property="og:locale" content={'en'} />

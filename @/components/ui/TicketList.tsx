@@ -16,10 +16,10 @@ const useStore = () => {
   const potFlag = useStoreState((state) => state.potFlag)
   const startingPassRate = useStoreState((state) => state.startingPassRate)
   const ticketPrice = useStoreState((state) => state.ticketPrice)
-  const ticketId = useStoreState((state) => state.ticketId)
+  const ticketIdCounter = useStoreState((state) => state.ticketIdCounter)
 
   const ticketCount = useStoreState((state) => state.ticketCount)
-  const playerTickets = useStoreState((state) => state.tickets)
+  const tickets = useStoreState((state) => state.tickets)
 
   return {
     currentPot,
@@ -28,9 +28,9 @@ const useStore = () => {
     potFlag,
     startingPassRate,
     ticketPrice,
-    ticketId,
+    ticketIdCounter,
     ticketCount,
-    playerTickets,
+    tickets,
   }
 }
 
@@ -41,9 +41,9 @@ const TicketList = () => {
     potFlag,
     startingPassRate,
     ticketPrice,
-    ticketId,
+    ticketIdCounter,
     ticketCount,
-    playerTickets,
+    tickets,
   } = useStore()
 
   const [showPotModal, setShowPotModal] = React.useState<boolean>(false)
@@ -54,16 +54,16 @@ const TicketList = () => {
   const { xs } = useWindowSize()
 
   useEffect(() => {
-    if (playerTickets.length) {
-      setTicketListState(playerTickets)
+    if (tickets.length) {
+      setTicketListState(tickets)
     }
-  }, [playerTickets])
+  }, [tickets])
 
   const totalTicketCount = ticketListState.length
 
   function toggleTab(tab: string) {
     setTicketState(tab)
-    const nextTicketList = [...playerTickets]
+    const nextTicketList = [...tickets]
 
     if (tab === 'inPlay') {
       const inPlayList = nextTicketList.filter((item) => item.isInPlay)
@@ -72,22 +72,32 @@ const TicketList = () => {
       const notInPlayList = nextTicketList.filter((item) => !item.isInPlay)
       setTicketListState(notInPlayList)
     } else {
-      setTicketListState(playerTickets)
+      setTicketListState(tickets)
     }
   }
 
   return (
     <div className="">
       <summary className="px-6 py-2 flex justify-between items-center">
-        {/* <button onClick={togglePot} className="text-3xl"> */}
-        <div>🍯3ETH</div>
-        {/* </button> */}
-
+        <button onClick={togglePot} className="text-3xl hover:wiggle">
+          <div className="relative flex items-start justify-center">
+            <Image
+              priority
+              src="/logo/honeyPot.svg"
+              className=""
+              height={100}
+              width={75}
+              alt="honey-pot"
+            />
+            <p className="absolute top-3 text-3xl">
+              <span className="font-digit text-[#FCFDC7] ">3.00</span>
+            </p>
+          </div>
+        </button>
         <Countdown />
-
         <Popover>
           <PopoverTrigger>
-            <Settings className="text-[#FCFDC7] hover:text-[#FCFC03] hover:rotate-90 active:rotate-180" />
+            <Settings className="text-[#404833] hover:rotate-90 active:rotate-180" />
           </PopoverTrigger>
           <PopoverContent
             side="left"
@@ -102,22 +112,22 @@ const TicketList = () => {
                 Round: <span className="font-digit">{round}</span>
               </p>
               <p>
-                Ticket price: <span className="font-digit">{ticketPrice} ETH</span>
+                Ticket price: <span className="font-digit">{ticketPrice}</span> ETH
               </p>
               <p>
-                Round time: <span className="font-digit">{roundTime}</span>
+                Round time: <span className="font-digit">{roundTime}</span> secs
               </p>
               <p>
-                Pass rate: <span className="font-digit">{startingPassRate}</span>
+                Pass rate: <span className="font-digit">{startingPassRate}</span> %
               </p>
               <p>
-                Total joined: <span className="font-digit">{ticketId}</span>
+                Total joined: <span className="font-digit">{ticketIdCounter}</span>
               </p>
               <p>
                 Still in play: <span className="font-digit">{ticketCount}</span>
               </p>
               <p>
-                Pot is at: <span className="font-digit">{potFlag}</span>
+                Pot at ticket: <span className="font-digit">{potFlag}</span>
               </p>
             </div>
           </PopoverContent>
@@ -151,7 +161,7 @@ const TicketList = () => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center my-8">
-          <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div>
+          {/* <div className="text-center my-2 text-lg sm:text-3xl">Knock knock</div> */}
           <Image
             priority
             src="/faces/hide.svg"
@@ -160,7 +170,7 @@ const TicketList = () => {
             width={xs ? 150 : 250}
             alt="waiting-for-players"
           />
-          <div className="text-center my-2 text-lg sm:text-3xl">No one is here</div>
+          {/* <div className="text-center my-2 text-lg sm:text-3xl">No one is here</div> */}
         </div>
       )}
       {showPotModal && <Modal action={'addPot'} toggle={togglePot} />}

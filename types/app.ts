@@ -9,29 +9,44 @@ interface Ticket {
   passRate: number
   joinRound: number
   exitRound: number
-  lastCount: number
+  logs: string[]
+}
+
+interface Event {
+  id: number
+  event: string
+  topics1: string
+  topics2: string
+  topics3: string
 }
 
 interface IApp {
-  currentPot: number
+  canBuyTicket: boolean
+  ticketPrice: number
+  buyTicketDelayCeiling: number
+  roundTime: number
+  feeShare: number
+  startingPassRate: number
+  auctionPrice: number
+  poohPerRoll: number
+  passRateRange: number
+  passRateFloor: number
+
   round: number
   timeFlag: number
   buyFlag: number
   potFlag: number
-  ticketId: number
+  ticketIdCounter: number
   ticketCount: number
 
-  canBuyTicket: boolean
-  ticketPrice: number
-  buyTicketDelay: number
-  roundTime: number
-  feeShare: number
-  startingPassRate: number
-  lastMultiplier: number
-
+  currentPot: number
   tokenBalance: number
 
+  auctionAllowance: number
+  totalPoohSupply: number
+
   tickets: Ticket[]
+  events: Event[]
 }
 
-export type { IApp, Ticket }
+export type { IApp, Ticket, Event }

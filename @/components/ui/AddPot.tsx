@@ -9,6 +9,7 @@ import {
   useWaitForTransaction,
   useSignMessage,
   useSendTransaction,
+  useBalance,
   useWalletClient,
 } from 'wagmi'
 import { Button } from './button'
@@ -38,6 +39,7 @@ import {
   CHAIN_ID,
   TOKEN_NAME,
   GAME_ADDRESS,
+  TREASURY_ADDRESS,
   LIQUIDITY_POOL,
 } from '../../../services/constant'
 import { toast } from '../shadcn/use-toast'
@@ -45,26 +47,45 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 
 const useStore = () => {
   const currentPot = useStoreState((state) => state.currentPot)
-  const ownedTicket = useStoreState((state) => state.ownedTicket)
   const potFlag = useStoreState((state) => state.potFlag)
   const tokenBalance = useStoreState((state) => state.tokenBalance)
-  const lastMultiplier = useStoreState((state) => state.lastMultiplier)
+  const auctionPrice = useStoreState((state) => state.auctionPrice)
+  const auctionAllowance = useStoreState((state) => state.auctionAllowance)
+  const totalPoohSupply = useStoreState((state) => state.totalPoohSupply)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   return {
     currentPot,
-    ownedTicket,
     potFlag,
     tokenBalance,
-    lastMultiplier,
+    auctionPrice,
+    auctionAllowance,
+    totalPoohSupply,
     updateCompletionModal,
   }
 }
 
 const AddPot = () => {
-  const { ownedTicket, potFlag, tokenBalance, lastMultiplier, updateCompletionModal } = useStore()
+  const {
+    currentPot,
+    potFlag,
+    tokenBalance,
+    auctionPrice,
+    auctionAllowance,
+    totalPoohSupply,
+    updateCompletionModal,
+  } = useStore()
 
   const { address, isConnected } = useAccount()
+
+  const { data: ethHolding } = useBalance({
+    address: address,
+  })
+
+  const formattedEthBalance = formatNumber(formatUnits(ethHolding?.value || BigInt(0), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
+  })
 
   // initialize state
   const [addAmt, setAddAmt] = React.useState<string>('')
@@ -89,6 +110,7 @@ const AddPot = () => {
       updateCompletionModal({
         isOpen: true,
         state: 'lastLoaded',
+        result: 0,
       })
     } catch (error: any) {
       const errorMsg =
@@ -101,6 +123,8 @@ const AddPot = () => {
       })
     }
   }
+
+  const tokenReceived = Number(parseUnits(String(addAmt), 18)) / auctionPrice || 0
 
   const checkInBackupImg = (event: any) => {
     event.target.src = '/lore/CheckIntoSafehouse.png'
@@ -136,11 +160,11 @@ const AddPot = () => {
         onError={checkInBackupImg}
       />
 
-      <div className="capitalize text-center h2-last">1 $LAST for </div>
+      <div className="capitalize text-center h2-last">1 {TOKEN_NAME} for </div>
 
       <div className="mx-auto flex flex-col gap-4 justify-center items-center mb-4">
         <div className="text-3xl text-center border-[2px] border-slate-400 bg-slate-100 dark:bg-slate-700 shadow-md rounded-xl items-center p-2 gap-3">
-          <p className="font-digit">0.0002 ETH </p>
+          <p className="font-digit">{auctionPrice} ETH </p>
         </div>
 
         <div
@@ -154,7 +178,7 @@ const AddPot = () => {
               <div className="grid grid-cols-3 gap-1">
                 <p className="col-span-2 text-left">ETH in wallet</p>
                 <p className="text-right">
-                  <span className="font-digit">{tokenBalance}</span>
+                  <span className="font-digit">{formattedEthBalance}</span> ETH
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-1">
@@ -167,10 +191,10 @@ const AddPot = () => {
               <div className="capitalize text-center h2-last mt-4 font-digit">Current sale</div>
 
               <div className="grid grid-cols-3 gap-1">
-                <p className="col-span-2 text-left">$LAST available for sale</p>
+                <p className="col-span-2 text-left">{TOKEN_NAME} available for sale</p>
                 <p className="text-right">
                   {' '}
-                  <span className="font-digit">6</span>m{' '}
+                  <span className="font-digit">{auctionAllowance}</span>m{' '}
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-1">
@@ -181,7 +205,14 @@ const AddPot = () => {
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-1">
-                <p className="col-span-2 text-left">$LAST valuation at price </p>
+                <p className="col-span-2 text-left">Total supply</p>
+                <p className="text-right">
+                  {' '}
+                  <span className="font-digit">{totalPoohSupply}</span>
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-1">
+                <p className="col-span-2 text-left">{TOKEN_NAME} valuation </p>
                 <p className="text-right">
                   {' '}
                   <span className="font-digit">3000</span> ETH{' '}
@@ -191,7 +222,7 @@ const AddPot = () => {
 
             <div className="w-full flex flex-col justify-center items-center gap-2">
               <label htmlFor="addToPot" className="text-2xl">
-                Add ETH Get $LAST:
+                Add to pot:
               </label>
               <div className="flex gap-2 justify-center items-center">
                 <input
@@ -206,12 +237,8 @@ const AddPot = () => {
                 <span>ETH</span>
               </div>
             </div>
-            <div className="digit-last text-2xl">
-              {parseUnits(String(addAmt), 18) > Number(tokenBalance) ? (
-                <p className="text-center">You don't have enough tokens</p>
-              ) : (
-                <></>
-              )}
+            <div className="text-2xl">
+              <span className="digit-last">{tokenReceived}</span> {TOKEN_NAME} to be received
             </div>
 
             <Button

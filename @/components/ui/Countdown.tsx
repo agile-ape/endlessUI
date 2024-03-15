@@ -90,7 +90,7 @@ export default function Countdown() {
 
   // const endTime: Date = new Date((Number(timeFlag) + Number(roundTime)) * 1000)
   // TODO: REMOVE BEFORE FLIGHT
-  const endTime: Date = new Date(1710000000 * 1000)
+  const endTime: Date = new Date(1720000000 * 1000)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -128,9 +128,9 @@ export default function Countdown() {
             'rounded-xl \
               py-4 sm:py-0 \
               text-[36px] sm:text-[28px] \
-              bg-[#404833] shadow-sm text-[#FCFDC7] \
+              bg-slate-200/50 shadow-xs text-[#404833] \
               capitalized font-digit \
-              border border-[#11140C] text-center\
+              border border-slate-300 text-center\
               flex justify-center',
             alarmState === 'ready'
               ? 'border-[#FCFC03] text-[#FCFC03] border'

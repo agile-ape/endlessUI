@@ -166,7 +166,7 @@ const ExitGame = () => {
             size="lg"
             isLoading={isLoading}
             onClick={exitGameHandler}
-            className="w-full"
+            className="w-ful"
             disabled={!ownedTicket?.isInPlay}
           >
             Claim ticket

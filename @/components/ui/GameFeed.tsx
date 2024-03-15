@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import type { FC } from 'react'
 import useSWR from 'swr'
 import { fetcher, replacePlaceholders } from '@/lib/utils'
 import {
@@ -19,11 +20,19 @@ type Feeds = {
   }
 }
 
+type GameFeedType = {
+  id?: number
+}
+
 // Limit to 15 events. Avoid scrolling if possible
-const GameFeed = () => {
-  const { data, error, isLoading } = useSWR<{
+const GameFeed: FC<GameFeedType> = ({ id }) => {
+  const {
+    data: EventData,
+    error,
+    isLoading,
+  } = useSWR<{
     data: {
-      block_timestamp: number
+      event: string
       block_number: number
       datetime: number
       message: {

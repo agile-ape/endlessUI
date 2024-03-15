@@ -4,18 +4,27 @@ import { GAME_ABI } from './abi/game'
 import { defineChain } from 'viem'
 /*---------------------------------------- ENV ---------------------------------------- */
 
-// process.env.NEXT_PUBLIC_CONTRACT
-// process.env.CHAIN_ID 168587773
+// import from .env
+const NODE_ENV = process.env.NODE_ENV
+console.log(NODE_ENV)
 
-// const GAME_ENV = '0x7B10015AF4D566377af6313c72640a3A96390c6C' as const
-const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
-const CHAIN_ENV = process.env.NEXT_PUBLIC_CHAIN_ID
+export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+/*---------------------------------------- CONTRACTS ---------------------------------------- */
+export const GAME_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
+export const defaultContractObj = {
+  address: GAME_ADDRESS,
+  abi: GAME_ABI,
+}
 
-console.log(isDevelopment)
-/*---------------------------------------- CHAIN ---------------------------------------- */
+export const TOKEN_ADDRESS = '0xe3e6133c3930c265757a6429ab5e53f30c19d70e' as const
+export const tokenContractObj = {
+  address: TOKEN_ADDRESS,
+  abi: TOKEN_ABI,
+}
 
+export const TREASURY_ADDRESS = '0xBadCE2c9dd0D33C746c5529CD3d3651b208350Be' as const
+// used for server utils
 export const blastSepolia = /*#__PURE__*/ defineChain({
   id: 168_587_773,
   network: 'Blast Sepolia',
@@ -46,39 +55,36 @@ export const blastSepolia = /*#__PURE__*/ defineChain({
   testnet: true,
 })
 
+export const API_ENDPOINT = 'https://pepper-obky.onrender.com/'
+export const WEBSOCKET_ENDPOINT = 'wss://pepper-obky.onrender.com'
+
+export const CHAIN_LIST = 'https://chainid.network/chains.json'
+export const TOKEN_NAME = 'WAND'
+// export const GAME_ADDRESS = GAME_ENV
+
+// export const CHAIN = blastSepolia
+// export const CHAIN_ID = Number(CHAIN_ENV)
+
+// const GAME_ENV = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
+// const CHAIN_ENV = process.env.NEXT_PUBLIC_CHAIN_ID
+
+/*---------------------------------------- CHAIN ---------------------------------------- */
+
 // export const CHAIN = baseGoerli
 // export const CHAIN_ID = 84531
 
-// used for server utils
-export const CHAIN = blastSepolia
-export const CHAIN_ID = Number(CHAIN_ENV)
-
-export let TOKEN_NAME: string
-
-if (CHAIN_ID === 168587773) {
-  TOKEN_NAME = 'tLAST'
-} else {
-  TOKEN_NAME = 'LAST'
-}
-
-export const BLOCK_EXPLORER = isDevelopment
-  ? 'https://testnet.blastscan.io'
-  : 'https://testnet.blastscan.io'
+// export const BLOCK_EXPLORER = isDevelopment
+//   ? 'https://testnet.blastscan.io'
+//   : 'https://testnet.blastscan.io'
 
 // https://testnet.arbiscan.io/
 
 /*---------------------------------------- API KEYS ---------------------------------------- */
-export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
+// export const HCAPCTCHA_KEY = '38e2ff83-f255-4b90-88ff-c65a443e82db' as const
 
-export const API_ENDPOINT = isDevelopment
-  ? 'https://test-2-be.onrender.com'
-  : 'https://test2-1e36.onrender.com'
+//pepper-obky.onrender.com
+// https: //pepper-obky.onrender.com/ws
 
-export const WEBSOCKET_ENDPOINT = isDevelopment
-  ? 'wss://test-2-be.onrender.com/ws'
-  : 'wss://test2-1e36.onrender.com/ws'
-
-export const CHAIN_LIST = 'https://chainid.network/chains.json'
 /*---------------------------------------- WALLETS ---------------------------------------- */
 // export const RELAYER_ADDRESS = '0xe973a9e8f568f64faa8696a762427972ee9f8446' as const // to be updated
 // export const TEAM_WALLET_ADDRESS = '0x27252766942062Efb686cc35803f5EdA7a923563' as const
@@ -86,19 +92,6 @@ export const CHAIN_LIST = 'https://chainid.network/chains.json'
 // export const ADMIN_ADDRESSES = [
 //   '0x17E11158D4AdD79f53FbC0efD8f69dC071546AA4', //last0x
 // ]
-
-/*---------------------------------------- CONTRACTS ---------------------------------------- */
-export const TOKEN_ADDRESS = '0xe3e6133c3930c265757a6429ab5e53f30c19d70e' as const
-export const tokenContractObj = {
-  address: TOKEN_ADDRESS,
-  abi: TOKEN_ABI,
-}
-
-export const GAME_ADDRESS = GAME_ENV
-export const defaultContractObj = {
-  address: GAME_ADDRESS,
-  abi: GAME_ABI,
-}
 
 // export const WHITELIST_DEV_ADDRESS = '0x68EEf6bb643efa224E804a8D604e511d1F8fa032' as const
 // export const WHITELIST_PROD_ADDRESS = '0xe3E6133c3930C265757a6429Ab5e53F30c19D70e' as const

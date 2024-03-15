@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type { IApp, Ticket } from 'types/app'
+import type { IApp, Ticket, Event } from 'types/app'
 import { API_ENDPOINT, GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
 import { formatUnits } from 'viem'
 
@@ -41,6 +41,12 @@ export const transformToTicket = (ticket: Ticket[]): IApp['tickets'] => {
     ...t,
   }))
 }
+
+// export const transformToEvent = (event: Event[]): IApp['events'] => {
+//   return event.map((e) => ({
+//     ...e,
+//   }))
+// }
 
 export const isJson = (str: string) => {
   try {

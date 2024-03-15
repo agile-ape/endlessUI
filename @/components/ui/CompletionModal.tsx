@@ -34,11 +34,11 @@ const getAlertLook = (alertLookTest: string) => {
         message: 'A warrior enters the arena',
       }
 
-    case 'lastLoaded':
+    case 'roll':
       return {
-        bgImage: 'safeOverlay',
-        face: 'warm',
-        title: 'checked in',
+        bgImage: 'rainbow',
+        face: 'roll',
+        title: 'Keep rolling',
         message: 'Enjoy your stay. Remember to check out on time. Or else.',
       }
 
@@ -71,6 +71,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
     closeModalAction({
       isOpen: false,
       state: '',
+      result: 0,
     })
   }
 
@@ -95,7 +96,7 @@ const CompletionModal: React.FC<CompletionModalType> = () => {
               </p>
               <Image
                 priority
-                src={`/faces/${face}.svg`}
+                src={`/faces/${face}.webp`}
                 height={152}
                 width={152}
                 alt={`${face} pepe`}

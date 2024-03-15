@@ -5,8 +5,8 @@ import { Cross1Icon } from '@radix-ui/react-icons'
 
 import RoundChange from './RoundChange'
 import JoinGame from './JoinGame'
-import LoadLast from './LoadLast'
-import ExitGame from './ExitGame'
+import LoadLast from './_LoadLast'
+import ExitGame from './_ExitGame'
 import AddPot from './AddPot'
 
 import { useOutsideClick } from '../../../hooks/useOutclideClick'

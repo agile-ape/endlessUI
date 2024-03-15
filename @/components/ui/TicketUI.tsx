@@ -1,10 +1,11 @@
 // @ts-nocheck
 import React from 'react'
 import type { FC } from 'react'
-import type { IApp, Ticket } from 'types/app'
+import type { IApp, Ticket, Event } from 'types/app'
 import Image from 'next/image'
+
 import { useAccount, useContractRead, useEnsName } from 'wagmi'
-import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
+import { defaultContractObj } from '../../../services/constant'
 import {
   cn,
   formatAddress,
@@ -31,6 +32,8 @@ import Modal from './Modal'
 import { Button } from './button'
 import OnSignal from './_OnSignal'
 import { toast } from '../shadcn/use-toast'
+import Roll from './Roll'
+import Exit from './Exit'
 import {
   User,
   Menu,
@@ -70,13 +73,13 @@ const getTicketSize = (ticketSize) => {
   switch (ticketSize) {
     case 1:
       return {
-        size: 'w-[260px] h-[280px]',
+        size: 'w-[200px] h-[240px]',
         edge: 'rounded-xl',
         h1: 'text-2xl',
         h2: 'text-base',
         h3: 'text-xl',
-        imgh: '140',
-        imgw: '180',
+        imgh: '120',
+        imgw: '140',
         mt: 'mt-0 mb-0',
       }
     case 2:
@@ -108,15 +111,25 @@ const getTicketSize = (ticketSize) => {
 
 const useStore = () => {
   const round = useStoreState((state) => state.round)
+  const events = useStoreState((state) => state.events)
+  const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
   return {
     round,
+    events,
+    lastChangedTicket,
   }
 }
 
 const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLookOverwrite }) => {
-  const lastChangedTicket = useStoreState((state) => state.lastChangedTicket)
+  const { round, events, lastChangedTicket } = useStore()
+
+  // const [eventList, setEventList] = useState<Event[]>([])
 
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
+
+  // const handleOnClick: MouseEventHandler = () => {
+  //   setIsOverlayInspect(!isOverlayInspect)
+  // }
 
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
@@ -130,14 +143,15 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
     setIsOverlayInspect(!isOverlayInspect)
   }
 
+  const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)
+  const toggleLoad = () => setShowLoadModal((prevState) => !prevState)
+
   const { address, isConnected } = useAccount()
 
   const { data: idArray } = useContractRead({
     ...defaultContractObj,
     functionName: 'playerToIdArray',
   })
-
-  const { round } = useStore()
 
   /*-------------------------------------- TICKET LOOK -----------------------------------*/
 
@@ -148,20 +162,26 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   let ticketPurchasePrice = ticket?.purchasePrice
   let ticketRedeemValue = ticket?.redeemValue
   let ticketPotClaimCount = ticket?.potClaimCount
-  let ticketPassRate = ticket?.passRate
+  let ticketPassRate = 10
   let ticketJoinRound = ticket?.joinRound
   let ticketExitRound = ticket?.exitRound
-  let ticketLastCount = ticket?.lastCount
+  let ticketLogs: string[] = [...ticket?.logs]
 
+  // let ticketLastCount = ticket?.lastCount
+
+  // const eventList = [...events]
+  // const ticketEvents: Event[] = eventList.filter((item) => item.id === ticketId)
+
+  // const ticketEvents = ['NewTicketBought', 'ValuePassed', 'ValueReceive', 'PhaseChange']
   // compute nextPassRate
   // TODOs: check for other conditions - lastman. no one alive behind, exited...
-  let nextPassRate: number
+  // let nextPassRate: number
 
-  if (!ticketIsInPlay || ticketLastCount >= ticketPassRate) {
-    nextPassRate = 0
-  } else {
-    nextPassRate = ticketPassRate - ticketLastCount
-  }
+  // if (!ticketIsInPlay || ticketLastCount >= ticketPassRate) {
+  //   nextPassRate = 0
+  // } else {
+  //   nextPassRate = ticketPassRate - ticketLastCount
+  // }
 
   // ticketLook
   let ticketLook: string
@@ -192,7 +212,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
 
   let ticketLookFinal: string
   // ticketLookFinal = ticketLookOverwrite ?? ticketLook
-  ticketLookFinal = 'passPot'
+  ticketLookFinal = 'holdPot'
 
   const ticketLookMapping = {
     justJoined: {
@@ -202,7 +222,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-black',
       face: 'enter',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
@@ -214,7 +234,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-black',
       face: 'happy',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
@@ -226,7 +246,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-black',
       face: 'worried',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
@@ -238,7 +258,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-black',
       face: 'surprised',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
@@ -250,7 +270,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-black',
       face: 'warm',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'ticket value',
       value: ticketValue + ' ETH',
     },
@@ -262,7 +282,7 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
       back: 'text-white',
       face: 'exit',
       id: ticketId,
-      passRate: nextPassRate,
+      passRate: ticketPassRate,
       label: 'exit value',
       value: ticketRedeemValue + ' ETH',
     },
@@ -274,129 +294,81 @@ const TicketUI: FC<TicketUIType> = ({ ticketSize, ticketNumber, ticket, ticketLo
   const { size, edge, h1, h2, h3, h4, imgh, imgw, mt, gap } = getTicketSize(ticketSize)
 
   return (
-    <div
-      className={`flex flex-col wiggle mx-auto relative justify-center shadow-xl ${size} ${edge} ${
-        ticket.id === lastChangedTicket ? 'triggered-wiggle' : ''
-      }`}
-      style={{
-        backgroundImage: bgImage ? `url('/ticket/${bgImage}.svg')` : 'none', // different for true
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-      }}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-      onClick={() => {
-        if (window.innerWidth < 640) {
-          toggleOverlayInspect()
-        }
-      }}
-    >
-      {/* back */}
-      {isOverlayInspect ? (
-        <div
-          className={`${h4} ${back} ${edge} flex flex-col mx-auto gap-x-2 px-4 justify-center h-[100%] w-[100%]  shadow-xl text-center`}
-        >
-          <div className="flex justify-between gap-6">
-            <p className="text-left"> Owner</p>
-            <p className="text-right italic flex justify-center items-center">
-              <a
-                className="hover:underline"
-                href={`${BLOCK_EXPLORER}/address/${ticketPlayer}`}
-                target="_blank"
-              ></a>
-            </p>
-          </div>
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Joined at</p>
-            <p className="text-right">
-              <span className="text-sm">Round </span>
-              {ticketJoinRound}
-            </p>
-          </div>
-
-          {ticketLookFinal === 'exitGame' && (
-            <div className="flex justify-between gap-6">
-              <p className="text-left">Exited at</p>
-              <p className="text-right">
-                <span className="text-sm">Round </span>
-                {ticketExitRound}
-              </p>
-            </div>
-          )}
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Join value</p>
-            <p className="text-right">
-              {formatNumber(ticketPurchasePrice, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-              <span className="text-xs">ETH</span>
-            </p>
-          </div>
-
-          {ticketLookFinal === 'exitGame' && (
-            <div className="flex justify-between gap-6">
-              <p className="text-left">Exit value</p>
-              <p className="text-right">
-                <span className="text-sm">{ticketRedeemValue}</span>
-              </p>
-            </div>
-          )}
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">$LAST</p>
-            <p className="text-right">{ticketLastCount}</p>
-          </div>
-
-          <div className="flex justify-between gap-6">
-            <p className="text-left">Claim count</p>
-            <p className="text-right">
-              {ticketPotClaimCount}
-              <span className="text-sm">x</span>
-            </p>
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* top header */}
-          {/* TODOS - ADJUST TO PULL ID FROM ARRAY */}
-          {ticketSize === 3 && address?.toLowerCase() === ticket?.user && (
-            <div className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 rounded-full motion-safe:animate-bounce w-max mx-auto px-3 absolute inset-x-0 -top-3 h-5">
-              Hello there
-            </div>
-          )}
-
-          <div
-            className={`${h1} ${header} font-digit text-center uppercase shadow-xl m-2 rounded-lg`}
-          >
-            🎟 TICKET {String(id)}
-          </div>
-          {/* main image */}
-          <div className="flex flex-row items-start justify-center">
-            <Image
-              priority
-              src={`/faces/${face}.svg`}
-              height={imgh}
-              width={imgw}
-              className={`h-auto ${mt}`}
-              alt={`${face} pepe`}
-            />
-            <div className={`${blinker} font-digit px-1 border`}>{passRate}</div>
-          </div>
-          {/* ticket value */}
-          <div
-            className={cn(
-              ticketLookFinal === 'exitGame' ? 'opacity-70' : '',
-              `${header} ${edge} shadow-xl text-center m-2 mt-0`,
+    <div className="flex justify-center">
+      {/* Ticket card */}
+      <div
+        className={`flex flex-col wiggle mx-auto relative justify-center cursor-pointer shadow-xl ${size} ${edge} ${
+          ticket.id === lastChangedTicket ? 'triggered-wiggle' : ''
+        }`}
+        style={{
+          backgroundImage: bgImage ? `url('/ticket/${bgImage}.svg')` : 'none', // different for true
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        // onClick={() => handleOnClick()}
+      >
+        {/* back shows the logs */}
+        {isOverlayInspect ? (
+          <>
+            {ticketLogs?.map((item) => (
+              <div
+                key={item}
+                className="flex flex-col justify-between py-1
+          border-b-[1px] border-dotted border-zinc-600 dark:border-zinc-300"
+              >
+                {item}
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {/* top header */}
+            {/* TODOS - ADJUST TO PULL ID FROM ARRAY */}
+            {ticketSize === 3 && address?.toLowerCase() === ticket?.user && (
+              <div className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 rounded-full motion-safe:animate-bounce w-max mx-auto px-3 absolute inset-x-0 -top-3 h-5">
+                Hello there
+              </div>
             )}
-          >
-            <div className={`capitalize ${h2} opacity-60 leading-tight`}>{label}</div>
-            <div className={`uppercase font-digit ${h3}`}>{value}</div>
-          </div>
-        </>
-      )}
+
+            <div
+              className={`${h1} ${header} font-digit text-center uppercase shadow-xl m-2 rounded-lg`}
+            >
+              🎟 TICKET {String(id)}
+            </div>
+            {/* main image */}
+            <div className="flex flex-row items-start justify-center my-2">
+              <Image
+                priority
+                src={`/faces/${face}.svg`}
+                height={imgh}
+                width={imgw}
+                className={`h-auto ${mt}`}
+                alt={`${face} pepe`}
+              />
+              <div className={`${blinker} font-digit text-3xl px-1 border shadow-xl`}>
+                {ticketPassRate}
+              </div>
+            </div>
+            {/* ticket value */}
+            <div
+              className={cn(
+                ticketLookFinal === 'exitGame' ? 'opacity-70' : '',
+                `${header} ${edge} shadow-xl text-center m-2 mt-0`,
+              )}
+            >
+              <div className={`capitalize ${h2} opacity-80 leading-tight`}>{label}</div>
+              <div className={`uppercase font-digit ${h3}`}>{value}</div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* User buttons */}
+
+      <Roll id={ticket.id} />
+      <Exit id={ticket.id} />
     </div>
   )
 }

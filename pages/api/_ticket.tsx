@@ -3,7 +3,7 @@ import { publicClient } from '../../services/server_utils'
 import { GAME_ADDRESS } from '../../services/constant'
 import { GAME_ABI } from '../../services/abi/game'
 import type { IApp } from 'types/app'
-import { supabase } from '../../services/supabase'
+import { supabase } from '../../services/_supabase'
 
 type ResponseData = {
   message: string

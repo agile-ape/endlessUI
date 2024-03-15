@@ -14,6 +14,9 @@ import {
 import dynamic from 'next/dynamic'
 import {
   defaultContractObj,
+  tokenContractObj,
+  GAME_ADDRESS,
+  TREASURY_ADDRESS,
   DOCS_URL_buy,
   BUY_TICKET_IMG,
   BUY_TICKET_MOBILE_IMG,
@@ -25,20 +28,20 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 const useStore = () => {
   const buyFlag = useStoreState((state) => state.buyFlag)
   const potFlag = useStoreState((state) => state.potFlag)
-  const ticketId = useStoreState((state) => state.ticketId)
+  const ticketIdCounter = useStoreState((state) => state.ticketIdCounter)
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const ticketPrice = useStoreState((state) => state.ticketPrice)
-  const buyTicketDelay = useStoreState((state) => state.buyTicketDelay)
+  const buyTicketDelayCeiling = useStoreState((state) => state.buyTicketDelayCeiling)
   const startingPassRate = useStoreState((state) => state.startingPassRate)
   const updateCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
 
   return {
     buyFlag,
     potFlag,
-    ticketId,
+    ticketIdCounter,
     canBuyTicket,
     ticketPrice,
-    buyTicketDelay,
+    buyTicketDelayCeiling,
     startingPassRate,
     updateCompletionModal,
   }
@@ -48,10 +51,10 @@ const JoinGame = () => {
   const {
     buyFlag, // build buyDelay?
     potFlag,
-    ticketId,
+    ticketIdCounter,
     canBuyTicket,
     ticketPrice,
-    buyTicketDelay, // build buyDelay
+    buyTicketDelayCeiling, // build buyDelay
     startingPassRate,
     updateCompletionModal,
   } = useStore()
@@ -68,7 +71,9 @@ const JoinGame = () => {
   })
 
   // variables
-  const queueToPot = ticketId - potFlag
+  const queueToPot = ticketIdCounter - potFlag
+
+  console.log(ticketPrice)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -90,6 +95,7 @@ const JoinGame = () => {
       updateCompletionModal({
         isOpen: true,
         state: 'afterPurchase',
+        result: 0,
       })
     } catch (error: any) {
       const errorMsg =
@@ -153,9 +159,8 @@ const JoinGame = () => {
             <div className="font-digit flex justify-center my-2">You have</div>
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">ETH in wallet</p>
-              <p className="text-right font-digit">
-                {formattedEthBalance}
-                ETH
+              <p className="text-right">
+                <span className="font-digit">{formattedEthBalance}</span> ETH
               </p>
             </div>
 
@@ -163,7 +168,7 @@ const JoinGame = () => {
 
             <div className="grid grid-cols-2 gap-1">
               <p className="text-left">Next ticket #</p>
-              <p className="text-right font-digit"> {ticketId + 1} </p>
+              <p className="text-right font-digit"> {ticketIdCounter + 1} </p>
             </div>
 
             {/* <div className="grid grid-cols-2 gap-1">

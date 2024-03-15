@@ -3,7 +3,12 @@ export const TOKEN_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_farmWallet',
+        name: '_treasury',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_taxWallet',
         type: 'address',
       },
     ],
@@ -96,19 +101,6 @@ export const TOKEN_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_addressAllowed',
-        type: 'address',
-      },
-    ],
-    name: 'addToAllowTransfer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
         name: '_player',
         type: 'address',
       },
@@ -122,32 +114,13 @@ export const TOKEN_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_player',
+        name: '_addressToAdd',
         type: 'address',
       },
     ],
-    name: 'addToSideQuestCount',
+    name: 'addToTaxList',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'allowTransfer',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -218,19 +191,6 @@ export const TOKEN_ABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'bettorCount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -244,6 +204,45 @@ export const TOKEN_ABI = [
       },
     ],
     name: 'burn',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'buyTax',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_newBuyTax',
+        type: 'uint256',
+      },
+    ],
+    name: 'changeBuyTax',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_newSellTax',
+        type: 'uint256',
+      },
+    ],
+    name: 'changeSellTax',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -286,16 +285,80 @@ export const TOKEN_ABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'farmWallet',
-    outputs: [
+    inputs: [
       {
         internalType: 'address',
         name: '',
         type: 'address',
       },
     ],
+    name: 'dontFriendList',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_addressToNotFriend',
+        type: 'address',
+      },
+    ],
+    name: 'dontFriendYou',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_account',
+        type: 'address',
+      },
+    ],
+    name: 'excludeFromTax',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'excludeFromTaxList',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_addressToFriend',
+        type: 'address',
+      },
+    ],
+    name: 'friendYou',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -403,11 +466,24 @@ export const TOKEN_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_addressAllowed',
+        name: '_account',
         type: 'address',
       },
     ],
-    name: 'removeFromAllowTransfer',
+    name: 'removeExcludeFromTax',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_addressToRemove',
+        type: 'address',
+      },
+    ],
+    name: 'removeFromTaxList',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -433,14 +509,8 @@ export const TOKEN_ABI = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'sideQuestCount',
+    inputs: [],
+    name: 'sellTax',
     outputs: [
       {
         internalType: 'uint256',
@@ -459,6 +529,38 @@ export const TOKEN_ABI = [
         internalType: 'string',
         name: '',
         type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'taxList',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'taxWallet',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -541,6 +643,32 @@ export const TOKEN_ABI = [
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'treasury',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
 ] as const
