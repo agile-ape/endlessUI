@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { publicClient } from '../../services/server_utils'
+// import { publicClient } from '../../services/server_utils'
 import { GAME_ADDRESS } from '../../services/constant'
 import { GAME_ABI } from '../../services/abi/game'
 import type { IApp } from 'types/app'
