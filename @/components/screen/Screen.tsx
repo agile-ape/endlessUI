@@ -1,10 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-
-import JoinGame from '../ui/JoinGame'
-
-import TicketUI from '../ui/TicketUI'
-import TicketList from '../ui/TicketList'
 import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { useStoreState } from '../../../store'

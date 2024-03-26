@@ -37,7 +37,7 @@ function Header() {
         capitalized font-digit text-center cursor-pointer"
               onMouseDown={handleOnMouseDown}
             >
-              🐻 pooh
+              LAST
             </div>
           </div>
 

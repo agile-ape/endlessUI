@@ -3,7 +3,14 @@ import { Analytics } from '@vercel/analytics/react'
 import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useBalance, useContractRead, useContractReads, useWalletClient } from 'wagmi'
+import {
+  useAccount,
+  useBalance,
+  useReadContracts,
+  useContractRead,
+  useContractReads,
+  useWalletClient,
+} from 'wagmi'
 import {
   API_ENDPOINT,
   CHAIN_ID,
@@ -81,7 +88,8 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const router = useRouter()
   const { address, isConnected } = useAccount()
 
-  const { data, refetch: refetchInitData } = useContractReads({
+  /*
+  const { data, refetch: refetchInitData } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
@@ -161,32 +169,8 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...tokenContractObj,
         functionName: 'totalSupply',
       },
-      // {
-      //   ...defaultContractObj,
-      //   functionName: 'getPlayerToIdArray',
-      //   args: [address as `0x${string}`],
-      // },
     ],
-    enabled: isConnected,
   })
-
-  /*
-  currentPot => TicketList
-  round => TicketList
-  timeFlag => Countdown
-  buyFlag => JoinGame
-  potFlag => JoinGame, LoadLast
-  ticketId => JoinGame
-  ticketCount => TicketList
-  canBuyTicket => JoinGame
-  ticketPrice => JoinGame
-  buyTicketDelay => JoinGame
-  roundTime => Countdown
-  feeShare => RoundChange
-  startingPassRate => JoinGame
-  lastMultiplier => LoadLast
-  tokenBalance => LoadLast
-  */
 
   if (data && data?.length > 0) {
     const canBuyTicket = data[0]?.result || false
@@ -209,196 +193,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     const auctionAllowance = data?.[17].result || BigInt(0)
     const totalPoohSupply = data?.[8].result || BigInt(0)
     // const playerTickets = Array(data[17]?.result) || Array
-
-    //----------------------------------------------------------- TICKETS ----------------------------------------------------------- *//
-    const {
-      data: ticketsData,
-      error: ticketsError,
-      mutate,
-    } = useSWR<{
-      data: Ticket[]
-    }>(
-      `/tickets/${CHAIN_ID}/${GAME_ADDRESS}/?page=1&limit=30&sortOrder=ASC&sortBy=ticketId`,
-      fetcher,
-    )
-
-    if (ticketsData?.data.length) {
-      // add all tickets
-      const ticketList = transformToTicket(ticketsData?.data).filter(
-        (item) => item.player !== '0x0000000000000000000000000000000000000000',
-      )
-      updateTickets(ticketList)
-
-      // add owned tickets
-      const ownedTickets = ticketList.filter(
-        (item) => item.player.toLowerCase() === address?.toLowerCase(),
-      )
-
-      if (ownedTickets) {
-        updateOwnedTickets(ownedTickets)
-      }
-    }
-
-    //----------------------------------------------------------- EVENT LOGS ----------------------------------------------------------- *//
-    // const {
-    //   data: eventData,
-    //   error: eventError,
-    //   isLoading,
-    // } = useSWR<{
-    //   data: {
-    //     id: number
-    //     event: string
-    //     topics1: string
-    //     topics2: string
-    //     topics3: string
-    //   }[]
-
-    //   // data: { id: number }[]
-    // }>(`/events/${CHAIN_ID}?address=${GAME_ADDRESS}&page=1&limit=100`, fetcher)
-
-    // if (eventData?.data.length) {
-    //   // add all tickets
-    //   const eventList = transformToEvent(eventData?.data)
-    //   updateEvents(eventList)
-    // }
-
-    /*
-    const events: Event[] = [
-      {
-        name: `tickets-${CHAIN_ID}-${GAME_ADDRESS}`,
-        handler(data) {
-          if (!data?.id) return
-
-          updateLastChangedTicket(data.id)
-          // setTimeout(() => updateLastChangedTicket(0), 3000)
-
-          if (data?.user?.toLowerCase() === address?.toLowerCase()) {
-            updateOwnedTicket(data)
-          } else {
-            modifyPlayerTicket({
-              id: data?.id,
-              ticket: data,
-            })
-          }
-        },
-      },
-      {
-        name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
-        async handler(data) {
-          const { event, dataJson } = data
-
-          if (!Object.keys(dataJson).length) return
-
-          const refetchedEvents = ['VoteYes', 'VoteNo', 'NewTicketBought', 'PhaseChange']
-
-          if (refetchedEvents.includes(event)) {
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            refetchInitData()
-          }
-
-          if (event === 'SafehousePrice') {
-            const { price, time } = dataJson
-            // const priceRate = formatUnits(price || BigInt(0), 3)
-            toast({
-              variant: 'info',
-              // title: 'Keyword updated',
-              description: <p>Safehouse price is now {price} $LAST per night </p>,
-            })
-          }
-
-          if (event === 'TokenEmission') {
-            const { emission, time } = dataJson
-            // const emissionRate = formatUnits(emission || BigInt(0), 3)
-            toast({
-              variant: 'info',
-              // title: 'Keyword updated',
-              description: <p>Tokens are now emitted at {emission} $LAST per attack </p>,
-            })
-          }
-
-          if (event === 'DrainTriggered') {
-            const { drainRound, drainRate, time } = dataJson
-            const drainBegins = formatUnits(drainRound || BigInt(0), 0)
-            toast({
-              variant: 'info',
-              // title: 'Keyword updated',
-              description: (
-                <p>
-                  Pot will starting draining on round{' '}
-                  <span className="round-last">{drainBegins}</span>.
-                </p>
-              ),
-            })
-          }
-
-          if (event === 'PhaseChange') {
-            const { caller, previousPhase, newPhase, time } = dataJson
-
-            // start
-            if (newPhase === 1) {
-              toast({
-                variant: 'info',
-                title: 'Ticket buying',
-                description: <p>Ticket buying has started.</p>,
-              })
-            }
-
-            // day
-            if (newPhase === 2) {
-              toast({
-                variant: 'info',
-                title: 'Day has come',
-                description: <p>Day has come. Remember to submit keyword.</p>,
-              })
-            }
-
-            // night
-            if (newPhase === 3) {
-              toast({
-                variant: 'info',
-                title: 'Night has come',
-                description: <p>Night has come. Let the attacks begin</p>,
-              })
-            }
-
-            // lastmanfound
-            if (newPhase === 4) {
-              triggerCompletionModal({
-                isOpen: true,
-                state: 'lastman',
-              })
-            }
-
-            // peacefound
-            if (newPhase === 5) {
-              triggerCompletionModal({
-                isOpen: true,
-                state: 'peacefound',
-              })
-            }
-            // drain
-            if (newPhase === 6) {
-              triggerCompletionModal({
-                isOpen: true,
-                state: 'drain',
-              })
-            }
-            // gameclosed
-            if (newPhase === 7) {
-              triggerCompletionModal({
-                isOpen: true,
-                state: 'gameClosed',
-              })
-            }
-
-            globalMutate('phase')
-          }
-        },
-      },
-    ]
-
-    useSocketEvents(events)
-    */
 
     const { data: balanceData, refetch: refetchBalance } = useBalance({
       address: GAME_ADDRESS,
@@ -462,14 +256,14 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     router.replace(router.asPath)
   }
 
+  */
+
   return (
     <>
       <main
         className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
         style={{
-          backgroundImage: xs
-            ? `url(/background/PeaceFoundMobile.svg)`
-            : `url(/background/Pooh.svg)`,
+          backgroundImage: xs ? `url(/background/StartMobile.svg)` : `url(/background/Start.svg)`,
         }}
       >
         <div className="container mx-auto p-0">

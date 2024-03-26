@@ -7557,6 +7557,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"input-otp@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "input-otp@npm:1.2.3"
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 9c8edfa17b6023d62933cee526e515c5bc07a02392eacdd7fa690639ca71f88831a07f07594b3bceb1e43242a07f6207a1838e4738609cee997b8435987ffed2
+  languageName: node
+  linkType: hard
+
 "internal-slot@npm:^1.0.5, internal-slot@npm:^1.0.7":
   version: 1.0.7
   resolution: "internal-slot@npm:1.0.7"
@@ -8357,6 +8367,7 @@ __metadata:
     embla-carousel-react: ^8.0.0-rc17
     eslint: ^8.15.0
     eslint-config-next: ^13.4.3
+    input-otp: ^1.2.3
     lucide-react: ^0.307.0
     next: ^13.4.3
     next-pwa: ^5.6.0
