@@ -208,7 +208,7 @@ const Layout = ({ children, metadata, phase }: LayoutProps) => {
             toast({
               variant: 'info',
               title: 'Night has come',
-              description: <p>Night has come. Let the attacks begin</p>,
+              description: <p>Night has come. Let the dattacks begin</p>,
             })
           }
 
