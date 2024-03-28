@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import type { IApp, Ticket, Event } from 'types/app'
-import { API_ENDPOINT, GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
+import { GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
 import { formatUnits } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
@@ -68,17 +68,17 @@ export function formatCount(value: any): string {
   return value == 0 ? '-' : String(value)
 }
 
-export async function fetcher(path: string) {
-  try {
-    const response = await fetch(API_ENDPOINT + path)
-    const json = await response.json()
+// export async function fetcher(path: string) {
+//   try {
+//     const response = await fetch(API_ENDPOINT + path)
+//     const json = await response.json()
 
-    return json
-  } catch (error) {
-    console.log({ error })
-    throw new Error('Failed to fetch API')
-  }
-}
+//     return json
+//   } catch (error) {
+//     console.log({ error })
+//     throw new Error('Failed to fetch API')
+//   }
+// }
 
 export function replacePlaceholders(message: { value: string; args: Record<string, string> }) {
   let result = message.value

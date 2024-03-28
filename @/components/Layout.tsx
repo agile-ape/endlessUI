@@ -3,29 +3,13 @@ import { Analytics } from '@vercel/analytics/react'
 import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import {
-  useAccount,
-  useBalance,
-  useReadContracts,
-  useContractRead,
-  useContractReads,
-  useWalletClient,
-} from 'wagmi'
-import {
-  API_ENDPOINT,
-  CHAIN_ID,
-  WEBSOCKET_ENDPOINT,
-  defaultContractObj,
-  tokenContractObj,
-  GAME_ADDRESS,
-  TREASURY_ADDRESS,
-} from '../../services/constant'
+import { useAccount, useBalance, useReadContracts, useWalletClient } from 'wagmi'
+import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { getTickets } from '../../services/_api'
-import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
+import { isJson, transformToTicket, formatNumber } from '@/lib/utils'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from './shadcn/use-toast'
@@ -38,49 +22,49 @@ type LayoutProps = {
   metadata: MetaProps
 }
 
-type Feeds = {
-  block_timestamp: number
-  block_number: number
-  datetime: number
-  message: {
-    value: string
-    args: Record<string, string>
-  }
-}
+// type Feeds = {
+//   block_timestamp: number
+//   block_number: number
+//   datetime: number
+//   message: {
+//     value: string
+//     args: Record<string, string>
+//   }
+// }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
   // Settings
-  const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
-  const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
-  const updateBuyTicketDelayCeiling = useStoreActions(
-    (actions) => actions.updateBuyTicketDelayCeiling,
-  )
-  const updateRoundTime = useStoreActions((actions) => actions.updateRoundTime)
-  const updateFeeShare = useStoreActions((actions) => actions.updateFeeShare)
-  const updateStartingPassRate = useStoreActions((actions) => actions.updateStartingPassRate)
-  const updateAuctionPrice = useStoreActions((actions) => actions.updateAuctionPrice)
-  const updatePoohPerRoll = useStoreActions((actions) => actions.updatePoohPerRoll)
-  const updatePassRateRange = useStoreActions((actions) => actions.updatePassRateRange)
-  const updatePassRateFloor = useStoreActions((actions) => actions.updatePassRateFloor)
+  // const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
+  // const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
+  // const updateBuyTicketDelayCeiling = useStoreActions(
+  //   (actions) => actions.updateBuyTicketDelayCeiling,
+  // )
+  // const updateRoundTime = useStoreActions((actions) => actions.updateRoundTime)
+  // const updateFeeShare = useStoreActions((actions) => actions.updateFeeShare)
+  // const updateStartingPassRate = useStoreActions((actions) => actions.updateStartingPassRate)
+  // const updateAuctionPrice = useStoreActions((actions) => actions.updateAuctionPrice)
+  // const updatePoohPerRoll = useStoreActions((actions) => actions.updatePoohPerRoll)
+  // const updatePassRateRange = useStoreActions((actions) => actions.updatePassRateRange)
+  // const updatePassRateFloor = useStoreActions((actions) => actions.updatePassRateFloor)
 
-  const updateRound = useStoreActions((actions) => actions.updateRound)
-  const updateTimeFlag = useStoreActions((actions) => actions.updateTimeFlag)
-  const updateBuyFlag = useStoreActions((actions) => actions.updateBuyFlag)
-  const updatePotFlag = useStoreActions((actions) => actions.updatePotFlag)
-  const updateTicketIdCounter = useStoreActions((actions) => actions.updateTicketIdCounter)
-  const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
+  // const updateRound = useStoreActions((actions) => actions.updateRound)
+  // const updateTimeFlag = useStoreActions((actions) => actions.updateTimeFlag)
+  // const updateBuyFlag = useStoreActions((actions) => actions.updateBuyFlag)
+  // const updatePotFlag = useStoreActions((actions) => actions.updatePotFlag)
+  // const updateTicketIdCounter = useStoreActions((actions) => actions.updateTicketIdCounter)
+  // const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
 
-  const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
-  const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
-  const updateAuctionAllowance = useStoreActions((actions) => actions.updateAuctionAllowance)
-  const updateTotalPoohSupply = useStoreActions((actions) => actions.updateTotalPoohSupply)
+  // const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
+  // const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
+  // const updateAuctionAllowance = useStoreActions((actions) => actions.updateAuctionAllowance)
+  // const updateTotalPoohSupply = useStoreActions((actions) => actions.updateTotalPoohSupply)
 
-  const updateTickets = useStoreActions((actions) => actions.updateTickets)
-  const updateEvents = useStoreActions((actions) => actions.updateEvents)
-  const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
-  const updateOwnedTickets = useStoreActions((actions) => actions.updateOwnedTickets)
-  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
+  // const updateTickets = useStoreActions((actions) => actions.updateTickets)
+  // const updateEvents = useStoreActions((actions) => actions.updateEvents)
+  // const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
+  // const updateOwnedTickets = useStoreActions((actions) => actions.updateOwnedTickets)
+  // const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
+  // const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
 
   const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()

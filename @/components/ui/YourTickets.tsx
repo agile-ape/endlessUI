@@ -131,7 +131,7 @@ export const PrevButton: React.FC<PrevNextPropType> = (props) => {
     <button className="" type="button" {...restProps}>
       <ChevronLeft
         size={48}
-        className="bg-[#404833] hover:opacity-50 active:opacity-75 text-[#FCFDC7] m-2 p-1 cursor-pointer rounded-full border border-[#404833]"
+        className="text-gray-400 hover:text-white active:opacity-75 m-1 p-1 cursor-pointer"
       />
       {children}
     </button>
@@ -145,7 +145,7 @@ export const NextButton: React.FC<PrevNextPropType> = (props) => {
     <button className="" type="button" {...restProps}>
       <ChevronRight
         size={48}
-        className="bg-[#404833] hover:opacity-50 active:opacity-75 text-[#FCFDC7] m-2 p-1 cursor-pointer rounded-full border border-[#404833]"
+        className="text-gray-400 hover:text-white active:opacity-75 m-1 p-1 cursor-pointer"
       />
 
       {children}
@@ -186,74 +186,49 @@ const YourTickets = () => {
   }
 
   return (
-    <div
-      className="rounded-xl gap-4 my-4 \
-    border border-gray-700 \
-    flex flex-col items-center justify-center mx-auto"
-    >
-      <>
-        {isConnected ? (
-          <div className="flex flex-col gap-4">
-            <p
-              className="
-              py-2 text-2xl text-gray-400 capitalized flex justify-center"
-            >
-              Your Tickets
-            </p>
-            <div className="flex ">
-              <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-              <section className="mx-auto">
-                <div className="w-[320px] overflow-hidden" ref={emblaRef}>
-                  <div className="flex touch-pan-x">
-                    <TicketUI id={1} number={2301} />
-                    {/* <TicketUI id={2} number={2301} /> */}
-                    {/* <TicketUI id={3} number={2301} /> */}
-                    {/* {ownedTickets.map((ticket) => (
-                    <div className="" key={ticket.id}>
+    <div className="flex flex-col gap-4 my-2 items-center justify-center mx-auto">
+      <p className="py-2 text-2xl text-gray-400 capitalized flex justify-center">Your keys</p>
+      <div className="flex">
+        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+        <section className="mx-auto">
+          <div className="w-[250px] overflow-hidden" ref={emblaRef}>
+            <div className="flex touch-pan-x">
+              {/* {isConnected ? <TicketUI id={1} number={2301} /> : <TicketUI id={1} number={2301} />} */}
+              <li>
+                <TicketUI id={1} number={2301} />
+              </li>
+              <li>
+                <TicketUI id={1} number={2301} isWinner={true} />{' '}
+              </li>
+              <li>
+                <TicketUI id={1} number={2301} />{' '}
+              </li>
+              {/* <TicketUI id={2} number={2301} /> */}
+              {/* <TicketUI id={3} number={2301} /> */}
+              {/* {ownedTickets.map((ticket) => (
+                    <div className="mx-2" key={ticket.id}>
                       <TicketUI id={ticket.id} number={ticket.number} />
                       </div>
                     ))} */}
-                  </div>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <div className="flex flex-row justify-center items-center">
-                    {scrollSnaps.map((_, index) => (
-                      <DotButton
-                        key={index}
-                        onClick={() => onDotButtonClick(index)}
-                        className={cn(
-                          index === selectedIndex ? 'border-2 border-black' : '',
-                          'w-4 h-4 bg-gray-500 rounded-full m-2 p-0 border-none cursor-pointer',
-                        )}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </section>
-              <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col items-center gap-4">
-            <div className="text-center px-10 py-1 leading-10 text-gray-400 h-12 text-2xl">
-              Not logged in
-            </div>
-            <Image
-              priority
-              src={`/faces/eatchips.svg`}
-              height={110}
-              width={150}
-              className={`h-auto mt-0 mb-0`}
-              alt={`guest pepe`}
+        </section>
+        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+      </div>
+      <div className="flex flex-col justify-center items-center gap-2">
+        <div className="flex flex-row justify-center items-center">
+          {scrollSnaps.map((_, index) => (
+            <DotButton
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              className={cn(
+                index === selectedIndex ? 'border-2 border-black' : '',
+                'w-3 h-3 bg-gray-400 rounded-full m-1 p-0 border-none cursor-pointer',
+              )}
             />
-            <div className="text-center text-2xl rounded-lg py-1 px-2 border-gray-600">
-              <a href={TWITTER_URL} target="_blank">
-                Follow 🐦
-              </a>
-            </div>
-          </div>
-        )}
-      </>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

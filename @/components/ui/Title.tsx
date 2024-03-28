@@ -48,7 +48,7 @@ const Title = () => {
   }, [])
 
   return (
-    <div className="text-4xl digit-last mx-3 capitalize">
+    <div className="text-3xl font-digit text-gray-400 mx-3 capitalize">
       <p>
         {displayResponse}
         {!completedTyping && <CursorSVG />}

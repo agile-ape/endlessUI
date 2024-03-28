@@ -189,6 +189,26 @@ body {
     @apply border-[#FCFDC7];
   }
 
+  .inner-last {
+    @apply border-2 border-stone-500 bg-[#19212c] rounded-xl;
+  }
+
+  .outer-last {
+    @apply border-2 border-stone-500 bg-[#19212c] rounded-xl;
+  }
+
+  .buy-last {
+    @apply border-2 border-slate-600 bg-slate-800 rounded-xl;
+  }
+
+  .secondary-text-last {
+    @apply text-stone-400;
+  }
+
+  .numbers-text-last {
+    @apply text-2xl font-digit;
+  }
+
   /* .frame-last {
     @apply rounded-tr-md rounded-bl-md [clip-path:polygon(20px_0,100%_0,100%_50%,calc(100%-20px)_100%,0_100%,0_50%)];
   } */

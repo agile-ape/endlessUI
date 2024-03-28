@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react'
 import type { MouseEventHandler } from 'react'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
+import { defaultContractObj } from '../../../services/constant'
+import { useReadContracts, useWriteContract } from 'wagmi'
+import { Button } from './button'
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
 
 type TimeLeftType = {
   hours: number
@@ -36,9 +46,35 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState<number>()
 
-  // const endTime: Date = new Date((Number(timeFlag) + Number(roundTime)) * 1000)
+  const { data, refetch } = useReadContracts({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'gameTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'timeAddon',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'startGameFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
+    ],
+  })
+
+  const gameTime = Number(data?.[0].result || BigInt(0))
+  const timeAddon = Number(data?.[1].result || BigInt(0))
+  const startGameFlag = Number(data?.[2].result || BigInt(0))
+  const canBuyTicket = Boolean(data?.[3].result || false)
+
+  // const endTime: Date = new Date((Number(startGameFlag) + Number(gameTime)) * 1000)
   // TODO: REMOVE BEFORE FLIGHT
-  const endTime: Date = new Date(1711500000 * 1000)
+  const endTime: Date = new Date(1711550000 * 1000)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -66,36 +102,55 @@ export default function Countdown() {
     return () => clearTimeout(delay)
   }, [])
 
+  const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
+
+  const endGameHandler = () => {
+    writeContract({
+      ...defaultContractObj,
+      functionName: 'endGame',
+    })
+  }
+
   return (
     <div
-      className="rounded-xl \
-              py-2 px-4 my-2 text-2xl capitalized \
-              border border-gray-700 text-center \
-              flex items-center justify-center"
+      className="px-2 py-2 my-2 \
+        inner-last \
+        flex justify-center"
     >
       {isLoading ? (
-        <div className="capitalized">TIME LEFT </div>
+        <div className="capitalized text-2xl">TIME LEFT </div>
       ) : timeLeft && !isNaN(timeLeft) ? (
-        <div className="flex flex-col justify-center">
-          <div className="flex">
-            <div className="flex flex-col text-center font-digit">
-              {formatTime(timeLeft).hours}
-              <div className="uppercase text-gray-400 text-sm text-center">hr</div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="text-gray-400 text-base">Timer</div>
+          <div className="flex justify-center items-center">
+            <div className="flex flex-col text-2xl text-center text-gray-200 font-digit">
+              {formatTime(timeLeft).hours} :
+              <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">hr</div>
             </div>
-            :
-            <div className="flex flex-col text-center font-digit">
-              {formatTime(timeLeft).minutes}
-              <div className="uppercase text-gray-400 text-sm text-center">min</div>
+            <div className="ml-1 flex flex-col text-2xl text-center text-gray-200 font-digit">
+              {' '}
+              {formatTime(timeLeft).minutes} :
+              <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">min</div>
             </div>
-            :
-            <div className="flex flex-col text-center font-digit">
+            <div className="ml-1 flex flex-col text-2xl text-center text-gray-200 font-digit">
               {formatTime(timeLeft).seconds}
               <div className="uppercase text-gray-400 text-sm text-center">sec</div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="capitalized">TIME'S UP</div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="capitalized text-2xl">TIME'S UP</div>
+          <Button
+            variant="action"
+            className="w-full px-8 py-2 mt-2"
+            onClick={endGameHandler}
+            isLoading={isPending}
+            disabled={!canBuyTicket}
+          >
+            End
+          </Button>
+        </div>
       )}
     </div>
   )

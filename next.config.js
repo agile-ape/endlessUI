@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  i18n: {
+    locales: ['en-US', 'zh-CN'],
+    defaultLocale: 'en-US',
+  },
   webpack: (config) => {
-    config.resolve.fallback = { fs: false, net: false, tls: false }
+    // config.resolve.fallback = { fs: false, net: false, tls: false }
+    config.externals.push('pino-pretty', 'lokijs', 'encoding')
     return config
   },
   compiler: {
@@ -26,7 +31,7 @@ const withPWA = require('next-pwa')({
   skipWaiting: true,
 })
 
-module.exports = withPWA(nextConfig)
+module.exports = nextConfig
 
 module.exports = {
   images: {

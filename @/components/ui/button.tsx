@@ -10,22 +10,37 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        // outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        // secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        // ghost: 'hover:bg-accent hover:text-accent-foreground',
-
         default: '',
 
         /*-------------------- HEADER ---------------------*/
-        // style text only. no bg. underline
-        link: 'text-gray-800 bg-transparent active:underline hover:text-gray-800/50 hover:underline underline-offset-4',
+        // links - style text only. no bg. underline
+        link: 'text-gray-100 bg-transparent active:underline hover:text-gray-100/50 hover:underline underline-offset-4',
 
-        play: 'text-gray-900 hover:text-gray-900/50 text-xl bg-transparent',
+        // How to play
+        play: 'text-gray-200 hover:text-gray-200/50 text-xl bg-transparent',
 
-        /*-------------------- GAME TAB ---------------------*/
-        // enter and exit - purple
-        // fixed bg. dark mode
+        // How to play - learn more
+        primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
+
+        buy: 'bg-gray-400 text-slate-700 border border-slate-200 border-2 rounded-xl \
+         hover:text-white hover:bg-opacity-50 \
+         active:text-white/50 active:bg-opacity-75',
+
+        claim:
+          'bg-gray-400 text-slate-700 border border-slate-200 border-2 rounded-xl \
+         hover:text-white hover:bg-opacity-50 \
+         active:text-white/50 active:bg-opacity-75',
+
+        action:
+          'rounded-xl \
+        bg-[#404833] border-2 border-[#404833] \
+        text-2xl text-[#FCFDC7] \
+        hover:text-[#FCFC03] hover:border-[#FCFC03] \
+        active:text-[#FCFC03]/50 active:border-[#FCFC03]/50',
+
+        secondary: 'text-[#FCFDC7] bg-[#39402e] border border-[#FCFDC7] hover:bg-[#39402e]/50',
+        tertiary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03]',
+
         enter:
           // 'text-white bg-purple-900 hover:bg-purple-700 active:bg-purple-500 border-2 border-transparent hover:border-purple-300',
           // 'text-fuchsia-950 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 border-4 border-fuchsia-950 hover:text-fuchsia-50 hover:bg-fuchsia-700 hover:border-fuchsia-300 active:bg-fuchsia-500 ',
@@ -51,7 +66,7 @@ const buttonVariants = cva(
           'text-slate-950 bg-slate-300 border-2 border-slate-400 hover:bg-slate-400 hover:border-slate-500 active:bg-slate-300',
         // 'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-600 hover:border-indigo-200 active:bg-indigo-500',
 
-        buy: 'text-indigo-950 bg-indigo-300 border-2 border-indigo-400 hover:bg-indigo-200 hover:border-indigo-300 active:bg-indigo-100',
+        // buy: 'text-indigo-950 bg-indigo-300 border-2 border-indigo-400 hover:bg-indigo-200 hover:border-indigo-300 active:bg-indigo-100',
 
         change:
           // 'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-600 hover:border-indigo-200 active:bg-indigo-500',
@@ -107,11 +122,7 @@ const buttonVariants = cva(
         //   'text-indigo-800 dark:text-indigo-100 hover:text-white bg-transparent hover:bg-indigo-600 active:bg-indigo-500 border-2 border-indigo-800 dark:border-indigo-2 dark:border-indigo-300',
 
         // fixed bg. light and dark mode
-        primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
         // 'text-indigo-50 bg-indigo-700 border border-indigo-500 hover:bg-indigo-500 hover:border-indigo-200 active:bg-indigo-500',
-
-        secondary: 'text-[#FCFDC7] bg-[#39402e] border border-[#FCFDC7] hover:bg-[#39402e]/50',
-        tertiary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03]',
 
         // tertiary: 'text-[#404833] bg-[#FCFDC7] border-2 border-[#404833] hover:bg-opacity-50',
         // 'text-indigo-800 bg-transparent border border-indigo-800 hover:bg-indigo-400/20 \
@@ -141,12 +152,7 @@ const buttonVariants = cva(
         //   'text-blue-950 dark:text-white hover:text-white bg-transparent hover:bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 border border-blue-950 dark:border-white',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        md: 'h-10 rounded-md px-3 text-xl leading-6',
-        lg: 'h-14 rounded-xl px-5 py-1 text-3xl leading-10',
-        icon: 'h-10 w-10',
-        secondary: 'w-full text-xl',
+        default: 'h-10',
       },
     },
     defaultVariants: {
