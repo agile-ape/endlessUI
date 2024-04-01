@@ -10,7 +10,6 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { useAccount, useReadContract, useReadContracts, useWatchContractEvent } from 'wagmi'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
 import { cn, transformToTicket } from '@/lib/utils'
-import type { Ticket } from 'types/app'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -187,34 +186,55 @@ const YourTickets = () => {
   // array of bigint
   const playerTickets = playerTicketsArray?.[0].result || []
 
-  console.log(playerTickets)
-
-  let ticketList: Ticket[]
-
-  playerTickets.map((item) => {
+  const ticketList = playerTickets.map((item) => {
     const result = useReadContract({
       ...defaultContractObj,
       functionName: 'idToTicket',
       args: [item],
     })
-    const id = result[0]
-    const player = result[1]
+
+    const data = result.data || []
+    const id = Number(data[0]) || 0
+    const player = data[1] || ''
+    const number = Number(data[2]) || 0
+    const isWinner = data[3] || false
+    const winnerClaimYet = data[4] || false
+    const playerClaimYet = data[5] || false
+
+    return {
+      id: id,
+      player: player,
+      number: number,
+      isWinner: isWinner,
+      winnerClaimYet: winnerClaimYet,
+      playerClaimYet: playerClaimYet,
+    }
   })
 
-  // let ticketList:Ticket;
-  for (let i = 0; i < playerTickets.length; i++) {
-    // let storedPlayerTickets: Ticket[]
+  // playerTickets.map((item) => {
+  //   const result = useReadContract({
+  //     ...defaultContractObj,
+  //     functionName: 'idToTicket',
+  //     args: [item],
+  //   })
+  //   const id = result[0]
+  //   const player = result[1]
+  // })
 
-    console.log(playerTickets.length)
+  // // let ticketList:Ticket;
+  // for (let i = 0; i < playerTickets.length; i++) {
+  //   // let storedPlayerTickets: Ticket[]
 
-    const result = useReadContract({
-      ...defaultContractObj,
-      functionName: 'idToTicket',
-      args: [playerTickets[i]],
-    })
+  //   console.log(playerTickets.length)
 
-    const id = result[0]
-  }
+  //   const result = useReadContract({
+  //     ...defaultContractObj,
+  //     functionName: 'idToTicket',
+  //     args: [playerTickets[i]],
+  //   })
+
+  //   const id = result[0]
+  // }
 
   // const ownedTickets = useStoreState((state) => state.ownedTickets)
 
