@@ -190,7 +190,7 @@ body {
   }
 
   .inner-last {
-    @apply border-2 border-stone-500 bg-[#19212c] rounded-xl;
+    @apply border border-stone-500 bg-[#19212c] rounded-xl;
   }
 
   .outer-last {
@@ -199,6 +199,14 @@ body {
 
   .buy-last {
     @apply border-2 border-slate-600 bg-slate-800 rounded-xl;
+  }
+
+  .winners-last {
+    @apply border-2 border-indigo-500 bg-indigo-950 rounded-xl;
+  }
+
+  .keys-last {
+    @apply border-2 border-zinc-500 bg-zinc-800 rounded-xl;
   }
 
   .secondary-text-last {

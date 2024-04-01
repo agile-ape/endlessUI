@@ -18,7 +18,7 @@ function HowToPlay() {
       <DialogTrigger asChild>
         <Button
           variant="play"
-          className="border rounded-xl border-gray-200 hover:border-gray-200/50"
+          className="border rounded-xl border-gray-200 hover:border-gray-200/50 px-4"
         >
           How To Play
         </Button>

@@ -32,12 +32,13 @@ function Header() {
             <div
               className="
               py-4 sm:py-0 \
-              text-[28px] \
+              text-[32px] \
               text-gray-200 \
-              capitalized font-digit text-center cursor-pointer"
+              capitalized font-digit text-center cursor-pointer relative"
               onMouseDown={handleOnMouseDown}
             >
-              LAST
+              <span className="text-gray-700">8888</span>
+              <span className="absolute top-0 left-0">LAST</span>
             </div>
           </div>
 

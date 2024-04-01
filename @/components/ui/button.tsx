@@ -32,9 +32,9 @@ const buttonVariants = cva(
          active:text-white/50 active:bg-opacity-75',
 
         action:
-          'rounded-xl \
-        bg-[#404833] border-2 border-[#404833] \
-        text-2xl text-[#FCFDC7] \
+          'rounded-lg \
+        bg-stone-800 border border-stone-500 \
+        text-2xl text-stone-400 \
         hover:text-[#FCFC03] hover:border-[#FCFC03] \
         active:text-[#FCFC03]/50 active:border-[#FCFC03]/50',
 

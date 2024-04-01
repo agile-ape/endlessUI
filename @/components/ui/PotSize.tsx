@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { formatUnits, parseUnits } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { formatUnits, parseUnits, parseEther } from 'viem'
+import { useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { formatNumber } from '../../lib/utils'
 import {
@@ -9,6 +9,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/shadcn/tooltip'
+import { Button } from './button'
+import AddToPot from './AddToPot'
 
 export default function PotSize() {
   const { data, refetch } = useReadContracts({
@@ -27,24 +29,34 @@ export default function PotSize() {
     minimumFractionDigits: 3,
   })
 
-  // const ticketsBought = Number(data?.[1].result || BigInt(0))
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
+  })
 
   return (
-    <div
-      className="py-2 px-2 mb-2 inner-last \
-        flex flex-col justify-center items-center"
-    >
-      <div className="secondary-text-last">
-        Pot Size
-        <span className="ml-1">(ETH)</span>
-      </div>
-      <div className="flex items-end">
-        <div
-          className="
-        font-digit text-3xl text-[#dae5db]"
-        >
-          {formattedPotSize}
+    <div className="py-2 px-2 mb-2 inner-last">
+      <div
+        className=" \
+      flex flex-col justify-center items-center"
+      >
+        <div className="text-stone-400">
+          Pot Size
+          <span className="ml-1">(ETH)</span>
         </div>
+        <div className="flex items-end">
+          <div
+            className="
+          font-digit text-3xl text-stone-400"
+          >
+            {formattedPotSize}
+          </div>
+        </div>
+        <AddToPot />
       </div>
     </div>
   )

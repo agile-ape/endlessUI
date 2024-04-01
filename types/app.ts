@@ -1,15 +1,10 @@
 interface Ticket {
   id: number
   player: string
-  isInPlay: boolean
-  value: number
-  purchasePrice: number
-  redeemValue: number
-  potClaimCount: number
-  passRate: number
-  joinRound: number
-  exitRound: number
-  logs: string[]
+  number: number
+  isWinner: boolean
+  winnerClaimYet: boolean
+  playerClaimYet: boolean
 }
 
 interface Event {

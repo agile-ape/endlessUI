@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import {
   Tooltip,
@@ -25,6 +25,16 @@ export default function Winners() {
       },
     ],
   })
+
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
+  })
+
   const currentAverage = Number(data?.[0].result || BigInt(0))
   const leaderboard: readonly bigint[] = data?.[1].result || []
   const ticketsBought = Number(data?.[2].result || BigInt(0))
@@ -37,22 +47,27 @@ export default function Winners() {
 
   return (
     <div
-      className="inner-last gap-2 py-2 px-2 my-2 \
+      className="gap-2 py-2 px-2 my-2 \
       flex flex-col items-center justify-center"
     >
-      <div className="flex flex-col items-center mb-2">
+      <div
+        className="flex flex-col items-center mb-2 \
+      border border-indigo-400 rounded-lg px-6 py-2"
+      >
         <div className="text-gray-400">Current Average</div>
         <div className="font-digit text-3xl">{currentAverage}</div>
       </div>
 
-      <div className="text-gray-400 mb-2">Winning keys</div>
+      <div className="text-gray-400 mb-2">Winning keys (#)</div>
       <div
-        className="text-gray-400 mb-2 border px-1 border-stone-500 \
-        rounded-sm text-2xl font-digit \
+        className="text-yellow-500 mb-2  \
+         text-4xl \
         flex overflow-auto"
       >
         {winningNumbers.map((number, index) => (
-          <span key={index}>{number}</span>
+          <span className="border px-3 border-stone-500" key={index}>
+            {number}
+          </span>
         ))}
       </div>
       <div className="text-gray-400">Total keys bought: {ticketsBought}</div>

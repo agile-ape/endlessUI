@@ -3,7 +3,7 @@ import type { MouseEventHandler } from 'react'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
 import { defaultContractObj } from '../../../services/constant'
-import { useReadContracts, useWriteContract } from 'wagmi'
+import { useReadContracts, useWriteContract, useWatchContractEvent } from 'wagmi'
 import { Button } from './button'
 
 import {
@@ -65,6 +65,15 @@ export default function Countdown() {
         functionName: 'canBuyTicket',
       },
     ],
+  })
+
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
   })
 
   const gameTime = Number(data?.[0].result || BigInt(0))

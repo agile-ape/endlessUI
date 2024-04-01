@@ -28,6 +28,10 @@ export default function BuyTicket() {
         ...defaultContractObj,
         functionName: 'ticketPrice',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
     ],
   })
 
@@ -35,6 +39,7 @@ export default function BuyTicket() {
   const ticketsBought = Number(data?.[1].result || BigInt(0))
   const leaderboard: readonly bigint[] = data?.[2].result || []
   const ticketPrice = data?.[3].result || BigInt(0)
+  const canBuyTicket = data?.[4].result || false
 
   let winningNumbers: number[] = []
 
@@ -113,12 +118,12 @@ export default function BuyTicket() {
         className="w-[200px] text-2xl"
         variant="buy"
         onClick={buyTicketHandler}
-        disabled={false}
+        disabled={!canBuyTicket}
         isLoading={isPending}
       >
         Buy
       </Button>
-      <div>
+      <div className="text-gray-400">
         Key price: <span className="font-digit">{formattedTicketPrice}</span> ETH
       </div>
     </div>

@@ -8371,7 +8371,7 @@ __metadata:
     lucide-react: ^0.307.0
     next: ^13.4.3
     next-pwa: ^5.6.0
-    next-themes: ^0.2.1
+    next-themes: ^0.3.0
     postcss: ^8.4.27
     prettier: ^3.0.3
     prettier-plugin-tailwindcss: ^0.5.3
@@ -8380,6 +8380,7 @@ __metadata:
     react-otp-input: ^2.4.0
     sharp: ^0.33.1
     socket.io-client: ^4.7.2
+    sonner: ^1.4.41
     swr: ^2.2.4
     tailwind-merge: ^1.14.0
     tailwindcss: ^3.3.3
@@ -8974,14 +8975,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-themes@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "next-themes@npm:0.2.1"
+"next-themes@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "next-themes@npm:0.3.0"
   peerDependencies:
-    next: "*"
-    react: "*"
-    react-dom: "*"
-  checksum: ebc248b956138e73436c4ed0a0f0a877a0a48a33156db577029b8b8469e48b5c777d61abf2baeb75953378febea74e067a4869ff90b4a3e94fce123289b862ba
+    react: ^16.8 || ^17 || ^18
+    react-dom: ^16.8 || ^17 || ^18
+  checksum: 4285c4969eac517ad7addd773bcb71e7d14bc6c6e3b24eb97b80a6e06ac03fb6cb345e75dfb448156d14430d06289948eb8cfdeb52402ca7ce786093d01d2878
   languageName: node
   linkType: hard
 
@@ -10841,6 +10841,16 @@ __metadata:
   dependencies:
     atomic-sleep: ^1.0.0
   checksum: c7f9c89f931d7f60f8e0741551a729f0d81e6dc407a99420fc847a9a4c25af048a615b1188ab3c4f1fb3708fe4904973ddab6ebcc8ed5b78b50ab81a99045910
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^1.4.41":
+  version: 1.4.41
+  resolution: "sonner@npm:1.4.41"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 312055fdd88fc2bb738462c5a2f03b268e23162b6fdc91eb4dc4e5cac9bad926087fe1f488a8b82bc2a9ff92f14843aa5a579a4923917f3db2e82b47d4073cb6
   languageName: node
   linkType: hard
 

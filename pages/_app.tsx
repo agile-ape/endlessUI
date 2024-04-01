@@ -39,12 +39,6 @@ export const rainbowConfig = getDefaultConfig({
   appName: 'Average',
   projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
   chains: [blastSepolia1],
-  // transports: {
-  //   [blastSepolia.id]: http(
-  //     'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
-  //   ),
-
-  // },
   ssr: true,
 })
 

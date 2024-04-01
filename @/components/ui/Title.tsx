@@ -31,7 +31,7 @@ const Title = () => {
     setCompletedTyping(false)
 
     let i = 0
-    let stringResponse = 'AVERAGE'
+    let stringResponse = 'FLOP THE AVERAGE'
 
     const intervalId = setInterval(() => {
       setDisplayResponse(stringResponse.slice(0, i))

@@ -1,6 +1,6 @@
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import type { IApp } from '../types/app'
-import Screen from '@/components/screen/Screen'
+import DesktopScreen from '@/components/screen/DesktopScreen'
 import type { MetaProps } from '@/components/Metadata'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 const Home = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div>
-      <Screen />
+      <DesktopScreen />
     </div>
   )
 }
