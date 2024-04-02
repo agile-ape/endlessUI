@@ -8,149 +8,27 @@ import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 
 import { useAccount, useReadContract, useReadContracts, useWatchContractEvent } from 'wagmi'
+import { readContract } from '@wagmi/core'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
 import { cn, transformToTicket } from '@/lib/utils'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
+import { useDotButton, DotButton, usePrevNextButtons, PrevButton, NextButton } from './navigation'
+import wagmiConfig from '../../../pages/_app'
+import { WagmiProvider, http, createConfig } from 'wagmi'
+import {
+  arbitrum,
+  arbitrumGoerli,
+  goerli,
+  mainnet,
+  base,
+  baseGoerli,
+  blastSepolia,
+  blast,
+} from 'wagmi/chains'
 /*-------------------------------------- DOT BUTTONS -------------------------------------- */
 
-type UseDotButtonType = {
-  selectedIndex: number
-  scrollSnaps: number[]
-  onDotButtonClick: (index: number) => void
-}
-
-export const useDotButton = (emblaApi: EmblaCarouselType | undefined): UseDotButtonType => {
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
-
-  // when clicked on index -
-  const onDotButtonClick = useCallback(
-    (index: number) => {
-      if (!emblaApi) return
-      emblaApi.scrollTo(index)
-    },
-    [emblaApi],
-  )
-
-  const onInit = useCallback((emblaApi: EmblaCarouselType) => {
-    setScrollSnaps(emblaApi.scrollSnapList())
-  }, [])
-
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap())
-  }, [])
-
-  useEffect(() => {
-    if (!emblaApi) return
-
-    onInit(emblaApi)
-    onSelect(emblaApi)
-    emblaApi.on('reInit', onInit)
-    emblaApi.on('reInit', onSelect)
-    emblaApi.on('select', onSelect)
-  }, [emblaApi, onInit, onSelect])
-
-  return {
-    selectedIndex,
-    scrollSnaps,
-    onDotButtonClick,
-  }
-}
-
-type DotButtonPropType = PropsWithChildren<
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
->
-
-export const DotButton: React.FC<DotButtonPropType> = (props) => {
-  const { children, ...restProps } = props
-
-  return (
-    <button type="button" {...restProps}>
-      {children}
-    </button>
-  )
-}
-
 /*-------------------------------------- Prev Next Buttons --------------------------------------*/
-
-type UsePrevNextButtonsType = {
-  prevBtnDisabled: boolean
-  nextBtnDisabled: boolean
-  onPrevButtonClick: () => void
-  onNextButtonClick: () => void
-}
-
-export const usePrevNextButtons = (
-  emblaApi: EmblaCarouselType | undefined,
-): UsePrevNextButtonsType => {
-  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
-  const [nextBtnDisabled, setNextBtnDisabled] = useState(true)
-
-  const onPrevButtonClick = useCallback(() => {
-    if (!emblaApi) return
-    emblaApi.scrollPrev()
-  }, [emblaApi])
-
-  const onNextButtonClick = useCallback(() => {
-    if (!emblaApi) return
-    emblaApi.scrollNext()
-  }, [emblaApi])
-
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setPrevBtnDisabled(!emblaApi.canScrollPrev())
-    setNextBtnDisabled(!emblaApi.canScrollNext())
-  }, [])
-
-  useEffect(() => {
-    if (!emblaApi) return
-
-    onSelect(emblaApi)
-    emblaApi.on('reInit', onSelect)
-    emblaApi.on('select', onSelect)
-  }, [emblaApi, onSelect])
-
-  return {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  }
-}
-
-type PrevNextPropType = PropsWithChildren<
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
->
-
-export const PrevButton: React.FC<PrevNextPropType> = (props) => {
-  const { children, ...restProps } = props
-
-  return (
-    <button className="" type="button" {...restProps}>
-      <ChevronLeft
-        size={48}
-        className="text-gray-400 hover:text-white active:opacity-75 m-1 p-1 cursor-pointer"
-      />
-      {children}
-    </button>
-  )
-}
-
-export const NextButton: React.FC<PrevNextPropType> = (props) => {
-  const { children, ...restProps } = props
-
-  return (
-    <button className="" type="button" {...restProps}>
-      <ChevronRight
-        size={48}
-        className="text-gray-400 hover:text-white active:opacity-75 m-1 p-1 cursor-pointer"
-      />
-
-      {children}
-    </button>
-  )
-}
 
 // type Ticket = {
 //   id: number
@@ -161,6 +39,16 @@ export const NextButton: React.FC<PrevNextPropType> = (props) => {
 //   playerClaimYet: boolean
 // }
 
+const config = createConfig({
+  // projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
+  chains: [blastSepolia],
+  transports: {
+    [blastSepolia.id]: http(
+      'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+    ),
+  },
+})
+
 type Ticket = {
   id: number
   player: string
@@ -170,9 +58,25 @@ type Ticket = {
   playerClaimYet: boolean
 }
 
+const defaultTicket = {
+  id: 0,
+  player: '0',
+  number: 0,
+  isWinner: false,
+  winnerClaimYet: false,
+  playerClaimYet: false,
+}
+
 const YourTickets = () => {
   const { address, isConnected } = useAccount()
+  const [ticketsOutput, setTicketsOutput] = useState<Ticket[]>([defaultTicket])
 
+  // const tickets = readContract(config, {
+  //   ...defaultContractObj,
+  //   functionName: 'ticketIdCounter',
+  // })
+
+  // user address
   const { data: playerTicketsArray, refetch } = useReadContracts({
     contracts: [
       {
@@ -183,33 +87,108 @@ const YourTickets = () => {
     ],
   })
 
-  // array of bigint
-  const playerTickets = playerTicketsArray?.[0].result || []
-
-  const ticketList = playerTickets.map((item) => {
-    const result = useReadContract({
-      ...defaultContractObj,
-      functionName: 'idToTicket',
-      args: [item],
-    })
-
-    const data = result.data || []
-    const id = Number(data[0]) || 0
-    const player = data[1] || ''
-    const number = Number(data[2]) || 0
-    const isWinner = data[3] || false
-    const winnerClaimYet = data[4] || false
-    const playerClaimYet = data[5] || false
-
-    return {
-      id: id,
-      player: player,
-      number: number,
-      isWinner: isWinner,
-      winnerClaimYet: winnerClaimYet,
-      playerClaimYet: playerClaimYet,
-    }
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
   })
+
+  const playerTickets = playerTicketsArray?.[0]?.result || []
+
+  // useEffect(() => {})
+  // // extracted to array of bigint
+  // setPlayerTickets((playerTicketsArray && playerTicketsArray?.[0]?.result) || [])
+
+  useEffect(() => {
+    // Ensure playerTicketsArray is defined and has at least one element with a result property
+    updateTickets()
+  }, [playerTicketsArray]) // Run this effect whenever playerTicketsArray changes
+
+  // create an array to hold each ticket's output
+
+  // let ticketsOutput: Ticket[] = []
+
+  // map each item to get Ticket struct outputs
+  const updateTickets = async () => {
+    try {
+      if (playerTickets && playerTickets.length > 0) {
+        const latestTicketsOutput: Ticket[] = await Promise.all(
+          playerTickets.map(async (item) => {
+            const result = await readContract(config, {
+              ...defaultContractObj,
+              functionName: 'idToTicket',
+              args: [BigInt(item)],
+            })
+            return {
+              id: Number(result[0]) || 0,
+              player: result[1] || '',
+              number: Number(result[2]) || 0,
+              isWinner: result[3] || false,
+              winnerClaimYet: result[4] || false,
+              playerClaimYet: result[5] || false,
+            }
+          }),
+        )
+
+        setTicketsOutput(latestTicketsOutput)
+      } else {
+        setTicketsOutput([])
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // const promise = playerTickets.forEach(async (item) =>
+  //       for (const item of playerTickets) {
+  //         (async (item) => {
+  //           const result = await readContract(config, {
+  //             ...defaultContractObj,
+  //             functionName: 'idToTicket',
+  //             args: [BigInt(item)],
+  //           })
+  //           // const data = result.data || []
+  //           // const id = Number(data[0]) || 0
+  //           // const player = data[1] || ''
+  //           // const number = Number(data[2]) || 0
+  //           // const isWinner = data[3] || false
+  //           // const winnerClaimYet = data[4] || false
+  //           // const playerClaimYet = data[5] || false
+  //           let ticket: Ticket = defaultTicket
+  //           ticket.id = Number(result[0]) || 0
+  //           ticket.player = result[1] || ''
+  //           ticket.number = Number(result[2]) || 0
+  //           ticket.isWinner = result[3] || false
+  //           ticket.winnerClaimYet = result[4] || false
+  //           ticket.playerClaimYet = result[5] || false
+
+  //           console.log(ticket)
+
+  //           latestTicketsOutput.push(ticket)
+
+  //           console.log(latestTicketsOutput)
+  //         })(item)
+  //         // return ticket
+  //       }
+
+  //       await Promise.all(latestTicketsOutput)
+  //       setTicketsOutput(latestTicketsOutput)
+  //       // const latestTicketsOutput = await Promise.all(promise)
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+
+  //     // console.log(latestTicketsOutput)
+  //     // return latestTicketsOutput
+  //   } else {
+  //     setTicketsOutput([])
+  //     // return []
+  //   }
+  // }
+  // console.log(ticketsOutput)
 
   // playerTickets.map((item) => {
   //   const result = useReadContract({
@@ -220,6 +199,26 @@ const YourTickets = () => {
   //   const id = result[0]
   //   const player = result[1]
   // })
+
+  // useEffect(() => {
+  //   const fetchTickets = async () => {
+  //     if (playerTickets && playerTickets.length > 0) {
+  //       const newTicketList = await Promise.all(
+  //         playerTickets.map(async (item) => {
+  //           const result = await useReadContract({
+  //             ...defaultContractObj,
+  //             functionName: 'idToTicket',
+  //             args: [item],
+  //           });
+  //           return result;
+  //         })
+  //       );
+  //       setTicketList(newTicketList);
+  //     }
+  //   };
+
+  //   fetchTickets();
+  // }, [playerTickets]);
 
   // // let ticketList:Ticket;
   // for (let i = 0; i < playerTickets.length; i++) {
@@ -271,37 +270,35 @@ const YourTickets = () => {
       <div className="flex">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <section className="mx-auto">
-          <div className="w-[250px] overflow-hidden" ref={emblaRef}>
+          <div className="w-[320px] overflow-hidden" ref={emblaRef}>
             <div className="flex touch-pan-x">
-              {isConnected ? (
-                <>
-                  {ticketList.map((item, i) => (
+              <>
+                {
+                  // isConnected &&
+                  // ticketsOutput &&
+                  // ticketsOutput.length > 0 &&
+                  ticketsOutput.map((item, i) => (
                     <div className="mx-2" key={i}>
                       <TicketUI
                         id={item.id}
+                        player={item.player}
                         number={item.number}
-                        isBlank={item.isBlank}
                         isWinner={item.isWinner}
                         winnerClaimYet={item.winnerClaimYet}
                         playerClaimYet={item.playerClaimYet}
                       />
                     </div>
-                  ))}
-                </>
-              ) : (
-                <></>
-              )}
-              {/* <li>
-                <TicketUI id={1} number={2301} />
-              </li>
-              <li>
-                <TicketUI id={1} number={2301} isWinner={true} />{' '}
-              </li>
-              <li>
-                <TicketUI id={1} number={2301} />{' '}
-              </li> */}
-              {/* <TicketUI id={2} number={2301} /> */}
-              {/* <TicketUI id={3} number={2301} /> */}
+                  ))
+                }
+                {/* <TicketUI
+                  id={1}
+                  // player={}
+                  number={300}
+                  isWinner={false}
+                  winnerClaimYet={false}
+                  playerClaimYet={false}
+                /> */}
+              </>
             </div>
           </div>
         </section>

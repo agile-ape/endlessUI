@@ -8,8 +8,8 @@ import { defaultContractObj } from '../../../services/constant'
 
 type TicketUIType = {
   id?: number
+  player?: string
   number?: number
-  isBlank?: bool
   isWinner?: bool
   winnerClaimYet?: bool
   playerClaimYet?: bool
@@ -17,8 +17,8 @@ type TicketUIType = {
 
 const TicketUI: FC<TicketUIType> = ({
   id,
+  player,
   number,
-  isBlank,
   isWinner,
   winnerClaimYet,
   playerClaimYet,
@@ -141,10 +141,10 @@ const TicketUI: FC<TicketUIType> = ({
               className={cn(
                 isWinner ? 'text-gray-700' : 'text-yellow-500',
                 'left-0 absolute w-[28px] h-[28px] rounded-xs \
-            flex justify-center items-center text-xl',
+            flex justify-center items-center text-xs',
               )}
             >
-              #
+              🔑
             </div>
             <div
               className={cn(

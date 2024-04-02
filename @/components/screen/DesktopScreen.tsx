@@ -53,7 +53,7 @@ export default function DesktopScreen() {
         <div
           className="px-2 my-2 \
           keys-last \
-          flex flex-col min-w-[280px]"
+          flex flex-col min-w-[320px]"
         >
           <YourTickets />
         </div>
