@@ -2,8 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import Title from '../ui/Title'
 import Countdown from '../ui/Countdown'
 import PotSize from '../ui/PotSize'
-import Average from '../ui/_Average'
-import Winners from '../ui/Winners'
+import Average from '../ui/Average'
 import BuyTicket from '../ui/BuyTicket'
 import YourTickets from '../ui/YourTickets'
 import { useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
@@ -24,6 +23,18 @@ export default function DesktopScreen() {
     poll: true,
   })
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'PotAdded',
+    onLogs() {
+      toast({
+        variant: 'bought',
+        description: <p className="text-xl">🎊 Someone added to the pot</p>,
+      })
+    },
+    poll: true,
+  })
+
   return (
     <>
       <div className="flex flex-col justify-center items-center mx-auto">
@@ -38,16 +49,16 @@ export default function DesktopScreen() {
           <PotSize />
         </div>
 
-        <div
+        {/* <div
           className="px-2 my-2 \
           buy-last \
           flex flex-col min-w-[280px]"
         >
           <BuyTicket />
-        </div>
+        </div> */}
 
-        <div className="winners-last min-w-[280px] max-w-[480px]">
-          <Winners />
+        <div className="average-last min-w-[280px] max-w-[480px]">
+          <Average />
         </div>
 
         <div

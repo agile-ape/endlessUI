@@ -38,6 +38,15 @@ export default function PotSize() {
     poll: true,
   })
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'PotAdded',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
+  })
+
   return (
     <div className="py-2 px-2 mb-2 inner-last">
       <div
@@ -51,7 +60,7 @@ export default function PotSize() {
         <div className="flex items-end">
           <div
             className="
-          font-digit text-3xl text-stone-400"
+          font-digit text-3xl flash text-stone-400"
           >
             {formattedPotSize}
           </div>

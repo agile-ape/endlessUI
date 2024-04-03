@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import type { PropsWithChildren } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
 import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel'
 import Image from 'next/image'
 import { Button } from './button'
@@ -77,12 +78,16 @@ const YourTickets = () => {
   // })
 
   // user address
-  const { data: playerTicketsArray, refetch } = useReadContracts({
+  const { data, refetch } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
         functionName: 'getPlayerToIdArray',
         args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'computeLeaderboard',
       },
     ],
   })
@@ -96,7 +101,16 @@ const YourTickets = () => {
     poll: true,
   })
 
-  const playerTickets = playerTicketsArray?.[0]?.result || []
+  const playerTickets = data?.[0]?.result || []
+  const leaderboard: readonly bigint[] = data?.[1].result || []
+
+  let winningNumbers: number[] = []
+
+  for (let i = 0; i < leaderboard.length; i++) {
+    winningNumbers[i] = Number(leaderboard[i])
+  }
+
+  // const playerTickets = playerTicketsArray?.[1]?.result || []
 
   // useEffect(() => {})
   // // extracted to array of bigint
@@ -105,7 +119,7 @@ const YourTickets = () => {
   useEffect(() => {
     // Ensure playerTicketsArray is defined and has at least one element with a result property
     updateTickets()
-  }, [playerTicketsArray]) // Run this effect whenever playerTicketsArray changes
+  }, [data]) // Run this effect whenever playerTicketsArray changes
 
   // create an array to hold each ticket's output
 
@@ -237,7 +251,10 @@ const YourTickets = () => {
 
   // const ownedTickets = useStoreState((state) => state.ownedTickets)
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: false },
+    // [Autoplay({ delay: 4000 })]
+  )
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi)
 
@@ -265,12 +282,25 @@ const YourTickets = () => {
   // }
 
   return (
-    <div className="flex flex-col gap-4 my-2 items-center justify-center mx-auto">
-      <p className="py-2 text-2xl text-zinc-200 capitalized flex justify-center">Your keys </p>
+    <div className="flex flex-col gap-2 my-2 items-center justify-center mx-auto">
+      <div className="text-gray-400">Winning keys (#)</div>
+      <div
+        className="text-yellow-500  \
+         text-4xl \
+        flex overflow-auto"
+      >
+        {winningNumbers.map((number, index) => (
+          <span className="border px-3 border-stone-500" key={index}>
+            {number}
+          </span>
+        ))}
+      </div>
+
+      <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">Your keys </p>
       <div className="flex">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <section className="mx-auto">
-          <div className="w-[320px] overflow-hidden" ref={emblaRef}>
+          <div className="w-[380px] overflow-hidden" ref={emblaRef}>
             <div className="flex touch-pan-x">
               <>
                 {
@@ -311,7 +341,7 @@ const YourTickets = () => {
               key={index}
               onClick={() => onDotButtonClick(index)}
               className={cn(
-                index === selectedIndex ? 'border-2 border-black bg-zinc-700' : 'bg-zinc-200',
+                index === selectedIndex ? 'border-2 border-black bg-zinc-200' : 'bg-zinc-700',
                 'w-2 h-2  rounded-full m-1 p-0 border-none cursor-pointer',
               )}
             />

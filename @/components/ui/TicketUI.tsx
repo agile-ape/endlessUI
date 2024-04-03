@@ -5,6 +5,14 @@ import { Button } from './button'
 import { cn } from '@/lib/utils'
 import { useReadContracts, useWriteContract } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
+import { formatNumber } from '@/lib/utils'
+import { formatUnits, parseUnits } from 'viem'
 
 type TicketUIType = {
   id?: number
@@ -41,14 +49,38 @@ const TicketUI: FC<TicketUIType> = ({
         ...defaultContractObj,
         functionName: 'canBuyTicket',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'currentAverage',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'playersPayoutFactor',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersSplit',
+      },
     ],
   })
 
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
 
-  const canBuyTicket = Boolean(data?.[0].result || false) // true = game ongoing false = game end
+  const canBuyTicket = Boolean(data?.[0].result || false)
+  const currentAverage = Number(data?.[1].result || BigInt(0))
+  const playersPayoutFactor = Number(data?.[2].result || BigInt(0))
+  const winnersSplit = Number(data?.[3].result || BigInt(0))
+
+  const claimAmount = playersPayoutFactor * id
+
+  const formattedWinnersSplit = formatNumber(formatUnits(winnersSplit, 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
+  })
 
   console.log(canBuyTicket)
+  console.log(currentAverage)
+  console.log(typeof currentAverage)
 
   // const winnersClaimHandler = () => {
   //   writeContract({
@@ -56,6 +88,63 @@ const TicketUI: FC<TicketUIType> = ({
   //     functionName: 'winnersClaim',
   //   })
   // }
+
+  let ticketLook: string
+
+  if (canBuyTicket) {
+    ticketLook = 'bought'
+  }
+
+  if (canBuyTicket && number == currentAverage) {
+    ticketLook = 'leading'
+  }
+
+  if (!canBuyTicket && isWinner) {
+    ticketLook = 'win'
+  }
+
+  if (!canBuyTicket && !isWinner) {
+    ticketLook = 'noWin'
+  }
+
+  if (!canBuyTicket && winnerClaimYet && playerClaimYet) {
+    ticketLook = 'claimed'
+  }
+
+  const ticketLookMapping = {
+    bought: {
+      bgColor: 'bg-neutral-600',
+      borderColor: 'border-gray-400',
+      shutter: 'bg-neutral-700 border-gray-500',
+      shutterTextColor: 'text-yellow-500',
+    },
+    leading: {
+      bgColor: 'bg-neutral-600',
+      borderColor: 'border-yellow-400 border-2',
+      shutter: 'bg-neutral-700 border-yellow-500',
+      shutterTextColor: 'text-yellow-500',
+    },
+    win: {
+      bgColor: 'bg-yellow-400',
+      borderColor: 'border-yellow-600',
+      shutter: 'bg-yellow-500 border-yellow-600',
+      shutterTextColor: 'text-gray-700',
+    },
+    noWin: {
+      bgColor: 'bg-rose-200',
+      borderColor: 'border-rose-700',
+      shutter: 'bg-rose-300 border-rose-500',
+      shutterTextColor: 'text-gray-700',
+    },
+    claimed: {
+      bgColor: 'bg-neutral-200',
+      borderColor: 'border-neutral-700',
+      shutter: 'bg-neutral-400 border-gray-500',
+      shutterTextColor: 'text-gray-700',
+    },
+  }
+
+  const { bgColor, borderColor, shutter, shutterTextColor } = ticketLookMapping[ticketLook]
 
   const winnersClaimHandler = async () => {
     try {
@@ -102,35 +191,20 @@ const TicketUI: FC<TicketUIType> = ({
     <div
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
-      className={cn(
-        isWinner ? 'bg-yellow-400 border-yellow-600' : 'bg-neutral-600 border-gray-400',
-        'relative flex flex-col mx-auto items-center rounded-xl border gap-2 w-[120px] h-[120px]',
-      )}
+      className={`${bgColor} ${borderColor} relative wiggle flex flex-col mx-auto items-center rounded-xl border gap-2 w-[120px] h-[120px]`}
     >
-      <div className="absolute bottom-3 left-1 bg-[#19212c] rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
-      <div className="absolute bottom-3 right-1 bg-[#19212c] rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
-      <div
-        className={cn(
-          isWinner ? 'border-yellow-600' : 'border-gray-400',
-          'relative w-[75px] h-[30px] rounded-sm border \
-      flex',
-        )}
-      >
+      <div className="absolute bottom-3 left-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
+      <div className="absolute bottom-3 right-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
+      <div className={`${borderColor} relative w-[75px] h-[30px] rounded-sm border flex`}>
         {isOverlayInspect ? (
           <>
             <div
-              className={cn(
-                isWinner ? 'bg-yellow-500 border-yellow-600' : 'bg-neutral-700 border-gray-500',
-                'left-0 absolute w-[28px] h-[28px] rounded-xs \
-              border',
-              )}
+              className={`${shutter} left-0 absolute w-[28px] h-[28px] rounded-xs \
+              border`}
             ></div>
             <div
-              className={cn(
-                isWinner ? 'text-gray-700' : 'text-yellow-500',
-                'right-0 absolute w-[47px] h-[28px] rounded-xs \
-                flex justify-center items-center text-xl',
-              )}
+              className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-xs \
+                flex justify-center items-center text-xl`}
             >
               {String(id)}
             </div>
@@ -138,20 +212,14 @@ const TicketUI: FC<TicketUIType> = ({
         ) : (
           <>
             <div
-              className={cn(
-                isWinner ? 'text-gray-700' : 'text-yellow-500',
-                'left-0 absolute w-[28px] h-[28px] rounded-xs \
-            flex justify-center items-center text-xs',
-              )}
+              className={`${shutterTextColor} left-0 absolute w-[28px] h-[28px] rounded-xs \
+            flex justify-center items-center text-xs`}
             >
               🔑
             </div>
             <div
-              className={cn(
-                isWinner ? 'bg-yellow-500 border-yellow-600' : 'bg-neutral-700  border-gray-500',
-                'right-0 absolute w-[47px] h-[28px] rounded-xs \
-                border',
-              )}
+              className={`${shutter} right-0 absolute w-[47px] h-[28px] rounded-xs \
+                border`}
             ></div>
           </>
         )}
@@ -160,30 +228,60 @@ const TicketUI: FC<TicketUIType> = ({
       {isOverlayInspect ? (
         <div className="flex flex-col justify-center items-center gap-2 my-2">
           {isWinner && (
-            <button
-              className="px-3 mx-2 \
+            <TooltipProvider delayDuration={10}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    className="px-3 mx-2 \
             w-[80%] bg-yellow-500 text-slate-600 border-yellow-200 border-2 \
             hover:text-white hover:bg-opacity-50 \
             active:text-white/50 active:bg-opacity-75 \
             disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={canBuyTicket || winnerClaimYet}
-              onClick={winnersClaimHandler}
-            >
-              Winner
-            </button>
+                    disabled={canBuyTicket || winnerClaimYet}
+                    onClick={winnersClaimHandler}
+                  >
+                    Winner
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                    {canBuyTicket ? (
+                      <span>Cannot claim yet </span>
+                    ) : (
+                      <span>You won {formattedWinnersSplit} ETH </span>
+                    )}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
 
-          <button
-            className="px-3 mx-2 \
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                <button
+                  className="px-3 mx-2 \
             w-[80%] bg-gray-400 text-slate-700 border-slate-200 border-2 \
             hover:text-white hover:bg-opacity-50 \
             active:text-white/50 active:bg-opacity-75 \
             disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={canBuyTicket || playerClaimYet}
-            onClick={playersClaimHandler}
-          >
-            Claim
-          </button>
+                  disabled={canBuyTicket || playerClaimYet}
+                  onClick={playersClaimHandler}
+                >
+                  Claim
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                  {canBuyTicket ? (
+                    <span>Cannot claim yet </span>
+                  ) : (
+                    <span>You can claim {claimAmount} ETH </span>
+                  )}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       ) : (
         <div

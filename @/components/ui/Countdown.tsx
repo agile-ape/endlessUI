@@ -149,16 +149,24 @@ export default function Countdown() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center">
-          <div className="capitalized text-2xl">TIME'S UP</div>
-          <Button
-            variant="action"
-            className="w-full px-8 py-2 mt-2"
-            onClick={endGameHandler}
-            isLoading={isPending}
-            disabled={!canBuyTicket}
-          >
-            End
-          </Button>
+          {canBuyTicket ? (
+            <>
+              <div className="capitalized text-2xl">TIME'S UP</div>
+              <Button
+                variant="action"
+                className="w-full px-8 py-2 mt-2"
+                onClick={endGameHandler}
+                isLoading={isPending}
+                // disabled={!canBuyTicket}
+              >
+                End
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="capitalized text-2xl">GAME ENDED</div>
+            </>
+          )}
         </div>
       )}
     </div>

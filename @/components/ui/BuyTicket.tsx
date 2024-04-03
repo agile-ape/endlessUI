@@ -93,7 +93,7 @@ export default function BuyTicket() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 p-4">
+    <div className="flex flex-col items-center justify-center gap-2 mt-4">
       <label htmlFor="number" className="text-xl text-center text-gray-300">
         Pick a number from 0 - 9999
       </label>
@@ -123,8 +123,11 @@ export default function BuyTicket() {
       >
         Buy
       </Button>
-      <div className="text-gray-400">
-        Key price: <span className="font-digit">{formattedTicketPrice}</span> ETH
+      <div className="text-left">
+        <div className="text-gray-400">
+          Key price: <span className="font-digit">{formattedTicketPrice}</span> ETH
+        </div>
+        <div className="text-gray-400">Total keys: {ticketsBought}</div>
       </div>
     </div>
   )

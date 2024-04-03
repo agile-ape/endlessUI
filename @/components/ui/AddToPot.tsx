@@ -12,7 +12,13 @@ import { Button } from './button'
 import Link from 'next/link'
 import { DOCS_URL } from '../../../services/constant'
 import Image from 'next/image'
-import { useReadContracts, useSendTransaction, useWriteContract } from 'wagmi'
+import {
+  useAccount,
+  useReadContracts,
+  useSendTransaction,
+  useWatchContractEvent,
+  useWriteContract,
+} from 'wagmi'
 import { defaultContractObj, GAME_ADDRESS } from '../../../services/constant'
 import { formatUnits, parseEther } from 'viem'
 import { formatNumber } from '@/lib/utils'
@@ -20,22 +26,84 @@ import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { toast } from '@/components/shadcn/use-toast'
 
 function AddToPot() {
+  const { address, isConnected } = useAccount()
+
   const [value, setValue] = useState('')
 
-  const { data } = useReadContracts({
+  const { data, refetch } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
         functionName: 'canBuyTicket',
       },
-      //   {
-      //     ...defaultContractObj,
-      //     functionName: 'fundedAmount',
-      //   },
+      {
+        ...defaultContractObj,
+        functionName: 'fundedAmount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersToAmt',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersPot',
+      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'fundersClaim',
+      // },
     ],
   })
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'PotAdded',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
+  })
+
   const canBuyTicket = Boolean(data?.[0].result || false)
+  const fundedAmount = data?.[1].result || false
+  const fundersToAmt = data?.[2].result || false
+  const fundersShare = Number(data?.[3].result || false)
+  const fundersPot = data?.[4].result || false
+  // const fundersClaim = data?.[5].result || false
+
+  const totalFunded = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const playerContribution = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const potToShare = formatNumber(formatUnits(BigInt(fundersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const percentOfPot = formatNumber((Number(playerContribution) / Number(totalFunded)) * 100, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  const potentialPotShare = formatNumber(
+    ((Number(playerContribution) + Number(value)) / (Number(totalFunded) + Number(value))) * 100,
+    {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    },
+  )
+
   //   const totalFundedAmount = data?.[1].result || BigInt(0)
 
   //   const formattedFundedAmount = formatNumber(formatUnits(totalFundedAmount, 18), {
@@ -44,7 +112,12 @@ function AddToPot() {
   //   })
 
   const { isPending, sendTransactionAsync } = useSendTransaction()
-  const { isPending: isLoading, writeContract, writeContractAsync } = useWriteContract()
+  const {
+    data: writeData,
+    isPending: isLoading,
+    writeContract,
+    writeContractAsync,
+  } = useWriteContract()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -57,6 +130,7 @@ function AddToPot() {
         to: GAME_ADDRESS,
         value: parseEther(value),
       })
+      setIsModalOpen(false)
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -66,7 +140,6 @@ function AddToPot() {
         description: <p>{errorMsg}</p>,
       })
     }
-    setIsModalOpen(false)
   }
 
   const claimFundersHandler = async () => {
@@ -95,40 +168,68 @@ function AddToPot() {
         </Button>
       </DialogTrigger>
       <DialogContent ref={modalRef}>
+        <DialogHeader>
+          <DialogTitle className="text-center text-3xl">🍎 The juicy apple</DialogTitle>
+          <DialogDescription className="text-center text-2xl">
+            Add ETH and claim part of pot when game ends.
+          </DialogDescription>
+        </DialogHeader>
+
         {canBuyTicket ? (
-          <div className="flex flex-col items-center justify-center gap-2 p-4">
-            <label htmlFor="number" className="text-xl text-center text-gray-300 flex flex-col">
-              <span>Add ETH to pot</span>
-              <span>Share in 30% of pot when game ends</span>
-            </label>
+          <div className="flex flex-col items-center justify-center gap-2 p-2">
             <div
-              className="border-[2px] border-gray-400 \
-          bg-slate-700 rounded-xl \
-          flex flex-col justify-center items-center"
+              className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 flex flex-col
+                gap-4 justify-center items-center text-2xl
+                "
             >
-              <input
-                type="text"
-                id="number"
-                className="w-[200px] bg-transparent font-digit \
-            text-center text-4xl text-gray-300 \
-            flex justify-between items-center py-2"
-                placeholder="0 ETH"
-                maxLength={5}
-                onChange={(e) => setValue(e.target.value)}
-              />
+              <span>
+                You contributed <span className="font-digit flash">{playerContribution}</span> ETH
+                (out of <span className="font-digit flash">{totalFunded}</span> ETH) and own{' '}
+                <span className="font-digit flash">{percentOfPot}</span>% of the funders pot.
+              </span>
             </div>
 
-            <Button
-              className="w-[200px] text-2xl"
-              variant="buy"
-              onClick={addToPotHandler}
-              disabled={!canBuyTicket}
-              isLoading={isPending}
-            >
-              Add
-            </Button>
-            <div>
-              {/* Amount added: <span className="font-digit">{formattedFundedAmount}</span> ETH */}
+            <DialogDescription className="text-left text-2xl mb-8">
+              * {fundersShare}% of the final pot goes to funders pot.
+            </DialogDescription>
+
+            <div className="flex flex-col gap-4 justify-center items-center border border-neutral-200 p-6 rounded-lg">
+              <label htmlFor="number" className="text-3xl text-center text-gray-300 flex flex-col">
+                <span>Contribute to pot (in ETH)</span>
+              </label>
+
+              <div
+                className="border-[2px] border-gray-400 \
+              bg-slate-700 rounded-xl \
+              flex flex-col justify-center items-center"
+              >
+                <input
+                  type="text"
+                  id="number"
+                  className="w-[200px] bg-transparent font-digit \
+                text-center text-4xl text-gray-300 \
+                flex justify-between items-center py-2"
+                  placeholder="0"
+                  maxLength={5}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
+
+              {Number(value) > 0 && (
+                <p className="font-digit text-2xl mt-2 text-center">
+                  You will own {potentialPotShare}% of pot
+                </p>
+              )}
+
+              <Button
+                className="w-[200px] text-2xl"
+                variant="buy"
+                onClick={addToPotHandler}
+                disabled={!canBuyTicket}
+                isLoading={isPending}
+              >
+                Add
+              </Button>
             </div>
           </div>
         ) : (

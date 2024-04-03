@@ -18,6 +18,8 @@ const buttonVariants = cva(
 
         // How to play
         play: 'text-gray-200 hover:text-gray-200/50 text-xl bg-transparent',
+        average:
+          'text-gray-400 hover:text-gray-100 text-xl border border-indigo-400 hover:border-indigo-200 hover:shadow-xs hover:shadow-white bg-transparent',
 
         // How to play - learn more
         primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
