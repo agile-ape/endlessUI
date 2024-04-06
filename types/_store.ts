@@ -1,5 +1,5 @@
 import type { Action } from 'easy-peasy'
-import type { IApp, Ticket } from './app'
+import type { IApp, Ticket } from './_app'
 
 type CompletionModal = {
   isOpen: boolean

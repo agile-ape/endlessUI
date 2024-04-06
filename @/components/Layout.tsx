@@ -1,6 +1,6 @@
 import Header from './Header'
 import { Analytics } from '@vercel/analytics/react'
-import type { IApp, Ticket } from 'types/app'
+// import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
 import { useAccount, useBalance, useReadContracts, useWalletClient } from 'wagmi'
@@ -9,7 +9,7 @@ import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { isJson, transformToTicket, formatNumber } from '@/lib/utils'
+import { isJson, formatNumber } from '@/lib/utils'
 import CompletionModal from './ui/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from './shadcn/use-toast'
@@ -66,11 +66,11 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   // const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
   // const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
 
-  const { mutate: globalMutate } = useSWRConfig()
+  // const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
-  const router = useRouter()
-  const { address, isConnected } = useAccount()
+  // const router = useRouter()
+  // const { address, isConnected } = useAccount()
 
   /*
   const { data, refetch: refetchInitData } = useReadContracts({

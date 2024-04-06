@@ -5,20 +5,10 @@ import type { MouseEventHandler, FC } from 'react'
 import { Button } from './ui/button'
 import { TWITTER_URL, TELEGRAM_URL } from '../../services/constant'
 import HowToPlay from './ui/HowToPlay'
+import Referral from './ui/Referral'
 import { useStoreActions, useStoreState } from '../../store'
 
-const useStore = () => {
-  // const ownedTicket = useStoreState((state) => state.ownedTicket)
-  const tokenBalance = useStoreState((state) => state.tokenBalance)
-
-  return {
-    tokenBalance,
-  }
-}
-
 function Header() {
-  const { tokenBalance } = useStore()
-
   const handleOnMouseDown: MouseEventHandler = () => {
     location.reload()
   }
@@ -45,6 +35,7 @@ function Header() {
           <div className="flex justify-self-end gap-3 order-3">
             <div className="flex items-center space-x-4">
               <HowToPlay />
+              <Referral />
               <a href={TWITTER_URL} target="_blank">
                 <Button variant="link" className="px-2 text-lg">
                   Follow 🐦

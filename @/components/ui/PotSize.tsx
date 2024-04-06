@@ -17,12 +17,17 @@ export default function PotSize() {
     contracts: [
       {
         ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
+      {
+        ...defaultContractObj,
         functionName: 'potAmount',
       },
     ],
   })
 
-  const potSize = data?.[0].result || BigInt(0)
+  const canBuyTicket = data?.[0].result || false
+  const potSize = data?.[1].result || BigInt(0)
 
   const formattedPotSize = formatNumber(formatUnits(potSize, 18), {
     maximumFractionDigits: 6,
@@ -54,13 +59,15 @@ export default function PotSize() {
       flex flex-col justify-center items-center"
       >
         <div className="text-stone-400">
-          Pot Size
+          {canBuyTicket ? 'Pot Size' : 'Final Pot Size'}
+
           <span className="ml-1">(ETH)</span>
         </div>
         <div className="flex items-end">
           <div
             className="
-          font-digit text-3xl flash text-stone-400"
+          font-digit text-4xl text-stone-200 \
+          transition-all ease-linear place-self-center animate-pulse"
           >
             {formattedPotSize}
           </div>

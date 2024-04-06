@@ -11,7 +11,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import { useAccount, useReadContract, useReadContracts, useWatchContractEvent } from 'wagmi'
 import { readContract } from '@wagmi/core'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
-import { cn, transformToTicket } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useDotButton, DotButton, usePrevNextButtons, PrevButton, NextButton } from './navigation'
@@ -287,7 +287,7 @@ const YourTickets = () => {
       <div
         className="text-yellow-500  \
          text-4xl \
-        flex overflow-auto"
+        flex overflow-auto max-w-[480px]"
       >
         {winningNumbers.map((number, index) => (
           <span className="border px-3 border-stone-500" key={index}>
@@ -296,7 +296,12 @@ const YourTickets = () => {
         ))}
       </div>
 
-      <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">Your keys </p>
+      <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">
+        Your keys
+        <span className="ml-2 font-digit">
+          {'  '}({ticketsOutput.length})
+        </span>{' '}
+      </p>
       <div className="flex">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <section className="mx-auto">

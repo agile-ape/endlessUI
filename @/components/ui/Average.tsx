@@ -75,10 +75,10 @@ export default function Average() {
           >
             {canBuyTicket ? 'Current Average' : 'Final Average'}
 
-            <div className="font-digit flash text-3xl">{currentAverage}</div>
+            <div className="font-digit text-3xl">{currentAverage}</div>
           </Button>
         </DialogTrigger>
-        <DialogContent className="">
+        <DialogContent className="bg-transparent flex flex-col justify-center items-center">
           <Grid />
         </DialogContent>
       </Dialog>

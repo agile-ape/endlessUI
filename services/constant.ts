@@ -9,6 +9,14 @@ console.log(NODE_ENV)
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 // export const CHAIN_ID = 168587773
+
+export let API_ENDPOINT: string
+NODE_ENV == 'development'
+  ? (API_ENDPOINT = 'http://localhost:3001')
+  : (API_ENDPOINT = 'https://pepper-obky.onrender.com')
+
+console.log(API_ENDPOINT)
+
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
 export const GAME_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`
 export const defaultContractObj = {
@@ -48,6 +56,7 @@ export const blastSepolia1 = defineChain({
 
 export const DOCS_URL = 'https://docs.lastman.xyz'
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
+export const BLOCK_EXPLORER = 'https://testnet.blastscan.io'
 
 /*-------------------- EXTERNAL LINKS -------------------- */
 export const BLOG_URL = 'https://blog.lastman.xyz'

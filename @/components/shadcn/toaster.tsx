@@ -54,7 +54,7 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="flex text-xl items-center">
-              <div className="flex flex-col ml-2 text-[#FCFC03] mr-7">
+              <div className="flex flex-col ml-2 mr-7">
                 {/* {title && <ToastTitle>{title}</ToastTitle>} */}
                 {description && <ToastDescription>{description}</ToastDescription>}
               </div>

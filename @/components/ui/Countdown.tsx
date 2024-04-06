@@ -113,7 +113,7 @@ export default function Countdown() {
 
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
 
-  const endGameHandler = () => {
+  const endGameHandler = async () => {
     writeContract({
       ...defaultContractObj,
       functionName: 'endGame',

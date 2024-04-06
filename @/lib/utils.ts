@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type { IApp, Ticket, Event } from 'types/app'
-import { GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
+// import type { IApp, Ticket, Event } from 'types/app'
+import { API_ENDPOINT, GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
 import { formatUnits } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,11 +36,11 @@ export const calculateTimeLeft = () => {
 // export const shareConversion = 1000
 // export const priceConversion = 1000
 
-export const transformToTicket = (ticket: Ticket[]): IApp['tickets'] => {
-  return ticket.map((t) => ({
-    ...t,
-  }))
-}
+// export const transformToTicket = (ticket: Ticket[]): IApp['tickets'] => {
+//   return ticket.map((t) => ({
+//     ...t,
+//   }))
+// }
 
 // export const transformToEvent = (event: Event[]): IApp['events'] => {
 //   return event.map((e) => ({
@@ -68,17 +68,41 @@ export function formatCount(value: any): string {
   return value == 0 ? '-' : String(value)
 }
 
-// export async function fetcher(path: string) {
-//   try {
-//     const response = await fetch(API_ENDPOINT + path)
-//     const json = await response.json()
+// Make an HTTP POST request
+export async function poster(data: any, path: string) {
+  try {
+    const response = await fetch(API_ENDPOINT + path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // JSON => JSON string
+    })
 
-//     return json
-//   } catch (error) {
-//     console.log({ error })
-//     throw new Error('Failed to fetch API')
-//   }
-// }
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+
+    // const responseData = await response.json()
+
+    return response
+    // console.log('Success:', responseData)
+  } catch (error) {
+    console.error('Error:', error)
+  }
+}
+
+export async function fetcher(path: string) {
+  try {
+    const response = await fetch(API_ENDPOINT + path)
+    const json = await response.json()
+
+    return json
+  } catch (error) {
+    console.log({ error })
+    throw new Error('Failed to fetch API')
+  }
+}
 
 export function replacePlaceholders(message: { value: string; args: Record<string, string> }) {
   let result = message.value

@@ -3,8 +3,8 @@ import React from 'react'
 import type { FC } from 'react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
-import { useReadContracts, useWriteContract } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import { useReadContracts, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import {
   Tooltip,
   TooltipContent,
@@ -13,6 +13,7 @@ import {
 } from '@/components/shadcn/tooltip'
 import { formatNumber } from '@/lib/utils'
 import { formatUnits, parseUnits } from 'viem'
+import { toast } from '@/components/shadcn/use-toast'
 
 type TicketUIType = {
   id?: number
@@ -64,23 +65,32 @@ const TicketUI: FC<TicketUIType> = ({
     ],
   })
 
-  const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
+  const {
+    data: winnerClaimHash,
+
+    writeContractAsync: writeWinnerClaimContractAsync,
+  } = useWriteContract()
+  const { data: playerClaimHash, writeContractAsync: writePlayerClaimContractAsync } =
+    useWriteContract()
 
   const canBuyTicket = Boolean(data?.[0].result || false)
   const currentAverage = Number(data?.[1].result || BigInt(0))
   const playersPayoutFactor = Number(data?.[2].result || BigInt(0))
   const winnersSplit = Number(data?.[3].result || BigInt(0))
 
-  const claimAmount = playersPayoutFactor * id
+  let claimAmount = null
+  if (id !== 0) {
+    const payout = BigInt(playersPayoutFactor) / BigInt(id)
+    claimAmount = formatNumber(formatUnits(payout, 18), {
+      maximumFractionDigits: 4,
+      minimumFractionDigits: 3,
+    })
+  }
 
   const formattedWinnersSplit = formatNumber(formatUnits(winnersSplit, 18), {
-    maximumFractionDigits: 3,
+    maximumFractionDigits: 4,
     minimumFractionDigits: 3,
   })
-
-  console.log(canBuyTicket)
-  console.log(currentAverage)
-  console.log(typeof currentAverage)
 
   // const winnersClaimHandler = () => {
   //   writeContract({
@@ -107,7 +117,10 @@ const TicketUI: FC<TicketUIType> = ({
     ticketLook = 'noWin'
   }
 
-  if (!canBuyTicket && winnerClaimYet && playerClaimYet) {
+  if (
+    !canBuyTicket &&
+    ((isWinner && winnerClaimYet && playerClaimYet) || (!isWinner && playerClaimYet))
+  ) {
     ticketLook = 'claimed'
   }
 
@@ -148,10 +161,34 @@ const TicketUI: FC<TicketUIType> = ({
 
   const winnersClaimHandler = async () => {
     try {
-      const tx = writeContractAsync({
+      const tx = await writeWinnerClaimContractAsync({
         ...defaultContractObj,
         functionName: 'winnersClaim',
+        args: [id],
       })
+
+      if (tx) {
+        const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
+
+        toast({
+          variant: 'success',
+          description: (
+            <p>
+              🟣{' '}
+              <a href={txLink} target="_blank" className="text-xl text-black underline">
+                Winnings claimed!
+              </a>
+            </p>
+          ),
+        })
+      } else {
+        const errorMsg = tx?.cause?.reason || tx?.cause?.shortMessage || 'Error here!'
+        toast({
+          variant: 'destructive',
+          description: <p>{errorMsg}</p>,
+        })
+        onError(errorMsg)
+      }
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -162,16 +199,60 @@ const TicketUI: FC<TicketUIType> = ({
       })
     }
   }
+
+  // const {} = useWaitForTransactionReceipt({
+  //   hash: winnerClaimHash,
+  //   onSuccess() {
+  //     console.log(winnerClaimHash)
+  //     toast({
+  //       variant: 'success',
+  //       description: <p className="text-xl"> Winnings claimed!</p>,
+  //     })
+  //   },
+  // })
+
+  // const {} = useWaitForTransaction({
+  //   hash: adjustTokenEmissionData?.hash,
+  //   onSuccess(data) {
+  //     if (data.status === 'success') {
+  //       refetch()
+  //     }
+  //     console.log({ data })
+  //   },
+  // })
 
   const playersClaimHandler = async () => {
     try {
-      const tx = writeContractAsync({
+      const tx = await writePlayerClaimContractAsync({
         ...defaultContractObj,
         functionName: 'playersClaim',
+        args: [id],
       })
+
+      if (tx) {
+        const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
+
+        toast({
+          variant: 'success',
+          description: (
+            <p>
+              🟡{' '}
+              <a href={txLink} target="_blank" className="text-xl text-black underline">
+                Pot claimed!
+              </a>
+            </p>
+          ),
+        })
+      } else {
+        const errorMsg = tx?.cause?.reason || tx?.cause?.shortMessage || 'Error here!'
+        toast({
+          variant: 'destructive',
+          description: <p>{errorMsg}</p>,
+        })
+        onError(errorMsg)
+      }
     } catch (error: any) {
-      const errorMsg =
-        error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
+      const errorMsg = error?.cause?.reason || error?.cause?.shortMessage || 'No, Error here!'
 
       toast({
         variant: 'destructive',
@@ -179,6 +260,19 @@ const TicketUI: FC<TicketUIType> = ({
       })
     }
   }
+
+  // const result = useWaitForTransactionReceipt({
+  //   hash: playerClaimHash,
+  //   onSuccess(data) {
+  //     if (data.status === 'success') {
+  //       console.log(playerClaimHash)
+  //       toast({
+  //         variant: 'success',
+  //         description: <p className="text-xl">🟡 Pot claimed!</p>,
+  //       })
+  //     }
+  //   },
+  // })
 
   // const playersClaimHandler = () => {
   //   writeContract({
@@ -248,7 +342,13 @@ const TicketUI: FC<TicketUIType> = ({
                     {canBuyTicket ? (
                       <span>Cannot claim yet </span>
                     ) : (
-                      <span>You won {formattedWinnersSplit} ETH </span>
+                      <>
+                        {winnerClaimYet ? (
+                          <span>You have claimed </span>
+                        ) : (
+                          <span>You won {formattedWinnersSplit} ETH </span>
+                        )}
+                      </>
                     )}
                   </div>
                 </TooltipContent>
@@ -276,7 +376,13 @@ const TicketUI: FC<TicketUIType> = ({
                   {canBuyTicket ? (
                     <span>Cannot claim yet </span>
                   ) : (
-                    <span>You can claim {claimAmount} ETH </span>
+                    <>
+                      {playerClaimYet ? (
+                        <span>You have claimed </span>
+                      ) : (
+                        <span>You can claim {claimAmount} ETH </span>
+                      )}
+                    </>
                   )}
                 </div>
               </TooltipContent>

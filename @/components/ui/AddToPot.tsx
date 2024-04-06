@@ -53,10 +53,11 @@ function AddToPot() {
         ...defaultContractObj,
         functionName: 'fundersPot',
       },
-      // {
-      //   ...defaultContractObj,
-      //   functionName: 'fundersClaim',
-      // },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersClaimed',
+        args: [address as `0x${string}`],
+      },
     ],
   })
 
@@ -74,7 +75,7 @@ function AddToPot() {
   const fundersToAmt = data?.[2].result || false
   const fundersShare = Number(data?.[3].result || false)
   const fundersPot = data?.[4].result || false
-  // const fundersClaim = data?.[5].result || false
+  const fundersClaimed = Boolean(data?.[5].result || false)
 
   const totalFunded = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
     maximumFractionDigits: 3,
@@ -104,6 +105,10 @@ function AddToPot() {
     },
   )
 
+  const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(potToShare), {
+    maximumFractionDigits: 5,
+    minimumFractionDigits: 0,
+  })
   //   const totalFundedAmount = data?.[1].result || BigInt(0)
 
   //   const formattedFundedAmount = formatNumber(formatUnits(totalFundedAmount, 18), {
@@ -170,15 +175,16 @@ function AddToPot() {
       <DialogContent ref={modalRef}>
         <DialogHeader>
           <DialogTitle className="text-center text-3xl">🍎 The juicy apple</DialogTitle>
-          <DialogDescription className="text-center text-2xl">
-            Add ETH and claim part of pot when game ends.
+          <DialogDescription className="text-center text-neutral-100 text-2xl">
+            Add ETH and claim part of funders pot when game ends. ({fundersShare}% of the final pot
+            goes to funders pot.)
           </DialogDescription>
         </DialogHeader>
 
         {canBuyTicket ? (
           <div className="flex flex-col items-center justify-center gap-2 p-2">
             <div
-              className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 flex flex-col
+              className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 bg-zinc-800 flex flex-col
                 gap-4 justify-center items-center text-2xl
                 "
             >
@@ -189,11 +195,7 @@ function AddToPot() {
               </span>
             </div>
 
-            <DialogDescription className="text-left text-2xl mb-8">
-              * {fundersShare}% of the final pot goes to funders pot.
-            </DialogDescription>
-
-            <div className="flex flex-col gap-4 justify-center items-center border border-neutral-200 p-6 rounded-lg">
+            <div className="flex flex-col gap-4 justify-center bg-zinc-800 items-center border border-neutral-200 p-6 rounded-lg">
               <label htmlFor="number" className="text-3xl text-center text-gray-300 flex flex-col">
                 <span>Contribute to pot (in ETH)</span>
               </label>
@@ -233,25 +235,33 @@ function AddToPot() {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center gap-2 p-4">
-            <label htmlFor="number" className="text-xl text-center text-gray-300 flex flex-col">
-              <span>Claim ETH from pot</span>
-              <span>Your share</span>
-              <span>40%</span>
-            </label>
+          <>
+            <div className="flex flex-col gap-2 justify-center bg-zinc-800 items-center border border-neutral-200 p-6 rounded-lg">
+              <div className="text-center text-gray-300 flex flex-col gap-2">
+                <span className="text-3xl">Claim ETH from pot</span>
+                <span className="text-2xl">
+                  The funders pot has <span className="font-digit">{potToShare}</span> ETH
+                </span>
+                <span className="text-2xl">
+                  {' '}
+                  You own {percentOfPot}% of the pot and can claim {claimAmount} ETH{' '}
+                </span>
+              </div>
 
-            <Button
-              className="w-[200px] text-2xl"
-              variant="buy"
-              onClick={claimFundersHandler}
-              isLoading={isLoading}
-            >
-              Claim
-            </Button>
-            <div>
-              {/* Amount added: <span className="font-digit">{formattedFundedAmount}</span> ETH */}
+              <Button
+                className="w-[200px] text-2xl"
+                variant="buy"
+                onClick={claimFundersHandler}
+                isLoading={isLoading}
+                disabled={!fundersClaimed || !Number(playerContribution)}
+              >
+                Claim
+              </Button>
+              <div>
+                {/* Amount added: <span className="font-digit">{formattedFundedAmount}</span> ETH */}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </DialogContent>
     </Dialog>

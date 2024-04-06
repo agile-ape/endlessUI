@@ -5,12 +5,31 @@ import PotSize from '../ui/PotSize'
 import Average from '../ui/Average'
 import BuyTicket from '../ui/BuyTicket'
 import YourTickets from '../ui/YourTickets'
-import { useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
+import { useAccount, useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import { toast } from '@/components/shadcn/use-toast'
 // import { toast } from '@/components/shadcn/sonner'
+import useSWR, { useSWRConfig } from 'swr'
+import { fetcher, isJson, formatNumber } from '@/lib/utils'
+import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
+
+type Number = {
+  chainId: number
+  contractAddress: string
+  ticketId: number
+  selectedNumber: number
+  averageNumber: number
+  updatedAtTx: string
+}
 
 export default function DesktopScreen() {
+  const { address, isConnected } = useAccount()
+  const lowerCaseAddress = String(address?.toLowerCase())
+
+  const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
+  const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
+  const updateReferral = useStoreActions((actions) => actions.updateReferral)
+
   useWatchContractEvent({
     ...defaultContractObj,
     eventName: 'NewTicketBought',
@@ -28,12 +47,104 @@ export default function DesktopScreen() {
     eventName: 'PotAdded',
     onLogs() {
       toast({
-        variant: 'bought',
-        description: <p className="text-xl">🎊 Someone added to the pot</p>,
+        variant: 'contributed',
+        description: <p className="text-xl">🍎 Someone added to the pot</p>,
       })
     },
     poll: true,
   })
+
+  const { mutate: globalMutate } = useSWRConfig()
+
+  let numberList: number[] = []
+  let averageList: number[] = []
+  let referralAddress: string = ''
+
+  const {
+    data: numbersData,
+    error: numbersError,
+    isLoading,
+    mutate,
+  } = useSWR(
+    // <{data: Number[]}>
+    '/numbers',
+    fetcher,
+    { refreshInterval: 1000 },
+  )
+
+  console.log('check')
+  if (numbersError) {
+    console.error('Error fetching data:', numbersError)
+  }
+
+  // Check if data is available
+  if (numbersData) {
+    console.log('Data fetched successfully:', numbersData)
+
+    for (let i = 0; i < numbersData.length; i++) {
+      numberList.push(numbersData[i].selectedNumber)
+      averageList.push(numbersData[i].averageNumber)
+    }
+
+    updateNumberList(numberList)
+    updateAverageList(averageList)
+
+    console.log(numberList)
+    console.log(averageList)
+  }
+
+  const { data: referralData, error: referralError } = useSWR(
+    // <{data: Number[]}>
+    `/referrals/${lowerCaseAddress}`,
+    fetcher,
+  )
+
+  console.log(referralData)
+
+  if (referralData) {
+    referralAddress = referralData.referralAddress
+    isTake = referralData.isTake
+
+    updateIsTake(isTake)
+    updateReferral(referralAddress)
+  }
+
+  // console.log(numbersData[1].chainId)
+  // console.log(numbersData[1])
+  // console.log(numbersData[2])
+  // const { data } = useSWR<{ data: Number[] }>(fetcher('/numbers'))
+  // console.log(data)
+
+  // const response = async () => {
+  //   const result = await fetch('http://localhost:3001/numbers')
+  //   console.log(result)
+  // }
+
+  // response()
+
+  // const {
+  //   data: numbers,
+  //   error,
+  //   mutate,
+  // } = useSWR('http://localhost:3001/numbers', async (url) => {
+  //   const response = await fetch(url)
+  //   console.log(response)
+
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch numbers')
+  //   }
+  //   // return response.json();
+  //   console.log(response.json())
+  // })
+
+  // if (error) return <div>Error: {error.message}</div>;
+  // if (!numbers) return <div>Loading...</div>;
+
+  // if (error) console.log('error')
+  // if (!numbers) console.log('loading')
+
+  // const data = fetcher('/numbers')
+  // console.log(data)
 
   return (
     <>

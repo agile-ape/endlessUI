@@ -47,38 +47,12 @@ export default function BuyTicket() {
     winningNumbers[i] = Number(leaderboard[i])
   }
 
-  console.log(Number(ticketPrice))
-
   const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
     maximumFractionDigits: 3,
     minimumFractionDigits: 3,
   })
 
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
-
-  // const { data, isPending } = writeContractAsync({
-  //   ...defaultContractObj,
-  //   functionName: 'buyTicket',
-  //   value: parseUnits(String(ticketPrice), 18),
-  //   args: [BigInt(value)],
-  // })
-
-  // const buyTicketHandler = async () => {
-  //   try {
-  //     const tx = await writeContractAsync({
-  //       ...defaultContractObj,
-  //       functionName: 'buyTicket',
-  //       value: parseUnits(String(ticketPrice), 18),
-  //       args: [BigInt(value)],
-  //     })
-
-  //     const hash = tx.hash
-  //   } catch (error: any) {
-  //     const errorMsg =
-  //       error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
-  //   }
-  // }
-  console.log(ticketPrice)
 
   const buyTicketHandler = () => {
     console.log('buyTicketPressed')
@@ -124,10 +98,10 @@ export default function BuyTicket() {
         Buy
       </Button>
       <div className="text-left">
-        <div className="text-gray-400">
+        <div className="text-gray-400 text-lg">
           Key price: <span className="font-digit">{formattedTicketPrice}</span> ETH
         </div>
-        <div className="text-gray-400">Total keys: {ticketsBought}</div>
+        {/* <div className="text-gray-400">Total keys: {ticketsBought}</div> */}
       </div>
     </div>
   )

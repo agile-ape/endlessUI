@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils'
 import React, { useEffect, useState } from 'react'
 import type { FC } from 'react'
-import type { IApp } from 'types/app'
 import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
 
