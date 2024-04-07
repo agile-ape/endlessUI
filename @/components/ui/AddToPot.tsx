@@ -19,7 +19,7 @@ import {
   useWatchContractEvent,
   useWriteContract,
 } from 'wagmi'
-import { defaultContractObj, GAME_ADDRESS } from '../../../services/constant'
+import { defaultContractObj, BLOCK_EXPLORER, GAME_ADDRESS } from '../../../services/constant'
 import { formatUnits, parseEther } from 'viem'
 import { formatNumber } from '@/lib/utils'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
@@ -136,6 +136,21 @@ function AddToPot() {
         value: parseEther(value),
       })
       setIsModalOpen(false)
+      if (tx) {
+        const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
+
+        toast({
+          variant: 'success',
+          description: (
+            <p>
+              🔴{' '}
+              <a href={txLink} target="_blank" className="text-xl text-black underline">
+                Added to pot!
+              </a>
+            </p>
+          ),
+        })
+      }
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -149,10 +164,35 @@ function AddToPot() {
 
   const claimFundersHandler = async () => {
     try {
-      const tx = writeContractAsync({
+      const tx = await writeContractAsync({
         ...defaultContractObj,
         functionName: 'fundersClaim',
       })
+
+      if (tx) {
+        const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
+
+        toast({
+          variant: 'success',
+          description: (
+            <p>
+              🔴{' '}
+              <a href={txLink} target="_blank" className="text-xl text-black underline">
+                Pot share claimed!
+              </a>
+            </p>
+          ),
+        })
+      }
+
+      // else {
+      //   const errorMsg = tx?.cause?.reason || tx?.cause?.shortMessage || 'Error here!'
+      //   toast({
+      //     variant: 'destructive',
+      //     description: <p>{errorMsg}</p>,
+      //   })
+      //   onError(errorMsg)
+      // }
     } catch (error: any) {
       const errorMsg =
         error?.cause?.reason || error?.cause?.shortMessage || 'Error, please try again!'
@@ -162,7 +202,7 @@ function AddToPot() {
         description: <p>{errorMsg}</p>,
       })
     }
-    setIsModalOpen(false)
+    // setIsModalOpen(false)
   }
 
   return (
@@ -176,8 +216,7 @@ function AddToPot() {
         <DialogHeader>
           <DialogTitle className="text-center text-3xl">🍎 The juicy apple</DialogTitle>
           <DialogDescription className="text-center text-neutral-100 text-2xl">
-            Add ETH and claim part of funders pot when game ends. ({fundersShare}% of the final pot
-            goes to funders pot.)
+            Add ETH and claim from 🔴 funders pot when game ends.
           </DialogDescription>
         </DialogHeader>
 
@@ -253,9 +292,9 @@ function AddToPot() {
                 variant="buy"
                 onClick={claimFundersHandler}
                 isLoading={isLoading}
-                disabled={!fundersClaimed || !Number(playerContribution)}
+                disabled={fundersClaimed || !Number(playerContribution)}
               >
-                Claim
+                {fundersClaimed ? 'You have claimed' : 'Claim'}
               </Button>
               <div>
                 {/* Amount added: <span className="font-digit">{formattedFundedAmount}</span> ETH */}

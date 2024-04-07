@@ -139,13 +139,13 @@ function Referral() {
               variant="play"
               className=" rounded-xl border-gray-200 hover:border-gray-200/50 px-4"
             >
-              💪 Referral
+              🟢 Referral
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="text-center text-3xl">
-                💪 Show some love, get some tokens
+                🟢 Show some love, get some tokens
               </DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
                 Submit your referral's wallet address and qualify for token airdrop
@@ -234,6 +234,10 @@ function Referral() {
                 )}
               </>
             )}
+
+            <DialogDescription className="text-center text-neutral-100 text-2xl">
+              Your referral stats
+            </DialogDescription>
           </DialogContent>
         </Dialog>
       )}

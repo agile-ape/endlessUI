@@ -27,6 +27,9 @@ import {
   blastSepolia,
   blast,
 } from 'wagmi/chains'
+import { formatNumber } from '@/lib/utils'
+import { formatUnits, parseEther } from 'viem'
+
 /*-------------------------------------- DOT BUTTONS -------------------------------------- */
 
 /*-------------------------------------- Prev Next Buttons --------------------------------------*/
@@ -70,7 +73,7 @@ const defaultTicket = {
 
 const YourTickets = () => {
   const { address, isConnected } = useAccount()
-  const [ticketsOutput, setTicketsOutput] = useState<Ticket[]>([defaultTicket])
+  // const [ticketsOutput, setTicketsOutput] = useState<Ticket[]>([defaultTicket])
 
   // const tickets = readContract(config, {
   //   ...defaultContractObj,
@@ -89,6 +92,14 @@ const YourTickets = () => {
         ...defaultContractObj,
         functionName: 'computeLeaderboard',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersPot',
+      },
     ],
   })
 
@@ -101,8 +112,24 @@ const YourTickets = () => {
     poll: true,
   })
 
+  // useWatchContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'PlayersClaimed',
+  //   onLogs() {
+  //     refetch()
+  //   },
+  //   poll: true,
+  // })
+
   const playerTickets = data?.[0]?.result || []
   const leaderboard: readonly bigint[] = data?.[1].result || []
+  const canBuyTicket = data?.[2].result || false
+  const winnersPot = data?.[3].result || BigInt(0)
+
+  const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
 
   let winningNumbers: number[] = []
 
@@ -115,6 +142,8 @@ const YourTickets = () => {
   // useEffect(() => {})
   // // extracted to array of bigint
   // setPlayerTickets((playerTicketsArray && playerTicketsArray?.[0]?.result) || [])
+
+  /*
 
   useEffect(() => {
     // Ensure playerTicketsArray is defined and has at least one element with a result property
@@ -155,6 +184,8 @@ const YourTickets = () => {
       console.error(error)
     }
   }
+
+  */
 
   // const promise = playerTickets.forEach(async (item) =>
   //       for (const item of playerTickets) {
@@ -283,6 +314,14 @@ const YourTickets = () => {
 
   return (
     <div className="flex flex-col gap-2 my-2 items-center justify-center mx-auto">
+      {canBuyTicket ? (
+        <></>
+      ) : (
+        <div className="flex text-2xl border border-zinc-500 rounded-xl px-4 py-2 my-2 text-gray-200">
+          Winners pot:<span className="font-digit mx-2">{winnersToShare}</span> ETH{' '}
+        </div>
+      )}
+
       <div className="text-gray-400">Winning keys (#)</div>
       <div
         className="text-yellow-500  \
@@ -299,7 +338,7 @@ const YourTickets = () => {
       <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">
         Your keys
         <span className="ml-2 font-digit">
-          {'  '}({ticketsOutput.length})
+          {'  '}({playerTickets.length})
         </span>{' '}
       </p>
       <div className="flex">
@@ -312,15 +351,16 @@ const YourTickets = () => {
                   // isConnected &&
                   // ticketsOutput &&
                   // ticketsOutput.length > 0 &&
-                  ticketsOutput.map((item, i) => (
+                  playerTickets.map((item, i) => (
                     <div className="mx-2" key={i}>
                       <TicketUI
-                        id={item.id}
-                        player={item.player}
-                        number={item.number}
-                        isWinner={item.isWinner}
-                        winnerClaimYet={item.winnerClaimYet}
-                        playerClaimYet={item.playerClaimYet}
+                        ticketId={item}
+                        // id={item.id}
+                        // player={item.player}
+                        // number={item.number}
+                        // isWinner={item.isWinner}
+                        // winnerClaimYet={item.winnerClaimYet}
+                        // playerClaimYet={item.playerClaimYet}
                       />
                     </div>
                   ))

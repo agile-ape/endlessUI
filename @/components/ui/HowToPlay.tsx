@@ -27,40 +27,41 @@ function HowToPlay() {
         <div className="overflow-auto">
           <DialogHeader>
             <DialogTitle className="text-center text-3xl font-digit text-[#FCFC03]">
-              AVERAGE
+              HOW TO PLAY
             </DialogTitle>
-            <ScrollArea className="h-[650px] rounded-md border p-4">
+            <ScrollArea className="rounded-md border p-4">
               <DialogDescription>
                 <div className="text-[#FCFCD7] text-xl">
                   {/* <p className="mb-6">Pooh's Pot 🍯 has ETH</p> */}
-                  <p className="mb-6 text-2xl">
+                  <p className="mb-2 underline text-2xl">
                     Guess the final average number chosen by all players
                     {/* <span className="italic">(buy-in value)</span> */}
                   </p>
                   <p className="mb-4"> Pick a number, from 0 to 9999. </p>
-                  <p className="mb-4"> Buy a key for 0.001e to lock it in. </p>
-                  <p className="mb-4"> Purchases add towards the pot, and extends time. </p>
+                  <p className="mb-4"> Buy a key to lock it in. </p>
+                  <p className="mb-4"> Purchases add to the pot, and extends time. </p>
                   <p className="mb-8"> Once the timer reaches zero, game ends. </p>
 
-                  <p className="mb-6 text-2xl">
+                  <p className="mb-2 underline text-2xl">
                     Pot is split 3 ways when game ends
                     {/* <span className="italic">(buy-in value)</span> */}
                   </p>
 
                   <p className="mb-6">
                     {' '}
-                    🔴 Funders Pot (20%): Divided by all whom contributed to pot - split by
+                    🟣 Winners Pot (40%): Shared by all keys that picked the final average evenly.{' '}
+                  </p>
+                  <p className="mb-6">
+                    {' '}
+                    🟡 Players Pot (30%): Shared by all players based on how early they join -
+                    earlier = claim more.
+                  </p>
+                  <p className="mb-6">
+                    {' '}
+                    🔴 Funders Pot (20%): Shared by all whom contributed to pot - split by
                     contribution share.{' '}
                   </p>
-                  <p className="mb-6">
-                    {' '}
-                    🟡 Players Pot (30%): Divided by all players - split by how early they join -
-                    the earlier you join, the more you claim.
-                  </p>
-                  <p className="mb-6">
-                    {' '}
-                    🟣 Winners Pot (50%): Divided equally by keys that picked the final average.{' '}
-                  </p>
+                  <p className="mb-6"> 🟢 Referral Pot (10%): Shared by referrals evenly. </p>
                 </div>
 
                 <a href={DOCS_URL} target="_blank">

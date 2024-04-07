@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
+import { useReadContracts, useWatchContractEvent } from 'wagmi'
+import { defaultContractObj } from '../../../services/constant'
 
 const CursorSVG = () => (
   <svg
@@ -21,6 +23,17 @@ const CursorSVG = () => (
 
 // Title: FC<TitleType> = () => {
 const Title = () => {
+  const { data, refetch } = useReadContracts({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
+    ],
+  })
+
+  const canBuyTicket = Number(data?.[0].result || false)
+
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
 
@@ -30,7 +43,9 @@ const Title = () => {
     setCompletedTyping(false)
 
     let i = 0
-    let stringResponse = 'FLOP THE AVERAGE'
+
+    let stringResponse: string
+    canBuyTicket ? (stringResponse = 'FLOP THE AVERAGE') : (stringResponse = 'THANKS FOR PLAYING')
 
     const intervalId = setInterval(() => {
       setDisplayResponse(stringResponse.slice(0, i))

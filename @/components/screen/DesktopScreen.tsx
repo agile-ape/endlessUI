@@ -10,7 +10,7 @@ import { defaultContractObj } from '../../../services/constant'
 import { toast } from '@/components/shadcn/use-toast'
 // import { toast } from '@/components/shadcn/sonner'
 import useSWR, { useSWRConfig } from 'swr'
-import { fetcher, isJson, formatNumber } from '@/lib/utils'
+import { fetcher, poster, isJson, formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
 
 type Number = {
@@ -53,6 +53,21 @@ export default function DesktopScreen() {
     },
     poll: true,
   })
+
+  /*
+  const registerUser = () => {
+    try {
+      const responseData = await poster(address, '/referrals')
+
+    }
+
+  }
+
+
+  useEffect(() => {
+    registerUser()
+  },[])
+  */
 
   const { mutate: globalMutate } = useSWRConfig()
 
@@ -101,13 +116,13 @@ export default function DesktopScreen() {
 
   console.log(referralData)
 
-  if (referralData) {
-    referralAddress = referralData.referralAddress
-    isTake = referralData.isTake
+  // if (referralData) {
+  //   referralAddress = referralData.referralAddress
+  //   isTake = referralData.isTake
 
-    updateIsTake(isTake)
-    updateReferral(referralAddress)
-  }
+  //   updateIsTake(isTake)
+  //   updateReferral(referralAddress)
+  // }
 
   // console.log(numbersData[1].chainId)
   // console.log(numbersData[1])

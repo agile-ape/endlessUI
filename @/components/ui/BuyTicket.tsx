@@ -95,7 +95,7 @@ export default function BuyTicket() {
         disabled={!canBuyTicket}
         isLoading={isPending}
       >
-        Buy
+        {canBuyTicket ? 'Buy' : 'Buying ended'}
       </Button>
       <div className="text-left">
         <div className="text-gray-400 text-lg">

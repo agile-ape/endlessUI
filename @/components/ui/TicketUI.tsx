@@ -3,7 +3,12 @@ import React from 'react'
 import type { FC } from 'react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
-import { useReadContracts, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import {
+  useReadContracts,
+  useReadContract,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
 import { defaultContractObj, BLOCK_EXPLORER } from '../../../services/constant'
 import {
   Tooltip,
@@ -16,26 +21,27 @@ import { formatUnits, parseUnits } from 'viem'
 import { toast } from '@/components/shadcn/use-toast'
 
 type TicketUIType = {
-  id?: number
-  player?: string
-  number?: number
-  isWinner?: bool
-  winnerClaimYet?: bool
-  playerClaimYet?: bool
+  // id?: number
+  // player?: string
+  // number?: number
+  // isWinner?: bool
+  // winnerClaimYet?: bool
+  // playerClaimYet?: bool
+  ticketId?: bigint
 }
 
 const TicketUI: FC<TicketUIType> = ({
-  id,
-  player,
-  number,
-  isWinner,
-  winnerClaimYet,
-  playerClaimYet,
+  // id,
+  // player,
+  // number,
+  // isWinner,
+  // winnerClaimYet,
+  // playerClaimYet,
+  ticketId,
 }) => {
   const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)
   const toggleLoad = () => setShowLoadModal((prevState) => !prevState)
   const [isOverlayInspect, setIsOverlayInspect] = React.useState<boolean>(false)
-
   const handleOnMouseEnter: MouseEventHandler = () => {
     setIsOverlayInspect(true)
   }
@@ -44,7 +50,20 @@ const TicketUI: FC<TicketUIType> = ({
     setIsOverlayInspect(false)
   }
 
-  const { data, refetch } = useReadContracts({
+  const { data: playerInfo, refetch } = useReadContract({
+    ...defaultContractObj,
+    functionName: 'idToTicket',
+    args: [ticketId],
+  })
+
+  const id = Number(playerInfo?.[0] || 0)
+  const player = String(playerInfo?.[1] || '0')
+  const number = Number(playerInfo?.[2] || 0)
+  const isWinner = Boolean(playerInfo?.[3] || false)
+  const winnerClaimYet = Boolean(playerInfo?.[4] || false)
+  const playerClaimYet = Boolean(playerInfo?.[5] || false)
+
+  const { data } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
@@ -77,6 +96,7 @@ const TicketUI: FC<TicketUIType> = ({
   const currentAverage = Number(data?.[1].result || BigInt(0))
   const playersPayoutFactor = Number(data?.[2].result || BigInt(0))
   const winnersSplit = Number(data?.[3].result || BigInt(0))
+  // const winnersSplit = data?.[4].result ||
 
   let claimAmount = null
   if (id !== 0) {
@@ -169,7 +189,6 @@ const TicketUI: FC<TicketUIType> = ({
 
       if (tx) {
         const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
-
         toast({
           variant: 'success',
           description: (
@@ -181,6 +200,7 @@ const TicketUI: FC<TicketUIType> = ({
             </p>
           ),
         })
+        refetch()
       } else {
         const errorMsg = tx?.cause?.reason || tx?.cause?.shortMessage || 'Error here!'
         toast({
@@ -243,6 +263,7 @@ const TicketUI: FC<TicketUIType> = ({
             </p>
           ),
         })
+        refetch()
       } else {
         const errorMsg = tx?.cause?.reason || tx?.cause?.shortMessage || 'Error here!'
         toast({
