@@ -141,16 +141,19 @@ const Grid = () => {
   }, [])
 
   console.log(numberList)
+
+  // adjusted numberList back to 1
   let adjNumberList: number[] = []
   for (let i = 0; i < numberList.length; i++) {
-    adjNumberList[i] = Math.floor(numberList[i] / 10)
+    adjNumberList[i] = Math.floor(numberList[i] / 1)
   }
 
   console.log(averageList)
 
+  // adjusted averageList back to 1
   let adjAverageList: number[] = []
   for (let i = 0; i < averageList.length; i++) {
-    adjAverageList[i] = Math.floor(averageList[i] / 10)
+    adjAverageList[i] = Math.floor(averageList[i] / 1)
   }
 
   const clearSquares = () => {

@@ -69,7 +69,7 @@ export default function BuyTicket() {
   return (
     <div className="flex flex-col items-center justify-center gap-2 mt-4">
       <label htmlFor="number" className="text-xl text-center text-gray-300">
-        Pick a number from 0 - 9999
+        Pick a number from 0 - 999
       </label>
       <div
         className="border-[2px] border-gray-400 \

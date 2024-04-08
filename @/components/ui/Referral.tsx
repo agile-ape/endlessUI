@@ -148,7 +148,7 @@ function Referral() {
                 🟢 Show some love, get some tokens
               </DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
-                Submit your referral's wallet address and qualify for token airdrop
+                Submit your referral's wallet address. Choose to give to take.
               </DialogDescription>
             </DialogHeader>
             {referralAddress ? (
