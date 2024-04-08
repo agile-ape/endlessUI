@@ -146,7 +146,7 @@ function Referral() {
             <DialogHeader>
               <DialogTitle className="text-center text-3xl">🟢 Show some love</DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
-                Submit your referral's wallet address and choose to give or take
+                Submit your referral's wallet address. Choose to give to take.
               </DialogDescription>
             </DialogHeader>
             {referralAddress ? (
