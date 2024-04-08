@@ -153,7 +153,7 @@ export default function Countdown() {
             <>
               <div className="capitalized text-2xl">TIME'S UP</div>
               <Button
-                variant="action"
+                variant="end"
                 className="w-full px-8 py-2 mt-2"
                 onClick={endGameHandler}
                 isLoading={isPending}

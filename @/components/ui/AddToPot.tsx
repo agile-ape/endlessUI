@@ -208,7 +208,7 @@ function AddToPot() {
   return (
     <Dialog onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Button variant="action" className="w-full px-8 py-2 mt-2">
+        <Button variant="claim" className="w-full px-8 py-2 mt-2">
           {canBuyTicket ? 'Add' : 'Claim'}
         </Button>
       </DialogTrigger>
@@ -264,7 +264,7 @@ function AddToPot() {
 
               <Button
                 className="w-[200px] text-2xl"
-                variant="buy"
+                variant="claim"
                 onClick={addToPotHandler}
                 disabled={!canBuyTicket}
                 isLoading={isPending}
@@ -288,8 +288,8 @@ function AddToPot() {
               </div>
 
               <Button
-                className="w-[200px] text-2xl"
-                variant="buy"
+                className="w-[200px] text-2xl mt-4"
+                variant="claim"
                 onClick={claimFundersHandler}
                 isLoading={isLoading}
                 disabled={fundersClaimed || !Number(playerContribution)}

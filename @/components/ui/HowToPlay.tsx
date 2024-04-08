@@ -49,11 +49,11 @@ function HowToPlay() {
 
                   <p className="mb-6">
                     {' '}
-                    🟣 Winners Pot (40%): Shared by all keys that picked the final average evenly.{' '}
+                    🟡 Winners Pot (40%): Shared by all keys that picked the final average evenly.{' '}
                   </p>
                   <p className="mb-6">
                     {' '}
-                    🟡 Players Pot (30%): Shared by all players based on how early they join -
+                    ⚪ Players Pot (30%): Shared by all players based on how early they join -
                     earlier = claim more.
                   </p>
                   <p className="mb-6">
@@ -61,7 +61,7 @@ function HowToPlay() {
                     🔴 Funders Pot (20%): Shared by all whom contributed to pot - split by
                     contribution share.{' '}
                   </p>
-                  <p className="mb-6"> 🟢 Referral Pot (10%): Shared by referrals evenly. </p>
+                  <p className="mb-6"> 🟢 Referrals Pot (10%): Shared by referrals evenly. </p>
                 </div>
 
                 <a href={DOCS_URL} target="_blank">

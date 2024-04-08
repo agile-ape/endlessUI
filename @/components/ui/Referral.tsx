@@ -144,11 +144,9 @@ function Referral() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="text-center text-3xl">
-                🟢 Show some love, get some tokens
-              </DialogTitle>
+              <DialogTitle className="text-center text-3xl">🟢 Show some love</DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
-                Submit your referral's wallet address and qualify for token airdrop
+                Submit your referral's wallet address and choose to give or take
               </DialogDescription>
             </DialogHeader>
             {referralAddress ? (
@@ -197,7 +195,7 @@ function Referral() {
                           <TooltipTrigger>
                             <Button
                               className="w-[150px] text-2xl"
-                              variant="buy"
+                              variant="give"
                               onClick={addGiveHandler}
                             >
                               Give
@@ -205,7 +203,7 @@ function Referral() {
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Give all 10% of your proceeds to referrer, instead of to final pot
+                              Give all 10% of your proceeds to referral
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -216,7 +214,7 @@ function Referral() {
                           <TooltipTrigger>
                             <Button
                               className="w-[150px] text-2xl"
-                              variant="buy"
+                              variant="take"
                               onClick={addTakeHandler}
                             >
                               Take
@@ -224,7 +222,7 @@ function Referral() {
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Take 5% of your proceeds back from your referrer, so 50-50
+                              Take 5% of your proceeds back from your referral, so 50-50
                             </div>
                           </TooltipContent>
                         </Tooltip>

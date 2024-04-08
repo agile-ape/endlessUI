@@ -18,23 +18,43 @@ const buttonVariants = cva(
 
         // How to play
         play: 'text-gray-200 hover:text-gray-200/50 text-xl bg-transparent',
+
         average:
           'text-gray-400 hover:text-gray-100 text-xl border border-indigo-400 hover:border-indigo-200 hover:shadow-xs hover:shadow-white bg-transparent',
+
+        run: 'bg-indigo-400 text-gray-100 hover:bg-indigo-200 hover:text-black text-xl border border-indigo-400 hover:border-white hover:shadow-xs hover:shadow-white',
+
+        reset:
+          'bg-transparent hover:text-gray-100 text-xl border border-indigo-400 hover:border-indigo-200 hover:shadow-xs hover:shadow-white bg-transparent',
 
         // How to play - learn more
         primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
 
-        buy: 'bg-gray-400 text-slate-700 border border-slate-200 border-2 rounded-xl \
+        buy: 'bg-gray-400 text-slate-700 border border-slate-700 border-2 rounded-xl \
          hover:text-white hover:bg-opacity-50 \
          active:text-white/50 active:bg-opacity-75',
+
+        give: 'bg-gray-400 text-slate-700 border border-slate-700 border-2 rounded-xl \
+        hover:text-white hover:bg-opacity-50 \
+        active:text-white/50 active:bg-opacity-75',
+
+        take: 'bg-gray-600 text-slate-300 border border-slate-300 border-2 rounded-xl \
+         hover:text-white hover:bg-opacity-50 \
+         active:text-white/50 active:bg-opacity-75',
+
+        // claim:
+        //   'bg-gray-400 text-slate-700 border border-slate-200 border-2 rounded-xl \
+        //  hover:text-white hover:bg-opacity-50 \
+        //  active:text-white/50 active:bg-opacity-75',
 
         claim:
-          'bg-gray-400 text-slate-700 border border-slate-200 border-2 rounded-xl \
-         hover:text-white hover:bg-opacity-50 \
-         active:text-white/50 active:bg-opacity-75',
-
-        action:
           'rounded-lg \
+        bg-stone-800 border border-stone-500 \
+        text-2xl text-stone-400 \
+        hover:text-red-200 hover:border-red-200 \
+        active:text-red-200/50 active:border-red-200/50',
+
+        end: 'rounded-lg \
         bg-stone-800 border border-stone-500 \
         text-2xl text-stone-400 \
         hover:text-[#FCFC03] hover:border-[#FCFC03] \

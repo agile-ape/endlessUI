@@ -69,7 +69,7 @@ export default function BuyTicket() {
   return (
     <div className="flex flex-col items-center justify-center gap-2 mt-4">
       <label htmlFor="number" className="text-xl text-center text-gray-300">
-        Pick a number from 0 - 9999
+        Pick a number from 0 - 999
       </label>
       <div
         className="border-[2px] border-gray-400 \
@@ -83,7 +83,7 @@ export default function BuyTicket() {
             text-center text-4xl text-gray-300 \
             flex justify-between items-center py-2"
           placeholder="0"
-          maxLength={4}
+          maxLength={3}
           onChange={(e) => setValue(e.target.value)}
         />
       </div>

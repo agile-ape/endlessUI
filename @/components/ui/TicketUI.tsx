@@ -146,38 +146,44 @@ const TicketUI: FC<TicketUIType> = ({
 
   const ticketLookMapping = {
     bought: {
-      bgColor: 'bg-neutral-600',
-      borderColor: 'border-gray-400',
-      shutter: 'bg-neutral-700 border-gray-500',
+      bgColor: 'bg-neutral-500',
+      borderColor: 'border-gray-800',
+      shutter: 'bg-neutral-700 border-gray-800',
       shutterTextColor: 'text-yellow-500',
+      buttonColor: 'bg-neutral-700 border-gray-800',
     },
     leading: {
       bgColor: 'bg-neutral-600',
       borderColor: 'border-yellow-400 border-2',
       shutter: 'bg-neutral-700 border-yellow-500',
       shutterTextColor: 'text-yellow-500',
+      buttonColor: 'bg-neutral-700 border-yellow-500',
     },
     win: {
       bgColor: 'bg-yellow-400',
       borderColor: 'border-yellow-600',
       shutter: 'bg-yellow-500 border-yellow-600',
       shutterTextColor: 'text-gray-700',
+      buttonColor: 'bg-yellow-500 border-yellow-600',
     },
     noWin: {
-      bgColor: 'bg-rose-200',
-      borderColor: 'border-rose-700',
-      shutter: 'bg-rose-300 border-rose-500',
-      shutterTextColor: 'text-gray-700',
-    },
-    claimed: {
       bgColor: 'bg-neutral-200',
       borderColor: 'border-neutral-700',
       shutter: 'bg-neutral-400 border-gray-500',
       shutterTextColor: 'text-gray-700',
+      buttonColor: 'bg-neutral-400 border-gray-500',
+    },
+    claimed: {
+      bgColor: '',
+      borderColor: 'border-gray-400',
+      shutter: 'bg-neutral-600 border-gray-400',
+      shutterTextColor: 'text-white',
+      buttonColor: 'bg-neutral-600 border-gray-400',
     },
   }
 
-  const { bgColor, borderColor, shutter, shutterTextColor } = ticketLookMapping[ticketLook]
+  const { bgColor, borderColor, shutter, shutterTextColor, buttonColor } =
+    ticketLookMapping[ticketLook]
 
   const winnersClaimHandler = async () => {
     try {
@@ -306,7 +312,7 @@ const TicketUI: FC<TicketUIType> = ({
     <div
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
-      className={`${bgColor} ${borderColor} relative wiggle flex flex-col mx-auto items-center rounded-xl border gap-2 w-[120px] h-[120px]`}
+      className={`${bgColor} ${borderColor} relative wiggle flex flex-col mx-auto items-center rounded-xl border gap-2 w-[120px] h-[120px] mt-4 mb-2`}
     >
       <div className="absolute bottom-3 left-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
       <div className="absolute bottom-3 right-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
@@ -314,11 +320,11 @@ const TicketUI: FC<TicketUIType> = ({
         {isOverlayInspect ? (
           <>
             <div
-              className={`${shutter} left-0 absolute w-[28px] h-[28px] rounded-xs \
+              className={`${shutter} left-0 absolute w-[28px] h-[28px] rounded-l-xs \
               border`}
             ></div>
             <div
-              className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-xs \
+              className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-r-sm \
                 flex justify-center items-center text-xl`}
             >
               {String(id)}
@@ -342,6 +348,53 @@ const TicketUI: FC<TicketUIType> = ({
 
       {isOverlayInspect ? (
         <div className="flex flex-col justify-center items-center gap-2 my-2">
+          <TooltipProvider delayDuration={10}>
+            <Tooltip>
+              <TooltipTrigger>
+                <button
+                  className={`${buttonColor} \
+                    rounded-full w-12 h-12 \
+              border-2 hover:rotate-45 \
+              hover:bg-opacity-50 \
+              active:bg-opacity-75 \
+              disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed \
+              flex justify-center items-center`}
+                  disabled={canBuyTicket || winnerClaimYet}
+                  onClick={winnersClaimHandler}
+                >
+                  <div
+                    className="w-2 h-2 \
+                  bg-zinc-800"
+                  ></div>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">
+                  {canBuyTicket ? (
+                    <span>Cannot claim yet </span>
+                  ) : (
+                    <>
+                      {winnerClaimYet ? (
+                        <span>You have claimed </span>
+                      ) : (
+                        <div className="flex flex-col text-left">
+                          {/* <span className="underline">Claim: </span> */}
+                          <span>Player pot: {claimAmount} ETH </span>
+                          {isWinner ? (
+                            <span>Winner pot claim: {formattedWinnersSplit} ETH </span>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/*
           {isWinner && (
             <TooltipProvider delayDuration={10}>
               <Tooltip>
@@ -408,7 +461,7 @@ const TicketUI: FC<TicketUIType> = ({
                 </div>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
         </div>
       ) : (
         <div

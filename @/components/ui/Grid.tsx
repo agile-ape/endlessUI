@@ -34,11 +34,13 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
   const chosenColorIntensity = Math.min(occurrences, 2) * 1 // sums to 1
   // const averageColorIntensity = Math.min(average, 2) * 1 // sums to 1
 
-  const chosenColor = `rgba(252, 252, 0, ${chosenColorIntensity})`
+  // gray
+  const chosenColor = `rgba(229, 229, 229, ${chosenColorIntensity})`
 
   let averageColor: string
 
-  average > 0 ? (averageColor = `rgba(252, 0, 252)`) : (averageColor = ``)
+  // yellow
+  average > 0 ? (averageColor = `rgba(252, 252, 0)`) : (averageColor = ``)
 
   let lowerLimit: number = 0
   let upperLimit: number = 0
@@ -232,11 +234,11 @@ const Grid = () => {
         </>
       </div>
 
-      <div className="text-center text-2xl">🟡 Chosen numbers 🟣 Average</div>
+      <div className="text-center text-2xl"> ⚪ Chosen numbers 🟡 Average</div>
 
       <div className="flex">
         <Button
-          variant="average"
+          variant="run"
           onClick={() => numberRun()}
           className={cn(
             // buttonState === 'running' ? '' : '',
@@ -248,7 +250,7 @@ const Grid = () => {
         </Button>
 
         <Button
-          variant="average"
+          variant="reset"
           onClick={() => clearSquares()}
           className="flex flex-col items-center \
       rounded-lg px-6 mx-2"

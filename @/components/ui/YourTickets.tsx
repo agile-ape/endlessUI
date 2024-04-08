@@ -100,6 +100,14 @@ const YourTickets = () => {
         ...defaultContractObj,
         functionName: 'winnersPot',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'potAmount',
+      },
     ],
   })
 
@@ -125,6 +133,16 @@ const YourTickets = () => {
   const leaderboard: readonly bigint[] = data?.[1].result || []
   const canBuyTicket = data?.[2].result || false
   const winnersPot = data?.[3].result || BigInt(0)
+  const winnersShare = data?.[4].result || BigInt(0)
+  const potAmount = data?.[5].result || BigInt(0)
+
+  const currentWinnersPot = formatNumber(
+    formatUnits((winnersShare * potAmount) / BigInt(100), 18),
+    {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+    },
+  )
 
   const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
     maximumFractionDigits: 3,
@@ -314,17 +332,21 @@ const YourTickets = () => {
 
   return (
     <div className="flex flex-col gap-2 my-2 items-center justify-center mx-auto">
-      {canBuyTicket ? (
-        <></>
-      ) : (
-        <div className="flex text-2xl border border-zinc-500 rounded-xl px-4 py-2 my-2 text-gray-200">
-          Winners pot:<span className="font-digit mx-2">{winnersToShare}</span> ETH{' '}
+      <div
+        className="flex flex-col items-center \
+      rounded-lg px-6 py-2 \
+      text-gray-200 border border-zinc-500 text-sm bg-transparent
+      "
+      >
+        🟡 {canBuyTicket ? 'Winners pot' : 'Final Winners Pot'}
+        <div className="font-digit text-3xl">
+          {canBuyTicket ? currentWinnersPot : winnersToShare}
         </div>
-      )}
+      </div>
 
       <div className="text-gray-400">Winning keys (#)</div>
       <div
-        className="text-yellow-500  \
+        className="text-yellow-400  \
          text-4xl \
         flex overflow-auto max-w-[480px]"
       >
