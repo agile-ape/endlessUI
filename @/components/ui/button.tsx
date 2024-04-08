@@ -34,8 +34,8 @@ const buttonVariants = cva(
          hover:text-white hover:bg-opacity-50 \
          active:text-white/50 active:bg-opacity-75',
 
-        give: 'bg-gray-400 text-slate-700 border border-slate-700 border-2 rounded-xl \
-        hover:text-white hover:bg-opacity-50 \
+        give: 'bg-lime-600 text-white rounded-xl \
+        hover:text-black hover:bg-lime-400 \
         active:text-white/50 active:bg-opacity-75',
 
         take: 'bg-gray-600 text-slate-300 border border-slate-300 border-2 rounded-xl \
