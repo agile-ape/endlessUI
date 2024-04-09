@@ -6,7 +6,7 @@ import Average from '../ui/Average'
 import BuyTicket from '../ui/BuyTicket'
 import YourTickets from '../ui/YourTickets'
 import { useAccount, useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
-import { defaultContractObj } from '../../../services/constant'
+import { defaultContractObj, GAME_ADDRESS } from '../../../services/constant'
 import { toast } from '@/components/shadcn/use-toast'
 // import { toast } from '@/components/shadcn/sonner'
 import useSWR, { useSWRConfig } from 'swr'
@@ -82,7 +82,7 @@ export default function DesktopScreen() {
     mutate,
   } = useSWR(
     // <{data: Number[]}>
-    '/numbers',
+    `/numbers/${GAME_ADDRESS}`,
     fetcher,
     { refreshInterval: 1000 },
   )

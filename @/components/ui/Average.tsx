@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
@@ -20,6 +21,8 @@ import Grid from './Grid'
 import { Button } from './button'
 
 export default function Average() {
+  const [showAverage, setShowAverage] = useState(0)
+
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -61,6 +64,43 @@ export default function Average() {
     winningNumbers[i] = Number(leaderboard[i])
   }
 
+  // const spinDisplay = () => {
+  //   setIsSpinning(true)
+  //   const randomNum = Math.floor(Math.random() * 10)
+  //   setShowDisplay(randomNum)
+
+  //   setTimeout(() => {
+  //     setIsSpinning(false)
+  //     setShowDisplay(currentAverage)
+  //   }, 2000)
+  // }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentAverage > showAverage) {
+        setShowAverage((prevNumber) => {
+          if (prevNumber < currentAverage) {
+            return prevNumber + 1
+          } else {
+            clearInterval(interval)
+            return prevNumber
+          }
+        })
+      } else if (currentAverage < showAverage) {
+        setShowAverage((prevNumber) => {
+          if (prevNumber >= currentAverage) {
+            return prevNumber - 1
+          } else {
+            clearInterval(interval)
+            return prevNumber
+          }
+        })
+      }
+    }, 10)
+
+    return () => clearInterval(interval)
+  }, [currentAverage])
+
   return (
     <div
       className="gap-2 py-2 px-2 my-2 \
@@ -74,8 +114,9 @@ export default function Average() {
       rounded-lg px-6"
           >
             {canBuyTicket ? 'Current Average' : 'Final Average'}
-
-            <div className="font-digit text-3xl">{currentAverage}</div>
+            {/*  */}
+            <div className="font-digit text-3xl">{showAverage}</div>
+            {/* <AnimatedNumbers animateToNumber={showAverage}  /> */}
           </Button>
         </DialogTrigger>
         <DialogContent className="bg-transparent flex flex-col justify-center items-center">

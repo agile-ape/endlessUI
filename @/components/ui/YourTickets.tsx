@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useDotButton, DotButton, usePrevNextButtons, PrevButton, NextButton } from './navigation'
-import wagmiConfig from '../../../pages/_app'
 import { WagmiProvider, http, createConfig } from 'wagmi'
 import {
   arbitrum,
@@ -42,16 +41,6 @@ import { formatUnits, parseEther } from 'viem'
 //   winnerClaimYet: boolean
 //   playerClaimYet: boolean
 // }
-
-const config = createConfig({
-  // projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
-  chains: [blastSepolia],
-  transports: {
-    [blastSepolia.id]: http(
-      'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
-    ),
-  },
-})
 
 type Ticket = {
   id: number

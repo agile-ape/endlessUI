@@ -8,7 +8,8 @@ const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
-// export const CHAIN_ID = 168587773
+// export const CHAIN_ID = 84532
+console.log(CHAIN_ID)
 
 export let API_ENDPOINT: string
 NODE_ENV == 'development'
@@ -23,6 +24,36 @@ export const defaultContractObj = {
   address: GAME_ADDRESS,
   abi: GAME_ABI,
 }
+
+console.log(GAME_ADDRESS)
+
+export const baseSepolia1 = defineChain({
+  id: 84532,
+  network: 'Base Sepolia',
+  name: 'Base Sepolia',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: [
+        'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',
+      ],
+    },
+    public: {
+      http: ['https://sepolia.base.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Basescan',
+      url: 'https://sepolia-explorer.base.org',
+    },
+  },
+  testnet: true,
+})
 
 export const blastSepolia1 = defineChain({
   id: 168587773,
@@ -56,7 +87,7 @@ export const blastSepolia1 = defineChain({
 
 export const DOCS_URL = 'https://docs.lastman.xyz'
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
-export const BLOCK_EXPLORER = 'https://testnet.blastscan.io'
+export const BLOCK_EXPLORER = 'https://sepolia-explorer.base.org'
 
 /*-------------------- EXTERNAL LINKS -------------------- */
 export const BLOG_URL = 'https://blog.lastman.xyz'

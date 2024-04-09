@@ -81,9 +81,9 @@ export default function Countdown() {
   const startGameFlag = Number(data?.[2].result || BigInt(0))
   const canBuyTicket = Boolean(data?.[3].result || false)
 
-  // const endTime: Date = new Date((Number(startGameFlag) + Number(gameTime)) * 1000)
+  const endTime: Date = new Date((Number(startGameFlag) + Number(gameTime)) * 1000)
   // TODO: REMOVE BEFORE FLIGHT
-  const endTime: Date = new Date(1711550000 * 1000)
+  // const endTime: Date = new Date(1711550000 * 1000)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -132,16 +132,16 @@ export default function Countdown() {
         <div className="flex flex-col items-center justify-center">
           <div className="text-gray-400 text-base">Timer</div>
           <div className="flex justify-center items-center">
-            <div className="flex flex-col text-2xl text-center text-gray-200 font-digit">
+            <div className="flex flex-col text-3xl text-center text-gray-200 font-digit">
               {formatTime(timeLeft).hours} :
               <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">hr</div>
             </div>
-            <div className="ml-1 flex flex-col text-2xl text-center text-gray-200 font-digit">
+            <div className="ml-1 flex flex-col text-3xl text-center text-gray-200 font-digit">
               {' '}
               {formatTime(timeLeft).minutes} :
               <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">min</div>
             </div>
-            <div className="ml-1 flex flex-col text-2xl text-center text-gray-200 font-digit">
+            <div className="ml-1 flex flex-col text-3xl text-center text-gray-200 font-digit">
               {formatTime(timeLeft).seconds}
               <div className="uppercase text-gray-400 text-sm text-center">sec</div>
             </div>

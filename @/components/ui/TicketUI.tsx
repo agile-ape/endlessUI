@@ -351,7 +351,7 @@ const TicketUI: FC<TicketUIType> = ({
           <TooltipProvider delayDuration={10}>
             <Tooltip>
               <TooltipTrigger>
-                <button
+                <div
                   className={`${buttonColor} \
                     rounded-full w-12 h-12 \
               border-2 hover:rotate-45 \
@@ -366,7 +366,7 @@ const TicketUI: FC<TicketUIType> = ({
                     className="w-2 h-2 \
                   bg-zinc-800"
                   ></div>
-                </button>
+                </div>
               </TooltipTrigger>
               <TooltipContent side="top" align="center">
                 <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">

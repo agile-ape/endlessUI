@@ -53,7 +53,7 @@ function HowToPlay() {
                   </p>
                   <p className="mb-6">
                     {' '}
-                    ⚪ Players Pot (30%): Shared by all players based on how early they join -
+                    🟣 Players Pot (30%): Shared by all players based on how early they join -
                     earlier = claim more.
                   </p>
                   <p className="mb-6">

@@ -31,43 +31,36 @@ type SquareType = ReactElement<SquareProps>
 type SquaresType = SquareType[][]
 
 const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
-  const chosenColorIntensity = Math.min(occurrences, 2) * 1 // sums to 1
+  const chosenColorIntensity = occurrences * 1 // sums to 1
   // const averageColorIntensity = Math.min(average, 2) * 1 // sums to 1
 
   // gray
-  const chosenColor = `rgba(229, 229, 229, ${chosenColorIntensity})`
+  const chosenColor = `rgba(168, 85, 247, ${chosenColorIntensity})`
 
   let averageColor: string
 
   // yellow
-  average > 0 ? (averageColor = `rgba(252, 252, 0)`) : (averageColor = ``)
+  average > 0 ? (averageColor = `rgb(251, 191, 36)`) : (averageColor = ``)
 
+  /* if 1 square = a range 
   let lowerLimit: number = 0
   let upperLimit: number = 0
   if (id != null) {
     lowerLimit = id * 10
     upperLimit = lowerLimit + 9
   }
-  // const averageColor = `rgba(252, 0, 252)`
-  // const style = {
-  //   width: '10px',
-  //   height: '10px',
-  //   // backgroundColor: `rgba(0, 0, 255, ${colorIntensity})`,
-  //   backgroundColor: `green`,
-  // }
-
-  // const lineThickness = average * 2 + 4
+  */
 
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
         <TooltipTrigger>
           <div
-            className={`relative w-5 h-5 m-1 text-white border border-white`}
+            className={`relative w-5 h-5 m-1 text-white border border-white mix-blend-multiply`}
             style={{ backgroundColor: chosenColor }}
           >
             <div
-              className="absolute opacity-50 w-5 h-5 \
+              className="absolute w-5 h-5 mix-blend-multiply \
       flex justify-center items-center"
               style={{ backgroundColor: averageColor }}
             >
@@ -76,11 +69,14 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
           </div>
         </TooltipTrigger>
         <TooltipContent side="top" align="center">
-          <div className="px-3 py-1 max-w-[240px] text-md cursor-default">
+          <div className="px-3 py-1 text-center max-w-[240px] text-md cursor-default">
             <div>
-              Range: {lowerLimit} - {upperLimit}
+              {/* Range: {lowerLimit} - {upperLimit} */}
+              {id}
             </div>
-            <div>No. of keys: {occurrences}</div>
+            <div>
+              Keys: <span className="font-digit">{occurrences}</span>{' '}
+            </div>
           </div>
         </TooltipContent>
       </Tooltip>
@@ -237,7 +233,7 @@ const Grid = () => {
         </>
       </div>
 
-      <div className="text-center text-2xl"> ⚪ Chosen numbers 🟡 Average</div>
+      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average</div>
 
       <div className="flex">
         <Button

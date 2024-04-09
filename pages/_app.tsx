@@ -21,15 +21,15 @@ import {
   mainnet,
   base,
   baseGoerli,
+  baseSepolia,
   blastSepolia,
   blast,
 } from 'wagmi/chains'
-import { blastSepolia1 } from '../services/constant'
+import { blastSepolia1, baseSepolia1 } from '../services/constant'
 // import { publicProvider } from 'wagmi/providers/public'
 import { ThemeProvider } from '@/components/theme-provider'
 import { StoreProvider } from 'easy-peasy'
 import { appStore, useStoreState } from '../store'
-import type { IApp } from '../types/app'
 import Layout from '@/components/Layout'
 import { Toaster } from '@/components/shadcn/toaster'
 import Metadata from '@/components/Metadata'
@@ -38,20 +38,30 @@ import useSWR from 'swr'
 export const rainbowConfig = getDefaultConfig({
   appName: 'Average',
   projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
-  chains: [blastSepolia1],
-  ssr: true,
-})
-
-export const wagmiConfig = createConfig({
-  // projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
-  chains: [blastSepolia],
-  connectors: [injected()],
+  chains: [baseSepolia, base],
   transports: {
-    [blastSepolia.id]: http(
-      'https://soft-lively-sunset.blast-sepolia.quiknode.pro/c8cf7d624e2288cc6d21f20e7e7867132aadb5f1',
+    [baseSepolia.id]: http(
+      'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',
     ),
   },
+  ssr: true,
+  // transports: {
+  //   [blastSepolia1.id]: http(
+  //     'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',
+  //   ),
+  // },
 })
+
+// export const wagmiConfig = createConfig({
+//   // projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
+//   chains: [baseSepolia],
+//   connectors: [injected()],
+//   transports: {
+//     [baseSepolia.id]: http(
+//       'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',
+//     ),
+//   },
+// })
 
 const queryClient = new QueryClient()
 
@@ -69,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           })}
           coolMode
           modalSize="compact"
-          initialChain={blastSepolia}
+          initialChain={baseSepolia}
         >
           <StoreProvider store={appStore}>
             <ThemeProvider attribute="class" forcedTheme="dark" enableSystem>

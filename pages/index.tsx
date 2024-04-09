@@ -1,5 +1,4 @@
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import type { IApp } from '../types/app'
 import DesktopScreen from '@/components/screen/DesktopScreen'
 import type { MetaProps } from '@/components/Metadata'
 

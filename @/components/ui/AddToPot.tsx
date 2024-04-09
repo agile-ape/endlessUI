@@ -131,7 +131,7 @@ function AddToPot() {
 
   const addToPotHandler = async () => {
     try {
-      const tx = sendTransactionAsync({
+      const tx = await sendTransactionAsync({
         to: GAME_ADDRESS,
         value: parseEther(value),
       })
@@ -208,8 +208,8 @@ function AddToPot() {
   return (
     <Dialog onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Button variant="claim" className="w-full px-8 py-2 mt-2">
-          {canBuyTicket ? 'Add' : 'Claim'}
+        <Button variant="claim" className="w-full px-8 py-2 mt-2 flex justify-center items-center">
+          <span className="text-sm mr-1">🔴</span> {canBuyTicket ? 'Add' : 'Claim'}
         </Button>
       </DialogTrigger>
       <DialogContent ref={modalRef}>
