@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
 import {
@@ -18,11 +18,11 @@ import {
   DialogTrigger,
 } from '@/components/shadcn/dialog'
 import Grid from './Grid'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
+import { useStoreActions, useStoreState } from '../../../store'
 
 export default function Average() {
-  const [showAverage, setShowAverage] = useState(0)
-
+  /* read contract
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -43,7 +43,7 @@ export default function Average() {
       },
     ],
   })
-
+  
   useWatchContractEvent({
     ...defaultContractObj,
     eventName: 'NewTicketBought',
@@ -52,17 +52,22 @@ export default function Average() {
     },
     poll: true,
   })
-
+  
   const currentAverage = Number(data?.[0].result || BigInt(0))
   const leaderboard: readonly bigint[] = data?.[1].result || []
   const ticketsBought = Number(data?.[2].result || BigInt(0))
   const canBuyTicket = Boolean(data?.[3].result || false)
-
+  
   let winningNumbers: number[] = []
-
+  
   for (let i = 0; i < leaderboard.length; i++) {
     winningNumbers[i] = Number(leaderboard[i])
   }
+  */
+
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const leaderboard = useStoreState((state) => state.leaderboard)
+  const ticketsBought = useStoreState((state) => state.ticketsBought)
 
   // const spinDisplay = () => {
   //   setIsSpinning(true)
@@ -75,6 +80,12 @@ export default function Average() {
   //   }, 2000)
   // }
 
+  const currentAverage = useStoreState((state) => state.currentAverage)
+  const [showAverage, setShowAverage] = useState(0)
+  // const [isFirstRender, setIsFirstRender] = useState(true)
+
+  const isFirstRender = useRef(true)
+  /* 
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentAverage > showAverage) {
@@ -99,6 +110,86 @@ export default function Average() {
     }, 10)
 
     return () => clearInterval(interval)
+  }, [currentAverage])
+  */
+
+  /*
+  useEffect(() => {
+    console.log(isFirstRender)
+    // Skip the first render
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      const initialInterval = setInterval(() => {
+        setShowAverage((prevNumber) => {
+          if (prevNumber < currentAverage) {
+            return prevNumber + 1
+          } else {
+            clearInterval(initialInterval)
+            return prevNumber
+          }
+        })
+      }, 10) // Interval for the first render
+    } else {
+      // Subsequent renders
+      const interval = setInterval(() => {
+        if (currentAverage > showAverage) {
+          setShowAverage((prevNumber) => {
+            if (prevNumber < currentAverage) {
+              return prevNumber + 1
+            } else {
+              clearInterval(interval)
+              return prevNumber
+            }
+          })
+        } else if (currentAverage < showAverage) {
+          setShowAverage((prevNumber) => {
+            if (prevNumber >= currentAverage) {
+              return prevNumber - 1
+            } else {
+              clearInterval(interval)
+              return prevNumber
+            }
+          })
+        }
+      }, 300) // Interval for subsequent renders
+
+      return () => clearInterval(interval)
+    }
+  }, [isFirstRender, currentAverage])
+  */
+
+  useEffect(() => {
+    console.log(isFirstRender.current)
+
+    // Skip the first render
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+    } else {
+      // Subsequent renders
+      const interval = setInterval(() => {
+        if (currentAverage > showAverage) {
+          setShowAverage((prevNumber) => {
+            if (prevNumber < currentAverage) {
+              return prevNumber + 1
+            } else {
+              clearInterval(interval)
+              return prevNumber
+            }
+          })
+        } else if (currentAverage < showAverage) {
+          setShowAverage((prevNumber) => {
+            if (prevNumber >= currentAverage) {
+              return prevNumber - 1
+            } else {
+              clearInterval(interval)
+              return prevNumber
+            }
+          })
+        }
+      }, 300) // Interval for subsequent renders
+
+      return () => clearInterval(interval)
+    }
   }, [currentAverage])
 
   return (

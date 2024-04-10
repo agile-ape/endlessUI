@@ -4,7 +4,7 @@ import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
 import { defaultContractObj } from '../../../services/constant'
 import { useReadContracts, useWriteContract, useWatchContractEvent } from 'wagmi'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 
 import {
   Tooltip,
@@ -46,6 +46,7 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState<number>()
 
+  /* read contract
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -81,7 +82,14 @@ export default function Countdown() {
   const startGameFlag = Number(data?.[2].result || BigInt(0))
   const canBuyTicket = Boolean(data?.[3].result || false)
 
-  const endTime: Date = new Date((Number(startGameFlag) + Number(gameTime)) * 1000)
+  */
+
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const gameTime = useStoreState((state) => state.gameTime)
+  const timeAddon = useStoreState((state) => state.timeAddon)
+  const startGameFlag = useStoreState((state) => state.startGameFlag)
+
+  const endTime: Date = new Date((startGameFlag + gameTime) * 1000)
   // TODO: REMOVE BEFORE FLIGHT
   // const endTime: Date = new Date(1711550000 * 1000)
 

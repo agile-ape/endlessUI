@@ -10,12 +10,13 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { isJson, formatNumber } from '@/lib/utils'
-import CompletionModal from './ui/CompletionModal'
+import CompletionModal from './shadcn/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from './shadcn/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
+import { socket } from '@/lib/socket'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -34,46 +35,42 @@ type LayoutProps = {
 
 const Layout = ({ children, metadata }: LayoutProps) => {
   // Settings
-  // const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
-  // const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
-  // const updateBuyTicketDelayCeiling = useStoreActions(
-  //   (actions) => actions.updateBuyTicketDelayCeiling,
-  // )
-  // const updateRoundTime = useStoreActions((actions) => actions.updateRoundTime)
-  // const updateFeeShare = useStoreActions((actions) => actions.updateFeeShare)
-  // const updateStartingPassRate = useStoreActions((actions) => actions.updateStartingPassRate)
-  // const updateAuctionPrice = useStoreActions((actions) => actions.updateAuctionPrice)
-  // const updatePoohPerRoll = useStoreActions((actions) => actions.updatePoohPerRoll)
-  // const updatePassRateRange = useStoreActions((actions) => actions.updatePassRateRange)
-  // const updatePassRateFloor = useStoreActions((actions) => actions.updatePassRateFloor)
+  const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
+  const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
+  const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
+  const updateFundersShare = useStoreActions((actions) => actions.updateFundersShare)
+  const updateFundersPot = useStoreActions((actions) => actions.updateFundersPot)
+  const updateFundersClaimed = useStoreActions((actions) => actions.updateFundersClaimed)
+  const updateCurrentAverage = useStoreActions((actions) => actions.updateCurrentAverage)
+  const updateLeaderboard = useStoreActions((actions) => actions.updateLeaderboard)
+  const updateTicketsBought = useStoreActions((actions) => actions.updateTicketsBought)
+  const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
+  const updateGameTime = useStoreActions((actions) => actions.updateGameTime)
+  const updateTimeAddon = useStoreActions((actions) => actions.updateTimeAddon)
+  const updateStartGameFlag = useStoreActions((actions) => actions.updateStartGameFlag)
+  const updateTotalNumber = useStoreActions((actions) => actions.updateTotalNumber)
+  const updatePotSize = useStoreActions((actions) => actions.updatePotSize)
+  const updatePlayersPayoutFactor = useStoreActions((actions) => actions.updatePlayersPayoutFactor)
+  const updateWinnersSplit = useStoreActions((actions) => actions.updateWinnersSplit)
+  const updatePlayerTickets = useStoreActions((actions) => actions.updatePlayerTickets)
+  const updateWinnersPot = useStoreActions((actions) => actions.updateWinnersPot)
+  const updateWinnersShare = useStoreActions((actions) => actions.updateWinnersShare)
 
-  // const updateRound = useStoreActions((actions) => actions.updateRound)
-  // const updateTimeFlag = useStoreActions((actions) => actions.updateTimeFlag)
-  // const updateBuyFlag = useStoreActions((actions) => actions.updateBuyFlag)
-  // const updatePotFlag = useStoreActions((actions) => actions.updatePotFlag)
-  // const updateTicketIdCounter = useStoreActions((actions) => actions.updateTicketIdCounter)
-  // const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
-
-  // const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
-  // const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
-  // const updateAuctionAllowance = useStoreActions((actions) => actions.updateAuctionAllowance)
-  // const updateTotalPoohSupply = useStoreActions((actions) => actions.updateTotalPoohSupply)
-
-  // const updateTickets = useStoreActions((actions) => actions.updateTickets)
-  // const updateEvents = useStoreActions((actions) => actions.updateEvents)
-  // const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
-  // const updateOwnedTickets = useStoreActions((actions) => actions.updateOwnedTickets)
-  // const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  // const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
+  const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
+  const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
+  const updateReferral = useStoreActions((actions) => actions.updateReferral)
+  const updateTriggerCompletionModal = useStoreActions(
+    (actions) => actions.updateTriggerCompletionModal,
+  )
 
   // const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
 
   // const router = useRouter()
-  // const { address, isConnected } = useAccount()
 
-  /*
-  const { data, refetch: refetchInitData } = useReadContracts({
+  const { address, isConnected } = useAccount()
+
+  const { data, refetch } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
@@ -81,55 +78,33 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'ticketPrice',
+        functionName: 'fundedAmount',
       },
       {
         ...defaultContractObj,
-        functionName: 'buyTicketDelayCeiling',
+        functionName: 'fundersToAmt',
+        args: [address as `0x${string}`],
       },
       {
         ...defaultContractObj,
-        functionName: 'roundTime',
+        functionName: 'fundersShare',
       },
       {
         ...defaultContractObj,
-        functionName: 'feeShare',
+        functionName: 'fundersPot',
       },
       {
         ...defaultContractObj,
-        functionName: 'startingPassRate',
+        functionName: 'fundersClaimed',
+        args: [address as `0x${string}`],
       },
       {
         ...defaultContractObj,
-        functionName: 'auctionPrice',
+        functionName: 'currentAverage',
       },
       {
         ...defaultContractObj,
-        functionName: 'poohPerRoll',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'passRateRange',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'passRateFloor',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'round',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'timeFlag',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'buyFlag',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'potFlag',
+        functionName: 'computeLeaderboard',
       },
       {
         ...defaultContractObj,
@@ -137,25 +112,131 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'ticketCount',
+        functionName: 'ticketPrice',
       },
       {
-        ...tokenContractObj,
-        functionName: 'balanceOf',
+        ...defaultContractObj,
+        functionName: 'gameTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'timeAddon',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'startGameFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'totalNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'potAmount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'playersPayoutFactor',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersSplit',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getPlayerToIdArray',
         args: [address as `0x${string}`],
       },
       {
-        ...tokenContractObj,
-        functionName: 'allowance',
-        args: [TREASURY_ADDRESS as `0x${string}`, GAME_ADDRESS as `0x${string}`],
+        ...defaultContractObj,
+        functionName: 'winnersPot',
       },
       {
-        ...tokenContractObj,
-        functionName: 'totalSupply',
+        ...defaultContractObj,
+        functionName: 'winnersShare',
       },
     ],
   })
 
+  const canBuyTicket = data?.[0].result || false
+  const fundedAmount = data?.[1].result || BigInt(0)
+  const fundersToAmt = data?.[2].result || BigInt(0)
+  const fundersShare = data?.[3].result || BigInt(0)
+  const fundersPot = data?.[4].result || BigInt(0)
+  const fundersClaimed = data?.[5].result || false
+  const currentAverage = data?.[6].result || BigInt(0)
+  const leaderboard: readonly bigint[] = data?.[7].result || []
+  const ticketsBought = data?.[8].result || BigInt(0)
+  const ticketPrice = data?.[9].result || BigInt(0)
+  const gameTime = data?.[10].result || BigInt(0)
+  const timeAddon = data?.[11].result || BigInt(0)
+  const startGameFlag = data?.[12].result || BigInt(0)
+  const totalNumber = data?.[13].result || BigInt(0)
+  const potSize = data?.[14].result || BigInt(0)
+  const playersPayoutFactor = Number(data?.[15].result || BigInt(0))
+  const winnersSplit = data?.[16].result || BigInt(0)
+  const playerTickets = data?.[17]?.result || []
+  const winnersPot = data?.[18].result || BigInt(0)
+  const winnersShare = data?.[19].result || BigInt(0)
+
+  const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  let winningNumbers: number[] = []
+
+  for (let i = 0; i < leaderboard.length; i++) {
+    winningNumbers[i] = Number(leaderboard[i])
+  }
+
+  // const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 3,
+  // })
+
+  // const formattedPotSize = formatNumber(formatUnits(potSize, 18), {
+  //   maximumFractionDigits: 6,
+  //   minimumFractionDigits: 3,
+  // })
+
+  const formattedWinnersSplit = formatNumber(formatUnits(winnersSplit, 18), {
+    maximumFractionDigits: 4,
+    minimumFractionDigits: 3,
+  })
+
+  let formattedPlayerTickets: number[] = []
+
+  for (let i = 0; i < playerTickets.length; i++) {
+    formattedPlayerTickets[i] = Number(playerTickets[i])
+  }
+
+  const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  // const percentOfPot = formatNumber((Number(playerContribution) / Number(totalFunded)) * 100, {
+  //   maximumFractionDigits: 2,
+  //   minimumFractionDigits: 0,
+  // })
+
+  // const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(potToShare), {
+  //   maximumFractionDigits: 5,
+  //   minimumFractionDigits: 0,
+  // })
+
+  /*
   if (data && data?.length > 0) {
     const canBuyTicket = data[0]?.result || false
     const ticketPrice = data[1]?.result || BigInt(0)
@@ -211,7 +292,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       maximumFractionDigits: 2,
       minimumFractionDigits: 0,
     })
-
     updateCanBuyTicket(Boolean(canBuyTicket))
     updateTicketPrice(Number(formattedTicketPrice))
     updateBuyTicketDelayCeiling(Number(buyTicketDelayCeiling))
@@ -222,25 +302,91 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     updatePoohPerRoll(Number(poohPerRoll))
     updatePassRateRange(Number(passRateRange))
     updatePassRateFloor(Number(passRateFloor))
-
+    
     updateRound(Number(round))
     updateTimeFlag(Number(timeFlag))
     updateBuyFlag(Number(buyFlag))
     updatePotFlag(Number(potFlag))
     updateTicketIdCounter(Number(ticketIdCounter))
     updateTicketCount(Number(ticketCount))
-
+    
     updateCurrentPot(Number(formattedCurrentPot))
     updateTokenBalance(Number(formattedTokenBalance))
     updateAuctionAllowance(Number(formattedAuctionAllowance))
     updateTotalPoohSupply(Number(formattedTotalPoohSupply))
-  }
-
-  const refreshData = () => {
+    }
+    
+    const refreshData = () => {
     router.replace(router.asPath)
-  }
+    }
+    
+    */
 
-  */
+  updateCanBuyTicket(Boolean(canBuyTicket))
+  updateFundedAmount(Number(formattedFundedAmount))
+  updateFundersToAmt(Number(formattedFundersToAmt))
+  updateFundersShare(Number(fundersShare))
+  updateFundersPot(Number(formattedFundersPot))
+  updateFundersClaimed(Boolean(fundersClaimed))
+  updateCurrentAverage(Number(currentAverage))
+  updateLeaderboard(winningNumbers)
+  updateTicketsBought(Number(ticketsBought))
+  updateTicketPrice(ticketPrice)
+  updateGameTime(Number(gameTime))
+  updateTimeAddon(Number(timeAddon))
+  updateStartGameFlag(Number(startGameFlag))
+  updateTotalNumber(Number(totalNumber))
+  updatePotSize(potSize)
+  updatePlayersPayoutFactor(Number(playersPayoutFactor))
+  updateWinnersSplit(Number(formattedWinnersSplit))
+  updatePlayerTickets(formattedPlayerTickets)
+  updateWinnersPot(Number(winnersToShare))
+  updateWinnersShare(Number(winnersShare))
+
+  console.log(Boolean(canBuyTicket))
+  console.log(Number(formattedFundedAmount))
+  console.log(Number(formattedFundersToAmt))
+  console.log(Number(fundersShare))
+  console.log(Number(formattedFundersPot))
+  console.log(Boolean(fundersClaimed))
+  console.log(Number(currentAverage))
+  console.log(winningNumbers)
+  console.log(Number(ticketsBought))
+  console.log(ticketPrice)
+  console.log(Number(gameTime))
+  console.log(Number(timeAddon))
+  console.log(Number(startGameFlag))
+  console.log(Number(totalNumber))
+  console.log(Number(potSize))
+  console.log(Number(playersPayoutFactor))
+  console.log(Number(formattedWinnersSplit))
+  console.log(formattedPlayerTickets)
+  console.log(Number(winnersToShare))
+  console.log(Number(winnersShare))
+
+  socket.connect()
+  // toast({
+  //   variant: 'success',
+  //   // title: 'Keyword updated',
+  //   description: <p>socket connected.</p>,
+  // })
+
+  const events: Event[] = [
+    {
+      name: `NewTicketBought`,
+      handler() {
+        console.log('refetch start')
+        refetch()
+        console.log('refetch done')
+        toast({
+          variant: 'bought',
+          description: <p className="text-xl">🔑 A key is bought</p>,
+        })
+      },
+    },
+  ]
+
+  useSocketEvents(events)
 
   return (
     <>

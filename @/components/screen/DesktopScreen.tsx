@@ -34,6 +34,7 @@ export default function DesktopScreen() {
     ...defaultContractObj,
     eventName: 'NewTicketBought',
     onLogs() {
+      console.log('ticket bought!')
       toast({
         variant: 'bought',
         description: <p className="text-xl">🔑 A key is bought</p>,

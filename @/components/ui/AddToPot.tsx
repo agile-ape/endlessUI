@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from '@/components/shadcn/dialog'
 import { ScrollArea } from '@/components/shadcn/scroll-area'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import Link from 'next/link'
 import { DOCS_URL } from '../../../services/constant'
 import Image from 'next/image'
@@ -24,12 +24,13 @@ import { formatUnits, parseEther } from 'viem'
 import { formatNumber } from '@/lib/utils'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
 import { toast } from '@/components/shadcn/use-toast'
+import { useStoreActions, useStoreState } from '../../../store'
 
 function AddToPot() {
   const { address, isConnected } = useAccount()
 
   const [value, setValue] = useState('')
-
+  /* read contract 
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -91,30 +92,31 @@ function AddToPot() {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
   })
+  */
 
-  const percentOfPot = formatNumber((Number(playerContribution) / Number(totalFunded)) * 100, {
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 0,
-  })
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const fundedAmount = useStoreState((state) => state.fundedAmount)
+  const fundersToAmt = useStoreState((state) => state.fundersToAmt)
+  const fundersPot = useStoreState((state) => state.fundersPot)
+  const fundersClaimed = useStoreState((state) => state.fundersClaimed)
 
   const potentialPotShare = formatNumber(
-    ((Number(playerContribution) + Number(value)) / (Number(totalFunded) + Number(value))) * 100,
+    ((Number(fundersToAmt) + Number(value)) / (Number(fundedAmount) + Number(value))) * 100,
     {
       maximumFractionDigits: 2,
       minimumFractionDigits: 0,
     },
   )
 
-  const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(potToShare), {
+  const percentOfPot = formatNumber((Number(fundersToAmt) / Number(fundedAmount)) * 100, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(fundersPot), {
     maximumFractionDigits: 5,
     minimumFractionDigits: 0,
   })
-  //   const totalFundedAmount = data?.[1].result || BigInt(0)
-
-  //   const formattedFundedAmount = formatNumber(formatUnits(totalFundedAmount, 18), {
-  //     maximumFractionDigits: 3,
-  //     minimumFractionDigits: 3,
-  //   })
 
   const { isPending, sendTransactionAsync } = useSendTransaction()
   const {
@@ -228,8 +230,8 @@ function AddToPot() {
                 "
             >
               <span>
-                You contributed <span className="font-digit flash">{playerContribution}</span> ETH
-                (out of <span className="font-digit flash">{totalFunded}</span> ETH) and own{' '}
+                You contributed <span className="font-digit flash">{fundersToAmt}</span> ETH (out of{' '}
+                <span className="font-digit flash">{fundedAmount}</span> ETH) and own{' '}
                 <span className="font-digit flash">{percentOfPot}</span>% of the funders pot.
               </span>
             </div>
@@ -279,7 +281,7 @@ function AddToPot() {
               <div className="text-center text-gray-300 flex flex-col gap-2">
                 <span className="text-3xl">Claim ETH from pot</span>
                 <span className="text-2xl">
-                  The funders pot has <span className="font-digit">{potToShare}</span> ETH
+                  The funders pot has <span className="font-digit">{fundersPot}</span> ETH
                 </span>
                 <span className="text-2xl">
                   {' '}
@@ -292,7 +294,7 @@ function AddToPot() {
                 variant="claim"
                 onClick={claimFundersHandler}
                 isLoading={isLoading}
-                disabled={fundersClaimed || !Number(playerContribution)}
+                disabled={fundersClaimed || !Number(fundersToAmt)}
               >
                 {fundersClaimed ? 'You have claimed' : 'Claim'}
               </Button>

@@ -9,10 +9,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/shadcn/tooltip'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import AddToPot from './AddToPot'
+import { useStoreActions, useStoreState } from '../../../store'
 
 export default function PotSize() {
+  /* read contract
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -51,6 +53,15 @@ export default function PotSize() {
     },
     poll: true,
   })
+  */
+
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const potSize = useStoreState((state) => state.potSize)
+
+  const currentPotSize = formatNumber(formatUnits(potSize, 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
 
   return (
     <div className="py-2 px-2 mb-2 inner-last">
@@ -69,7 +80,7 @@ export default function PotSize() {
           font-digit text-4xl text-stone-200 \
           transition-all ease-linear place-self-center animate-pulse"
           >
-            {formattedPotSize}
+            {currentPotSize}
           </div>
         </div>
         <AddToPot />

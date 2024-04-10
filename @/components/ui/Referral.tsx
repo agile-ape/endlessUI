@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from '@/components/shadcn/dialog'
 import { ScrollArea } from '@/components/shadcn/scroll-area'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import Link from 'next/link'
 import { DOCS_URL } from '../../../services/constant'
 import Image from 'next/image'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import type { FC, ReactElement } from 'react'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import { cn } from '@/lib/utils'
 import {
   Dialog,
@@ -93,6 +93,7 @@ const chunkArray = (array: SquareType[], size: number): SquareType[][] => {
 }
 
 const Grid = () => {
+  /* read contract
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -114,8 +115,14 @@ const Grid = () => {
   const totalNumber = Number(data?.[1].result || BigInt(0))
   const ticketsBought = Number(data?.[2].result || BigInt(0))
 
+  */
+
   const numberList = useStoreState((state) => state.numberList)
   const averageList = useStoreState((state) => state.averageList)
+
+  const currentAverage = useStoreState((state) => state.currentAverage)
+  const totalNumber = useStoreState((state) => state.totalNumber)
+  const ticketsBought = useStoreState((state) => state.ticketsBought)
 
   const [squares, setSquares] = useState<SquaresType>([])
 
@@ -211,11 +218,11 @@ const Grid = () => {
       <DialogHeader>
         <DialogTitle className="text-center text-3xl">Catching the average</DialogTitle>
         <DialogDescription className="text-center text-2xl">
-          <div className="flex gap-4">
+          <p className="flex gap-4">
             <span>Current average: {currentAverage}</span>
             <span>Total number: {totalNumber}</span>
             <span>Total bought: {ticketsBought}</span>
-          </div>
+          </p>
         </DialogDescription>
       </DialogHeader>
 
@@ -233,7 +240,10 @@ const Grid = () => {
         </>
       </div>
 
-      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average</div>
+      <div className="text-center text-2xl">
+        {' '}
+        🟣 Numbers Picked 🟡 Average 🟤 Keys that were average
+      </div>
 
       <div className="flex">
         <Button

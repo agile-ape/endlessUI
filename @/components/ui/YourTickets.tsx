@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel'
 import Image from 'next/image'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 
@@ -14,7 +14,13 @@ import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services
 import { cn } from '@/lib/utils'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useDotButton, DotButton, usePrevNextButtons, PrevButton, NextButton } from './navigation'
+import {
+  useDotButton,
+  DotButton,
+  usePrevNextButtons,
+  PrevButton,
+  NextButton,
+} from '../shadcn/navigation'
 import { WagmiProvider, http, createConfig } from 'wagmi'
 import {
   arbitrum,
@@ -70,6 +76,14 @@ const YourTickets = () => {
   // })
 
   // user address
+  const playerTickets = useStoreState((state) => state.playerTickets)
+  const leaderboard = useStoreState((state) => state.leaderboard)
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const winnersPot = useStoreState((state) => state.winnersPot)
+  const winnersShare = useStoreState((state) => state.winnersShare)
+  const potSize = useStoreState((state) => state.potSize)
+
+  /* read contracts
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -109,6 +123,8 @@ const YourTickets = () => {
     poll: true,
   })
 
+  */
+
   // useWatchContractEvent({
   //   ...defaultContractObj,
   //   eventName: 'PlayersClaimed',
@@ -118,31 +134,28 @@ const YourTickets = () => {
   //   poll: true,
   // })
 
-  const playerTickets = data?.[0]?.result || []
-  const leaderboard: readonly bigint[] = data?.[1].result || []
-  const canBuyTicket = data?.[2].result || false
-  const winnersPot = data?.[3].result || BigInt(0)
-  const winnersShare = data?.[4].result || BigInt(0)
-  const potAmount = data?.[5].result || BigInt(0)
+  // const playerTickets = data?.[0]?.result || []
+  // const leaderboard: readonly bigint[] = data?.[1].result || []
+  // const canBuyTicket = data?.[2].result || false
+  // const winnersPot = data?.[3].result || BigInt(0)
+  // const winnersShare = data?.[4].result || BigInt(0)
+  // const potAmount = data?.[5].result || BigInt(0)
 
-  const currentWinnersPot = formatNumber(
-    formatUnits((winnersShare * potAmount) / BigInt(100), 18),
-    {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 0,
-    },
-  )
-
-  const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+  const currentWinnersPot = formatNumber((Number(formatUnits(potSize, 18)) * winnersShare) / 100, {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
   })
 
-  let winningNumbers: number[] = []
+  // const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 0,
+  // })
 
-  for (let i = 0; i < leaderboard.length; i++) {
-    winningNumbers[i] = Number(leaderboard[i])
-  }
+  // let winningNumbers: number[] = []
+
+  // for (let i = 0; i < leaderboard.length; i++) {
+  //   winningNumbers[i] = Number(leaderboard[i])
+  // }
 
   // const playerTickets = playerTicketsArray?.[1]?.result || []
 
@@ -328,9 +341,7 @@ const YourTickets = () => {
       "
       >
         🟡 {canBuyTicket ? 'Winners pot' : 'Final Winners Pot'}
-        <div className="font-digit text-3xl">
-          {canBuyTicket ? currentWinnersPot : winnersToShare}
-        </div>
+        <div className="font-digit text-3xl">{canBuyTicket ? currentWinnersPot : winnersPot}</div>
       </div>
 
       <div className="text-gray-400">Winning keys (#)</div>
@@ -339,7 +350,7 @@ const YourTickets = () => {
          text-4xl \
         flex overflow-auto max-w-[480px]"
       >
-        {winningNumbers.map((number, index) => (
+        {leaderboard.map((number, index) => (
           <span className="border px-3 border-stone-500" key={index}>
             {number}
           </span>
@@ -365,7 +376,7 @@ const YourTickets = () => {
                   playerTickets.map((item, i) => (
                     <div className="mx-2" key={i}>
                       <TicketUI
-                        ticketId={item}
+                        ticketId={BigInt(item)}
                         // id={item.id}
                         // player={item.player}
                         // number={item.number}

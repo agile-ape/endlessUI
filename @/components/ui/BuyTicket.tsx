@@ -1,15 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Button } from './button'
+import { Button } from '../shadcn/button'
 import { useReadContracts, useWriteContract } from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 import { rainbowConfig } from '../../../pages/_app'
 import { defaultContractObj } from '../../../services/constant'
 import { formatNumber } from '@/lib/utils'
+import { useStoreActions, useStoreState } from '../../../store'
 
 export default function BuyTicket() {
   const [value, setValue] = useState('')
 
+  /*
   const { data } = useReadContracts({
     contracts: [
       {
@@ -52,7 +54,23 @@ export default function BuyTicket() {
     minimumFractionDigits: 3,
   })
 
+  */
+
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+
+  const currentAverage = useStoreState((state) => state.currentAverage)
+
+  const leaderboard = useStoreState((state) => state.leaderboard)
+
+  const ticketsBought = useStoreState((state) => state.ticketsBought)
+  const ticketPrice = useStoreState((state) => state.ticketPrice)
+
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
+
+  const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
+  })
 
   const buyTicketHandler = () => {
     console.log('buyTicketPressed')
