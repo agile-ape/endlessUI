@@ -57,10 +57,21 @@ const Metadata = ({
       ></meta>
       <meta property="product:price:amount" content="0.00" />
       <meta property="product:price:currency" content="USD" />
-      <link rel="shortcut icon" href={`/logo/last-logo-short.png`} type="image/png" />
+      <link
+        rel="shortcut icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💾</text></svg>"
+        type="image/png"
+      />
+
       <link rel="manifest" href="/manifest.json" />
-      <link rel="apple-touch-icon" href="/logo/last-logo-short.png" />
-      <link href="/logo/last-logo-short.png" rel="icon" type="image/png" sizes="128x128" />
+      <link
+        rel="apple-touch-icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💾</text></svg>"
+      />
+      <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💾</text></svg>"
+      />
 
       <meta property="og:site_name" content="Lastman" />
       <meta property="og:locale" content={'en'} />

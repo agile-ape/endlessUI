@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '../@/components/ui/button'
+import { Button } from '../@/components/shadcn/button'
 
 function NotFound() {
   return (
@@ -21,7 +21,7 @@ function NotFound() {
       <div>Are you lost sire?</div>
       <Link href="/" className="underline">
         {/* <Button variant="default" size="md"> */}
-        <div>Let us take you back to the party</div>
+        <div>Let us take you back</div>
         {/* </Button> */}
       </Link>
     </div>

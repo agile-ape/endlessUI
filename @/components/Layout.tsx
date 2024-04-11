@@ -1,411 +1,430 @@
 import Header from './Header'
 import { Analytics } from '@vercel/analytics/react'
-import type { IApp, Ticket } from 'types/app'
+// import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useContractRead, useContractReads, useWalletClient } from 'wagmi'
-import {
-  API_ENDPOINT,
-  GAME_ADDRESS,
-  CHAIN_ID,
-  WEBSOCKET_ENDPOINT,
-  defaultContractObj,
-  tokenContractObj,
-} from '../../services/constant'
+import { useAccount, useBalance, useReadContracts, useWalletClient } from 'wagmi'
+import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { getTickets } from '../../services/api'
-import { fetcher, isJson, transformToTicket, formatNumber } from '@/lib/utils'
-import WelcomeModal from './ui/PWADrawer'
-import CompletionModal from './ui/CompletionModal'
+import { isJson, formatNumber } from '@/lib/utils'
+import CompletionModal from './shadcn/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
-import { toast } from '../components/ui/use-toast'
+import { toast } from './shadcn/use-toast'
 import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
-import { usePrivyWagmi } from '@privy-io/wagmi-connector'
-import { usePrivy, useLogin, useLogout, useWallets, useConnectWallet } from '@privy-io/react-auth'
-
-const typeStage: Record<IApp['phase'], string> = {
-  deployed: 'Deployed',
-  start: 'Start',
-  day: 'Day',
-  night: 'Night',
-  lastmanfound: 'LastManFound',
-  drain: 'Drain',
-  peacefound: 'PeaceFound',
-  gameclosed: 'GameClosed',
-}
+import { socket } from '@/lib/socket'
 
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
-  phase: IApp['phase']
 }
 
-const Layout = ({ children, metadata, phase }: LayoutProps) => {
-  const updateRound = useStoreActions((actions) => actions.updateRound)
-  const updatePhase = useStoreActions((actions) => actions.updatePhase)
-  const updateStage = useStoreActions((actions) => actions.updateStage)
-  const updateSuddenDeath = useStoreActions((actions) => actions.updateSuddenDeath)
-  const updateCurrentPot = useStoreActions((actions) => actions.updateCurrentPot)
-  const updateTicketCount = useStoreActions((actions) => actions.updateTicketCount)
-  const updateVoteCount = useStoreActions((actions) => actions.updateVoteCount)
-  const updateNextTicketPrice = useStoreActions((actions) => actions.updateNextTicketPrice)
-  const updateTokenBalance = useStoreActions((actions) => actions.updateTokenBalance)
+// type Feeds = {
+//   block_timestamp: number
+//   block_number: number
+//   datetime: number
+//   message: {
+//     value: string
+//     args: Record<string, string>
+//   }
+// }
 
-  const updateTickets = useStoreActions((actions) => actions.updateTickets)
-  const modifyPlayerTicket = useStoreActions((actions) => actions.modifyTicket)
-  const updateOwnedTicket = useStoreActions((actions) => actions.updateOwnedTicket)
-  const triggerCompletionModal = useStoreActions((actions) => actions.updateTriggerCompletionModal)
-  const updateLastChangedTicket = useStoreActions((actions) => actions.updateLastChangedTicket)
+const Layout = ({ children, metadata }: LayoutProps) => {
+  // Settings
+  const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
+  const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
+  const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
+  const updateFundersShare = useStoreActions((actions) => actions.updateFundersShare)
+  const updateFundersPot = useStoreActions((actions) => actions.updateFundersPot)
+  const updateFundersClaimed = useStoreActions((actions) => actions.updateFundersClaimed)
+  const updateCurrentAverage = useStoreActions((actions) => actions.updateCurrentAverage)
+  const updateLeaderboard = useStoreActions((actions) => actions.updateLeaderboard)
+  const updateTicketsBought = useStoreActions((actions) => actions.updateTicketsBought)
+  const updateTicketPrice = useStoreActions((actions) => actions.updateTicketPrice)
+  const updateGameTime = useStoreActions((actions) => actions.updateGameTime)
+  const updateTimeAddon = useStoreActions((actions) => actions.updateTimeAddon)
+  const updateStartGameFlag = useStoreActions((actions) => actions.updateStartGameFlag)
+  const updateTotalNumber = useStoreActions((actions) => actions.updateTotalNumber)
+  const updatePotSize = useStoreActions((actions) => actions.updatePotSize)
+  const updatePlayersPayoutFactor = useStoreActions((actions) => actions.updatePlayersPayoutFactor)
+  const updateWinnersSplit = useStoreActions((actions) => actions.updateWinnersSplit)
+  const updatePlayerTickets = useStoreActions((actions) => actions.updatePlayerTickets)
+  const updateWinnersPot = useStoreActions((actions) => actions.updateWinnersPot)
+  const updateWinnersShare = useStoreActions((actions) => actions.updateWinnersShare)
 
-  const { mutate: globalMutate } = useSWRConfig()
-  const { xs } = useWindowSize()
-
-  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-  //   const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-  //   const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-  //   return result
-  // })
-
-  // const toggleModal = () => {
-  //   setShowWelcomeModal((prevState) => !prevState)
-  //   localStorage.setItem('showWelcomeModal', 'false')
-  // }
-
-  // const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(true)
-
-  // const toggleModal = () => {
-  //   setShowWelcomeModal((prevState) => !prevState)
-  // }
-
-  const router = useRouter()
-  // const { wallet: activeWallet } = usePrivyWagmi()
-  const { authenticated } = usePrivy()
-  const { address, isConnected } = useAccount()
-
-  const {
-    data: ticketsData,
-    error,
-    mutate,
-  } = useSWR<{
-    data: Ticket[]
-  }>(
-    `/tickets/${CHAIN_ID}?page=1&limit=30&sortOrder=ASC&sortBy=purchasePrice&contractAddress=${GAME_ADDRESS}`,
-    fetcher,
+  const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
+  const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
+  const updateReferral = useStoreActions((actions) => actions.updateReferral)
+  const updateTriggerCompletionModal = useStoreActions(
+    (actions) => actions.updateTriggerCompletionModal,
   )
 
-  if (ticketsData?.data.length) {
-    const ticketList = transformToTicket(ticketsData?.data).filter(
-      (item) => item.user !== '0x0000000000000000000000000000000000000000',
-    )
+  // const { mutate: globalMutate } = useSWRConfig()
+  const { xs } = useWindowSize()
 
-    const ownedTicket = ticketList.find(
-      (item) => item.user.toLowerCase() === address?.toLowerCase(),
-    )
+  // const router = useRouter()
 
-    updateTickets(ticketList)
+  const { address, isConnected } = useAccount()
 
-    if (ownedTicket) {
-      updateOwnedTicket(ownedTicket)
-    }
+  const { data, refetch } = useReadContracts({
+    contracts: [
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundedAmount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersToAmt',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'fundersClaimed',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'currentAverage',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'computeLeaderboard',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketIdCounter',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'ticketPrice',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'gameTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'timeAddon',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'startGameFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'totalNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'potAmount',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'playersPayoutFactor',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersSplit',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getPlayerToIdArray',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'winnersShare',
+      },
+    ],
+  })
+
+  const canBuyTicket = data?.[0].result || false
+  const fundedAmount = data?.[1].result || BigInt(0)
+  const fundersToAmt = data?.[2].result || BigInt(0)
+  const fundersShare = data?.[3].result || BigInt(0)
+  const fundersPot = data?.[4].result || BigInt(0)
+  const fundersClaimed = data?.[5].result || false
+  const currentAverage = data?.[6].result || BigInt(0)
+  const leaderboard: readonly bigint[] = data?.[7].result || []
+  const ticketsBought = data?.[8].result || BigInt(0)
+  const ticketPrice = data?.[9].result || BigInt(0)
+  const gameTime = data?.[10].result || BigInt(0)
+  const timeAddon = data?.[11].result || BigInt(0)
+  const startGameFlag = data?.[12].result || BigInt(0)
+  const totalNumber = data?.[13].result || BigInt(0)
+  const potSize = data?.[14].result || BigInt(0)
+  const playersPayoutFactor = Number(data?.[15].result || BigInt(0))
+  const winnersSplit = data?.[16].result || BigInt(0)
+  const playerTickets = data?.[17]?.result || []
+  const winnersPot = data?.[18].result || BigInt(0)
+  const winnersShare = data?.[19].result || BigInt(0)
+
+  const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  let winningNumbers: number[] = []
+
+  for (let i = 0; i < leaderboard.length; i++) {
+    winningNumbers[i] = Number(leaderboard[i])
   }
+
+  // const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 3,
+  // })
+
+  // const formattedPotSize = formatNumber(formatUnits(potSize, 18), {
+  //   maximumFractionDigits: 6,
+  //   minimumFractionDigits: 3,
+  // })
+
+  const formattedWinnersSplit = formatNumber(formatUnits(winnersSplit, 18), {
+    maximumFractionDigits: 4,
+    minimumFractionDigits: 3,
+  })
+
+  let formattedPlayerTickets: number[] = []
+
+  for (let i = 0; i < playerTickets.length; i++) {
+    formattedPlayerTickets[i] = Number(playerTickets[i])
+  }
+
+  const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  // const percentOfPot = formatNumber((Number(playerContribution) / Number(totalFunded)) * 100, {
+  //   maximumFractionDigits: 2,
+  //   minimumFractionDigits: 0,
+  // })
+
+  // const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(potToShare), {
+  //   maximumFractionDigits: 5,
+  //   minimumFractionDigits: 0,
+  // })
+
+  /*
+  if (data && data?.length > 0) {
+    const canBuyTicket = data[0]?.result || false
+    const ticketPrice = data[1]?.result || BigInt(0)
+    const buyTicketDelayCeiling = data[2]?.result || BigInt(0)
+    const roundTime = data[3]?.result || 0
+    const feeShare = data[4]?.result || 0
+    const startingPassRate = data[5]?.result || 0
+    const auctionPrice = data[6]?.result || BigInt(0)
+    const poohPerRoll = data[7]?.result || 0
+    const passRateRange = data[8]?.result || 0
+    const passRateFloor = data[9]?.result || 0
+    const round = data[10]?.result || 0
+    const timeFlag = data[11]?.result || BigInt(0)
+    const buyFlag = data[12]?.result || BigInt(0)
+    const potFlag = data[13]?.result || BigInt(0)
+    const ticketIdCounter = data[14]?.result || 0
+    const ticketCount = data[15]?.result || 0
+    const tokenBalance = data?.[16].result || BigInt(0)
+    const auctionAllowance = data?.[17].result || BigInt(0)
+    const totalPoohSupply = data?.[8].result || BigInt(0)
+    // const playerTickets = Array(data[17]?.result) || Array
+
+    const { data: balanceData, refetch: refetchBalance } = useBalance({
+      address: GAME_ADDRESS,
+    })
+
+    const formattedCurrentPot = formatNumber(formatUnits(balanceData?.value || BigInt(0), 18), {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 3,
+    })
+
+    const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 3,
+    })
+
+    const formattedTokenBalance = formatNumber(formatUnits(tokenBalance, 18), {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    })
+
+    const formattedAuctionPrice = formatNumber(formatUnits(auctionPrice, 1), {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    })
+
+    const formattedAuctionAllowance = formatNumber(formatUnits(auctionAllowance, 18), {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    })
+
+    const formattedTotalPoohSupply = formatNumber(formatUnits(totalPoohSupply, 18), {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    })
+    updateCanBuyTicket(Boolean(canBuyTicket))
+    updateTicketPrice(Number(formattedTicketPrice))
+    updateBuyTicketDelayCeiling(Number(buyTicketDelayCeiling))
+    updateRoundTime(Number(roundTime))
+    updateFeeShare(Number(feeShare))
+    updateStartingPassRate(Number(startingPassRate))
+    updateAuctionPrice(Number(formattedAuctionPrice))
+    updatePoohPerRoll(Number(poohPerRoll))
+    updatePassRateRange(Number(passRateRange))
+    updatePassRateFloor(Number(passRateFloor))
+    
+    updateRound(Number(round))
+    updateTimeFlag(Number(timeFlag))
+    updateBuyFlag(Number(buyFlag))
+    updatePotFlag(Number(potFlag))
+    updateTicketIdCounter(Number(ticketIdCounter))
+    updateTicketCount(Number(ticketCount))
+    
+    updateCurrentPot(Number(formattedCurrentPot))
+    updateTokenBalance(Number(formattedTokenBalance))
+    updateAuctionAllowance(Number(formattedAuctionAllowance))
+    updateTotalPoohSupply(Number(formattedTotalPoohSupply))
+    }
+    
+    const refreshData = () => {
+    router.replace(router.asPath)
+    }
+    
+    */
+
+  updateCanBuyTicket(Boolean(canBuyTicket))
+  updateFundedAmount(Number(formattedFundedAmount))
+  updateFundersToAmt(Number(formattedFundersToAmt))
+  updateFundersShare(Number(fundersShare))
+  updateFundersPot(Number(formattedFundersPot))
+  updateFundersClaimed(Boolean(fundersClaimed))
+  updateCurrentAverage(Number(currentAverage))
+  updateLeaderboard(winningNumbers)
+  updateTicketsBought(Number(ticketsBought))
+  updateTicketPrice(ticketPrice)
+  updateGameTime(Number(gameTime))
+  updateTimeAddon(Number(timeAddon))
+  updateStartGameFlag(Number(startGameFlag))
+  updateTotalNumber(Number(totalNumber))
+  updatePotSize(potSize)
+  updatePlayersPayoutFactor(Number(playersPayoutFactor))
+  updateWinnersSplit(Number(formattedWinnersSplit))
+  updatePlayerTickets(formattedPlayerTickets)
+  updateWinnersPot(Number(winnersToShare))
+  updateWinnersShare(Number(winnersShare))
+
+  // console.log(Boolean(canBuyTicket))
+  // console.log(Number(formattedFundedAmount))
+  // console.log(Number(formattedFundersToAmt))
+  // console.log(Number(fundersShare))
+  // console.log(Number(formattedFundersPot))
+  // console.log(Boolean(fundersClaimed))
+  // console.log(Number(currentAverage))
+  // console.log(winningNumbers)
+  // console.log(Number(ticketsBought))
+  // console.log(ticketPrice)
+  // console.log(Number(gameTime))
+  // console.log(Number(timeAddon))
+  // console.log(Number(startGameFlag))
+  // console.log(Number(totalNumber))
+  // console.log(Number(potSize))
+  // console.log(Number(playersPayoutFactor))
+  // console.log(Number(formattedWinnersSplit))
+  // console.log(formattedPlayerTickets)
+  // console.log(Number(winnersToShare))
+  // console.log(Number(winnersShare))
+
+  socket.connect()
+  // toast({
+  //   variant: 'success',
+  //   // title: 'Keyword updated',
+  //   description: <p>socket connected.</p>,
+  // })
 
   const events: Event[] = [
     {
-      name: `tickets-${CHAIN_ID}-${GAME_ADDRESS}`,
+      name: `NewTicketBought`,
       handler(data) {
-        if (!data?.id) return
-
-        updateLastChangedTicket(data.id)
-        // setTimeout(() => updateLastChangedTicket(0), 3000)
-
-        if (data?.user?.toLowerCase() === address?.toLowerCase()) {
-          updateOwnedTicket(data)
-        } else {
-          modifyPlayerTicket({
-            id: data?.id,
-            ticket: data,
-          })
-        }
+        console.log(data.args[2].hex)
+        const formattedNumber = Number(data.args[2].hex)
+        refetch()
+        toast({
+          variant: 'bought',
+          description: (
+            <p className="text-xl">
+              🔑 Key <span className="font-digit">{formattedNumber}</span> is bought
+            </p>
+          ),
+        })
       },
     },
     {
-      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
-      async handler(data) {
-        const { event, dataJson } = data
-
-        if (!Object.keys(dataJson).length) return
-
-        const refetchedEvents = ['VoteYes', 'VoteNo', 'NewTicketBought', 'PhaseChange']
-
-        if (refetchedEvents.includes(event)) {
-          await new Promise((resolve) => setTimeout(resolve, 1000))
-          refetchInitData()
-        }
-
-        if (event === 'SafehousePrice') {
-          const { price, time } = dataJson
-          // const priceRate = formatUnits(price || BigInt(0), 3)
-          toast({
-            variant: 'info',
-            // title: 'Keyword updated',
-            description: <p>Safehouse price is now {price} $LAST per night </p>,
-          })
-        }
-
-        if (event === 'TokenEmission') {
-          const { emission, time } = dataJson
-          // const emissionRate = formatUnits(emission || BigInt(0), 3)
-          toast({
-            variant: 'info',
-            // title: 'Keyword updated',
-            description: <p>Tokens are now emitted at {emission} $LAST per attack </p>,
-          })
-        }
-
-        if (event === 'DrainTriggered') {
-          const { drainRound, drainRate, time } = dataJson
-          const drainBegins = formatUnits(drainRound || BigInt(0), 0)
-          toast({
-            variant: 'info',
-            // title: 'Keyword updated',
-            description: (
-              <p>
-                Pot will starting draining on round{' '}
-                <span className="round-last">{drainBegins}</span>.
-              </p>
-            ),
-          })
-        }
-
-        if (event === 'PhaseChange') {
-          const { caller, previousPhase, newPhase, time } = dataJson
-
-          // start
-          if (newPhase === 1) {
-            toast({
-              variant: 'info',
-              title: 'Ticket buying',
-              description: <p>Ticket buying has started.</p>,
-            })
-          }
-
-          // day
-          if (newPhase === 2) {
-            toast({
-              variant: 'info',
-              title: 'Day has come',
-              description: <p>Day has come. Remember to submit keyword.</p>,
-            })
-          }
-
-          // night
-          if (newPhase === 3) {
-            toast({
-              variant: 'info',
-              title: 'Night has come',
-              description: <p>Night has come. Let the dattacks begin</p>,
-            })
-          }
-
-          // lastmanfound
-          if (newPhase === 4) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'lastman',
-            })
-          }
-
-          // peacefound
-          if (newPhase === 5) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'peacefound',
-            })
-          }
-          // drain
-          if (newPhase === 6) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'drain',
-            })
-          }
-          // gameclosed
-          if (newPhase === 7) {
-            triggerCompletionModal({
-              isOpen: true,
-              state: 'gameClosed',
-            })
-          }
-
-          globalMutate('phase')
-        }
+      name: `PotAdded`,
+      handler(data) {
+        const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
+          maximumFractionDigits: 3,
+          minimumFractionDigits: 0,
+        })
+        refetch()
+        toast({
+          variant: 'contributed',
+          description: (
+            <p className="text-xl">
+              🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
+            </p>
+          ),
+        })
       },
     },
   ]
 
   useSocketEvents(events)
 
-  const { data, refetch: refetchInitData } = useContractReads({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'round',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'phase',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'currentPot',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'ticketCount',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'voteCount',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'suddenDeath',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'drainStart',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'drainSwitch',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'nextTicketPrice',
-      },
-      {
-        ...tokenContractObj,
-        functionName: 'balanceOf',
-        args: [address as `0x${string}`],
-      },
-    ],
-    enabled: isConnected,
-  })
-
-  if (data && data?.length > 0) {
-    const round = data[0]?.result || 0
-    const phase = data[1]?.result || 0
-    const currentPot = data[2]?.result || BigInt(0)
-    const ticketCount = data[3]?.result || 0
-    const voteCount = data[4]?.result || 0
-    const suddenDeath = data[5]?.result || 0
-    const drainStart = data[6]?.result || 0
-    const drainSwitch = Boolean(data[7]?.result || 0)
-    const nextTicketPrice = data[8]?.result || BigInt(0)
-    const balanceOf = data?.[9].result || BigInt(0)
-
-    // compute stage
-    let stage: number
-
-    if (round === 0) {
-      stage = 0
-    } else if (round < suddenDeath) {
-      stage = 1
-    } else if (round >= suddenDeath && drainSwitch === false) {
-      stage = 2
-    } else if (round > suddenDeath && round >= drainStart && drainSwitch === true) {
-      stage = 3
-    } else {
-      stage = 0
-    }
-
-    const currentPotInEth = formatNumber(formatUnits(currentPot, 18), {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 3,
-    })
-
-    const nextTicketPriceInEth = formatNumber(formatUnits(nextTicketPrice, 18), {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 3,
-    })
-
-    const tokenBalance = formatNumber(formatUnits(balanceOf, 18), {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0,
-    })
-
-    updateRound(Number(round))
-    updatePhase(Number(phase))
-    updateStage(Number(stage))
-    updateSuddenDeath(Number(suddenDeath))
-    updateCurrentPot(Number(currentPotInEth))
-    updateTicketCount(Number(ticketCount))
-    updateVoteCount(Number(voteCount))
-    updateNextTicketPrice(Number(nextTicketPriceInEth))
-    updateTokenBalance(Number(tokenBalance))
-  }
-
-  const refreshData = () => {
-    router.replace(router.asPath)
-  }
-
-  // let background: string
-  // let backgroundMobile: string
-
-  // if (router.pathname.includes('404')) {
-  //   background = 'Deployed.svg'
-  //   backgroundMobile = 'DeployedMobile.svg'
-  // } else if (phase === 'gameclosed') {
-  // } else {
-  //   background = `${typeStage[phase]}.svg`
-  //   backgroundMobile = `${typeStage[phase]}.svg`
-  // }
-
-  const background = router.pathname.includes('404') ? 'Deployed.svg' : `${typeStage[phase]}.svg`
-  const backgroundMobile = router.pathname.includes('404')
-    ? 'DeployedMobile.svg'
-    : `${typeStage[phase]}Mobile.svg`
-
   return (
     <>
-      {xs && (
-        <main
-          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
-          style={{
-            backgroundImage: `url(/background/${backgroundMobile})`,
-          }}
-        >
-          <div className="container mx-auto p-0">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-            {/* <Header /> */}
-            {children}
-            <Analytics />
-            <CompletionModal alertLookTest="afterPurchase" />
-          </div>
-        </main>
-      )}
-
-      {!xs && (
-        <main
-          className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
-          style={{
-            backgroundImage: `url(/background/${background})`,
-          }}
-        >
-          <div className="container mx-auto">
-            {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
-            <Header />
-            {children}
-            <Analytics />
-            <CompletionModal alertLookTest="afterPurchase" />
-          </div>
-        </main>
-      )}
+      <main
+        className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+        style={{
+          backgroundImage: xs ? `url(/background/StartMobile.svg)` : `url(/background/Start.svg)`,
+        }}
+      >
+        <div className="container mx-auto p-0">
+          <Header />
+          {children}
+          <Analytics />
+          <CompletionModal alertLookTest="afterPurchase" />
+        </div>
+      </main>
     </>
   )
 }

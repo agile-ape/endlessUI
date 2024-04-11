@@ -1,55 +1,17 @@
-import Image from 'next/image'
-import { HelpCircle } from 'lucide-react'
-import { Timer } from 'lucide-react'
-
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from './button'
 import React, { useEffect, useState } from 'react'
-import { useAccount, useContractRead, useContractReads, useContractWrite } from 'wagmi'
-import {
-  defaultContractObj,
-  DOCS_URL,
-  WEBSOCKET_ENDPOINT,
-  CHAIN_ID,
-  GAME_ADDRESS,
-} from '../../../services/constant'
-import { toast } from '@/components/ui/use-toast'
-import Modal from './Modal'
+import type { MouseEventHandler } from 'react'
 import { useStoreState } from '../../../store'
 import { cn } from '@/lib/utils'
-import { useSocketEvents, type Event } from '../../../hooks/useSocketEvents'
-import OnSignal from './OnSignal'
-import PhaseChangeNew from './PhaseChangeNew'
-import { PhaseChangeActive } from './PhaseChangeNew'
-import { useWindowSize } from '../../../hooks/useWindowSize'
-import { useTheme } from 'next-themes'
+import { defaultContractObj } from '../../../services/constant'
+import { useReadContracts, useWriteContract, useWatchContractEvent } from 'wagmi'
+import { Button } from '../shadcn/button'
+
 import {
-  User,
-  Menu,
-  MenuSquare,
-  Link2,
-  Unlink2,
-  Rss,
-  Users,
-  Clock,
-  Monitor,
-  Target,
-  Info,
-  Move,
-  ChevronDown,
-  ChevronUp,
-  Send,
-  Split,
-  LogIn,
-  LogOut,
-  Dices,
-  Gift,
-  Ticket,
-  Sword,
-  RefreshCw,
-  ChevronsRight,
-  Axe,
-} from 'lucide-react'
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
 
 type TimeLeftType = {
   hours: number
@@ -69,132 +31,73 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
   }
 }
 
-// const bgColorPhase: Record<string, string> = {
-//   start: 'text-black border border-white bg-blue-100 hover:bg-blue-200',
-//   day: 'text-white border border-white bg-green-600 hover:bg-green-700',
-//   night: 'text-black border border-white bg-amber-500 hover:bg-amber-400',
-//   lastmanfound: 'bg-neutral-900 hover:bg-neutral-800',
-//   peacefound: 'bg-blue-800 hover:bg-blue-900',
-//   drain: 'bg-red-400 hover:bg-red-500',
+// const useStore = () => {
+//   const round = useStoreState((state) => state.round)
+//   const timeFlag = useStoreState((state) => state.timeFlag)
+//   const roundTime = useStoreState((state) => state.roundTime)
+
+//   return {
+//     round,
+//     timeFlag,
+//     roundTime,
+//   }
 // }
 
 export default function Countdown() {
-  const phase = useStoreState((state) => state.phase)
-  const phaseChangeActive = PhaseChangeActive()
-  const { xs } = useWindowSize()
-  const { forcedTheme } = useTheme()
-
-  const [showPhaseChangeModal, setShowPhaseChangeModal] = React.useState<boolean>(false)
-  const togglePhaseChange = () => setShowPhaseChangeModal((prevState) => !prevState)
-
   const [timeLeft, setTimeLeft] = useState<number>()
-  const [timeFlag, setTimeFlag] = useState<number>()
-  const [countdown, setCountdown] = useState<number>()
 
-  // const phase = 'gameclosed'
-
-  const { data, refetch } = useContractReads({
+  /* read contract
+  const { data, refetch } = useReadContracts({
     contracts: [
       {
         ...defaultContractObj,
-        functionName: 'timeFlag',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'countdownTime',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'dayTime',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'nightTime',
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'gameCloseTime',
+        functionName: 'gameTime',
       },
       {
         ...defaultContractObj,
         functionName: 'timeAddon',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'startGameFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'canBuyTicket',
+      },
     ],
-    onSuccess(data) {
-      setTimeFlag(Number(data[0].result) || 0)
-      setCountdown(Number(data[1].result) || 0)
-    },
   })
 
-  const events: Event[] = [
-    {
-      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
-      async handler(data) {
-        const { event, dataJson } = data
-
-        if (!Object.keys(dataJson).length) return
-
-        if (event === 'PhaseChange') {
-          const { caller, previousPhase, newPhase, time } = dataJson
-
-          setTimeFlag(Number(time) || 0)
-        }
-      },
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'NewTicketBought',
+    onLogs() {
+      refetch()
     },
-    {
-      name: `events-${CHAIN_ID}-${GAME_ADDRESS}`,
-      async handler(data) {
-        const { event, dataJson } = data
+    poll: true,
+  })
 
-        if (!Object.keys(dataJson).length) return
+  const gameTime = Number(data?.[0].result || BigInt(0))
+  const timeAddon = Number(data?.[1].result || BigInt(0))
+  const startGameFlag = Number(data?.[2].result || BigInt(0))
+  const canBuyTicket = Boolean(data?.[3].result || false)
 
-        if (event === 'NewTicketBought') {
-          const { caller, player, purchasePrice, newCountdownTime, time } = dataJson
+  */
 
-          setCountdown(Number(newCountdownTime) || 0)
-        }
-      },
-    },
-  ]
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const gameTime = useStoreState((state) => state.gameTime)
+  const timeAddon = useStoreState((state) => state.timeAddon)
+  const startGameFlag = useStoreState((state) => state.startGameFlag)
 
-  useSocketEvents(events)
-
-  const countdownTime = data?.[1].result || BigInt(0)
-  const dayTime = data?.[2].result || BigInt(0)
-  const nightTime = data?.[3].result || BigInt(0)
-  const gameCloseTime = data?.[4].result || BigInt(0)
-  const timeAddon = data?.[5].result || BigInt(0)
-
-  const timeAdded = Number(timeAddon) / 60 // assuming timeAddon will be expressed in minutes
-
-  let endTime: Date
-
-  if (phase === 'start') {
-    // timeAddon is added to countdownTime whenever someone buys a ticket
-    endTime = new Date((Number(timeFlag) + Number(countdown)) * 1000)
-  } else if (phase === 'day') {
-    endTime = new Date((Number(timeFlag) + Number(dayTime)) * 1000)
-  } else if (phase === 'night') {
-    endTime = new Date((Number(timeFlag) + Number(nightTime)) * 1000)
-  } else if (phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') {
-    endTime = new Date((Number(timeFlag) + Number(gameCloseTime)) * 1000)
-  } else if (phase === 'deployed' || phase === 'gameclosed') {
-    endTime = new Date()
-  } else {
-    endTime = new Date()
-  }
-
-  // endTime = new Date('2023-11-24T16:30:00') // our deadline to launch
-  // console.log(endTime)
+  const endTime: Date = new Date((startGameFlag + gameTime) * 1000)
+  // TODO: REMOVE BEFORE FLIGHT
+  // const endTime: Date = new Date(1711550000 * 1000)
 
   useEffect(() => {
     const interval = setInterval(() => {
       // Calculate the time left in each tick
       const now = new Date()
       const timeLeftInMS = endTime.getTime() - now.getTime()
-
-      // const timeLeftInMS = 100000
-
       if (timeLeftInMS > 0) {
         setTimeLeft(timeLeftInMS / 1000)
       } else {
@@ -207,104 +110,73 @@ export default function Countdown() {
     return () => clearInterval(interval) // Cleanup on unmount
   }, [endTime])
 
-  return (
-    <>
-      {phase === 'deployed' || phase === 'gameclosed' ? (
-        <></>
-      ) : (
-        <div className="text-[#FCFDC7] gap-1">
-          <div className="flex justify-center items-end">
-            {timeLeft && !isNaN(timeLeft) ? (
-              <TooltipProvider delayDuration={10}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div className="p-1 bg-[#39402e] rounded-md cursor-default">
-                      <div className="font-digit text-2xl shadow-xl rounded-md px-4 py-0 flex flex-row gap-1 bg-[#404833] border-2 border-[#404833]">
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).hours}
-                          <div className="uppercase text-sm text-center">hr</div>
-                        </div>
-                        :
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).minutes}
-                          <div className="uppercase text-sm text-center">min</div>
-                        </div>
-                        :
-                        <div className="flex flex-col text-center">
-                          {formatTime(timeLeft).seconds}
-                          <div className="uppercase text-sm text-center">sec</div>
-                        </div>
-                      </div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    align="center"
-                    className="px-3 py-1 max-w-[240px] text-sm hidden sm:block cursor-default"
-                  >
-                    {phase === 'start' && <p>{timeAdded} mins is added for every new player</p>}
-                    {phase === 'day' && (
-                      <p>Countdown of {formatTime(Number(dayTime)).minutes} mins until day ends</p>
-                    )}
-                    {phase === 'night' && (
-                      <p>
-                        Countdown of {formatTime(Number(nightTime)).minutes} mins until night ends
-                      </p>
-                    )}
-                    {(phase === 'lastmanfound' || phase === 'peacefound' || phase === 'drain') && (
-                      <p>Countdown of {Number(gameCloseTime)} until this current phase ends</p>
-                    )}
-                    <div>
-                      <a href={DOCS_URL} target="_blank" className="text-xs link">
-                        Learn more
-                      </a>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <div className="">
-                {/* <PhaseChange /> */}
+  const [isLoading, setIsLoading] = useState(true)
 
-                {xs ? (
-                  <div className="flex text-xl text-[#404833] dark:text-[#FCFC03]">
-                    <span>Use </span>
-                    <span className="flex mr-1">
-                      {' '}
-                      {/* <Image
-                        priority
-                        src={
-                          forcedTheme === 'light' ? `/icon/phaseLight.svg` : `/icon/phaseNight.svg`
-                        }
-                        className="ml-1 mr-1"
-                        height={20}
-                        width={20}
-                        alt="change-phase"
-                      /> */}
-                      <p className="flex justify-center items-center">
-                        <ChevronsRight className="" />
-                        Phase
-                      </p>
-                    </span>
-                    to change phase
-                  </div>
-                ) : (
-                  <Button
-                    variant="primary"
-                    className={cn('text-sm h-8 px-2 sm:text-lg sm:h-10 sm:px-3')}
-                    onClick={togglePhaseChange}
-                  >
-                    <OnSignal active={phaseChangeActive} own={true} />
-                    <ChevronsRight size={20} className="mr-1" />
-                    Change phase
-                  </Button>
-                )}
-              </div>
-            )}
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
+    return () => clearTimeout(delay)
+  }, [])
+
+  const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
+
+  const endGameHandler = async () => {
+    writeContract({
+      ...defaultContractObj,
+      functionName: 'endGame',
+    })
+  }
+
+  return (
+    <div
+      className="px-2 py-2 my-2 \
+        inner-last \
+        flex justify-center"
+    >
+      {isLoading ? (
+        <div className="capitalized text-2xl">TIME LEFT </div>
+      ) : timeLeft && !isNaN(timeLeft) ? (
+        <div className="flex flex-col items-center justify-center">
+          <div className="text-gray-400 text-base">Timer</div>
+          <div className="flex justify-center items-center">
+            <div className="flex flex-col text-3xl text-center text-gray-200 font-digit">
+              {formatTime(timeLeft).hours} :
+              <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">hr</div>
+            </div>
+            <div className="ml-1 flex flex-col text-3xl text-center text-gray-200 font-digit">
+              {' '}
+              {formatTime(timeLeft).minutes} :
+              <div className="uppercase -translate-x-1 text-gray-400 text-sm text-center">min</div>
+            </div>
+            <div className="ml-1 flex flex-col text-3xl text-center text-gray-200 font-digit">
+              {formatTime(timeLeft).seconds}
+              <div className="uppercase text-gray-400 text-sm text-center">sec</div>
+            </div>
           </div>
-          {showPhaseChangeModal && <Modal action={'phaseChange'} toggle={togglePhaseChange} />}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          {canBuyTicket ? (
+            <>
+              <div className="capitalized text-2xl">TIME'S UP</div>
+              <Button
+                variant="end"
+                className="w-full px-8 py-2 mt-2"
+                onClick={endGameHandler}
+                isLoading={isPending}
+                // disabled={!canBuyTicket}
+              >
+                End
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="capitalized text-2xl">GAME ENDED</div>
+            </>
+          )}
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -79,6 +79,10 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        'caret-blink': {
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
+        },
         'accordion-down': {
           from: { height: 0 },
           to: { height: 'var(--radix-accordion-content-height)' },
@@ -133,7 +137,7 @@ module.exports = {
         slideDownAndFade: 'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         slideLeftAndFade: 'slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         typing: 'typing 2s steps(20) infinite alternate, blink .7s infinite',
-
+        'caret-blink': 'caret-blink 1.25s ease-out infinite',
         // spinSlow: 'spin 3s linear infinite',
       },
     },
