@@ -48,7 +48,7 @@ function Referral() {
 
   const referralAddress = useStoreState((state) => state.referral)
 
-  console.log(referralAddress)
+  // console.log(referralAddress)
 
   // const updateReferral = useStoreActions((actions) => actions.updateReferral)
 

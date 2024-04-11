@@ -343,26 +343,26 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updateWinnersPot(Number(winnersToShare))
   updateWinnersShare(Number(winnersShare))
 
-  console.log(Boolean(canBuyTicket))
-  console.log(Number(formattedFundedAmount))
-  console.log(Number(formattedFundersToAmt))
-  console.log(Number(fundersShare))
-  console.log(Number(formattedFundersPot))
-  console.log(Boolean(fundersClaimed))
-  console.log(Number(currentAverage))
-  console.log(winningNumbers)
-  console.log(Number(ticketsBought))
-  console.log(ticketPrice)
-  console.log(Number(gameTime))
-  console.log(Number(timeAddon))
-  console.log(Number(startGameFlag))
-  console.log(Number(totalNumber))
-  console.log(Number(potSize))
-  console.log(Number(playersPayoutFactor))
-  console.log(Number(formattedWinnersSplit))
-  console.log(formattedPlayerTickets)
-  console.log(Number(winnersToShare))
-  console.log(Number(winnersShare))
+  // console.log(Boolean(canBuyTicket))
+  // console.log(Number(formattedFundedAmount))
+  // console.log(Number(formattedFundersToAmt))
+  // console.log(Number(fundersShare))
+  // console.log(Number(formattedFundersPot))
+  // console.log(Boolean(fundersClaimed))
+  // console.log(Number(currentAverage))
+  // console.log(winningNumbers)
+  // console.log(Number(ticketsBought))
+  // console.log(ticketPrice)
+  // console.log(Number(gameTime))
+  // console.log(Number(timeAddon))
+  // console.log(Number(startGameFlag))
+  // console.log(Number(totalNumber))
+  // console.log(Number(potSize))
+  // console.log(Number(playersPayoutFactor))
+  // console.log(Number(formattedWinnersSplit))
+  // console.log(formattedPlayerTickets)
+  // console.log(Number(winnersToShare))
+  // console.log(Number(winnersShare))
 
   socket.connect()
   // toast({
@@ -374,13 +374,35 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const events: Event[] = [
     {
       name: `NewTicketBought`,
-      handler() {
-        console.log('refetch start')
+      handler(data) {
+        console.log(data.args[2].hex)
+        const formattedNumber = Number(data.args[2].hex)
         refetch()
-        console.log('refetch done')
         toast({
           variant: 'bought',
-          description: <p className="text-xl">🔑 A key is bought</p>,
+          description: (
+            <p className="text-xl">
+              🔑 Key <span className="font-digit">{formattedNumber}</span> is bought
+            </p>
+          ),
+        })
+      },
+    },
+    {
+      name: `PotAdded`,
+      handler(data) {
+        const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
+          maximumFractionDigits: 3,
+          minimumFractionDigits: 0,
+        })
+        refetch()
+        toast({
+          variant: 'contributed',
+          description: (
+            <p className="text-xl">
+              🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
+            </p>
+          ),
         })
       },
     },

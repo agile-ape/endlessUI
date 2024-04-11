@@ -26,7 +26,7 @@ export const defaultContractObj = {
   abi: GAME_ABI,
 }
 
-console.log(GAME_ADDRESS)
+// console.log(GAME_ADDRESS)
 
 export const baseSepolia1 = defineChain({
   id: 84532,

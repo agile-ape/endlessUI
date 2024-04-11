@@ -30,30 +30,30 @@ export default function DesktopScreen() {
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
   const updateReferral = useStoreActions((actions) => actions.updateReferral)
 
-  useWatchContractEvent({
-    ...defaultContractObj,
-    eventName: 'NewTicketBought',
-    onLogs() {
-      console.log('ticket bought!')
-      toast({
-        variant: 'bought',
-        description: <p className="text-xl">🔑 A key is bought</p>,
-      })
-    },
-    poll: true,
-  })
+  // useWatchContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'NewTicketBought',
+  //   onLogs() {
+  //     console.log('ticket bought!')
+  //     toast({
+  //       variant: 'bought',
+  //       description: <p className="text-xl">🔑 A key is bought</p>,
+  //     })
+  //   },
+  //   poll: true,
+  // })
 
-  useWatchContractEvent({
-    ...defaultContractObj,
-    eventName: 'PotAdded',
-    onLogs() {
-      toast({
-        variant: 'contributed',
-        description: <p className="text-xl">🍎 Someone added to the pot</p>,
-      })
-    },
-    poll: true,
-  })
+  // useWatchContractEvent({
+  //   ...defaultContractObj,
+  //   eventName: 'PotAdded',
+  //   onLogs() {
+  //     toast({
+  //       variant: 'contributed',
+  //       description: <p className="text-xl">🍎 Someone added to the pot</p>,
+  //     })
+  //   },
+  //   poll: true,
+  // })
 
   /*
   const registerUser = () => {
@@ -88,15 +88,12 @@ export default function DesktopScreen() {
     { refreshInterval: 1000 },
   )
 
-  console.log('check')
   if (numbersError) {
     console.error('Error fetching data:', numbersError)
   }
 
   // Check if data is available
   if (numbersData) {
-    console.log('Data fetched successfully:', numbersData)
-
     for (let i = 0; i < numbersData.length; i++) {
       numberList.push(numbersData[i].selectedNumber)
       averageList.push(numbersData[i].averageNumber)
@@ -104,9 +101,6 @@ export default function DesktopScreen() {
 
     updateNumberList(numberList)
     updateAverageList(averageList)
-
-    console.log(numberList)
-    console.log(averageList)
   }
 
   const { data: referralData, error: referralError } = useSWR(
@@ -114,8 +108,6 @@ export default function DesktopScreen() {
     `/referrals/${lowerCaseAddress}`,
     fetcher,
   )
-
-  console.log(referralData)
 
   // if (referralData) {
   //   referralAddress = referralData.referralAddress
@@ -184,7 +176,7 @@ export default function DesktopScreen() {
           <BuyTicket />
         </div> */}
 
-        <div className="average-last min-w-[280px] max-w-[480px]">
+        <div className="average-last min-w-[280px]">
           <Average />
         </div>
 

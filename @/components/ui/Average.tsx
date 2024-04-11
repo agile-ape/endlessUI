@@ -81,7 +81,7 @@ export default function Average() {
   // }
 
   const currentAverage = useStoreState((state) => state.currentAverage)
-  const [showAverage, setShowAverage] = useState(0)
+  const [showAverage, setShowAverage] = useState(currentAverage)
   // const [isFirstRender, setIsFirstRender] = useState(true)
 
   const isFirstRender = useRef(true)

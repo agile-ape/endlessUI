@@ -224,14 +224,17 @@ function AddToPot() {
 
         {canBuyTicket ? (
           <div className="flex flex-col items-center justify-center gap-2 p-2">
+            <span className="text-2xl">
+              Funders Pot: <span className="font-digit">{fundedAmount}</span> ETH{' '}
+            </span>
+
             <div
               className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 bg-zinc-800 flex flex-col
                 gap-4 justify-center items-center text-2xl
                 "
             >
               <span>
-                You contributed <span className="font-digit flash">{fundersToAmt}</span> ETH (out of{' '}
-                <span className="font-digit flash">{fundedAmount}</span> ETH) and own{' '}
+                You contributed <span className="font-digit flash">{fundersToAmt}</span> ETH and own{' '}
                 <span className="font-digit flash">{percentOfPot}</span>% of the funders pot.
               </span>
             </div>

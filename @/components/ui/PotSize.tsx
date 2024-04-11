@@ -70,7 +70,7 @@ export default function PotSize() {
       flex flex-col justify-center items-center"
       >
         <div className="text-stone-400">
-          {canBuyTicket ? 'Pot Size' : 'Final Pot Size'}
+          {canBuyTicket ? 'Total Pot Size' : 'Final Pot Size'}
 
           <span className="ml-1">(ETH)</span>
         </div>

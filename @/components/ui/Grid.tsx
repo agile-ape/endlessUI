@@ -72,10 +72,14 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
           <div className="px-3 py-1 text-center max-w-[240px] text-md cursor-default">
             <div>
               {/* Range: {lowerLimit} - {upperLimit} */}
-              {id}
+              🔑 Key {id}
             </div>
             <div>
-              Keys: <span className="font-digit">{occurrences}</span>{' '}
+              {occurrences == 1 ? (
+                <span>{occurrences} holder</span>
+              ) : (
+                <span>{occurrences} holders</span>
+              )}
             </div>
           </div>
         </TooltipContent>
@@ -145,7 +149,7 @@ const Grid = () => {
     // numberRun()
   }, [])
 
-  console.log(numberList)
+  // console.log(numberList)
 
   // adjusted numberList back to 1
   let adjNumberList: number[] = []
@@ -153,7 +157,7 @@ const Grid = () => {
     adjNumberList[i] = Math.floor(numberList[i] / 1)
   }
 
-  console.log(averageList)
+  // console.log(averageList)
 
   // adjusted averageList back to 1
   let adjAverageList: number[] = []

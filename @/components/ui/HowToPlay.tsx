@@ -27,45 +27,50 @@ function HowToPlay() {
         <div className="overflow-auto">
           <DialogHeader>
             <DialogTitle className="text-center text-3xl font-digit text-[#FCFC03]">
-              HOW TO PLAY
+              💾 FLOP THE AVERAGE
             </DialogTitle>
             <ScrollArea className="rounded-md border p-4">
               <DialogDescription>
-                <div className="text-[#FCFCD7] text-xl">
+                <div className="text-[#FCFCD7] text-3xl">
                   {/* <p className="mb-6">Pooh's Pot 🍯 has ETH</p> */}
-                  <p className="mb-2 underline text-2xl">
-                    Guess the final average number chosen by all players
-                    {/* <span className="italic">(buy-in value)</span> */}
-                  </p>
-                  <p className="mb-4"> Pick a number, from 0 to 9999. </p>
-                  <p className="mb-4"> Buy a key to lock it in. </p>
-                  <p className="mb-4"> Purchases add to the pot, and extends time. </p>
-                  <p className="mb-8"> Once the timer reaches zero, game ends. </p>
-
-                  <p className="mb-2 underline text-2xl">
-                    Pot is split 3 ways when game ends
-                    {/* <span className="italic">(buy-in value)</span> */}
+                  <p className="mb-6 underline text-center">How to play</p>
+                  <p className="mb-8">
+                    <p className="mb-4"> Pick a number (0 - 999) and buy a disk 💾</p>
+                    <p className="mb-4">
+                      {' '}
+                      You disk win if your number matches the final average number of all disks
+                      bought
+                    </p>
                   </p>
 
-                  <p className="mb-6">
-                    {' '}
-                    🟡 Winners Pot (40%): Shared by all keys that picked the final average evenly.{' '}
+                  <p className="mb-2 underline text-center">Final Pot Split</p>
+
+                  <p className="text-3xl flex items-center my-2">
+                    <span className="font-digit mr-6">10%</span>{' '}
+                    <span className="text-lg mr-2">🟢 </span> Referrals{' '}
                   </p>
-                  <p className="mb-6">
-                    {' '}
-                    🟣 Players Pot (30%): Shared by all players based on how early they join -
-                    earlier = claim more.
+
+                  <p className="text-3xl flex items-center my-2">
+                    <span className="font-digit mr-4">20%</span>{' '}
+                    <span className="text-lg mr-2">🔴 </span> Funders{' '}
                   </p>
-                  <p className="mb-6">
-                    {' '}
-                    🔴 Funders Pot (20%): Shared by all whom contributed to pot - split by
-                    contribution share.{' '}
+
+                  <p className="text-3xl flex items-center my-2">
+                    <span className="font-digit mr-4">30%</span>{' '}
+                    <span className="text-lg mr-2">🟣 </span> All Players{' '}
                   </p>
-                  <p className="mb-6"> 🟢 Referrals Pot (10%): Shared by referrals evenly. </p>
+
+                  <p className="text-3xl flex items-center my-2">
+                    <span className="font-digit mr-4">40%</span>{' '}
+                    <span className="text-lg mr-2">🟡 </span> Winners{' '}
+                  </p>
                 </div>
 
                 <a href={DOCS_URL} target="_blank">
-                  <Button variant="primary" className="w-full text-3xl py-8 hover:bg-opacity-50">
+                  <Button
+                    variant="primary"
+                    className="w-full text-3xl py-8 my-4 hover:bg-opacity-50"
+                  >
                     Learn more
                   </Button>
                 </a>

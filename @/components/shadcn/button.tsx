@@ -175,6 +175,10 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-10',
+        sm: 'h-10',
+        md: 'h-10',
+        lg: 'h-10',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {

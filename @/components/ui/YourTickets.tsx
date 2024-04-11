@@ -387,14 +387,6 @@ const YourTickets = () => {
                     </div>
                   ))
                 }
-                {/* <TicketUI
-                  id={1}
-                  // player={}
-                  number={300}
-                  isWinner={false}
-                  winnerClaimYet={false}
-                  playerClaimYet={false}
-                /> */}
               </>
             </div>
           </div>
