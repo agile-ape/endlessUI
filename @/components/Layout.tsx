@@ -9,7 +9,7 @@ import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { isJson, formatNumber } from '@/lib/utils'
+import { isJson, formatNumber, poster } from '@/lib/utils'
 import CompletionModal from './shadcn/CompletionModal'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from './shadcn/use-toast'
@@ -17,6 +17,7 @@ import { formatUnits, parseUnits } from 'viem'
 import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
+import { useAccountEffect } from 'wagmi'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -365,6 +366,30 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   // console.log(Number(winnersShare))
 
   socket.connect()
+
+  useAccountEffect({
+    onConnect(data) {
+      console.log('Connected!', data)
+      const playerAddress = {
+        address: data.address,
+      }
+      logPlayer(playerAddress)
+      console.log('success')
+    },
+    onDisconnect() {
+      console.log('Disconnected!')
+    },
+  })
+
+  const logPlayer = async (data: any) => {
+    try {
+      const logPlayerSuccess = await poster(data, '/players')
+      console.log(logPlayerSuccess)
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
   // toast({
   //   variant: 'success',
   //   // title: 'Keyword updated',

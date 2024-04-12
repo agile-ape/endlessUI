@@ -52,6 +52,7 @@ function Header() {
           </div>
           <div>
             <ConnectButton chainStatus="name" label="Connect" />
+            {/* <CustomConnectButton /> */}
           </div>
         </div>
       </div>

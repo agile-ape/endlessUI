@@ -31,7 +31,7 @@ import {
 
 type referralData = {
   player: `0x${string}`
-  referral: `0x${string}`
+  referrer: `0x${string}`
   isTake: boolean
 }
 
@@ -81,10 +81,10 @@ function Referral() {
     try {
       const data: referralData = {
         player: lowerCaseAddress as `0x${string}`,
-        referral: referral as `0x${string}`,
+        referrer: referral as `0x${string}`,
         isTake: false,
       }
-      const responseData = await poster(data, '/referrals')
+      const responseData = await poster(data, `/players/${data.player}`)
       console.log(responseData)
 
       if (responseData?.status === 201) {
@@ -105,10 +105,10 @@ function Referral() {
     try {
       const data: referralData = {
         player: lowerCaseAddress as `0x${string}`,
-        referral: referral as `0x${string}`,
+        referrer: referral as `0x${string}`,
         isTake: true,
       }
-      const responseData = await poster(data, '/referrals')
+      const responseData = await poster(data, `/players/${data.player}`)
       console.log(responseData)
 
       if (responseData?.status === 201) {
@@ -197,7 +197,7 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="give"
                               onClick={addGiveHandler}
-                              disabled={true}
+                              // disabled={true}
                             >
                               Give
                             </Button>
@@ -217,7 +217,7 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="take"
                               onClick={addTakeHandler}
-                              disabled={true}
+                              // disabled={true}
                             >
                               Take
                             </Button>
