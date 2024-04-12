@@ -38,31 +38,31 @@ function HowToPlay() {
                     <p className="mb-4"> Pick a number (0 - 999) and buy a disk 💾</p>
                     <p className="mb-4">
                       {' '}
-                      You disk win if your number matches the final average number of all disks
+                      Your disk wins if your #️⃣number matches the final average number of all disks
                       bought
                     </p>
                   </p>
 
                   <p className="mb-2 underline text-center">Final Pot Split</p>
 
-                  <p className="text-3xl flex items-center my-2">
-                    <span className="font-digit mr-6">10%</span>{' '}
-                    <span className="text-lg mr-2">🟢 </span> Referrals{' '}
+                  <p className="text-3xl grid grid-cols-2 my-2">
+                    <span className="text-left mr-2 col-span-1"> 🟢 Referrals share </span>
+                    <span className="text-right font-digit mr-6">10%</span>{' '}
                   </p>
 
-                  <p className="text-3xl flex items-center my-2">
-                    <span className="font-digit mr-4">20%</span>{' '}
-                    <span className="text-lg mr-2">🔴 </span> Funders{' '}
+                  <p className="text-3xl grid grid-cols-2 my-2">
+                    <span className="text-left mr-2 col-span-1"> 🔴 Funders share </span>
+                    <span className="text-right font-digit mr-4">20%</span>{' '}
                   </p>
 
-                  <p className="text-3xl flex items-center my-2">
-                    <span className="font-digit mr-4">30%</span>{' '}
-                    <span className="text-lg mr-2">🟣 </span> All Players{' '}
+                  <p className="text-3xl grid grid-cols-2 my-2">
+                    <span className="text-left mr-2 col-span-1"> 🟣 Players share </span>
+                    <span className="text-right font-digit mr-4">30%</span>{' '}
                   </p>
 
-                  <p className="text-3xl flex items-center my-2">
-                    <span className="font-digit mr-4">40%</span>{' '}
-                    <span className="text-lg mr-2">🟡 </span> Winners{' '}
+                  <p className="text-3xl grid grid-cols-2 my-2">
+                    <span className="text-left mr-2 col-span-1"> 🟡 Winners share </span>
+                    <span className="text-right font-digit mr-4">40%</span>{' '}
                   </p>
                 </div>
 

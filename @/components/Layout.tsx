@@ -302,24 +302,24 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     updatePoohPerRoll(Number(poohPerRoll))
     updatePassRateRange(Number(passRateRange))
     updatePassRateFloor(Number(passRateFloor))
-    
+
     updateRound(Number(round))
     updateTimeFlag(Number(timeFlag))
     updateBuyFlag(Number(buyFlag))
     updatePotFlag(Number(potFlag))
     updateTicketIdCounter(Number(ticketIdCounter))
     updateTicketCount(Number(ticketCount))
-    
+
     updateCurrentPot(Number(formattedCurrentPot))
     updateTokenBalance(Number(formattedTokenBalance))
     updateAuctionAllowance(Number(formattedAuctionAllowance))
     updateTotalPoohSupply(Number(formattedTotalPoohSupply))
     }
-    
+
     const refreshData = () => {
     router.replace(router.asPath)
     }
-    
+
     */
 
   updateCanBuyTicket(Boolean(canBuyTicket))
@@ -382,7 +382,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
           variant: 'bought',
           description: (
             <p className="text-xl">
-              🔑 Key <span className="font-digit">{formattedNumber}</span> is bought
+              💾 Disk of #️⃣<span className="font-digit">{formattedNumber}</span> is bought
             </p>
           ),
         })

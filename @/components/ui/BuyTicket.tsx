@@ -118,7 +118,7 @@ export default function BuyTicket() {
       </Button>
       <div className="text-left">
         <div className="text-gray-400 text-lg">
-          Key price: <span className="font-digit">{formattedTicketPrice}</span> ETH
+          Disk price: <span className="font-digit">{formattedTicketPrice}</span> ETH
         </div>
         {/* <div className="text-gray-400">Total keys: {ticketsBought}</div> */}
       </div>

@@ -308,12 +308,15 @@ const TicketUI: FC<TicketUIType> = ({
         {isOverlayInspect ? (
           <>
             <div
-              className={`${shutter} left-0 absolute w-[28px] h-[28px] rounded-l-xs \
-              border`}
-            ></div>
+              className={`${shutter} ${shutterTextColor} left-0 absolute w-[28px] h-[28px] rounded-l-xs \
+              border text-center`}
+            >
+              id
+            </div>
+
             <div
               className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-r-sm \
-                flex justify-center items-center text-xl`}
+              flex justify-center items-center text-xl`}
             >
               {String(id)}
             </div>
@@ -322,9 +325,9 @@ const TicketUI: FC<TicketUIType> = ({
           <>
             <div
               className={`${shutterTextColor} left-0 absolute w-[28px] h-[28px] rounded-xs \
-            flex justify-center items-center text-xs`}
+            flex justify-center items-center text-lg`}
             >
-              🔑
+              #️⃣
             </div>
             <div
               className={`${shutter} right-0 absolute w-[47px] h-[28px] rounded-xs \

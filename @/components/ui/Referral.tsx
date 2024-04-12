@@ -146,7 +146,7 @@ function Referral() {
             <DialogHeader>
               <DialogTitle className="text-center text-3xl">🟢 Show some love</DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
-                Submit your referral's wallet address. Choose to give to take.
+                Submit your referrer's wallet address. Choose to give or take.
               </DialogDescription>
             </DialogHeader>
             {referralAddress ? (
@@ -197,13 +197,14 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="give"
                               onClick={addGiveHandler}
+                              disabled={true}
                             >
                               Give
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Give all 10% of your proceeds to referral
+                              Give all 10% of your proceeds to referrer
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -216,13 +217,14 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="take"
                               onClick={addTakeHandler}
+                              disabled={true}
                             >
                               Take
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Take 5% of your proceeds back from your referral, so 50-50
+                              Take 5% of your proceeds back from your referrer, so 50-50
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -233,9 +235,9 @@ function Referral() {
               </>
             )}
 
-            <DialogDescription className="text-center text-neutral-100 text-2xl">
+            {/* <DialogDescription className="text-center text-neutral-100 text-2xl">
               Your referral stats
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogContent>
         </Dialog>
       )}

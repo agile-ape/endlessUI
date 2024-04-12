@@ -340,11 +340,12 @@ const YourTickets = () => {
       text-gray-200 border border-zinc-500 text-sm bg-transparent
       "
       >
-        🟡 {canBuyTicket ? 'Winners pot' : 'Final Winners Pot'}
+        🟡 {canBuyTicket ? 'Winners share' : 'Final Winners Share'}
         <div className="font-digit text-3xl">{canBuyTicket ? currentWinnersPot : winnersPot}</div>
       </div>
 
-      <div className="text-gray-400">Winning keys (#)</div>
+      {/* <div className="text-gray-400 ">Winning disk id </div> */}
+      <div className="text-yellow-500 ">Winning disk id </div>
       <div
         className="text-yellow-400  \
          text-4xl \
@@ -358,7 +359,7 @@ const YourTickets = () => {
       </div>
 
       <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">
-        Your keys
+        Your disks
         <span className="ml-2 font-digit">
           {'  '}({playerTickets.length})
         </span>{' '}
