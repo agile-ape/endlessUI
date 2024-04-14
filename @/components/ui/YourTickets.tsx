@@ -303,7 +303,7 @@ const YourTickets = () => {
   // const ownedTickets = useStoreState((state) => state.ownedTickets)
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: false },
+    { loop: true, dragFree: true },
     // [Autoplay({ delay: 4000 })]
   )
 

@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { isJson, formatNumber, poster } from '@/lib/utils'
-import CompletionModal from './shadcn/CompletionModal'
+import CompletionModal from './ui/GameEnd'
 import useSWR, { useSWRConfig } from 'swr'
 import { toast } from './shadcn/use-toast'
 import { formatUnits, parseUnits } from 'viem'
@@ -18,7 +18,7 @@ import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
-
+import GameEnd from '@/components/ui/GameEnd'
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
@@ -56,13 +56,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updatePlayerTickets = useStoreActions((actions) => actions.updatePlayerTickets)
   const updateWinnersPot = useStoreActions((actions) => actions.updateWinnersPot)
   const updateWinnersShare = useStoreActions((actions) => actions.updateWinnersShare)
+  const updateCanFundPot = useStoreActions((actions) => actions.updateCanFundPot)
+  const updateMinAllowedNumber = useStoreActions((actions) => actions.updateMinAllowedNumber)
+  const updateMaxAllowedNumber = useStoreActions((actions) => actions.updateMaxAllowedNumber)
+  const updateCloseTime = useStoreActions((actions) => actions.updateCloseTime)
+  const updateEndGameFlag = useStoreActions((actions) => actions.updateEndGameFlag)
+  const updatePlayersShare = useStoreActions((actions) => actions.updatePlayersShare)
+  const updateReferralsShare = useStoreActions((actions) => actions.updateReferralsShare)
+  const updatePlayersPot = useStoreActions((actions) => actions.updatePlayersPot)
+  const updateReferralsPot = useStoreActions((actions) => actions.updateReferralsPot)
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
   const updateReferral = useStoreActions((actions) => actions.updateReferral)
-  const updateTriggerCompletionModal = useStoreActions(
-    (actions) => actions.updateTriggerCompletionModal,
-  )
 
   // const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
@@ -71,6 +77,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   const { address, isConnected } = useAccount()
 
+  /*================================================== GAME SETTINGS ==================================================*/
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -156,6 +163,42 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'winnersShare',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'canFundPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'minAllowedNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'maxAllowedNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'closeTime',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'endGameFlag',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'playersShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'referralsShare',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'playersPot',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'referralsPot',
+      },
     ],
   })
 
@@ -179,6 +222,15 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playerTickets = data?.[17]?.result || []
   const winnersPot = data?.[18].result || BigInt(0)
   const winnersShare = data?.[19].result || BigInt(0)
+  const canFundPot = data?.[20].result || false
+  const minAllowedNumber = data?.[21].result || BigInt(0)
+  const maxAllowedNumber = data?.[22].result || BigInt(0)
+  const closeTime = data?.[23].result || BigInt(0)
+  const endGameFlag = data?.[24].result || BigInt(0)
+  const playersShare = data?.[25].result || BigInt(0)
+  const referralsShare = data?.[26].result || BigInt(0)
+  const playersPot = data?.[27].result || BigInt(0)
+  const referralsPot = data?.[28].result || BigInt(0)
 
   const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
     maximumFractionDigits: 3,
@@ -223,6 +275,16 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   }
 
   const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const playersToShare = formatNumber(formatUnits(BigInt(playersPot), 18), {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  })
+
+  const referralsToShare = formatNumber(formatUnits(BigInt(referralsPot), 18), {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
   })
@@ -344,26 +406,15 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updateWinnersPot(Number(winnersToShare))
   updateWinnersShare(Number(winnersShare))
 
-  // console.log(Boolean(canBuyTicket))
-  // console.log(Number(formattedFundedAmount))
-  // console.log(Number(formattedFundersToAmt))
-  // console.log(Number(fundersShare))
-  // console.log(Number(formattedFundersPot))
-  // console.log(Boolean(fundersClaimed))
-  // console.log(Number(currentAverage))
-  // console.log(winningNumbers)
-  // console.log(Number(ticketsBought))
-  // console.log(ticketPrice)
-  // console.log(Number(gameTime))
-  // console.log(Number(timeAddon))
-  // console.log(Number(startGameFlag))
-  // console.log(Number(totalNumber))
-  // console.log(Number(potSize))
-  // console.log(Number(playersPayoutFactor))
-  // console.log(Number(formattedWinnersSplit))
-  // console.log(formattedPlayerTickets)
-  // console.log(Number(winnersToShare))
-  // console.log(Number(winnersShare))
+  updateCanFundPot(Boolean(canFundPot))
+  updateMinAllowedNumber(Number(minAllowedNumber))
+  updateMaxAllowedNumber(Number(maxAllowedNumber))
+  updateCloseTime(Number(closeTime))
+  updateEndGameFlag(Number(endGameFlag))
+  updatePlayersShare(Number(playersShare))
+  updateReferralsShare(Number(referralsShare))
+  updatePlayersPot(Number(playersToShare))
+  updateReferralsPot(Number(referralsToShare))
 
   socket.connect()
 
@@ -447,7 +498,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
           <Header />
           {children}
           <Analytics />
-          <CompletionModal alertLookTest="afterPurchase" />
+          <GameEnd open={!canBuyTicket} />
         </div>
       </main>
     </>

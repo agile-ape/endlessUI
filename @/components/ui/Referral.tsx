@@ -39,6 +39,7 @@ function Referral() {
   const { address, isConnected } = useAccount()
   // const [value, setValue] = useState('')
   const [referral, setReferral] = useState('')
+  const [check, setCheck] = useState<string>('')
 
   const [submitted, setSubmitted] = useState(false)
   // const [lowerCaseAddress, setLowerCaseAddress] = useState('');
@@ -126,8 +127,18 @@ function Referral() {
   }
 
   const handleReferralChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = /^0x[0-9a-fA-F]{40}$/
+
     const address = event.target.value.toLowerCase()
-    setReferral(address)
+    if (regex.test(address)) {
+      setCheck('valid eth address')
+      setReferral(address)
+    } else {
+      setCheck('not valid eth address')
+      // Handle invalid input (e.g., show error message)
+      // For now, let's just clear the input
+      setReferral('')
+    }
   }
 
   return (
@@ -188,6 +199,8 @@ function Referral() {
                         onChange={handleReferralChange}
                       />
                     </div>
+
+                    <p className="font-digit text-xl mt-2 text-center">{check}</p>
 
                     <div className="flex gap-8">
                       <TooltipProvider delayDuration={10}>
