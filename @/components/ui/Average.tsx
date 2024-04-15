@@ -159,8 +159,6 @@ export default function Average() {
   */
 
   useEffect(() => {
-    console.log(isFirstRender.current)
-
     // Skip the first render
     if (isFirstRender.current) {
       isFirstRender.current = false
@@ -216,20 +214,6 @@ export default function Average() {
       </Dialog>
 
       <BuyTicket />
-
-      {/* <div className="text-gray-400 mb-2">Winning keys (#)</div>
-      <div
-        className="text-yellow-500 mb-2  \
-         text-4xl \
-        flex overflow-auto"
-      >
-        {winningNumbers.map((number, index) => (
-          <span className="border px-3 border-stone-500" key={index}>
-            {number}
-          </span>
-        ))}
-      </div>
-      <div className="text-gray-400">Total keys: {ticketsBought}</div> */}
     </div>
   )
 }

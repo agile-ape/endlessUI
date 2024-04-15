@@ -24,18 +24,7 @@ type LayoutProps = {
   metadata: MetaProps
 }
 
-// type Feeds = {
-//   block_timestamp: number
-//   block_number: number
-//   datetime: number
-//   message: {
-//     value: string
-//     args: Record<string, string>
-//   }
-// }
-
 const Layout = ({ children, metadata }: LayoutProps) => {
-  // Settings
   const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
   const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
   const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
@@ -70,10 +59,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
   const updateReferral = useStoreActions((actions) => actions.updateReferral)
 
-  // const { mutate: globalMutate } = useSWRConfig()
   const { xs } = useWindowSize()
-
-  // const router = useRouter()
 
   const { address, isConnected } = useAccount()
 
@@ -253,16 +239,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     winningNumbers[i] = Number(leaderboard[i])
   }
 
-  // const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 3,
-  // })
-
-  // const formattedPotSize = formatNumber(formatUnits(potSize, 18), {
-  //   maximumFractionDigits: 6,
-  //   minimumFractionDigits: 3,
-  // })
-
   const formattedWinnersSplit = formatNumber(formatUnits(winnersSplit, 18), {
     maximumFractionDigits: 4,
     minimumFractionDigits: 3,
@@ -288,102 +264,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
   })
-
-  // const percentOfPot = formatNumber((Number(playerContribution) / Number(totalFunded)) * 100, {
-  //   maximumFractionDigits: 2,
-  //   minimumFractionDigits: 0,
-  // })
-
-  // const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(potToShare), {
-  //   maximumFractionDigits: 5,
-  //   minimumFractionDigits: 0,
-  // })
-
-  /*
-  if (data && data?.length > 0) {
-    const canBuyTicket = data[0]?.result || false
-    const ticketPrice = data[1]?.result || BigInt(0)
-    const buyTicketDelayCeiling = data[2]?.result || BigInt(0)
-    const roundTime = data[3]?.result || 0
-    const feeShare = data[4]?.result || 0
-    const startingPassRate = data[5]?.result || 0
-    const auctionPrice = data[6]?.result || BigInt(0)
-    const poohPerRoll = data[7]?.result || 0
-    const passRateRange = data[8]?.result || 0
-    const passRateFloor = data[9]?.result || 0
-    const round = data[10]?.result || 0
-    const timeFlag = data[11]?.result || BigInt(0)
-    const buyFlag = data[12]?.result || BigInt(0)
-    const potFlag = data[13]?.result || BigInt(0)
-    const ticketIdCounter = data[14]?.result || 0
-    const ticketCount = data[15]?.result || 0
-    const tokenBalance = data?.[16].result || BigInt(0)
-    const auctionAllowance = data?.[17].result || BigInt(0)
-    const totalPoohSupply = data?.[8].result || BigInt(0)
-    // const playerTickets = Array(data[17]?.result) || Array
-
-    const { data: balanceData, refetch: refetchBalance } = useBalance({
-      address: GAME_ADDRESS,
-    })
-
-    const formattedCurrentPot = formatNumber(formatUnits(balanceData?.value || BigInt(0), 18), {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 3,
-    })
-
-    const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 3,
-    })
-
-    const formattedTokenBalance = formatNumber(formatUnits(tokenBalance, 18), {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0,
-    })
-
-    const formattedAuctionPrice = formatNumber(formatUnits(auctionPrice, 1), {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0,
-    })
-
-    const formattedAuctionAllowance = formatNumber(formatUnits(auctionAllowance, 18), {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0,
-    })
-
-    const formattedTotalPoohSupply = formatNumber(formatUnits(totalPoohSupply, 18), {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0,
-    })
-    updateCanBuyTicket(Boolean(canBuyTicket))
-    updateTicketPrice(Number(formattedTicketPrice))
-    updateBuyTicketDelayCeiling(Number(buyTicketDelayCeiling))
-    updateRoundTime(Number(roundTime))
-    updateFeeShare(Number(feeShare))
-    updateStartingPassRate(Number(startingPassRate))
-    updateAuctionPrice(Number(formattedAuctionPrice))
-    updatePoohPerRoll(Number(poohPerRoll))
-    updatePassRateRange(Number(passRateRange))
-    updatePassRateFloor(Number(passRateFloor))
-
-    updateRound(Number(round))
-    updateTimeFlag(Number(timeFlag))
-    updateBuyFlag(Number(buyFlag))
-    updatePotFlag(Number(potFlag))
-    updateTicketIdCounter(Number(ticketIdCounter))
-    updateTicketCount(Number(ticketCount))
-
-    updateCurrentPot(Number(formattedCurrentPot))
-    updateTokenBalance(Number(formattedTokenBalance))
-    updateAuctionAllowance(Number(formattedAuctionAllowance))
-    updateTotalPoohSupply(Number(formattedTotalPoohSupply))
-    }
-
-    const refreshData = () => {
-    router.replace(router.asPath)
-    }
-
-    */
 
   updateCanBuyTicket(Boolean(canBuyTicket))
   updateFundedAmount(Number(formattedFundedAmount))
@@ -420,38 +300,26 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   useAccountEffect({
     onConnect(data) {
-      console.log('Connected!', data)
       const playerAddress = {
         address: data.address,
       }
       logPlayer(playerAddress)
-      console.log('success')
     },
-    onDisconnect() {
-      console.log('Disconnected!')
-    },
+    onDisconnect() {},
   })
 
   const logPlayer = async (data: any) => {
     try {
       const logPlayerSuccess = await poster(data, '/players')
-      console.log(logPlayerSuccess)
     } catch (error) {
       console.error('Error:', error)
     }
   }
 
-  // toast({
-  //   variant: 'success',
-  //   // title: 'Keyword updated',
-  //   description: <p>socket connected.</p>,
-  // })
-
   const events: Event[] = [
     {
       name: `NewTicketBought`,
       handler(data) {
-        console.log(data.args[2].hex)
         const formattedNumber = Number(data.args[2].hex)
         refetch()
         toast({
