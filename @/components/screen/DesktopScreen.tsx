@@ -43,9 +43,8 @@ export default function DesktopScreen() {
         isOpen: true,
       })
     }
-    console.log(modalState)
   }, [])
-  console.log(endGameFlag)
+
   // useWatchContractEvent({
   //   ...defaultContractObj,
   //   eventName: 'NewTicketBought',
@@ -70,21 +69,6 @@ export default function DesktopScreen() {
   //   },
   //   poll: true,
   // })
-
-  /*
-  const registerUser = () => {
-    try {
-      const responseData = await poster(address, '/referrals')
-
-    }
-
-  }
-
-
-  useEffect(() => {
-    registerUser()
-  },[])
-  */
 
   const { mutate: globalMutate } = useSWRConfig()
 

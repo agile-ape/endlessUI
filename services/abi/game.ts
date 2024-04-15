@@ -64,6 +64,12 @@ export const GAME_ABI = [
         type: 'address',
       },
       {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'amountLeft',
+        type: 'uint256',
+      },
+      {
         indexed: false,
         internalType: 'uint256',
         name: 'time',
