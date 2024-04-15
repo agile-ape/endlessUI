@@ -119,11 +119,11 @@ export default function DesktopScreen() {
     updateAverageList(averageList)
   }
 
-  const { data: referralData, error: referralError } = useSWR(
-    // <{data: Number[]}>
-    `/referrals/${lowerCaseAddress}`,
-    fetcher,
-  )
+  // const { data: referralData, error: referralError } = useSWR(
+  //   // <{data: Number[]}>
+  //   `/referrals/${lowerCaseAddress}`,
+  //   fetcher,
+  // )
 
   // if (referralData) {
   //   referralAddress = referralData.referralAddress
