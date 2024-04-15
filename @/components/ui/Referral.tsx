@@ -31,7 +31,7 @@ import {
 
 type referralData = {
   player: `0x${string}`
-  referral: `0x${string}`
+  referrer: `0x${string}`
   isTake: boolean
 }
 
@@ -39,6 +39,7 @@ function Referral() {
   const { address, isConnected } = useAccount()
   // const [value, setValue] = useState('')
   const [referral, setReferral] = useState('')
+  const [check, setCheck] = useState<string>('')
 
   const [submitted, setSubmitted] = useState(false)
   // const [lowerCaseAddress, setLowerCaseAddress] = useState('');
@@ -81,10 +82,10 @@ function Referral() {
     try {
       const data: referralData = {
         player: lowerCaseAddress as `0x${string}`,
-        referral: referral as `0x${string}`,
+        referrer: referral as `0x${string}`,
         isTake: false,
       }
-      const responseData = await poster(data, '/referrals')
+      const responseData = await poster(data, `/players/${data.player}`)
       console.log(responseData)
 
       if (responseData?.status === 201) {
@@ -105,10 +106,10 @@ function Referral() {
     try {
       const data: referralData = {
         player: lowerCaseAddress as `0x${string}`,
-        referral: referral as `0x${string}`,
+        referrer: referral as `0x${string}`,
         isTake: true,
       }
-      const responseData = await poster(data, '/referrals')
+      const responseData = await poster(data, `/players/${data.player}`)
       console.log(responseData)
 
       if (responseData?.status === 201) {
@@ -126,8 +127,18 @@ function Referral() {
   }
 
   const handleReferralChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = /^0x[0-9a-fA-F]{40}$/
+
     const address = event.target.value.toLowerCase()
-    setReferral(address)
+    if (regex.test(address)) {
+      setCheck('valid eth address')
+      setReferral(address)
+    } else {
+      setCheck('not valid eth address')
+      // Handle invalid input (e.g., show error message)
+      // For now, let's just clear the input
+      setReferral('')
+    }
   }
 
   return (
@@ -146,7 +157,7 @@ function Referral() {
             <DialogHeader>
               <DialogTitle className="text-center text-3xl">🟢 Show some love</DialogTitle>
               <DialogDescription className="text-center text-neutral-100 text-2xl">
-                Submit your referral's wallet address. Choose to give to take.
+                Submit your referrer's wallet address. Choose to give or take.
               </DialogDescription>
             </DialogHeader>
             {referralAddress ? (
@@ -189,6 +200,8 @@ function Referral() {
                       />
                     </div>
 
+                    <p className="font-digit text-xl mt-2 text-center">{check}</p>
+
                     <div className="flex gap-8">
                       <TooltipProvider delayDuration={10}>
                         <Tooltip>
@@ -197,13 +210,14 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="give"
                               onClick={addGiveHandler}
+                              // disabled={true}
                             >
                               Give
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Give all 10% of your proceeds to referral
+                              Give all 10% of your proceeds to referrer
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -216,13 +230,14 @@ function Referral() {
                               className="w-[150px] text-2xl"
                               variant="take"
                               onClick={addTakeHandler}
+                              // disabled={true}
                             >
                               Take
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
                             <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Take 5% of your proceeds back from your referral, so 50-50
+                              Take 5% of your proceeds back from your referrer, so 50-50
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -233,9 +248,9 @@ function Referral() {
               </>
             )}
 
-            <DialogDescription className="text-center text-neutral-100 text-2xl">
+            {/* <DialogDescription className="text-center text-neutral-100 text-2xl">
               Your referral stats
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogContent>
         </Dialog>
       )}

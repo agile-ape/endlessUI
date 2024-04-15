@@ -5,6 +5,7 @@ import PotSize from '../ui/PotSize'
 import Average from '../ui/Average'
 import BuyTicket from '../ui/BuyTicket'
 import YourTickets from '../ui/YourTickets'
+import GameEnd from '../ui/GameEnd'
 import { useAccount, useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj, GAME_ADDRESS } from '../../../services/constant'
 import { toast } from '@/components/shadcn/use-toast'
@@ -24,12 +25,27 @@ type Number = {
 
 export default function DesktopScreen() {
   const { address, isConnected } = useAccount()
+  const [expanded, setExpanded] = useState<boolean>(false)
+
   const lowerCaseAddress = String(address?.toLowerCase())
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
   const updateReferral = useStoreActions((actions) => actions.updateReferral)
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const endGameFlag = useStoreState((state) => state.endGameFlag)
+  const updateGameEndModal = useStoreActions((actions) => actions.updateGameEndModal)
+  const modalState = useStoreState((state) => state.GameEndModal)
 
+  useEffect(() => {
+    if (endGameFlag) {
+      updateGameEndModal({
+        isOpen: true,
+      })
+    }
+    console.log(modalState)
+  }, [])
+  console.log(endGameFlag)
   // useWatchContractEvent({
   //   ...defaultContractObj,
   //   eventName: 'NewTicketBought',

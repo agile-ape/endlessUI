@@ -42,7 +42,7 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
   // yellow
   average > 0 ? (averageColor = `rgb(251, 191, 36)`) : (averageColor = ``)
 
-  /* if 1 square = a range 
+  /* if 1 square = a range
   let lowerLimit: number = 0
   let upperLimit: number = 0
   if (id != null) {
@@ -71,14 +71,15 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
         <TooltipContent side="top" align="center">
           <div className="px-3 py-1 text-center max-w-[240px] text-md cursor-default">
             <div>
+              <span className="text-sm mr-1">#️⃣</span>
               {/* Range: {lowerLimit} - {upperLimit} */}
-              🔑 Key {id}
+              {id}
             </div>
             <div>
               {occurrences == 1 ? (
-                <span>{occurrences} holder</span>
+                <span>{occurrences} disk bought</span>
               ) : (
-                <span>{occurrences} holders</span>
+                <span>{occurrences} disks bought</span>
               )}
             </div>
           </div>
@@ -244,10 +245,7 @@ const Grid = () => {
         </>
       </div>
 
-      <div className="text-center text-2xl">
-        {' '}
-        🟣 Numbers Picked 🟡 Average 🟤 Keys that were average
-      </div>
+      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average 🟤 Picked && Average</div>
 
       <div className="flex">
         <Button

@@ -1,13 +1,9 @@
 import { createStore, action, createTypedHooks } from 'easy-peasy'
-// import type { StoreModel } from './types/store'
-// import type { IApp } from 'types/app'
 
 import type { Action } from 'easy-peasy'
 
-type CompletionModal = {
+type GameEndModal = {
   isOpen: boolean
-  state: string
-  result: number
 }
 
 interface StoreModel {
@@ -31,11 +27,20 @@ interface StoreModel {
   playerTickets: number[]
   winnersPot: number
   winnersShare: number
+  canFundPot: boolean
+  minAllowedNumber: number
+  maxAllowedNumber: number
+  closeTime: number
+  endGameFlag: number
+  playersShare: number
+  referralsShare: number
+  playersPot: number
+  referralsPot: number
 
   numberList: number[]
   averageList: number[]
   referral: string
-  triggerCompletionModal: CompletionModal
+  GameEndModal: GameEndModal
 
   updateCanBuyTicket: Action<StoreModel, boolean>
   updateFundedAmount: Action<StoreModel, number>
@@ -57,11 +62,20 @@ interface StoreModel {
   updatePlayerTickets: Action<StoreModel, number[]>
   updateWinnersPot: Action<StoreModel, number>
   updateWinnersShare: Action<StoreModel, number>
+  updateCanFundPot: Action<StoreModel, boolean>
+  updateMinAllowedNumber: Action<StoreModel, number>
+  updateMaxAllowedNumber: Action<StoreModel, number>
+  updateCloseTime: Action<StoreModel, number>
+  updateEndGameFlag: Action<StoreModel, number>
+  updatePlayersShare: Action<StoreModel, number>
+  updateReferralsShare: Action<StoreModel, number>
+  updatePlayersPot: Action<StoreModel, number>
+  updateReferralsPot: Action<StoreModel, number>
 
   updateNumberList: Action<StoreModel, number[]>
   updateAverageList: Action<StoreModel, number[]>
   updateReferral: Action<StoreModel, string>
-  updateTriggerCompletionModal: Action<StoreModel, CompletionModal>
+  updateGameEndModal: Action<StoreModel, GameEndModal>
 }
 
 export const appStore = createStore<StoreModel>({
@@ -85,14 +99,21 @@ export const appStore = createStore<StoreModel>({
   playerTickets: [],
   winnersPot: 0,
   winnersShare: 0,
+  canFundPot: false,
+  minAllowedNumber: 0,
+  maxAllowedNumber: 0,
+  closeTime: 0,
+  endGameFlag: 0,
+  playersShare: 0,
+  referralsShare: 0,
+  playersPot: 0,
+  referralsPot: 0,
 
   numberList: [],
   averageList: [],
   referral: '',
-  triggerCompletionModal: {
+  GameEndModal: {
     isOpen: false,
-    state: '',
-    result: 0,
   },
 
   updateCanBuyTicket: action((state, payload) => {
@@ -156,6 +177,35 @@ export const appStore = createStore<StoreModel>({
     state.winnersShare = payload
   }),
 
+  updateCanFundPot: action((state, payload) => {
+    state.canFundPot = payload
+  }),
+  updateMinAllowedNumber: action((state, payload) => {
+    state.minAllowedNumber = payload
+  }),
+
+  updateMaxAllowedNumber: action((state, payload) => {
+    state.maxAllowedNumber = payload
+  }),
+  updateCloseTime: action((state, payload) => {
+    state.closeTime = payload
+  }),
+  updateEndGameFlag: action((state, payload) => {
+    state.endGameFlag = payload
+  }),
+  updatePlayersShare: action((state, payload) => {
+    state.playersShare = payload
+  }),
+  updateReferralsShare: action((state, payload) => {
+    state.referralsShare = payload
+  }),
+  updatePlayersPot: action((state, payload) => {
+    state.playersPot = payload
+  }),
+  updateReferralsPot: action((state, payload) => {
+    state.referralsPot = payload
+  }),
+
   updateNumberList: action((state, payload) => {
     state.numberList = payload
   }),
@@ -168,8 +218,8 @@ export const appStore = createStore<StoreModel>({
     state.referral = payload
   }),
 
-  updateTriggerCompletionModal: action((state, payload) => {
-    state.triggerCompletionModal = payload
+  updateGameEndModal: action((state, payload) => {
+    state.GameEndModal = payload
   }),
 })
 

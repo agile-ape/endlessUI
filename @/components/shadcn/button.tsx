@@ -28,7 +28,11 @@ const buttonVariants = cva(
           'bg-transparent hover:text-gray-100 text-xl border border-indigo-400 hover:border-indigo-200 hover:shadow-xs hover:shadow-white bg-transparent',
 
         // How to play - learn more
-        primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
+        // primary: 'text-[#FCFC03] bg-[#404833] border border-[#FCFC03] hover:bg-opacity-50',
+        primary:
+          'bg-gray-400 text-2xl text-slate-700 border border-slate-700 border-2 rounded-md \
+        hover:text-white hover:bg-opacity-80 \
+        active:text-white active:bg-opacity-75',
 
         buy: 'bg-gray-400 text-slate-700 border border-slate-700 border-2 rounded-xl \
          hover:text-white hover:bg-opacity-50 \

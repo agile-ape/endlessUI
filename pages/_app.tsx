@@ -38,7 +38,8 @@ import useSWR from 'swr'
 export const rainbowConfig = getDefaultConfig({
   appName: 'Average',
   projectId: 'aebfb7cdffcbfce2ffd5d4b620c4c8a4',
-  chains: [baseSepolia, base],
+  // chains: [baseSepolia, base],
+  chains: [baseSepolia],
   transports: {
     [baseSepolia.id]: http(
       'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',

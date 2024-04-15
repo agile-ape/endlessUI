@@ -30,7 +30,7 @@ function AddToPot() {
   const { address, isConnected } = useAccount()
 
   const [value, setValue] = useState('')
-  /* read contract 
+  /* read contract
   const { data, refetch } = useReadContracts({
     contracts: [
       {
@@ -99,6 +99,8 @@ function AddToPot() {
   const fundersToAmt = useStoreState((state) => state.fundersToAmt)
   const fundersPot = useStoreState((state) => state.fundersPot)
   const fundersClaimed = useStoreState((state) => state.fundersClaimed)
+  const fundersShare = useStoreState((state) => state.fundersShare)
+  const potSize = useStoreState((state) => state.potSize)
 
   const potentialPotShare = formatNumber(
     ((Number(fundersToAmt) + Number(value)) / (Number(fundedAmount) + Number(value))) * 100,
@@ -112,6 +114,14 @@ function AddToPot() {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
   })
+
+  const currentFundersShare = formatNumber(
+    (Number(formatUnits(potSize, 18)) * fundersShare) / 100,
+    {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+    },
+  )
 
   const claimAmount = formatNumber((Number(percentOfPot) / 100) * Number(fundersPot), {
     maximumFractionDigits: 5,
@@ -218,15 +228,28 @@ function AddToPot() {
         <DialogHeader>
           <DialogTitle className="text-center text-3xl">🍎 The juicy apple</DialogTitle>
           <DialogDescription className="text-center text-neutral-100 text-2xl">
-            Add ETH and claim from 🔴 funders pot when game ends.
+            Contribute ETH and claim from funders share when game ends.
           </DialogDescription>
         </DialogHeader>
 
         {canBuyTicket ? (
           <div className="flex flex-col items-center justify-center gap-2 p-2">
-            <span className="text-2xl">
-              Funders Pot: <span className="font-digit">{fundedAmount}</span> ETH{' '}
-            </span>
+            {/* <span className="text-2xl"> */}
+
+            <div
+              className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 bg-zinc-800 flex flex-col
+                gap-4 justify-center items-center text-2xl
+                "
+            >
+              <span>
+                🔴 Funders share: <span className="font-digit">{currentFundersShare}</span> ETH
+              </span>
+
+              <span>
+                Total contributions: <span className="font-digit">{fundedAmount}</span> ETH{' '}
+              </span>
+            </div>
+            {/* </span> */}
 
             <div
               className="w-[100%] rounded-xl p-3 m-1 border border-zinc-200 bg-zinc-800 flex flex-col
@@ -235,7 +258,7 @@ function AddToPot() {
             >
               <span>
                 You contributed <span className="font-digit flash">{fundersToAmt}</span> ETH and own{' '}
-                <span className="font-digit flash">{percentOfPot}</span>% of the funders pot.
+                <span className="font-digit flash">{percentOfPot}</span>% of funders share.
               </span>
             </div>
 
@@ -263,7 +286,7 @@ function AddToPot() {
 
               {Number(value) > 0 && (
                 <p className="font-digit text-2xl mt-2 text-center">
-                  You will own {potentialPotShare}% of pot
+                  You will own {potentialPotShare}% of funders share
                 </p>
               )}
 
@@ -284,11 +307,11 @@ function AddToPot() {
               <div className="text-center text-gray-300 flex flex-col gap-2">
                 <span className="text-3xl">Claim ETH from pot</span>
                 <span className="text-2xl">
-                  The funders pot has <span className="font-digit">{fundersPot}</span> ETH
+                  Funders has <span className="font-digit">{fundersPot}</span> ETH from the pot
                 </span>
                 <span className="text-2xl">
                   {' '}
-                  You own {percentOfPot}% of the pot and can claim {claimAmount} ETH{' '}
+                  You own {percentOfPot}% of funders share and can claim {claimAmount} ETH{' '}
                 </span>
               </div>
 

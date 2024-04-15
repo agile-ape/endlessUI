@@ -86,7 +86,8 @@ export const blastSepolia1 = defineChain({
   testnet: true,
 })
 
-export const DOCS_URL = 'https://docs.lastman.xyz'
+export const DOCS_URL =
+  'https://lastman.notion.site/Flop-the-average-23d94cce99234bbbbbbbbf298add4e95?pvs=4'
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 export const BLOCK_EXPLORER = 'https://sepolia-explorer.base.org'
 

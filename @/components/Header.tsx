@@ -15,40 +15,44 @@ function Header() {
 
   return (
     <>
-      <div className="hidden sm:block">
-        <div className="grid grid-cols-2 gap-2 items-center py-3 px-5">
-          <div className="flex justify-start order-1">
-            {/* <Logo /> */}
-            <div
-              className="
-              py-4 sm:py-0 \
+      <div className="flex flex-col lg:grid lg:grid-cols-2 gap-2 justify-center items-center py-3 px-5">
+        {/* Logo */}
+        <div className="flex justify-center lg:justify-start order-1">
+          <div
+            className="
+              py-0 \
               text-[32px] \
               text-gray-200 \
               capitalized font-digit text-center cursor-pointer relative"
-              onMouseDown={handleOnMouseDown}
-            >
-              <span className="text-gray-700">8888</span>
-              <span className="absolute top-0 left-0">LAST</span>
-            </div>
+            onMouseDown={handleOnMouseDown}
+          >
+            <span className="text-gray-700">8888</span>
+            <span className="absolute top-0 left-0">LAST</span>
+          </div>
+        </div>
+
+        {/* Rest */}
+        <div className="flex flex-col lg:flex-row justify-self-end gap-3 items-center space-x-4 order-3">
+          <div className="flex gap-2">
+            <HowToPlay />
+            <Referral />
           </div>
 
-          <div className="flex justify-self-end gap-3 order-3">
-            <div className="flex items-center space-x-4">
-              <HowToPlay />
-              <Referral />
-              <a href={TWITTER_URL} target="_blank">
-                <Button variant="link" className="px-2 text-lg">
-                  Follow 🐦
-                </Button>
-              </a>
-              <a href={TELEGRAM_URL} target="_blank">
-                <Button variant="link" className="px-2 text-lg">
-                  Telegram 🧑‍🤝‍🧑
-                </Button>
-              </a>
-
-              <ConnectButton chainStatus="name" label="Connect" />
-            </div>
+          <div className="flex">
+            <a href={TWITTER_URL} target="_blank">
+              <Button variant="link" className="px-2 text-lg">
+                Follow 🐦
+              </Button>
+            </a>
+            <a href={TELEGRAM_URL} target="_blank">
+              <Button variant="link" className="px-2 text-lg">
+                Telegram 🧑‍🤝‍🧑
+              </Button>
+            </a>
+          </div>
+          <div>
+            <ConnectButton chainStatus="name" label="Connect" />
+            {/* <CustomConnectButton /> */}
           </div>
         </div>
       </div>

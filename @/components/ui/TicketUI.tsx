@@ -100,7 +100,7 @@ const TicketUI: FC<TicketUIType> = ({
 
   let claimAmount = null
   if (id !== 0) {
-    const payout = playersPayoutFactor / id
+    const payout = Math.floor(playersPayoutFactor / id)
     claimAmount = formatNumber(formatUnits(BigInt(payout), 18), {
       maximumFractionDigits: 4,
       minimumFractionDigits: 3,
@@ -125,10 +125,7 @@ const TicketUI: FC<TicketUIType> = ({
     ticketLook = 'noWin'
   }
 
-  if (
-    !canBuyTicket &&
-    ((isWinner && winnerClaimYet && playerClaimYet) || (!isWinner && playerClaimYet))
-  ) {
+  if (!canBuyTicket && isClaimed) {
     ticketLook = 'claimed'
   }
 
@@ -155,11 +152,11 @@ const TicketUI: FC<TicketUIType> = ({
       buttonColor: 'bg-yellow-500 border-yellow-600',
     },
     noWin: {
-      bgColor: 'bg-neutral-200',
+      bgColor: 'bg-violet-300',
       borderColor: 'border-neutral-700',
-      shutter: 'bg-neutral-400 border-gray-500',
-      shutterTextColor: 'text-gray-700',
-      buttonColor: 'bg-neutral-400 border-gray-500',
+      shutter: 'bg-violet-400 border-gray-500',
+      shutterTextColor: 'text-gray-100',
+      buttonColor: 'bg-violet-500 border-gray-500',
     },
     claimed: {
       bgColor: '',
@@ -187,9 +184,9 @@ const TicketUI: FC<TicketUIType> = ({
           variant: 'success',
           description: (
             <p>
-              🟣{' '}
+              💾{' '}
               <a href={txLink} target="_blank" className="text-xl text-black underline">
-                Winnings claimed!
+                Disk claimed!
               </a>
             </p>
           ),
@@ -308,12 +305,15 @@ const TicketUI: FC<TicketUIType> = ({
         {isOverlayInspect ? (
           <>
             <div
-              className={`${shutter} left-0 absolute w-[28px] h-[28px] rounded-l-xs \
-              border`}
-            ></div>
+              className={`${shutter} ${shutterTextColor} left-0 absolute w-[28px] h-[29px] rounded-l-sm \
+              border text-center`}
+            >
+              id
+            </div>
+
             <div
               className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-r-sm \
-                flex justify-center items-center text-xl`}
+              flex justify-center items-center text-xl`}
             >
               {String(id)}
             </div>
@@ -322,12 +322,12 @@ const TicketUI: FC<TicketUIType> = ({
           <>
             <div
               className={`${shutterTextColor} left-0 absolute w-[28px] h-[28px] rounded-xs \
-            flex justify-center items-center text-xs`}
+            flex justify-center items-center text-lg`}
             >
-              🔑
+              #️⃣
             </div>
             <div
-              className={`${shutter} right-0 absolute w-[47px] h-[28px] rounded-xs \
+              className={`${shutter} right-0 absolute w-[47px] h-[29px] rounded-r-sm \
                 border`}
             ></div>
           </>
@@ -363,12 +363,12 @@ const TicketUI: FC<TicketUIType> = ({
                   ) : (
                     <>
                       {isClaimed ? (
-                        <span>You have claimed </span>
+                        <span>Disk claimed </span>
                       ) : (
                         <div className="flex flex-col text-left">
                           {/* <span className="underline">Claim: </span> */}
-                          <span>🟣 Player pot: {claimAmount} ETH </span>
-                          {isWinner ? <span>🟡 Winner pot claim: {winnersSplit} ETH </span> : <></>}
+                          <span>🟣 Player claim: {claimAmount} ETH </span>
+                          {isWinner ? <span>🟡 Winner claim: {winnersSplit} ETH </span> : <></>}
                         </div>
                       )}
                     </>
