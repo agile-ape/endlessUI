@@ -184,7 +184,7 @@ export default function Average() {
             }
           })
         }
-      }, 300) // Interval for subsequent renders
+      }, 100) // Interval for subsequent renders
 
       return () => clearInterval(interval)
     }
@@ -192,26 +192,29 @@ export default function Average() {
 
   return (
     <div
-      className="gap-2 py-2 px-2 my-2 \
+      className="py-2 px-2 my-2 \
       flex flex-col items-center justify-center"
     >
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            variant="average"
-            className="h-20 flex flex-col items-center \
-      rounded-lg px-6"
-          >
-            {canBuyTicket ? 'Current Average' : 'Final Average'}
-            {/*  */}
-            <div className="font-digit text-3xl">{showAverage}</div>
-            {/* <AnimatedNumbers animateToNumber={showAverage}  /> */}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="bg-transparent flex flex-col justify-center items-center">
-          <Grid />
-        </DialogContent>
-      </Dialog>
+      <div>
+        <div
+          className="flex flex-col items-center py-2 \
+        rounded-lg px-6 border border-indigo-400 text-gray-400"
+        >
+          <span className="text-xl">{canBuyTicket ? 'Current Average' : 'Final Average'}</span>
+          <div className="font-digit text-4xl">{showAverage}</div>
+        </div>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="grid" className="w-full text-2xl my-2">
+              Grid
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-transparent flex flex-col justify-center items-center">
+            <Grid />
+          </DialogContent>
+        </Dialog>
+      </div>
 
       <BuyTicket />
     </div>

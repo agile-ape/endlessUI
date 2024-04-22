@@ -24,23 +24,26 @@ type SquareProps = {
   id?: number
   occurrences?: number | 0
   average: number | 0
-  // color?: string
+  last?: boolean
 }
 
 type SquareType = ReactElement<SquareProps>
 type SquaresType = SquareType[][]
 
-const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
+const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0, last }) => {
   const chosenColorIntensity = occurrences * 1 // sums to 1
   // const averageColorIntensity = Math.min(average, 2) * 1 // sums to 1
 
-  // gray
+  // purple
   const chosenColor = `rgba(168, 85, 247, ${chosenColorIntensity})`
 
   let averageColor: string
-
+  const lastColor: string = 'rgb(220, 38, 38)'
   // yellow
-  average > 0 ? (averageColor = `rgb(251, 191, 36)`) : (averageColor = ``)
+
+  average > 0 ? (averageColor = `rgb(253, 224, 71)`) : (averageColor = ``)
+  // average > 0 && last === true ? (averageColor = `rgb(253, 131, 13)`) : (averageColor = ``)
+  // last && average > 0 ? (averageColor = `rgb(253, 131, 13)`) : (averageColor = ``)
 
   /* if 1 square = a range
   let lowerLimit: number = 0
@@ -56,13 +59,13 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0 }) => {
       <Tooltip>
         <TooltipTrigger>
           <div
-            className={`relative w-5 h-5 m-1 text-white border border-white mix-blend-multiply`}
+            className={`relative w-5 h-5 m-1 border-white border text-white`}
             style={{ backgroundColor: chosenColor }}
           >
             <div
-              className="absolute w-5 h-5 mix-blend-multiply \
+              className="absolute w-5 h-5 mix-blend-hue \
       flex justify-center items-center"
-              style={{ backgroundColor: averageColor }}
+              style={last ? { backgroundColor: lastColor } : { backgroundColor: averageColor }}
             >
               {/* <span className="text-black">{occurrences}</span> */}
             </div>
@@ -128,6 +131,7 @@ const Grid = () => {
   const currentAverage = useStoreState((state) => state.currentAverage)
   const totalNumber = useStoreState((state) => state.totalNumber)
   const ticketsBought = useStoreState((state) => state.ticketsBought)
+  const leaderboard = useStoreState((state) => state.leaderboard)
 
   const [squares, setSquares] = useState<SquaresType>([])
 
@@ -170,10 +174,10 @@ const Grid = () => {
     initialSquares()
   }
 
-  const [buttonState, setButtonState] = useState<string>('')
+  // const [buttonState, setButtonState] = useState<string>('')
 
   const numberRun = async () => {
-    setButtonState('running')
+    // setButtonState('running')
     let index = 0
     const intervalId = setInterval(() => {
       if (index < adjNumberList.length) {
@@ -193,6 +197,8 @@ const Grid = () => {
       }
       if (index < adjAverageList.length) {
         const avgNumber = adjAverageList[index]
+        const lastAvgNumber = adjAverageList[adjAverageList.length - 1]
+
         for (let i = 0; i < squares.length; i++) {
           for (let j = 0; j < squares[i].length; j++) {
             const square = squares[i][j]
@@ -202,20 +208,26 @@ const Grid = () => {
               const updatedSquare = React.cloneElement(square, {
                 average: (square.props.average || 0) + 1,
               })
-
               squares[i][j] = updatedSquare
+            } else if (Number(square.key) == lastAvgNumber) {
+              const lastSquare = React.cloneElement(square, {
+                last: true,
+              })
+              squares[i][j] = lastSquare
             }
           }
         }
+
         setSquares([...squares]) // Trigger re-render
       }
+
       index++
       if (index >= adjNumberList.length && index >= adjAverageList.length) {
         clearInterval(intervalId) // Stop the interval when all numbers are processed
       }
     }, 100) // Adjust the delay (in milliseconds) as needed
 
-    setButtonState('done')
+    // setButtonState('done')
   }
 
   return (
@@ -228,6 +240,19 @@ const Grid = () => {
             <span>Total number: {totalNumber}</span>
             <span>Total bought: {ticketsBought}</span>
           </p>
+
+          <div className="text-yellow-500 ">Winning disk id </div>
+          <div
+            className="text-yellow-400  \
+         text-4xl \
+        flex overflow-auto max-w-[480px]"
+          >
+            {leaderboard.map((number, index) => (
+              <span className="border px-3 border-stone-500" key={index}>
+                {number}
+              </span>
+            ))}
+          </div>
         </DialogDescription>
       </DialogHeader>
 
@@ -245,7 +270,7 @@ const Grid = () => {
         </>
       </div>
 
-      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average 🟤 Picked && Average</div>
+      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average 🔴 Current Average </div>
 
       <div className="flex">
         <Button

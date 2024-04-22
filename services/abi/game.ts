@@ -16,13 +16,13 @@ export const GAME_ABI = [
       {
         indexed: true,
         internalType: 'address',
-        name: 'funder',
+        name: 'player',
         type: 'address',
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
-        name: 'amountClaimed',
+        name: 'totalClaimed',
         type: 'uint256',
       },
       {
@@ -32,7 +32,7 @@ export const GAME_ABI = [
         type: 'uint256',
       },
     ],
-    name: 'FundersSplitClaimed',
+    name: 'Claimed',
     type: 'event',
   },
   {
@@ -98,12 +98,6 @@ export const GAME_ABI = [
         indexed: false,
         internalType: 'uint256',
         name: 'amountToPlayers',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amountToFunders',
         type: 'uint256',
       },
       {
@@ -176,9 +170,9 @@ export const GAME_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
-        name: 'amountAdded',
+        name: 'newPrice',
         type: 'uint256',
       },
       {
@@ -188,32 +182,7 @@ export const GAME_ABI = [
         type: 'uint256',
       },
     ],
-    name: 'PotAdded',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'ticketId',
-        type: 'uint256',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'time',
-        type: 'uint256',
-      },
-    ],
-    name: 'TicketClaimed',
+    name: 'PriceChange',
     type: 'event',
   },
   {
@@ -244,7 +213,7 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
-    name: 'canFundPot',
+    name: 'canClaim',
     outputs: [
       {
         internalType: 'bool',
@@ -258,25 +227,19 @@ export const GAME_ABI = [
   {
     inputs: [
       {
-        internalType: 'bool',
-        name: '_status',
-        type: 'bool',
+        internalType: 'uint256',
+        name: '_newPrice',
+        type: 'uint256',
       },
     ],
-    name: 'changeFundPot',
+    name: 'changePrice',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_ticketId',
-        type: 'uint256',
-      },
-    ],
-    name: 'claimTicket',
+    inputs: [],
+    name: 'claim',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -349,90 +312,6 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
-    name: 'fundedAmount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'fundersClaim',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'fundersClaimed',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'fundersPot',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'fundersShare',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'fundersToAmt',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'gameTime',
     outputs: [
       {
@@ -448,74 +327,16 @@ export const GAME_ABI = [
     inputs: [
       {
         internalType: 'address',
-        name: '_playerAddress',
+        name: '_player',
         type: 'address',
       },
     ],
-    name: 'getPlayerToIdArray',
+    name: 'getTickets',
     outputs: [
       {
         internalType: 'uint256[]',
         name: '',
         type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'idToTicket',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'player',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'number',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bool',
-        name: 'isWinner',
-        type: 'bool',
-      },
-      {
-        internalType: 'bool',
-        name: 'isClaimed',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'leaderboard',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -580,13 +401,32 @@ export const GAME_ABI = [
         name: '',
         type: 'address',
       },
+    ],
+    name: 'playerToProfileId',
+    outputs: [
       {
         internalType: 'uint256',
         name: '',
         type: 'uint256',
       },
     ],
-    name: 'playerToIdArray',
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'playerToTickets',
     outputs: [
       {
         internalType: 'uint256',
@@ -651,6 +491,53 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
+    name: 'profileCount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'profileIdToProfile',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'profileId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'player',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isClaimed',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: 'claimAmount',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'referralsPot',
     outputs: [
       {
@@ -684,6 +571,32 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
+    name: 'rolloverPot',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'rolloverShare',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'startGameFlag',
     outputs: [
       {
@@ -698,6 +611,25 @@ export const GAME_ABI = [
   {
     inputs: [],
     name: 'ticketIdCounter',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'ticketIdToNumber',
     outputs: [
       {
         internalType: 'uint256',
@@ -762,6 +694,19 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
+    name: 'unclaimedPot',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'winnersPot',
     outputs: [
       {
@@ -798,9 +743,5 @@ export const GAME_ABI = [
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
   },
 ] as const

@@ -107,18 +107,23 @@ export default function BuyTicket() {
       </div>
 
       <Button
-        className="w-[200px] text-2xl"
+        className="w-[200px] text-3xl h-[48px]"
         variant="buy"
         onClick={buyTicketHandler}
         disabled={!canBuyTicket}
         isLoading={isPending}
       >
-        <span className="text-sm mr-1">🟣</span>
+        <span className="text-sm mr-1"></span>
         {canBuyTicket ? 'Buy' : 'Buying ended'}
       </Button>
       <div className="text-left">
-        <div className="text-gray-400 text-lg">
-          Disk price: <span className="font-digit">{formattedTicketPrice}</span> ETH
+        <div className="text-gray-400 text-lg text-center">
+          <div>
+            Disk price: <span className="font-digit">{formattedTicketPrice}</span> ETH
+          </div>
+          <div>
+            Disks bought: <span className="font-digit">{ticketsBought}</span>
+          </div>
         </div>
         {/* <div className="text-gray-400">Total keys: {ticketsBought}</div> */}
       </div>

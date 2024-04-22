@@ -1,3 +1,30 @@
+'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { cn } from '@/lib/utils'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/shadcn/command'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/shadcn/form'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/shadcn/popover'
+import { toast } from '@/components/shadcn/use-toast'
+
 import React, { useRef, useState, useEffect } from 'react'
 import {
   Dialog,
@@ -33,6 +60,41 @@ type referralData = {
   player: `0x${string}`
   referrer: `0x${string}`
   isTake: boolean
+}
+
+const languages = [
+  { label: 'English', value: 'en' },
+  { label: 'French', value: 'fr' },
+  { label: 'German', value: 'de' },
+  { label: 'Spanish', value: 'es' },
+  { label: 'Portuguese', value: 'pt' },
+  { label: 'Russian', value: 'ru' },
+  { label: 'Japanese', value: 'ja' },
+  { label: 'Korean', value: 'ko' },
+  { label: 'Chinese', value: 'zh' },
+] as const
+
+const FormSchema = z.object({
+  language: z.string({
+    required_error: 'Please select a language.',
+  }),
+})
+
+export function ComboboxForm() {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  })
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    toast({
+      title: 'You submitted the following values:',
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    })
+  }
 }
 
 function Referral() {
@@ -174,76 +236,71 @@ function Referral() {
                     </div>
                   </>
                 ) : (
-                  <div className="flex flex-col gap-4 justify-center bg-zinc-800 items-center border border-neutral-200 p-6 rounded-lg">
-                    <label
-                      htmlFor="referral"
-                      className="text-3xl text-center text-gray-300 flex flex-col"
-                    >
-                      <span>Referral address</span>
-                    </label>
-
-                    <div
-                      className="border-[2px] border-gray-400 \
-                  bg-slate-700 rounded-xl \
-                  flex flex-col justify-center items-center"
-                    >
-                      <input
-                        type="text"
-                        id="referral"
-                        className="w-[500px] bg-transparent font-digit \
-                    text-center text-xl text-gray-300 \
-                    flex justify-between items-center py-2"
-                        placeholder="0x0000000000000000000000000000000000000000"
-                        maxLength={42}
-                        // onChange={(e) => setReferral(e.target.value)}
-                        onChange={handleReferralChange}
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="language"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Language</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className={cn(
+                                      'w-[200px] justify-between',
+                                      !field.value && 'text-muted-foreground',
+                                    )}
+                                  >
+                                    {field.value
+                                      ? languages.find((language) => language.value === field.value)
+                                          ?.label
+                                      : 'Select language'}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[200px] p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search language..." />
+                                  <CommandEmpty>No language found.</CommandEmpty>
+                                  <CommandGroup>
+                                    {languages.map((language) => (
+                                      <CommandItem
+                                        value={language.label}
+                                        key={language.value}
+                                        onSelect={() => {
+                                          form.setValue('language', language.value)
+                                        }}
+                                      >
+                                        <Check
+                                          className={cn(
+                                            'mr-2 h-4 w-4',
+                                            language.value === field.value
+                                              ? 'opacity-100'
+                                              : 'opacity-0',
+                                          )}
+                                        />
+                                        {language.label}
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
+                            <FormDescription>
+                              This is the language that will be used in the dashboard.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-
-                    <p className="font-digit text-xl mt-2 text-center">{check}</p>
-
-                    <div className="flex gap-8">
-                      <TooltipProvider delayDuration={10}>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Button
-                              className="w-[150px] text-2xl"
-                              variant="give"
-                              onClick={addGiveHandler}
-                              // disabled={true}
-                            >
-                              Give
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" align="center">
-                            <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Give all 10% of your proceeds to referrer
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-
-                      <TooltipProvider delayDuration={10}>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Button
-                              className="w-[150px] text-2xl"
-                              variant="take"
-                              onClick={addTakeHandler}
-                              // disabled={true}
-                            >
-                              Take
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" align="center">
-                            <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
-                              Take 5% of your proceeds back from your referrer, so 50-50
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </div>
+                      <Button type="submit">Submit</Button>
+                    </form>
+                  </Form>
                 )}
               </>
             )}

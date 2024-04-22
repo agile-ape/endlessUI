@@ -8,11 +8,18 @@ type GameEndModal = {
 
 interface StoreModel {
   canBuyTicket: boolean
-  fundedAmount: number
-  fundersToAmt: number
-  fundersShare: number
-  fundersPot: number
-  fundersClaimed: boolean
+  // fundedAmount: number
+  // fundersToAmt: number
+  // fundersShare: number
+  // fundersPot: number
+  // fundersClaimed: boolean
+
+  canClaim: boolean
+  unclaimedPot: number
+  rolloverShare: number
+  rolloverPot: number
+  referralsPot: number
+
   currentAverage: number
   leaderboard: number[]
   ticketsBought: number
@@ -27,7 +34,8 @@ interface StoreModel {
   playerTickets: number[]
   winnersPot: number
   winnersShare: number
-  canFundPot: boolean
+  // canFundPot: boolean
+  playerToProfileId: number
   minAllowedNumber: number
   maxAllowedNumber: number
   closeTime: number
@@ -35,7 +43,6 @@ interface StoreModel {
   playersShare: number
   referralsShare: number
   playersPot: number
-  referralsPot: number
 
   numberList: number[]
   averageList: number[]
@@ -43,11 +50,17 @@ interface StoreModel {
   GameEndModal: GameEndModal
 
   updateCanBuyTicket: Action<StoreModel, boolean>
-  updateFundedAmount: Action<StoreModel, number>
-  updateFundersToAmt: Action<StoreModel, number>
-  updateFundersShare: Action<StoreModel, number>
-  updateFundersPot: Action<StoreModel, number>
-  updateFundersClaimed: Action<StoreModel, boolean>
+  // updateFundedAmount: Action<StoreModel, number>
+  // updateFundersToAmt: Action<StoreModel, number>
+  // updateFundersShare: Action<StoreModel, number>
+  // updateFundersPot: Action<StoreModel, number>
+  // updateFundersClaimed: Action<StoreModel, boolean>
+  updateCanClaim: Action<StoreModel, boolean>
+  updateUnclaimedPot: Action<StoreModel, number>
+  updateRolloverShare: Action<StoreModel, number>
+  updateRolloverPot: Action<StoreModel, number>
+  updateReferralsPot: Action<StoreModel, number>
+
   updateCurrentAverage: Action<StoreModel, number>
   updateLeaderboard: Action<StoreModel, number[]>
   updateTicketsBought: Action<StoreModel, number>
@@ -62,7 +75,7 @@ interface StoreModel {
   updatePlayerTickets: Action<StoreModel, number[]>
   updateWinnersPot: Action<StoreModel, number>
   updateWinnersShare: Action<StoreModel, number>
-  updateCanFundPot: Action<StoreModel, boolean>
+  updatePlayerToProfileId: Action<StoreModel, number>
   updateMinAllowedNumber: Action<StoreModel, number>
   updateMaxAllowedNumber: Action<StoreModel, number>
   updateCloseTime: Action<StoreModel, number>
@@ -70,7 +83,6 @@ interface StoreModel {
   updatePlayersShare: Action<StoreModel, number>
   updateReferralsShare: Action<StoreModel, number>
   updatePlayersPot: Action<StoreModel, number>
-  updateReferralsPot: Action<StoreModel, number>
 
   updateNumberList: Action<StoreModel, number[]>
   updateAverageList: Action<StoreModel, number[]>
@@ -80,11 +92,17 @@ interface StoreModel {
 
 export const appStore = createStore<StoreModel>({
   canBuyTicket: false,
-  fundedAmount: 0,
-  fundersToAmt: 0,
-  fundersShare: 0,
-  fundersPot: 0,
-  fundersClaimed: false,
+  // fundedAmount: 0,
+  // fundersToAmt: 0,
+  // fundersShare: 0,
+  // fundersPot: 0,
+  // fundersClaimed: false,
+  canClaim: false,
+  unclaimedPot: 0,
+  rolloverShare: 0,
+  rolloverPot: 0,
+  referralsPot: 0,
+
   currentAverage: 0,
   leaderboard: [],
   ticketsBought: 0,
@@ -99,7 +117,8 @@ export const appStore = createStore<StoreModel>({
   playerTickets: [],
   winnersPot: 0,
   winnersShare: 0,
-  canFundPot: false,
+  // canFundPot: false,
+  playerToProfileId: 0,
   minAllowedNumber: 0,
   maxAllowedNumber: 0,
   closeTime: 0,
@@ -107,7 +126,6 @@ export const appStore = createStore<StoreModel>({
   playersShare: 0,
   referralsShare: 0,
   playersPot: 0,
-  referralsPot: 0,
 
   numberList: [],
   averageList: [],
@@ -119,21 +137,39 @@ export const appStore = createStore<StoreModel>({
   updateCanBuyTicket: action((state, payload) => {
     state.canBuyTicket = payload
   }),
-  updateFundedAmount: action((state, payload) => {
-    state.fundedAmount = payload
+
+  // updateFundedAmount: action((state, payload) => {
+  //   state.fundedAmount = payload
+  // }),
+  // updateFundersToAmt: action((state, payload) => {
+  //   state.fundersToAmt = payload
+  // }),
+  // updateFundersShare: action((state, payload) => {
+  //   state.fundersShare = payload
+  // }),
+  // updateFundersPot: action((state, payload) => {
+  //   state.fundersPot = payload
+  // }),
+  // updateFundersClaimed: action((state, payload) => {
+  //   state.fundersClaimed = payload
+  // }),
+
+  updateCanClaim: action((state, payload) => {
+    state.canClaim = payload
   }),
-  updateFundersToAmt: action((state, payload) => {
-    state.fundersToAmt = payload
+  updateUnclaimedPot: action((state, payload) => {
+    state.unclaimedPot = payload
   }),
-  updateFundersShare: action((state, payload) => {
-    state.fundersShare = payload
+  updateRolloverShare: action((state, payload) => {
+    state.rolloverShare = payload
   }),
-  updateFundersPot: action((state, payload) => {
-    state.fundersPot = payload
+  updateRolloverPot: action((state, payload) => {
+    state.rolloverPot = payload
   }),
-  updateFundersClaimed: action((state, payload) => {
-    state.fundersClaimed = payload
+  updateReferralsPot: action((state, payload) => {
+    state.referralsPot = payload
   }),
+
   updateCurrentAverage: action((state, payload) => {
     state.currentAverage = payload
   }),
@@ -177,8 +213,8 @@ export const appStore = createStore<StoreModel>({
     state.winnersShare = payload
   }),
 
-  updateCanFundPot: action((state, payload) => {
-    state.canFundPot = payload
+  updatePlayerToProfileId: action((state, payload) => {
+    state.playerToProfileId = payload
   }),
   updateMinAllowedNumber: action((state, payload) => {
     state.minAllowedNumber = payload
@@ -201,9 +237,6 @@ export const appStore = createStore<StoreModel>({
   }),
   updatePlayersPot: action((state, payload) => {
     state.playersPot = payload
-  }),
-  updateReferralsPot: action((state, payload) => {
-    state.referralsPot = payload
   }),
 
   updateNumberList: action((state, payload) => {
