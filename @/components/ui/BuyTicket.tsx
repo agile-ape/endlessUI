@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import type { ChangeEvent } from 'react'
 import { Button } from '../shadcn/button'
 import { useReadContracts, useWriteContract } from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
@@ -7,9 +8,18 @@ import { rainbowConfig } from '../../../pages/_app'
 import { defaultContractObj } from '../../../services/constant'
 import { formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreState } from '../../../store'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from '../shadcn/use-toast'
+
+const numberSchema = z
+  .number()
+  .max(1000, { message: 'Number must be less than 1000' })
+  .min(0, { message: 'No negative numbers' })
 
 export default function BuyTicket() {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<number>()
 
   /*
   const { data } = useReadContracts({
@@ -72,16 +82,34 @@ export default function BuyTicket() {
     minimumFractionDigits: 3,
   })
 
-  const buyTicketHandler = () => {
+  const buyTicketHandler = async () => {
     console.log('buyTicketPressed')
-    console.log(value)
-    writeContract({
-      ...defaultContractObj,
-      functionName: 'buyTicket',
-      value: ticketPrice,
-      args: [BigInt(value)],
-    })
-    console.log('buyTicketPressedEnd')
+
+    try {
+      const validatedData = numberSchema.parse(value)
+      await writeContractAsync({
+        ...defaultContractObj,
+        functionName: 'buyTicket',
+        value: ticketPrice,
+        args: [BigInt(validatedData)],
+      })
+      console.log('buyTicketPressedEnd')
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors = error.errors.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }))
+
+        const errorMsg = fieldErrors[0].message
+
+        toast({
+          variant: 'destructive',
+          description: <p className="text-xl">{errorMsg}</p>,
+        })
+      } else {
+      }
+    }
   }
 
   return (
@@ -95,14 +123,14 @@ export default function BuyTicket() {
           flex flex-col justify-center items-center"
       >
         <input
-          type="text"
+          type="number"
           id="number"
+          max={1000}
           className="w-[200px] bg-transparent font-digit \
             text-center text-4xl text-gray-300 \
             flex justify-between items-center py-2"
-          placeholder="0"
-          maxLength={3}
-          onChange={(e) => setValue(e.target.value)}
+          // placeholder="0"
+          onInput={(e: ChangeEvent<HTMLInputElement>) => setValue(parseInt(e.target.value))}
         />
       </div>
 
