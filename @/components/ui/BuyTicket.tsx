@@ -75,6 +75,7 @@ export default function BuyTicket() {
   const ticketsBought = useStoreState((state) => state.ticketsBought)
   const ticketPrice = useStoreState((state) => state.ticketPrice)
 
+  console.log(canBuyTicket)
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
 
   const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {

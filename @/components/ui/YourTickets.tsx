@@ -8,7 +8,13 @@ import { Button } from '../shadcn/button'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 
-import { useAccount, useReadContract, useReadContracts, useWatchContractEvent } from 'wagmi'
+import {
+  useAccount,
+  useReadContract,
+  useReadContracts,
+  useWatchContractEvent,
+  useWriteContract,
+} from 'wagmi'
 import { readContract } from '@wagmi/core'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
 import { cn } from '@/lib/utils'
@@ -35,6 +41,7 @@ import {
 import { formatNumber } from '@/lib/utils'
 import { formatUnits, parseEther } from 'viem'
 import CountUp from 'react-countup'
+import { toast } from '../shadcn/use-toast'
 
 /*-------------------------------------- DOT BUTTONS -------------------------------------- */
 
@@ -78,7 +85,11 @@ const YourTickets = () => {
   // const playersPot = useStoreState((state) => state.playersPot)
   const playersShare = useStoreState((state) => state.playersShare)
   const leaderboard = useStoreState((state) => state.leaderboard)
+  const profile = useStoreState((state) => state.profile)
+  const canClaim = useStoreState((state) => state.canClaim)
+  const unclaimedPot = useStoreState((state) => state.unclaimedPot)
 
+  console.log(playerTickets)
   /* read contracts
   const { data, refetch } = useReadContracts({
     contracts: [
@@ -398,6 +409,35 @@ const YourTickets = () => {
 
   const [showValue, setShowValue] = useState<string>('-')
 
+  const totalWinnings = formatNumber(Number(currentAccumulated) + currentWinnings, {
+    maximumFractionDigits: 5,
+    minimumFractionDigits: 0,
+  })
+
+  const shareIfRoll = formatNumber((Number(totalWinnings) / Number(unclaimedPot)) * 100, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  const { data, isPending, writeContract, writeContractAsync } = useWriteContract()
+
+  const claimHandler = async () => {
+    console.log('claimedPressed')
+
+    try {
+      await writeContractAsync({
+        ...defaultContractObj,
+        functionName: 'claim',
+      })
+      console.log('claimedPressed')
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        description: <p className="text-xl">{error.shortMessage}</p>,
+      })
+    }
+  }
+
   return (
     <div className="flex flex-col py-2 px-2 my-2 items-center justify-center mx-auto">
       <div
@@ -430,14 +470,49 @@ const YourTickets = () => {
           </div>
         </div>
 
+        {!canBuyTicket && canClaim && (
+          <div className="text-2xl border border-gray-100 p-2 bg-zinc-700 rounded-lg my-4">
+            {/* <div className="flex my-1 justify-center items-center">
+              Total accumulated: {totalWinnings} ETH
+            </div>
+            <div className="flex my-1 justify-center items-center">
+              Unclaimed pot so far: {unclaimedPot} ETH
+            </div>
+            <div className="flex my-1 justify-center items-center">
+              % share if roll: {shareIfRoll}%
+            </div> */}
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Total winnings:</p>
+              <p className="text-right"> {totalWinnings} ETH </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Unclaimed pot so far:</p>
+              <p className="text-right"> {unclaimedPot} ETH </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">% share if roll:</p>
+              <p className="text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
+            </div>
+          </div>
+        )}
+
         <Button
           className="w-[200px] text-2xl"
           variant="claim"
-          // onClick={buyTicketHandler}
-          disabled={canBuyTicket}
+          onClick={claimHandler}
+          disabled={canBuyTicket || profile.isClaimed || !canClaim}
           // isLoading={isPending}
         >
-          Claim
+          {canBuyTicket
+            ? 'Claim'
+            : canClaim
+              ? profile.isClaimed
+                ? 'You have claimed'
+                : 'Claim'
+              : 'You have rolled to next pot'}
         </Button>
       </div>
 

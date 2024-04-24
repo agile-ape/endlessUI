@@ -102,7 +102,7 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
           </div>
 
           <div className="flex flex-col gap-2 border border-gray-800 rounded-lg p-2 items-center justify-center">
-            <div className=" text-2xl">Time till game close</div>
+            <div className=" text-2xl">Time till round close</div>
             <div className="flex justify-center items-center">
               <div className="flex flex-col text-3xl text-center  font-digit">
                 {formatTime(Number(timeLeft)).hours} :
@@ -121,7 +121,7 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
           </div>
           <div className="text-center px-4 py-2 rounded-lg text-2xl ">
             Claim your winnings, or <a href=""></a>
-            <a href={DOCS_URL} className="underline">
+            <a href={DOCS_URL} target="_blank" className="underline">
               roll them to the next round
             </a>
             .

@@ -56,18 +56,21 @@ const TicketUI: FC<TicketUIType> = ({
   const currentAverage = useStoreState((state) => state.currentAverage)
   const playersPayoutFactor = useStoreState((state) => state.playersPayoutFactor)
   const winnersSplit = useStoreState((state) => state.winnersSplit)
+  const profile = useStoreState((state) => state.profile)
 
-  const { data: playerInfo, refetch } = useReadContract({
+  const { data: numberInfo, refetch } = useReadContract({
     ...defaultContractObj,
-    functionName: 'idToTicket',
+    functionName: 'ticketIdToNumber',
     args: [ticketId],
   })
 
-  const id = Number(playerInfo?.[0] || 0)
-  const player = String(playerInfo?.[1] || '0')
-  const number = Number(playerInfo?.[2] || 0)
-  const isWinner = Boolean(playerInfo?.[3] || false)
-  const isClaimed = Boolean(playerInfo?.[4] || false)
+  // console.log(playerInfo)
+
+  const id = Number(ticketId)
+  const number = Number(numberInfo)
+  // const player = String(playerInfo?.[1] || '0')
+  // const isWinner = Boolean(playerInfo?.[3] || false)
+  // const isClaimed = Boolean(playerInfo?.[4] || false)
 
   // const { data } = useReadContracts({
   //   contracts: [
@@ -117,17 +120,17 @@ const TicketUI: FC<TicketUIType> = ({
     ticketLook = 'leading'
   }
 
-  if (!canBuyTicket && isWinner) {
+  if (!canBuyTicket && number == currentAverage) {
     ticketLook = 'win'
   }
 
-  if (!canBuyTicket && !isWinner) {
+  if (!canBuyTicket && number !== currentAverage) {
     ticketLook = 'noWin'
   }
 
-  if (!canBuyTicket && isClaimed) {
-    ticketLook = 'claimed'
-  }
+  // if (!canBuyTicket && profile.isClaimed) {
+  //   ticketLook = 'claimed'
+  // }
 
   const ticketLookMapping = {
     bought: {
@@ -155,7 +158,7 @@ const TicketUI: FC<TicketUIType> = ({
       bgColor: 'bg-violet-300',
       borderColor: 'border-neutral-700',
       shutter: 'bg-violet-400 border-gray-500',
-      shutterTextColor: 'text-gray-100',
+      shutterTextColor: 'text-gray-700',
       buttonColor: 'bg-violet-500 border-gray-500',
     },
     claimed: {

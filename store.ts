@@ -6,7 +6,19 @@ type GameEndModal = {
   isOpen: boolean
 }
 
+interface Referral {
+  referralCode: string
+}
+
+export interface Profile {
+  profileId: bigint
+  player: `0x${string}`
+  isClaimed: boolean
+  claimAmount: bigint
+}
+
 interface StoreModel {
+  profile: Profile
   canBuyTicket: boolean
   // fundedAmount: number
   // fundersToAmt: number
@@ -35,7 +47,7 @@ interface StoreModel {
   winnersPot: number
   winnersShare: number
   // canFundPot: boolean
-  playerToProfileId: number
+  playerProfileId: number
   minAllowedNumber: number
   maxAllowedNumber: number
   closeTime: number
@@ -46,9 +58,11 @@ interface StoreModel {
 
   numberList: number[]
   averageList: number[]
+  referralList: Referral[]
   referral: string
   GameEndModal: GameEndModal
 
+  updateProfile: Action<StoreModel, Profile>
   updateCanBuyTicket: Action<StoreModel, boolean>
   // updateFundedAmount: Action<StoreModel, number>
   // updateFundersToAmt: Action<StoreModel, number>
@@ -86,11 +100,19 @@ interface StoreModel {
 
   updateNumberList: Action<StoreModel, number[]>
   updateAverageList: Action<StoreModel, number[]>
+  updateReferralList: Action<StoreModel, Referral[]>
   updateReferral: Action<StoreModel, string>
   updateGameEndModal: Action<StoreModel, GameEndModal>
 }
 
 export const appStore = createStore<StoreModel>({
+  profile: {
+    profileId: BigInt(0),
+    player: '0x',
+    isClaimed: false,
+    claimAmount: BigInt(0),
+  },
+
   canBuyTicket: false,
   // fundedAmount: 0,
   // fundersToAmt: 0,
@@ -118,7 +140,7 @@ export const appStore = createStore<StoreModel>({
   winnersPot: 0,
   winnersShare: 0,
   // canFundPot: false,
-  playerToProfileId: 0,
+  playerProfileId: 0,
   minAllowedNumber: 0,
   maxAllowedNumber: 0,
   closeTime: 0,
@@ -129,10 +151,15 @@ export const appStore = createStore<StoreModel>({
 
   numberList: [],
   averageList: [],
+  referralList: [],
   referral: '',
   GameEndModal: {
     isOpen: false,
   },
+
+  updateProfile: action((state, payload) => {
+    state.profile = payload
+  }),
 
   updateCanBuyTicket: action((state, payload) => {
     state.canBuyTicket = payload
@@ -214,7 +241,7 @@ export const appStore = createStore<StoreModel>({
   }),
 
   updatePlayerToProfileId: action((state, payload) => {
-    state.playerToProfileId = payload
+    state.playerProfileId = payload
   }),
   updateMinAllowedNumber: action((state, payload) => {
     state.minAllowedNumber = payload
@@ -245,6 +272,10 @@ export const appStore = createStore<StoreModel>({
 
   updateAverageList: action((state, payload) => {
     state.averageList = payload
+  }),
+
+  updateReferralList: action((state, payload) => {
+    state.referralList = payload
   }),
 
   updateReferral: action((state, payload) => {

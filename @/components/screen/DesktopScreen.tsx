@@ -31,6 +31,7 @@ export default function DesktopScreen() {
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
+  const updateReferralList = useStoreActions((actions) => actions.updateReferralList)
   const updateReferral = useStoreActions((actions) => actions.updateReferral)
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const endGameFlag = useStoreState((state) => state.endGameFlag)
@@ -80,7 +81,7 @@ export default function DesktopScreen() {
     data: numbersData,
     error: numbersError,
     isLoading,
-    mutate,
+    // mutate,
   } = useSWR(
     // <{data: Number[]}>
     `/numbers/${GAME_ADDRESS}`,
@@ -101,6 +102,52 @@ export default function DesktopScreen() {
 
     updateNumberList(numberList)
     updateAverageList(averageList)
+  }
+
+  const {
+    data: referralsData,
+    error: referralsError,
+    // mutate,
+  } = useSWR(
+    // <{data: Number[]}>
+    `/referrals`,
+    fetcher,
+    { refreshInterval: 1000 },
+  )
+
+  if (referralsError) {
+    console.error('Error fetching data:', referralsError)
+  }
+
+  // Check if data is available
+  if (referralsData) {
+    updateReferralList(referralsData)
+  }
+
+  console.log(referralsData)
+
+  const {
+    data: playersData,
+    error: playersError,
+    // isLoading,
+    // mutate,
+  } = useSWR(
+    // <{data: Number[]}>
+    `/players/${address}`,
+    fetcher,
+    { refreshInterval: 1000 },
+  )
+
+  if (playersError) {
+    console.error('Error fetching data:', playersError)
+  }
+
+  // Check if data is available
+  if (playersData) {
+    console.log(playersData)
+    const referralCode = playersData?.referralCode
+    console.log(referralCode)
+    updateReferral(referralCode)
   }
 
   // const { data: referralData, error: referralError } = useSWR(

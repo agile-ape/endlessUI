@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from '@/components/shadcn/tooltip'
 import { Button } from '../shadcn/button'
-import AddToPot from './AddToPot'
 import { useStoreActions, useStoreState } from '../../../store'
 
 export default function PotSize() {

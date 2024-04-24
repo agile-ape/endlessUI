@@ -34,8 +34,8 @@ function Header() {
         {/* Rest */}
         <div className="flex flex-col lg:flex-row justify-self-end gap-3 items-center space-x-4 order-3">
           <div className="flex gap-2">
-            <HowToPlay />
             <Referral />
+            <HowToPlay />
           </div>
 
           <div className="flex">

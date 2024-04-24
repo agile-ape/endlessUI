@@ -3,7 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 // import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useBalance, useReadContracts, useWalletClient } from 'wagmi'
+import { useAccount, useBalance, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
 import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -19,12 +19,16 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
+
+import type { Profile } from '../../store'
+
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
+  const updateProfile = useStoreActions((actions) => actions.updateProfile)
   const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
   // const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
   // const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
@@ -193,7 +197,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     ],
   })
 
-  const canBuyTicket = data?.[0].result || true
+  const canBuyTicket = data?.[0].result || false
   const canClaim = data?.[1].result || false
   const unclaimedPot = data?.[2].result || BigInt(0)
   const rolloverShare = data?.[3].result || BigInt(0)
@@ -213,7 +217,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playerTickets = data?.[17]?.result || []
   const winnersPot = data?.[18].result || BigInt(0)
   const winnersShare = data?.[19].result || BigInt(0)
-  const playerToProfileId = data?.[20].result || false
+  const playerProfileId = data?.[20].result || BigInt(0)
   const minAllowedNumber = data?.[21].result || BigInt(0)
   const maxAllowedNumber = data?.[22].result || BigInt(0)
   const closeTime = data?.[23].result || BigInt(0)
@@ -221,6 +225,10 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playersShare = data?.[25].result || BigInt(0)
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
+
+  console.log(canBuyTicket)
+  console.log(canClaim)
+  console.log(unclaimedPot)
   // const lastRound = data?.[28].result || false
 
   // const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
@@ -237,6 +245,11 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   //   maximumFractionDigits: 3,
   //   minimumFractionDigits: 0,
   // })
+
+  const formattedUnclaimedPot = formatNumber(formatUnits(BigInt(unclaimedPot), 18), {
+    maximumFractionDigits: 5,
+    minimumFractionDigits: 0,
+  })
 
   let winningNumbers: number[] = []
 
@@ -270,10 +283,27 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     minimumFractionDigits: 0,
   })
 
-  updateCanBuyTicket(Boolean(canBuyTicket))
+  const { data: playerProfileInfo } = useReadContract({
+    ...defaultContractObj,
+    functionName: 'profileIdToProfile',
+    args: [playerProfileId],
+  })
 
+  if (playerProfileInfo) {
+    const [profileId, player, isClaimed, claimAmount] = playerProfileInfo
+    let profile: Profile = {
+      profileId: profileId,
+      player: player,
+      isClaimed: isClaimed,
+      claimAmount: claimAmount,
+    }
+    console.log(profile)
+    updateProfile(profile)
+  }
+
+  updateCanBuyTicket(Boolean(canBuyTicket))
   updateCanClaim(Boolean(canClaim))
-  updateUnclaimedPot(Number(unclaimedPot))
+  updateUnclaimedPot(Number(formattedUnclaimedPot))
   updateRolloverShare(Number(rolloverShare))
   updateRolloverPot(Number(rolloverPot))
   updateReferralsPot(Number(referralsToShare))
@@ -291,7 +321,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updatePlayerTickets(formattedPlayerTickets)
   updateWinnersPot(Number(winnersToShare))
   updateWinnersShare(Number(winnersShare))
-  updatePlayerToProfileId(Number(playerToProfileId))
+  updatePlayerToProfileId(Number(playerProfileId))
   updateMinAllowedNumber(Number(minAllowedNumber))
   updateMaxAllowedNumber(Number(maxAllowedNumber))
   updateCloseTime(Number(closeTime))

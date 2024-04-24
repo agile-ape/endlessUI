@@ -18,6 +18,7 @@ const buttonVariants = cva(
 
         // How to play
         play: 'text-gray-200 hover:text-gray-200/50 text-xl bg-transparent',
+        referral: 'text-gray-200 hover:text-gray-200/50 text-xl bg-transparent',
 
         run: 'bg-indigo-400 text-gray-100 hover:bg-indigo-200 hover:text-black text-xl border border-indigo-400 hover:border-white hover:shadow-xs hover:shadow-white',
 
@@ -47,8 +48,8 @@ const buttonVariants = cva(
 
         claim:
           'rounded-lg \
-         bg-zinc-900 border border-zinc-500 \
-         text-2xl text-zinc-400 \
+         bg-lime-900/50 border border-lime-500 \
+         text-2xl text-lime-400 \
          hover:text-lime-100 hover:border-lime-100 hover:bg-zinc-800 \
          active:text-lime-200/50 active:border-lime-200/50',
 
