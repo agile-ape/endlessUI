@@ -165,9 +165,9 @@ export default function Countdown() {
                 className="w-full px-8 py-2 mt-2"
                 onClick={endGameHandler}
                 isLoading={isPending}
-                // disabled={!canBuyTicket}
+                disabled={!canBuyTicket}
               >
-                End
+                End Game
               </Button>
             </>
           ) : (

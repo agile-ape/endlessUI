@@ -32,8 +32,9 @@ const Title = () => {
     ],
   })
 
-  const canBuyTicket = Number(data?.[0].result || false)
+  const canBuyTicket = Boolean(data?.[0].result || false)
 
+  console.log(canBuyTicket)
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
 
@@ -44,8 +45,8 @@ const Title = () => {
 
     let i = 0
 
-    let stringResponse: string
-    canBuyTicket ? (stringResponse = 'FLOP THE AVERAGE') : (stringResponse = 'THANKS FOR PLAYING')
+    const stringResponse: string = 'FLOP THE AVERAGE'
+    // canBuyTicket ? (stringResponse ) : (stringResponse = 'THANKS FOR PLAYING')
 
     const intervalId = setInterval(() => {
       setDisplayResponse(stringResponse.slice(0, i))

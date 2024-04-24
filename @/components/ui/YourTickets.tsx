@@ -8,7 +8,13 @@ import { Button } from '../shadcn/button'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
 
-import { useAccount, useReadContract, useReadContracts, useWatchContractEvent } from 'wagmi'
+import {
+  useAccount,
+  useReadContract,
+  useReadContracts,
+  useWatchContractEvent,
+  useWriteContract,
+} from 'wagmi'
 import { readContract } from '@wagmi/core'
 import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
 import { cn } from '@/lib/utils'
@@ -34,6 +40,8 @@ import {
 } from 'wagmi/chains'
 import { formatNumber } from '@/lib/utils'
 import { formatUnits, parseEther } from 'viem'
+import CountUp from 'react-countup'
+import { toast } from '../shadcn/use-toast'
 
 /*-------------------------------------- DOT BUTTONS -------------------------------------- */
 
@@ -68,21 +76,20 @@ const defaultTicket = {
 
 const YourTickets = () => {
   const { address, isConnected } = useAccount()
-  // const [ticketsOutput, setTicketsOutput] = useState<Ticket[]>([defaultTicket])
-
-  // const tickets = readContract(config, {
-  //   ...defaultContractObj,
-  //   functionName: 'ticketIdCounter',
-  // })
-
-  // user address
   const playerTickets = useStoreState((state) => state.playerTickets)
-  const leaderboard = useStoreState((state) => state.leaderboard)
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const winnersPot = useStoreState((state) => state.winnersPot)
   const winnersShare = useStoreState((state) => state.winnersShare)
   const potSize = useStoreState((state) => state.potSize)
+  const ticketsBought = useStoreState((state) => state.ticketsBought)
+  // const playersPot = useStoreState((state) => state.playersPot)
+  const playersShare = useStoreState((state) => state.playersShare)
+  const leaderboard = useStoreState((state) => state.leaderboard)
+  const profile = useStoreState((state) => state.profile)
+  const canClaim = useStoreState((state) => state.canClaim)
+  const unclaimedPot = useStoreState((state) => state.unclaimedPot)
 
+  console.log(playerTickets)
   /* read contracts
   const { data, refetch } = useReadContracts({
     contracts: [
@@ -141,10 +148,10 @@ const YourTickets = () => {
   // const winnersShare = data?.[4].result || BigInt(0)
   // const potAmount = data?.[5].result || BigInt(0)
 
-  const currentWinnersPot = formatNumber((Number(formatUnits(potSize, 18)) * winnersShare) / 100, {
-    maximumFractionDigits: 3,
-    minimumFractionDigits: 0,
-  })
+  // const currentWinnersPot = formatNumber((Number(formatUnits(potSize, 18)) * winnersShare) / 100, {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 0,
+  // })
 
   // const winnersToShare = formatNumber(formatUnits(BigInt(winnersPot), 18), {
   //   maximumFractionDigits: 3,
@@ -312,50 +319,201 @@ const YourTickets = () => {
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
     usePrevNextButtons(emblaApi)
 
-  const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)
-  const toggleLoad = () => setShowLoadModal((prevState) => !prevState)
+  // const [showLoadModal, setShowLoadModal] = React.useState<boolean>(false)
+  // const toggleLoad = () => setShowLoadModal((prevState) => !prevState)
 
-  const [showExitModal, setShowExitModal] = React.useState<boolean>(false)
-  const toggleExit = () => setShowExitModal((prevState) => !prevState)
+  // const [showExitModal, setShowExitModal] = React.useState<boolean>(false)
+  // const toggleExit = () => setShowExitModal((prevState) => !prevState)
 
-  // let ticket: Ticket | undefined = {
-  //   id: 0,
-  //   player: address as `0x${string}`,
-  //   isInPlay: false,
-  //   value: 0,
-  //   purchasePrice: 0,
-  //   redeemValue: 0,
-  //   potClaimCount: 0,
-  //   passRate: 0,
-  //   joinRound: 0,
-  //   exitRound: 0,
-  //   logs: [],
+  // const computeValue = () => {
+
+  //----------------- CALCULATE PLAYERS POT -----------------//
+  let sumReciprocal = 0
+
+  for (let i = 1; i <= ticketsBought; i++) {
+    sumReciprocal += 1 / i
+  }
+
+  const currentPotSize = Number(formatUnits(potSize, 18))
+  const currentPayoutFactor = (playersShare * currentPotSize) / 100 / sumReciprocal
+
+  let accumulatedPlayersValue = 0
+
+  for (let i = 0; i < playerTickets.length; i++) {
+    accumulatedPlayersValue += currentPayoutFactor / playerTickets[i]
+  }
+
+  const currentAccumulated = formatNumber(accumulatedPlayersValue, {
+    maximumFractionDigits: 7,
+    minimumFractionDigits: 0,
+  })
+
+  //----------------- CALCULATE WINNERS POT -----------------//
+  let winningTicketCount = 0
+
+  for (let i = 0; i < playerTickets.length; i++) {
+    for (let j = 0; j < leaderboard.length; j++) {
+      if (playerTickets[i] === leaderboard[j]) {
+        winningTicketCount++
+      }
+    }
+  }
+
+  const currentWinnersPot = (winnersShare * currentPotSize) / 100
+
+  const payoutPerWinner = currentWinnersPot / leaderboard.length
+
+  const currentWinnings = payoutPerWinner * winningTicketCount
+
+  // setShowValue(currentAccumulated)
   // }
+  // localStorage.setItem('accumulatedValue', String(currentAccumulated))
+
+  // console.log(localStorage.getItem('accumulatedValue'))
+
+  useEffect(() => {
+    // const prevValue = Number(localStorage.getItem('accumulatedValue'))
+    // const newValue = Number(currentAccumulated)
+    // if (newValue !== prevValue) {
+    //   const interval = setInterval(() => {
+    //     if (newValue > showValue) {
+    //       setShowValue((prevNumber) => {
+    //         if (prevNumber < newValue) {
+    //           return prevNumber + 0.0001
+    //         } else {
+    //           clearInterval(interval)
+    //           return prevNumber
+    //         }
+    //       })
+    //     } else if (newValue < showValue) {
+    //       setShowValue((prevNumber) => {
+    //         if (prevNumber >= newValue) {
+    //           return prevNumber - 0.0001
+    //         } else {
+    //           clearInterval(interval)
+    //           return prevNumber
+    //         }
+    //       })
+    //     }
+    //   }, 100) // Interval for subsequent renders
+
+    //   localStorage.setItem('accumulatedValue', String(currentAccumulated))
+
+    //   return () => clearInterval(interval)
+    // } else {
+    //   setShowValue(currentAccumulated)
+    // }
+    setShowValue(currentAccumulated)
+    // computeValue()e
+  }, [currentAccumulated])
+
+  const [showValue, setShowValue] = useState<string>('-')
+
+  const totalWinnings = formatNumber(Number(currentAccumulated) + currentWinnings, {
+    maximumFractionDigits: 5,
+    minimumFractionDigits: 0,
+  })
+
+  const shareIfRoll = formatNumber((Number(totalWinnings) / Number(unclaimedPot)) * 100, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  const { data, isPending, writeContract, writeContractAsync } = useWriteContract()
+
+  const claimHandler = async () => {
+    console.log('claimedPressed')
+
+    try {
+      await writeContractAsync({
+        ...defaultContractObj,
+        functionName: 'claim',
+      })
+      console.log('claimedPressed')
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        description: <p className="text-xl">{error.shortMessage}</p>,
+      })
+    }
+  }
 
   return (
-    <div className="flex flex-col gap-2 my-2 items-center justify-center mx-auto">
+    <div className="flex flex-col py-2 px-2 my-2 items-center justify-center mx-auto">
       <div
-        className="flex flex-col items-center \
-      rounded-lg px-6 py-2 \
-      text-gray-200 border border-zinc-500 text-sm bg-transparent
-      "
+        className="flex flex-col items-center py-2 \
+        rounded-lg px-6 border border-neutral-100 text-neutral-300"
       >
-        🟡 {canBuyTicket ? 'Winners share' : 'Final Winners Share'}
-        <div className="font-digit text-3xl">{canBuyTicket ? currentWinnersPot : winnersPot}</div>
-      </div>
+        <span className="text-xl">You are accumulating (ETH)</span>
 
-      {/* <div className="text-gray-400 ">Winning disk id </div> */}
-      <div className="text-yellow-500 ">Winning disk id </div>
-      <div
-        className="text-yellow-400  \
-         text-4xl \
-        flex overflow-auto max-w-[480px]"
-      >
-        {leaderboard.map((number, index) => (
-          <span className="border px-3 border-stone-500" key={index}>
-            {number}
-          </span>
-        ))}
+        <div className="flex my-1 justify-center items-center">
+          <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
+            <span className="text-base mr-1">🟣</span>{' '}
+            {/* <span className="font-digit text-2xl mr-2">{currentAccumulated}</span>{' '} */}
+            <CountUp
+              decimals={5}
+              duration={2.75}
+              className="font-digit text-2xl mr-2"
+              end={Number(currentAccumulated)}
+            />
+          </div>
+
+          <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
+            <span className="text-base mr-1">🟡</span>{' '}
+            {/* <span className="font-digit text-2xl mr-2">{currentWinnings}</span>{' '} */}
+            <CountUp
+              decimals={5}
+              duration={2.75}
+              className="font-digit text-2xl mr-2"
+              end={Number(currentWinnings)}
+            />
+          </div>
+        </div>
+
+        {!canBuyTicket && canClaim && (
+          <div className="text-2xl border border-gray-100 p-2 bg-zinc-700 rounded-lg my-4">
+            {/* <div className="flex my-1 justify-center items-center">
+              Total accumulated: {totalWinnings} ETH
+            </div>
+            <div className="flex my-1 justify-center items-center">
+              Unclaimed pot so far: {unclaimedPot} ETH
+            </div>
+            <div className="flex my-1 justify-center items-center">
+              % share if roll: {shareIfRoll}%
+            </div> */}
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Total winnings:</p>
+              <p className="text-right"> {totalWinnings} ETH </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">Unclaimed pot so far:</p>
+              <p className="text-right"> {unclaimedPot} ETH </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1">
+              <p className="text-left">% share if roll:</p>
+              <p className="text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
+            </div>
+          </div>
+        )}
+
+        <Button
+          className="w-[200px] text-2xl"
+          variant="claim"
+          onClick={claimHandler}
+          disabled={canBuyTicket || profile.isClaimed || !canClaim}
+          // isLoading={isPending}
+        >
+          {canBuyTicket
+            ? 'Claim'
+            : canClaim
+              ? profile.isClaimed
+                ? 'You have claimed'
+                : 'Claim'
+              : 'You have rolled to next pot'}
+        </Button>
       </div>
 
       <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">

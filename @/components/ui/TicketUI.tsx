@@ -56,18 +56,21 @@ const TicketUI: FC<TicketUIType> = ({
   const currentAverage = useStoreState((state) => state.currentAverage)
   const playersPayoutFactor = useStoreState((state) => state.playersPayoutFactor)
   const winnersSplit = useStoreState((state) => state.winnersSplit)
+  const profile = useStoreState((state) => state.profile)
 
-  const { data: playerInfo, refetch } = useReadContract({
+  const { data: numberInfo, refetch } = useReadContract({
     ...defaultContractObj,
-    functionName: 'idToTicket',
+    functionName: 'ticketIdToNumber',
     args: [ticketId],
   })
 
-  const id = Number(playerInfo?.[0] || 0)
-  const player = String(playerInfo?.[1] || '0')
-  const number = Number(playerInfo?.[2] || 0)
-  const isWinner = Boolean(playerInfo?.[3] || false)
-  const isClaimed = Boolean(playerInfo?.[4] || false)
+  // console.log(playerInfo)
+
+  const id = Number(ticketId)
+  const number = Number(numberInfo)
+  // const player = String(playerInfo?.[1] || '0')
+  // const isWinner = Boolean(playerInfo?.[3] || false)
+  // const isClaimed = Boolean(playerInfo?.[4] || false)
 
   // const { data } = useReadContracts({
   //   contracts: [
@@ -117,17 +120,17 @@ const TicketUI: FC<TicketUIType> = ({
     ticketLook = 'leading'
   }
 
-  if (!canBuyTicket && isWinner) {
+  if (!canBuyTicket && number == currentAverage) {
     ticketLook = 'win'
   }
 
-  if (!canBuyTicket && !isWinner) {
+  if (!canBuyTicket && number !== currentAverage) {
     ticketLook = 'noWin'
   }
 
-  if (!canBuyTicket && isClaimed) {
-    ticketLook = 'claimed'
-  }
+  // if (!canBuyTicket && profile.isClaimed) {
+  //   ticketLook = 'claimed'
+  // }
 
   const ticketLookMapping = {
     bought: {
@@ -155,7 +158,7 @@ const TicketUI: FC<TicketUIType> = ({
       bgColor: 'bg-violet-300',
       borderColor: 'border-neutral-700',
       shutter: 'bg-violet-400 border-gray-500',
-      shutterTextColor: 'text-gray-100',
+      shutterTextColor: 'text-gray-700',
       buttonColor: 'bg-violet-500 border-gray-500',
     },
     claimed: {
@@ -302,23 +305,23 @@ const TicketUI: FC<TicketUIType> = ({
       <div className="absolute bottom-3 left-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
       <div className="absolute bottom-3 right-1 bg-zinc-800 rounded-xs shadow-inner shadow-sm w-[12px] h-[12px]"></div>
       <div className={`${borderColor} relative w-[75px] h-[30px] rounded-sm border flex`}>
-        {isOverlayInspect ? (
-          <>
-            <div
-              className={`${shutter} ${shutterTextColor} left-0 absolute w-[28px] h-[29px] rounded-l-sm \
+        {/* {isOverlayInspect ? ( */}
+        <>
+          <div
+            className={`${shutter} ${shutterTextColor} left-0 absolute w-[28px] h-[29px] rounded-l-sm \
               border text-center`}
-            >
-              id
-            </div>
+          >
+            id
+          </div>
 
-            <div
-              className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-r-sm \
+          <div
+            className={`${shutterTextColor} right-0 absolute w-[47px] h-[28px] rounded-r-sm \
               flex justify-center items-center text-xl`}
-            >
-              {String(id)}
-            </div>
-          </>
-        ) : (
+          >
+            {String(id)}
+          </div>
+        </>
+        {/* ) : (
           <>
             <div
               className={`${shutterTextColor} left-0 absolute w-[28px] h-[28px] rounded-xs \
@@ -331,10 +334,10 @@ const TicketUI: FC<TicketUIType> = ({
                 border`}
             ></div>
           </>
-        )}
+        )} */}
       </div>
 
-      {isOverlayInspect ? (
+      {/* {isOverlayInspect ? (
         <div className="flex flex-col justify-center items-center gap-2 my-2">
           <TooltipProvider delayDuration={10}>
             <Tooltip>
@@ -366,7 +369,6 @@ const TicketUI: FC<TicketUIType> = ({
                         <span>Disk claimed </span>
                       ) : (
                         <div className="flex flex-col text-left">
-                          {/* <span className="underline">Claim: </span> */}
                           <span>🟣 Player claim: {claimAmount} ETH </span>
                           {isWinner ? <span>🟡 Winner claim: {winnersSplit} ETH </span> : <></>}
                         </div>
@@ -377,93 +379,26 @@ const TicketUI: FC<TicketUIType> = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-
-          {/*
-          {isWinner && (
-            <TooltipProvider delayDuration={10}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <button
-                    className="px-3 mx-2 \
-            w-[80%] bg-yellow-500 text-slate-600 border-yellow-200 border-2 \
-            hover:text-white hover:bg-opacity-50 \
-            active:text-white/50 active:bg-opacity-75 \
-            disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={canBuyTicket || winnerClaimYet}
-                    onClick={winnersClaimHandler}
-                  >
-                    Winner
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center">
-                  <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                    {canBuyTicket ? (
-                      <span>Cannot claim yet </span>
-                    ) : (
-                      <>
-                        {winnerClaimYet ? (
-                          <span>You have claimed </span>
-                        ) : (
-                          <span>You won {formattedWinnersSplit} ETH </span>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-
-          <TooltipProvider delayDuration={10}>
-            <Tooltip>
-              <TooltipTrigger>
-                <button
-                  className="px-3 mx-2 \
-            w-[80%] bg-gray-400 text-slate-700 border-slate-200 border-2 \
-            hover:text-white hover:bg-opacity-50 \
-            active:text-white/50 active:bg-opacity-75 \
-            disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={canBuyTicket || playerClaimYet}
-                  onClick={playersClaimHandler}
-                >
-                  Claim
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="top" align="center">
-                <div className="px-3 py-1 max-w-[240px] text-sm cursor-default">
-                  {canBuyTicket ? (
-                    <span>Cannot claim yet </span>
-                  ) : (
-                    <>
-                      {playerClaimYet ? (
-                        <span>You have claimed </span>
-                      ) : (
-                        <span>You can claim {claimAmount} ETH </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider> */}
         </div>
-      ) : (
-        <div
-          className={cn(
-            'bg-gray-100 border-gray-300 absolute bottom-0 w-[75px] h-[75px] rounded-t-sm border shadow-inner shadow-lg \
+      ) : ( */}
+
+      <div
+        className={cn(
+          'bg-gray-100 border-gray-300 absolute bottom-0 w-[75px] h-[75px] rounded-t-sm border shadow-inner shadow-lg \
         flex flex-col justify-center items-center',
-          )}
-        >
-          <div className="h-4 border-0 bg-red-100/80 w-full"></div>
-          <div className="h-4 border-0 w-full"></div>
-          <div className="h-4 border-0 bg-red-100/80 w-full"></div>
-          <div className="h-4 border-0 w-full"></div>
-          <div className="h-4 border-0 bg-red-100/80 w-full"></div>
-          <div className="absolute text-gray-900 rounded-lg font-digit text-center text-3xl">
-            {number}
-          </div>
+        )}
+      >
+        <div className="h-4 border-0 bg-red-100/80 w-full"></div>
+        <div className="h-4 border-0 w-full"></div>
+        <div className="h-4 border-0 bg-red-100/80 w-full"></div>
+        <div className="h-4 border-0 w-full"></div>
+        <div className="h-4 border-0 bg-red-100/80 w-full"></div>
+        <div className="absolute text-gray-900 rounded-lg font-digit text-center text-3xl">
+          {number}
         </div>
-      )}
+      </div>
+
+      {/* )} */}
     </div>
   )
 }

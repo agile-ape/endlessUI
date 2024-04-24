@@ -3,7 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 // import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useBalance, useReadContracts, useWalletClient } from 'wagmi'
+import { useAccount, useBalance, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
 import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -19,18 +19,29 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
+
+import type { Profile } from '../../store'
+
 type LayoutProps = {
   children: React.ReactNode
   metadata: MetaProps
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
+  const updateProfile = useStoreActions((actions) => actions.updateProfile)
   const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
-  const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
-  const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
-  const updateFundersShare = useStoreActions((actions) => actions.updateFundersShare)
-  const updateFundersPot = useStoreActions((actions) => actions.updateFundersPot)
-  const updateFundersClaimed = useStoreActions((actions) => actions.updateFundersClaimed)
+  // const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
+  // const updateFundersToAmt = useStoreActions((actions) => actions.updateFundersToAmt)
+  // const updateFundersShare = useStoreActions((actions) => actions.updateFundersShare)
+  // const updateFundersPot = useStoreActions((actions) => actions.updateFundersPot)
+  // const updateFundersClaimed = useStoreActions((actions) => actions.updateFundersClaimed)
+
+  const updateCanClaim = useStoreActions((actions) => actions.updateCanClaim)
+  const updateUnclaimedPot = useStoreActions((actions) => actions.updateUnclaimedPot)
+  const updateRolloverShare = useStoreActions((actions) => actions.updateRolloverShare)
+  const updateRolloverPot = useStoreActions((actions) => actions.updateRolloverPot)
+  const updateReferralsPot = useStoreActions((actions) => actions.updateReferralsPot)
+
   const updateCurrentAverage = useStoreActions((actions) => actions.updateCurrentAverage)
   const updateLeaderboard = useStoreActions((actions) => actions.updateLeaderboard)
   const updateTicketsBought = useStoreActions((actions) => actions.updateTicketsBought)
@@ -45,7 +56,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updatePlayerTickets = useStoreActions((actions) => actions.updatePlayerTickets)
   const updateWinnersPot = useStoreActions((actions) => actions.updateWinnersPot)
   const updateWinnersShare = useStoreActions((actions) => actions.updateWinnersShare)
-  const updateCanFundPot = useStoreActions((actions) => actions.updateCanFundPot)
+  const updatePlayerToProfileId = useStoreActions((actions) => actions.updatePlayerToProfileId)
   const updateMinAllowedNumber = useStoreActions((actions) => actions.updateMinAllowedNumber)
   const updateMaxAllowedNumber = useStoreActions((actions) => actions.updateMaxAllowedNumber)
   const updateCloseTime = useStoreActions((actions) => actions.updateCloseTime)
@@ -53,7 +64,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updatePlayersShare = useStoreActions((actions) => actions.updatePlayersShare)
   const updateReferralsShare = useStoreActions((actions) => actions.updateReferralsShare)
   const updatePlayersPot = useStoreActions((actions) => actions.updatePlayersPot)
-  const updateReferralsPot = useStoreActions((actions) => actions.updateReferralsPot)
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
@@ -72,25 +82,23 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'fundedAmount',
+        functionName: 'canClaim',
       },
       {
         ...defaultContractObj,
-        functionName: 'fundersToAmt',
-        args: [address as `0x${string}`],
+        functionName: 'unclaimedPot',
       },
       {
         ...defaultContractObj,
-        functionName: 'fundersShare',
+        functionName: 'rolloverShare',
       },
       {
         ...defaultContractObj,
-        functionName: 'fundersPot',
+        functionName: 'rolloverPot',
       },
       {
         ...defaultContractObj,
-        functionName: 'fundersClaimed',
-        args: [address as `0x${string}`],
+        functionName: 'referralsPot',
       },
       {
         ...defaultContractObj,
@@ -138,7 +146,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'getPlayerToIdArray',
+        functionName: 'getTickets',
         args: [address as `0x${string}`],
       },
       {
@@ -151,7 +159,8 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       },
       {
         ...defaultContractObj,
-        functionName: 'canFundPot',
+        functionName: 'playerToProfileId',
+        args: [address as `0x${string}`],
       },
       {
         ...defaultContractObj,
@@ -181,19 +190,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'playersPot',
       },
-      {
-        ...defaultContractObj,
-        functionName: 'referralsPot',
-      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'lastRound',
+      // },
     ],
   })
 
   const canBuyTicket = data?.[0].result || false
-  const fundedAmount = data?.[1].result || BigInt(0)
-  const fundersToAmt = data?.[2].result || BigInt(0)
-  const fundersShare = data?.[3].result || BigInt(0)
-  const fundersPot = data?.[4].result || BigInt(0)
-  const fundersClaimed = data?.[5].result || false
+  const canClaim = data?.[1].result || false
+  const unclaimedPot = data?.[2].result || BigInt(0)
+  const rolloverShare = data?.[3].result || BigInt(0)
+  const rolloverPot = data?.[4].result || BigInt(0)
+  const referralsPot = data?.[5].result || BigInt(0)
   const currentAverage = data?.[6].result || BigInt(0)
   const leaderboard: readonly bigint[] = data?.[7].result || []
   const ticketsBought = data?.[8].result || BigInt(0)
@@ -208,7 +217,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playerTickets = data?.[17]?.result || []
   const winnersPot = data?.[18].result || BigInt(0)
   const winnersShare = data?.[19].result || BigInt(0)
-  const canFundPot = data?.[20].result || false
+  const playerProfileId = data?.[20].result || BigInt(0)
   const minAllowedNumber = data?.[21].result || BigInt(0)
   const maxAllowedNumber = data?.[22].result || BigInt(0)
   const closeTime = data?.[23].result || BigInt(0)
@@ -216,20 +225,29 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playersShare = data?.[25].result || BigInt(0)
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
-  const referralsPot = data?.[28].result || BigInt(0)
 
-  const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
-    maximumFractionDigits: 3,
-    minimumFractionDigits: 0,
-  })
+  console.log(canBuyTicket)
+  console.log(canClaim)
+  console.log(unclaimedPot)
+  // const lastRound = data?.[28].result || false
 
-  const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
-    maximumFractionDigits: 3,
-    minimumFractionDigits: 0,
-  })
+  // const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 0,
+  // })
 
-  const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
-    maximumFractionDigits: 3,
+  // const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 0,
+  // })
+
+  // const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
+  //   maximumFractionDigits: 3,
+  //   minimumFractionDigits: 0,
+  // })
+
+  const formattedUnclaimedPot = formatNumber(formatUnits(BigInt(unclaimedPot), 18), {
+    maximumFractionDigits: 5,
     minimumFractionDigits: 0,
   })
 
@@ -265,12 +283,30 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     minimumFractionDigits: 0,
   })
 
+  const { data: playerProfileInfo } = useReadContract({
+    ...defaultContractObj,
+    functionName: 'profileIdToProfile',
+    args: [playerProfileId],
+  })
+
+  if (playerProfileInfo) {
+    const [profileId, player, isClaimed, claimAmount] = playerProfileInfo
+    let profile: Profile = {
+      profileId: profileId,
+      player: player,
+      isClaimed: isClaimed,
+      claimAmount: claimAmount,
+    }
+    console.log(profile)
+    updateProfile(profile)
+  }
+
   updateCanBuyTicket(Boolean(canBuyTicket))
-  updateFundedAmount(Number(formattedFundedAmount))
-  updateFundersToAmt(Number(formattedFundersToAmt))
-  updateFundersShare(Number(fundersShare))
-  updateFundersPot(Number(formattedFundersPot))
-  updateFundersClaimed(Boolean(fundersClaimed))
+  updateCanClaim(Boolean(canClaim))
+  updateUnclaimedPot(Number(formattedUnclaimedPot))
+  updateRolloverShare(Number(rolloverShare))
+  updateRolloverPot(Number(rolloverPot))
+  updateReferralsPot(Number(referralsToShare))
   updateCurrentAverage(Number(currentAverage))
   updateLeaderboard(winningNumbers)
   updateTicketsBought(Number(ticketsBought))
@@ -285,8 +321,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updatePlayerTickets(formattedPlayerTickets)
   updateWinnersPot(Number(winnersToShare))
   updateWinnersShare(Number(winnersShare))
-
-  updateCanFundPot(Boolean(canFundPot))
+  updatePlayerToProfileId(Number(playerProfileId))
   updateMinAllowedNumber(Number(minAllowedNumber))
   updateMaxAllowedNumber(Number(maxAllowedNumber))
   updateCloseTime(Number(closeTime))
@@ -294,9 +329,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updatePlayersShare(Number(playersShare))
   updateReferralsShare(Number(referralsShare))
   updatePlayersPot(Number(playersToShare))
-  updateReferralsPot(Number(referralsToShare))
+
+  // updateFundedAmount(Number(formattedFundedAmount))
+  // updateFundersToAmt(Number(formattedFundersToAmt))
+  // updateFundersShare(Number(fundersShare))
+  // updateFundersPot(Number(formattedFundersPot))
+  // updateFundersClaimed(Boolean(fundersClaimed))
+  // updateCanFundPot(Boolean(canFundPot))
 
   socket.connect()
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   useAccountEffect({
     onConnect(data) {
@@ -332,24 +377,24 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         })
       },
     },
-    {
-      name: `PotAdded`,
-      handler(data) {
-        const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
-          maximumFractionDigits: 3,
-          minimumFractionDigits: 0,
-        })
-        refetch()
-        toast({
-          variant: 'contributed',
-          description: (
-            <p className="text-xl">
-              🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
-            </p>
-          ),
-        })
-      },
-    },
+    // {
+    //   name: `PotAdded`,
+    //   handler(data) {
+    //     const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
+    //       maximumFractionDigits: 3,
+    //       minimumFractionDigits: 0,
+    //     })
+    //     refetch()
+    //     toast({
+    //       variant: 'contributed',
+    //       description: (
+    //         <p className="text-xl">
+    //           🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
+    //         </p>
+    //       ),
+    //     })
+    //   },
+    // },
   ]
 
   useSocketEvents(events)
