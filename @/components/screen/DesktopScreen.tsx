@@ -124,8 +124,6 @@ export default function DesktopScreen() {
     updateReferralList(referralsData)
   }
 
-  console.log(referralsData)
-
   const {
     data: playersData,
     error: playersError,
@@ -144,9 +142,7 @@ export default function DesktopScreen() {
 
   // Check if data is available
   if (playersData) {
-    console.log(playersData)
     const referralCode = playersData?.referralCode
-    console.log(referralCode)
     updateReferral(referralCode)
   }
 

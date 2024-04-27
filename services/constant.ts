@@ -4,7 +4,7 @@ import { defineChain } from 'viem'
 /*---------------------------------------- ENV ---------------------------------------- */
 // import from .env
 const NODE_ENV = process.env.NODE_ENV
-console.log(NODE_ENV)
+// console.log(NODE_ENV)
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 // export const CHAIN_ID = 84532

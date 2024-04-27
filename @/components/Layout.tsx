@@ -19,8 +19,11 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
+import WelcomeModal from '@/components/ui/WelcomeModal'
 
 import type { Profile } from '../../store'
+import { z } from 'zod'
+import { getLayoutOrPageModule } from 'next/dist/server/lib/app-dir-module'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -28,6 +31,7 @@ type LayoutProps = {
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
+  const updateLastProfile = useStoreActions((actions) => actions.updateLastProfile)
   const updateProfile = useStoreActions((actions) => actions.updateProfile)
   const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
   // const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
@@ -38,6 +42,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   const updateCanClaim = useStoreActions((actions) => actions.updateCanClaim)
   const updateUnclaimedPot = useStoreActions((actions) => actions.updateUnclaimedPot)
+  const updateLastRoundUnclaimedPot = useStoreActions(
+    (actions) => actions.updateLastRoundUnclaimedPot,
+  )
   const updateRolloverShare = useStoreActions((actions) => actions.updateRolloverShare)
   const updateRolloverPot = useStoreActions((actions) => actions.updateRolloverPot)
   const updateReferralsPot = useStoreActions((actions) => actions.updateReferralsPot)
@@ -64,6 +71,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updatePlayersShare = useStoreActions((actions) => actions.updatePlayersShare)
   const updateReferralsShare = useStoreActions((actions) => actions.updateReferralsShare)
   const updatePlayersPot = useStoreActions((actions) => actions.updatePlayersPot)
+  const updateFirstNumber = useStoreActions((actions) => actions.updateFirstNumber)
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
@@ -190,10 +198,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'playersPot',
       },
-      // {
-      //   ...defaultContractObj,
-      //   functionName: 'lastRound',
-      // },
+      {
+        ...defaultContractObj,
+        functionName: 'firstNumber',
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getLastRoundPlayerProfile',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getLastRoundUnclaimedPot',
+      },
     ],
   })
 
@@ -225,11 +242,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playersShare = data?.[25].result || BigInt(0)
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
-
-  console.log(canBuyTicket)
-  console.log(canClaim)
-  console.log(unclaimedPot)
-  // const lastRound = data?.[28].result || false
+  const firstNumber = data?.[28].result || BigInt(0)
+  const lastRoundPlayerProfile = data?.[29].result || null
+  const lastRoundUnclaimedPot = data?.[30].result || BigInt(0)
 
   // const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
   //   maximumFractionDigits: 3,
@@ -250,6 +265,14 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     maximumFractionDigits: 5,
     minimumFractionDigits: 0,
   })
+
+  const formattedLastRoundUnclaimedPot = formatNumber(
+    formatUnits(BigInt(lastRoundUnclaimedPot), 18),
+    {
+      maximumFractionDigits: 5,
+      minimumFractionDigits: 0,
+    },
+  )
 
   let winningNumbers: number[] = []
 
@@ -297,13 +320,24 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       isClaimed: isClaimed,
       claimAmount: claimAmount,
     }
-    console.log(profile)
     updateProfile(profile)
+  }
+
+  if (lastRoundPlayerProfile) {
+    const { profileId, player, isClaimed, claimAmount } = lastRoundPlayerProfile
+    let profile: Profile = {
+      profileId: profileId,
+      player: player,
+      isClaimed: isClaimed,
+      claimAmount: claimAmount,
+    }
+    updateLastProfile(profile)
   }
 
   updateCanBuyTicket(Boolean(canBuyTicket))
   updateCanClaim(Boolean(canClaim))
   updateUnclaimedPot(Number(formattedUnclaimedPot))
+  updateLastRoundUnclaimedPot(Number(formattedLastRoundUnclaimedPot))
   updateRolloverShare(Number(rolloverShare))
   updateRolloverPot(Number(rolloverPot))
   updateReferralsPot(Number(referralsToShare))
@@ -329,6 +363,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updatePlayersShare(Number(playersShare))
   updateReferralsShare(Number(referralsShare))
   updatePlayersPot(Number(playersToShare))
+  updateFirstNumber(Number(firstNumber))
 
   // updateFundedAmount(Number(formattedFundedAmount))
   // updateFundersToAmt(Number(formattedFundersToAmt))
@@ -339,8 +374,17 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   socket.connect()
 
+  const [gameEnd, setGameEnd] = useState<boolean>(false)
   useEffect(() => {
-    refetch()
+    const isGameEnd = async () => {
+      try {
+        await refetch()
+        setGameEnd(canBuyTicket)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    isGameEnd()
   }, [])
 
   useAccountEffect({
@@ -399,6 +443,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   useSocketEvents(events)
 
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+    return result
+  })
+
+  const toggleModal = () => {
+    setShowWelcomeModal((prevState) => !prevState)
+    localStorage.setItem('showWelcomeModal', 'false')
+  }
+
+  console.log(canBuyTicket)
+  console.log(gameEnd)
   return (
     <>
       <main
@@ -408,6 +465,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         }}
       >
         <div className="container mx-auto p-0">
+          {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
           <Header />
           {children}
           <Analytics />

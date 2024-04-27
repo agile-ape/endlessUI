@@ -19,6 +19,7 @@ export interface Profile {
 
 interface StoreModel {
   profile: Profile
+  lastProfile: Profile
   canBuyTicket: boolean
   // fundedAmount: number
   // fundersToAmt: number
@@ -28,6 +29,7 @@ interface StoreModel {
 
   canClaim: boolean
   unclaimedPot: number
+  lastRoundUnclaimedPot: number
   rolloverShare: number
   rolloverPot: number
   referralsPot: number
@@ -55,6 +57,7 @@ interface StoreModel {
   playersShare: number
   referralsShare: number
   playersPot: number
+  firstNumber: number
 
   numberList: number[]
   averageList: number[]
@@ -63,6 +66,7 @@ interface StoreModel {
   GameEndModal: GameEndModal
 
   updateProfile: Action<StoreModel, Profile>
+  updateLastProfile: Action<StoreModel, Profile>
   updateCanBuyTicket: Action<StoreModel, boolean>
   // updateFundedAmount: Action<StoreModel, number>
   // updateFundersToAmt: Action<StoreModel, number>
@@ -71,6 +75,7 @@ interface StoreModel {
   // updateFundersClaimed: Action<StoreModel, boolean>
   updateCanClaim: Action<StoreModel, boolean>
   updateUnclaimedPot: Action<StoreModel, number>
+  updateLastRoundUnclaimedPot: Action<StoreModel, number>
   updateRolloverShare: Action<StoreModel, number>
   updateRolloverPot: Action<StoreModel, number>
   updateReferralsPot: Action<StoreModel, number>
@@ -97,6 +102,7 @@ interface StoreModel {
   updatePlayersShare: Action<StoreModel, number>
   updateReferralsShare: Action<StoreModel, number>
   updatePlayersPot: Action<StoreModel, number>
+  updateFirstNumber: Action<StoreModel, number>
 
   updateNumberList: Action<StoreModel, number[]>
   updateAverageList: Action<StoreModel, number[]>
@@ -106,6 +112,13 @@ interface StoreModel {
 }
 
 export const appStore = createStore<StoreModel>({
+  lastProfile: {
+    profileId: BigInt(0),
+    player: '0x',
+    isClaimed: false,
+    claimAmount: BigInt(0),
+  },
+
   profile: {
     profileId: BigInt(0),
     player: '0x',
@@ -121,6 +134,7 @@ export const appStore = createStore<StoreModel>({
   // fundersClaimed: false,
   canClaim: false,
   unclaimedPot: 0,
+  lastRoundUnclaimedPot: 0,
   rolloverShare: 0,
   rolloverPot: 0,
   referralsPot: 0,
@@ -148,6 +162,7 @@ export const appStore = createStore<StoreModel>({
   playersShare: 0,
   referralsShare: 0,
   playersPot: 0,
+  firstNumber: 0,
 
   numberList: [],
   averageList: [],
@@ -156,6 +171,10 @@ export const appStore = createStore<StoreModel>({
   GameEndModal: {
     isOpen: false,
   },
+
+  updateLastProfile: action((state, payload) => {
+    state.lastProfile = payload
+  }),
 
   updateProfile: action((state, payload) => {
     state.profile = payload
@@ -186,6 +205,9 @@ export const appStore = createStore<StoreModel>({
   }),
   updateUnclaimedPot: action((state, payload) => {
     state.unclaimedPot = payload
+  }),
+  updateLastRoundUnclaimedPot: action((state, payload) => {
+    state.lastRoundUnclaimedPot = payload
   }),
   updateRolloverShare: action((state, payload) => {
     state.rolloverShare = payload
@@ -264,6 +286,9 @@ export const appStore = createStore<StoreModel>({
   }),
   updatePlayersPot: action((state, payload) => {
     state.playersPot = payload
+  }),
+  updateFirstNumber: action((state, payload) => {
+    state.firstNumber = payload
   }),
 
   updateNumberList: action((state, payload) => {

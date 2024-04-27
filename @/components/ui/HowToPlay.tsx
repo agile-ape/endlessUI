@@ -20,6 +20,8 @@ function HowToPlay() {
   const playersShare = useStoreState((state) => state.playersShare)
   const rolloverShare = useStoreState((state) => state.rolloverShare)
   const referralsShare = useStoreState((state) => state.referralsShare)
+  const minAllowedNumber = useStoreState((state) => state.minAllowedNumber)
+  const maxAllowedNumber = useStoreState((state) => state.maxAllowedNumber)
 
   return (
     <Dialog>
@@ -40,7 +42,10 @@ function HowToPlay() {
                   {/* <p className="mb-6">Pooh's Pot 🍯 has ETH</p> */}
                   {/* <p className="mb-6 underline text-center">How to play</p> */}
                   <p className="mb-8">
-                    <p className="mb-4"> Pick a number (0 - 999) and buy a disk 💾</p>
+                    <p className="mb-4">
+                      {' '}
+                      Pick a number ({minAllowedNumber} - {maxAllowedNumber}) and buy a disk 💾
+                    </p>
                     <p className="mb-4">
                       {' '}
                       Your disk wins if your number matches the final average number of all disks
@@ -69,10 +74,11 @@ function HowToPlay() {
                     <span className="text-left mr-2 col-span-1"> 🟡 Winners share </span>
                     <span className="text-right font-digit mr-4">{winnersShare}%</span>{' '}
                   </p>
-                  {/* <p className="text-3xl grid grid-cols-2 my-2">
+
+                  <p className="text-3xl grid grid-cols-2 my-2">
                     <span className="text-left mr-2 col-span-1"> 🔵 Rollover share </span>
                     <span className="text-right font-digit mr-4">{rolloverShare}%</span>{' '}
-                  </p> */}
+                  </p>
 
                   <p className="text-xl my-4">
                     <span className="text-left mr-2 col-span-1">

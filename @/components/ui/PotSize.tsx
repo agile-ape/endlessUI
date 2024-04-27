@@ -58,6 +58,7 @@ export default function PotSize() {
   const potSize = useStoreState((state) => state.potSize)
   const winnersShare = useStoreState((state) => state.winnersShare)
   const playersShare = useStoreState((state) => state.playersShare)
+  const rolloverShare = useStoreState((state) => state.rolloverShare)
 
   const currentPotSize = formatNumber(formatUnits(potSize, 18), {
     maximumFractionDigits: 3,
@@ -73,6 +74,14 @@ export default function PotSize() {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
   })
+
+  const currentRolloverPot = formatNumber(
+    (Number(formatUnits(potSize, 18)) * rolloverShare) / 100,
+    {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+    },
+  )
 
   return (
     <TooltipProvider delayDuration={10}>
@@ -106,6 +115,10 @@ export default function PotSize() {
           <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
             <span className="text-base">🟡</span> Winners share:{' '}
             <span className="font-digit text-2xl">{currentWinnersPot} </span>
+          </div>
+          <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
+            <span className="text-base">🔵</span> Rollover share:{' '}
+            <span className="font-digit text-2xl">{currentRolloverPot} </span>
           </div>
         </TooltipContent>
       </Tooltip>

@@ -89,11 +89,6 @@ function Referral() {
   const referral = useStoreState((state) => state.referral)
   const referralList = useStoreState((state) => state.referralList)
 
-  console.log(referral)
-  console.log(referralList)
-  console.log(typeof referralList)
-  console.log(referralList[0]?.referralCode)
-
   // const updateReferral = useStoreActions((actions) => actions.updateReferral)
   // const updateReferralList = useStoreActions((actions) => actions.updateReferralList)
 
@@ -190,14 +185,13 @@ function Referral() {
         // isTake: true,
       }
       const responseData = await poster(data, `/players/${data.player}`)
-      console.log(responseData)
 
       if (responseData?.status === 201) {
         setSubmitted(true)
       }
 
       if (responseData?.status !== 201) {
-        console.log('error')
+        console.error('error')
       }
 
       return responseData
@@ -221,7 +215,6 @@ function Referral() {
   //   }
   // }
 
-  // console.log(value)
   return (
     <>
       <Popover>

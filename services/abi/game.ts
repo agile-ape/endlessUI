@@ -6,6 +6,11 @@ export const GAME_ABI = [
         name: '_firstNumber',
         type: 'uint256',
       },
+      {
+        internalType: 'address',
+        name: '_lastRoundContract',
+        type: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -170,6 +175,25 @@ export const GAME_ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'time',
+        type: 'uint256',
+      },
+    ],
+    name: 'PotAdded',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: 'uint256',
         name: 'newPrice',
@@ -184,6 +208,13 @@ export const GAME_ABI = [
     ],
     name: 'PriceChange',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'addToPot',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [
@@ -312,7 +343,74 @@ export const GAME_ABI = [
   },
   {
     inputs: [],
+    name: 'firstNumber',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'gameTime',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_player',
+        type: 'address',
+      },
+    ],
+    name: 'getLastRoundPlayerProfile',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'profileId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'player',
+            type: 'address',
+          },
+          {
+            internalType: 'bool',
+            name: 'isClaimed',
+            type: 'bool',
+          },
+          {
+            internalType: 'uint256',
+            name: 'claimAmount',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct Profile',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getLastRoundUnclaimedPot',
     outputs: [
       {
         internalType: 'uint256',
@@ -337,6 +435,19 @@ export const GAME_ABI = [
         internalType: 'uint256[]',
         name: '',
         type: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastRound',
+    outputs: [
+      {
+        internalType: 'contract LastRound',
+        name: '',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
