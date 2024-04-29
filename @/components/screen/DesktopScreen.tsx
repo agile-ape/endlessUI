@@ -7,7 +7,11 @@ import BuyTicket from '../ui/BuyTicket'
 import YourTickets from '../ui/YourTickets'
 import GameEnd from '../ui/GameEnd'
 import { useAccount, useReadContracts, useSendTransaction, useWatchContractEvent } from 'wagmi'
-import { defaultContractObj, GAME_ADDRESS } from '../../../services/constant'
+import {
+  defaultContractObj,
+  CRYTPOCOMPARE_ENDPOINT,
+  GAME_ADDRESS,
+} from '../../../services/constant'
 import { toast } from '@/components/shadcn/use-toast'
 // import { toast } from '@/components/shadcn/sonner'
 import useSWR, { useSWRConfig } from 'swr'
@@ -37,8 +41,10 @@ export default function DesktopScreen() {
   const endGameFlag = useStoreState((state) => state.endGameFlag)
   const updateGameEndModal = useStoreActions((actions) => actions.updateGameEndModal)
   const modalState = useStoreState((state) => state.GameEndModal)
+  const updateEthPrice = useStoreActions((actions) => actions.updateEthPrice)
 
   useEffect(() => {
+    fetchPrice()
     if (endGameFlag) {
       updateGameEndModal({
         isOpen: true,
@@ -72,6 +78,38 @@ export default function DesktopScreen() {
   // })
 
   const { mutate: globalMutate } = useSWRConfig()
+
+  // const {
+  //   data: ethPrice,
+  //   error: ethPriceError,
+  //   // mutate,
+  // } = useSWR(
+  //   // <{data: Number[]}>
+  //   '/data/price?fsym=ETH&tsyms=USD',
+  //   fetchPrice,
+  //   { refreshInterval: 100000 },
+  // )
+
+  async function fetchPrice() {
+    try {
+      const response = await fetch(CRYTPOCOMPARE_ENDPOINT)
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      const json = await response.json()
+
+      console.log(json.USD)
+
+      updateEthPrice(json.USD)
+
+      return json
+    } catch (error) {
+      console.log({ error })
+      throw new Error('Failed to fetch API')
+    }
+  }
 
   let numberList: number[] = []
   let averageList: number[] = []

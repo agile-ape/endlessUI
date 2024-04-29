@@ -3,7 +3,15 @@ import { Analytics } from '@vercel/analytics/react'
 // import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useBalance, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
+import {
+  useAccount,
+  useBalance,
+  useReadContract,
+  useReadContracts,
+  useWalletClient,
+  useBlockNumber,
+} from 'wagmi'
+import { getBlockNumber } from '@wagmi/core'
 import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -20,10 +28,23 @@ import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
 import WelcomeModal from '@/components/ui/WelcomeModal'
+import { rainbowConfig } from '../../pages/_app'
 
 import type { Profile } from '../../store'
 import { z } from 'zod'
 import { getLayoutOrPageModule } from 'next/dist/server/lib/app-dir-module'
+
+import { createPublicClient, http } from 'viem'
+import { mainnet } from 'viem/chains'
+
+// const publicClient = createPublicClient({
+//   chain: mainnet,
+//   transport: http(),
+// })
+
+// const unwatch = publicClient.watchBlockNumber({
+//   onBlockNumber: (blockNumber) => console.log(blockNumber),
+// })
 
 type LayoutProps = {
   children: React.ReactNode
@@ -375,10 +396,12 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   socket.connect()
 
   const [gameEnd, setGameEnd] = useState<boolean>(false)
+  const [blockNumber, setBlockNumber] = useState<bigint>()
   useEffect(() => {
     const isGameEnd = async () => {
       try {
         await refetch()
+        setBlockNumber(await runBlockNumber())
         setGameEnd(canBuyTicket)
       } catch (error) {
         console.error(error)
@@ -442,6 +465,12 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   ]
 
   useSocketEvents(events)
+
+  const runBlockNumber = async () => {
+    return await getBlockNumber(rainbowConfig)
+  }
+
+  console.log(blockNumber)
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('showWelcomeModal')

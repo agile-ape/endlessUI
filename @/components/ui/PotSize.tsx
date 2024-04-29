@@ -59,6 +59,7 @@ export default function PotSize() {
   const winnersShare = useStoreState((state) => state.winnersShare)
   const playersShare = useStoreState((state) => state.playersShare)
   const rolloverShare = useStoreState((state) => state.rolloverShare)
+  const ethPrice = useStoreState((state) => state.ethPrice)
 
   const currentPotSize = formatNumber(formatUnits(potSize, 18), {
     maximumFractionDigits: 3,
@@ -83,6 +84,8 @@ export default function PotSize() {
     },
   )
 
+  const potSizeInUSD = Number(currentPotSize) * Number(ethPrice)
+
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
@@ -94,7 +97,7 @@ export default function PotSize() {
 
                 <span className="ml-1">(ETH)</span>
               </div>
-              <div className="flex items-end">
+              <div className="flex flex-col items-end">
                 <div
                   className="
             font-digit text-4xl text-stone-200 \
@@ -102,6 +105,7 @@ export default function PotSize() {
                 >
                   {currentPotSize}
                 </div>
+                <div className="text-2xl text-stone-100/50">≈ ${potSizeInUSD}</div>
               </div>
               {/* <AddToPot /> */}
             </div>

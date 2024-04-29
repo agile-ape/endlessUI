@@ -21,6 +21,7 @@ interface StoreModel {
   profile: Profile
   lastProfile: Profile
   canBuyTicket: boolean
+  ethPrice: number
   // fundedAmount: number
   // fundersToAmt: number
   // fundersShare: number
@@ -68,6 +69,8 @@ interface StoreModel {
   updateProfile: Action<StoreModel, Profile>
   updateLastProfile: Action<StoreModel, Profile>
   updateCanBuyTicket: Action<StoreModel, boolean>
+  updateEthPrice: Action<StoreModel, number>
+
   // updateFundedAmount: Action<StoreModel, number>
   // updateFundersToAmt: Action<StoreModel, number>
   // updateFundersShare: Action<StoreModel, number>
@@ -127,6 +130,7 @@ export const appStore = createStore<StoreModel>({
   },
 
   canBuyTicket: false,
+  ethPrice: 0,
   // fundedAmount: 0,
   // fundersToAmt: 0,
   // fundersShare: 0,
@@ -182,6 +186,9 @@ export const appStore = createStore<StoreModel>({
 
   updateCanBuyTicket: action((state, payload) => {
     state.canBuyTicket = payload
+  }),
+  updateEthPrice: action((state, payload) => {
+    state.ethPrice = payload
   }),
 
   // updateFundedAmount: action((state, payload) => {

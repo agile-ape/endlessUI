@@ -9,6 +9,9 @@ const NODE_ENV = process.env.NODE_ENV
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 // export const CHAIN_ID = 84532
 
+export const CRYTPOCOMPARE_ENDPOINT: string =
+  'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD'
+
 export let API_ENDPOINT: string
 NODE_ENV == 'development'
   ? (API_ENDPOINT = 'http://localhost:3001')
