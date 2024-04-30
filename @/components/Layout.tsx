@@ -27,8 +27,9 @@ import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
+import GameStart from '@/components/ui/GameStart'
 import GameEnd from '@/components/ui/GameEnd'
-import WelcomeModal from '@/components/ui/_WelcomeModal'
+import WelcomeModal from '@/components/ui/WelcomeModal'
 import { rainbowConfig } from '../../pages/_app'
 
 import type { Profile } from '../../store'
@@ -85,6 +86,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updateReferralsShare = useStoreActions((actions) => actions.updateReferralsShare)
   const updatePlayersPot = useStoreActions((actions) => actions.updatePlayersPot)
   const updateFirstNumber = useStoreActions((actions) => actions.updateFirstNumber)
+  const updateRoundName = useStoreActions((actions) => actions.updateRoundName)
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
@@ -215,6 +217,10 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'firstNumber',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'round',
+      },
       // {
       //   ...defaultContractObj,
       //   functionName: 'getLastRoundPlayerProfile',
@@ -256,6 +262,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
   const firstNumber = data?.[28].result || BigInt(0)
+  const roundName = data?.[29].result || ''
 
   /* 2ND ROUND
    
@@ -383,6 +390,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updateReferralsShare(Number(referralsShare))
   updatePlayersPot(Number(playersToShare))
   updateFirstNumber(Number(firstNumber))
+  updateRoundName(roundName)
 
   // updateFundedAmount(Number(formattedFundedAmount))
   // updateFundersToAmt(Number(formattedFundersToAmt))
@@ -392,21 +400,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   // updateCanFundPot(Boolean(canFundPot))
 
   socket.connect()
-
-  const [gameEnd, setGameEnd] = useState<boolean>(false)
-  const [blockNumber, setBlockNumber] = useState<bigint>()
-  useEffect(() => {
-    const isGameEnd = async () => {
-      try {
-        await refetch()
-        setBlockNumber(await runBlockNumber())
-        setGameEnd(canBuyTicket)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    isGameEnd()
-  }, [])
 
   useAccountEffect({
     onConnect(data) {
@@ -480,21 +473,14 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     return await getBlockNumber(rainbowConfig)
   }
 
-  console.log(blockNumber)
-
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('showWelcomeModal')
     const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
     return result
   })
 
-  const toggleModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-    localStorage.setItem('showWelcomeModal', 'false')
-  }
+  console.log(showWelcomeModal)
 
-  console.log(canBuyTicket)
-  console.log(gameEnd)
   return (
     <>
       <main
@@ -504,12 +490,12 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         }}
       >
         <div className="container mx-auto p-0">
-          {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
+          {showWelcomeModal ? <GameStart /> : <></>}
           <Header />
           {children}
           <Analytics />
-          <GameEnd open={!canBuyTicket} countdown={true} />
-          {/* <GameEnd open={false} countdown={true} /> */}
+          <GameEnd open={false} />
+          {/* <GameEnd open={false} /> */}
         </div>
       </main>
     </>
