@@ -84,7 +84,7 @@ const GameStart: FC<GameStartType> = () => {
     transport: http(),
   })
 
-  const START_BLOCK: number = 934_5250
+  const START_BLOCK: number = 935_5300
   const [blockNumber, setBlockNumber] = useState<string>('LOADING')
   const [timeToStart, setTimeToStart] = useState<number>()
   const [isOpen, setIsOpen] = useState<boolean>(true)
