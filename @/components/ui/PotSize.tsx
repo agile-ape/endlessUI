@@ -100,7 +100,7 @@ export default function PotSize() {
 
                 <span className="ml-1">(ETH)</span>
               </div>
-              <div className="flex flex-col items-end">
+              <div className="flex flex-col items-center">
                 <div
                   className="
             font-digit text-4xl text-stone-200 \

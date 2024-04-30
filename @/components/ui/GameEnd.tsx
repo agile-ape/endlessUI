@@ -36,7 +36,7 @@ import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import { DOCS_URL, TWITTER_URL, START_BLOCK } from '../../../services/constant'
+import { DOCS_URL, TWITTER_URL } from '../../../services/constant'
 import { VIEM_CHAIN } from '../../../services/constant'
 import { createPublicClient, http } from 'viem'
 
@@ -68,6 +68,7 @@ const GameEnd: FC<GameEndType> = ({ open, countdown }) => {
   const [isOpen, setIsOpen] = useState<boolean>(open)
   const [enabled, setEnabled] = useState<boolean>(false)
   const [blockNumber, setBlockNumber] = useState<string>('loading')
+  const [timeToStart, setTimeToStart] = useState<number>()
 
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const canClaim = useStoreState((state) => state.canClaim)
@@ -107,10 +108,13 @@ const GameEnd: FC<GameEndType> = ({ open, countdown }) => {
     // location.reload()
   }
 
+  const START_BLOCK: number = 9342350
+
   useEffect(() => {
     publicClient.watchBlockNumber({
       onBlockNumber: (blockNumber) => {
         setBlockNumber(String(blockNumber))
+        setTimeToStart(Math.round((START_BLOCK - Number(blockNumber)) * 2))
       },
     })
 
@@ -159,6 +163,7 @@ const GameEnd: FC<GameEndType> = ({ open, countdown }) => {
                   <div className="flex justify-center font-digit text-black text-3xl items-center">
                     {Number(blockNumber) || 'Loading'}
                   </div>
+                  <div className="text-2xl">≈ {timeToStart} secs</div>
                 </div>
 
                 <div className="flex items-center justify-center mb-4">
