@@ -365,7 +365,7 @@ const YourTickets = () => {
 
   const payoutPerWinner = currentWinnersPot / leaderboard.length || 0
 
-  const currentWinnings = payoutPerWinner * winningTicketCount
+  const currentWinnings = payoutPerWinner * winningTicketCount || 0
 
   const currentRolloverPot = (rolloverShare * currentPotSize) / 100
 
@@ -380,7 +380,7 @@ const YourTickets = () => {
         }),
       ) / Number(lastRoundUnclaimedPot)
 
-    currentRollover = shareOfCurrentRollover * currentRolloverPot
+    currentRollover = shareOfCurrentRollover * currentRolloverPot || 0
   }
   // setShowValue(currentAccumulated)
   // }
@@ -425,6 +425,10 @@ const YourTickets = () => {
   }, [currentAccumulated])
 
   const [showValue, setShowValue] = useState<string>('-')
+
+  console.log(currentAccumulated)
+  console.log(currentWinnings)
+  console.log(currentRollover)
 
   const totalWinnings = formatNumber(
     Number(currentAccumulated) + currentWinnings + currentRollover,
