@@ -100,8 +100,6 @@ export default function DesktopScreen() {
 
       const json = await response.json()
 
-      console.log(json.USD)
-
       updateEthPrice(json.USD)
 
       return json
@@ -141,8 +139,6 @@ export default function DesktopScreen() {
     updateNumberList(numberList)
     updateAverageList(averageList)
   }
-
-  console.log(numberList)
 
   const {
     data: referralsData,
