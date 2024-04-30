@@ -34,7 +34,6 @@ export const defaultContractObj = {
 // console.log(GAME_ADDRESS)
 
 // NEED TO SET THESE 2 UP
-export const START_BLOCK: number = 9304570
 export const VIEM_CHAIN = baseSepolia
 
 export const baseSepolia1 = defineChain({

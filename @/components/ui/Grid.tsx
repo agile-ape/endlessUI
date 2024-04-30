@@ -164,8 +164,9 @@ const Grid = () => {
 
   const [squares, setSquares] = useState<SquaresType>([])
 
-  const rows = 50
-  const columns = 10
+  // const rows = 50
+  let columns: number
+  maxAllowedNumber > 100 ? (columns = 10) : (columns = 50)
 
   let rowsOfSquares: SquareType[][] = []
 
