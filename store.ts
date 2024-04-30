@@ -59,6 +59,7 @@ interface StoreModel {
   referralsShare: number
   playersPot: number
   firstNumber: number
+  roundName: string
 
   numberList: number[]
   averageList: number[]
@@ -106,6 +107,7 @@ interface StoreModel {
   updateReferralsShare: Action<StoreModel, number>
   updatePlayersPot: Action<StoreModel, number>
   updateFirstNumber: Action<StoreModel, number>
+  updateRoundName: Action<StoreModel, string>
 
   updateNumberList: Action<StoreModel, number[]>
   updateAverageList: Action<StoreModel, number[]>
@@ -167,6 +169,7 @@ export const appStore = createStore<StoreModel>({
   referralsShare: 0,
   playersPot: 0,
   firstNumber: 0,
+  roundName: '',
 
   numberList: [],
   averageList: [],
@@ -296,6 +299,10 @@ export const appStore = createStore<StoreModel>({
   }),
   updateFirstNumber: action((state, payload) => {
     state.firstNumber = payload
+  }),
+
+  updateRoundName: action((state, payload) => {
+    state.roundName = payload
   }),
 
   updateNumberList: action((state, payload) => {

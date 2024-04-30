@@ -23,16 +23,18 @@ const CursorSVG = () => (
 
 // Title: FC<TitleType> = () => {
 const Title = () => {
-  const { data, refetch } = useReadContracts({
-    contracts: [
-      {
-        ...defaultContractObj,
-        functionName: 'canBuyTicket',
-      },
-    ],
-  })
+  // const { data, refetch } = useReadContracts({
+  //   contracts: [
+  //     {
+  //       ...defaultContractObj,
+  //       functionName: 'canBuyTicket',
+  //     },
+  //   ],
+  // })
 
-  const canBuyTicket = Boolean(data?.[0].result || false)
+  // const canBuyTicket = Boolean(data?.[0].result || false)
+
+  const roundName = useStoreState((state) => state.roundName)
 
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
@@ -63,7 +65,7 @@ const Title = () => {
 
   return (
     <div className="text-3xl flex flex-col justify-center items-center">
-      <div className="text-xl font-digit">Round 1</div>
+      <div className="text-xl font-digit">Round {roundName}</div>
       <div className="text-3xl gap-0 font-digit text-gray-400 mx-3 capitalize">
         {displayResponse}
         {!completedTyping && <CursorSVG />}
