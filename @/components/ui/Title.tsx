@@ -34,7 +34,6 @@ const Title = () => {
 
   const canBuyTicket = Boolean(data?.[0].result || false)
 
-  console.log(canBuyTicket)
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
 
@@ -63,11 +62,12 @@ const Title = () => {
   }, [])
 
   return (
-    <div className="text-3xl font-digit text-gray-400 mx-3 capitalize">
-      <p>
+    <div className="text-3xl flex flex-col justify-center items-center">
+      <div className="text-xl font-digit">Round 1</div>
+      <div className="text-3xl gap-0 font-digit text-gray-400 mx-3 capitalize">
         {displayResponse}
         {!completedTyping && <CursorSVG />}
-      </p>
+      </div>
     </div>
   )
 }

@@ -85,6 +85,7 @@ export default function Countdown() {
   */
 
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
+  const canClaim = useStoreState((state) => state.canClaim)
   const gameTime = useStoreState((state) => state.gameTime)
   const timeAddon = useStoreState((state) => state.timeAddon)
   const startGameFlag = useStoreState((state) => state.startGameFlag)
@@ -170,10 +171,10 @@ export default function Countdown() {
                 End Game
               </Button>
             </>
+          ) : canClaim ? (
+            <div className="capitalized text-2xl">ROUND ENDED</div>
           ) : (
-            <>
-              <div className="capitalized text-2xl">GAME ENDED</div>
-            </>
+            <div className="capitalized text-2xl">ROUND CLOSED</div>
           )}
         </div>
       )}

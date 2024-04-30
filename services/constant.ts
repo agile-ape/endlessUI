@@ -1,13 +1,18 @@
 import { GAME_ABI } from './abi/game'
 
 import { defineChain } from 'viem'
+import { mainnet, baseSepolia } from 'viem/chains'
+
 /*---------------------------------------- ENV ---------------------------------------- */
 // import from .env
 const NODE_ENV = process.env.NODE_ENV
-console.log(NODE_ENV)
+// console.log(NODE_ENV)
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 // export const CHAIN_ID = 84532
+
+export const CRYTPOCOMPARE_ENDPOINT: string =
+  'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD'
 
 export let API_ENDPOINT: string
 NODE_ENV == 'development'
@@ -27,6 +32,10 @@ export const defaultContractObj = {
 }
 
 // console.log(GAME_ADDRESS)
+
+// NEED TO SET THESE 2 UP
+export const START_BLOCK: number = 9304570
+export const VIEM_CHAIN = baseSepolia
 
 export const baseSepolia1 = defineChain({
   id: 84532,

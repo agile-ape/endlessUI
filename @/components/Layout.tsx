@@ -3,7 +3,16 @@ import { Analytics } from '@vercel/analytics/react'
 // import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
 import { useTheme } from 'next-themes'
-import { useAccount, useBalance, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
+import {
+  useAccount,
+  useBalance,
+  useReadContract,
+  useReadContracts,
+  useWalletClient,
+  useBlockNumber,
+  useWatchContractEvent,
+} from 'wagmi'
+import { getBlockNumber } from '@wagmi/core'
 import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
 import Metadata, { type MetaProps } from './Metadata'
 import dynamic from 'next/dynamic'
@@ -19,8 +28,15 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
+import WelcomeModal from '@/components/ui/_WelcomeModal'
+import { rainbowConfig } from '../../pages/_app'
 
 import type { Profile } from '../../store'
+import { z } from 'zod'
+import { getLayoutOrPageModule } from 'next/dist/server/lib/app-dir-module'
+
+import { createPublicClient, http } from 'viem'
+import { mainnet, baseSepolia } from 'viem/chains'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -28,6 +44,7 @@ type LayoutProps = {
 }
 
 const Layout = ({ children, metadata }: LayoutProps) => {
+  const updateLastProfile = useStoreActions((actions) => actions.updateLastProfile)
   const updateProfile = useStoreActions((actions) => actions.updateProfile)
   const updateCanBuyTicket = useStoreActions((actions) => actions.updateCanBuyTicket)
   // const updateFundedAmount = useStoreActions((actions) => actions.updateFundedAmount)
@@ -38,6 +55,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   const updateCanClaim = useStoreActions((actions) => actions.updateCanClaim)
   const updateUnclaimedPot = useStoreActions((actions) => actions.updateUnclaimedPot)
+  const updateLastRoundUnclaimedPot = useStoreActions(
+    (actions) => actions.updateLastRoundUnclaimedPot,
+  )
   const updateRolloverShare = useStoreActions((actions) => actions.updateRolloverShare)
   const updateRolloverPot = useStoreActions((actions) => actions.updateRolloverPot)
   const updateReferralsPot = useStoreActions((actions) => actions.updateReferralsPot)
@@ -64,6 +84,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const updatePlayersShare = useStoreActions((actions) => actions.updatePlayersShare)
   const updateReferralsShare = useStoreActions((actions) => actions.updateReferralsShare)
   const updatePlayersPot = useStoreActions((actions) => actions.updatePlayersPot)
+  const updateFirstNumber = useStoreActions((actions) => actions.updateFirstNumber)
 
   const updateNumberList = useStoreActions((actions) => actions.updateNumberList)
   const updateAverageList = useStoreActions((actions) => actions.updateAverageList)
@@ -190,9 +211,18 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'playersPot',
       },
+      {
+        ...defaultContractObj,
+        functionName: 'firstNumber',
+      },
       // {
       //   ...defaultContractObj,
-      //   functionName: 'lastRound',
+      //   functionName: 'getLastRoundPlayerProfile',
+      //   args: [address as `0x${string}`],
+      // },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'getLastRoundUnclaimedPot',
       // },
     ],
   })
@@ -225,26 +255,50 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const playersShare = data?.[25].result || BigInt(0)
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
+  const firstNumber = data?.[28].result || BigInt(0)
 
-  console.log(canBuyTicket)
-  console.log(canClaim)
-  console.log(unclaimedPot)
-  // const lastRound = data?.[28].result || false
+  /* 2ND ROUND
+   
+  const { data: lastRoundData } = useReadContracts({
+    contracts: [
+          {
+        ...defaultContractObj,
+        functionName: 'getLastRoundPlayerProfile',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getLastRoundUnclaimedPot',
+      },
+    ]})
+    
+    const lastRoundPlayerProfile = lastRoundData?.[0].result || null
+    const lastRoundUnclaimedPot = lastRoundData?.[1].result || BigInt(0)
+    
+    const formattedLastRoundUnclaimedPot = formatNumber(
+      formatUnits(BigInt(lastRoundUnclaimedPot), 18),
+      {
+        maximumFractionDigits: 5,
+        minimumFractionDigits: 0,
+      },
+    )
+    updateLastRoundUnclaimedPot(Number(formattedLastRoundUnclaimedPot))
 
-  // const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
+      
+    if (lastRoundPlayerProfile) {
+      const { profileId, player, isClaimed, claimAmount } = lastRoundPlayerProfile
+      let profile: Profile = {
+        profileId: profileId,
+        player: player,
+        isClaimed: isClaimed,
+        claimAmount: claimAmount,
+      }
+      updateLastProfile(profile)
+    }
 
-  // const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
 
-  // const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
+      
+  */
 
   const formattedUnclaimedPot = formatNumber(formatUnits(BigInt(unclaimedPot), 18), {
     maximumFractionDigits: 5,
@@ -297,7 +351,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       isClaimed: isClaimed,
       claimAmount: claimAmount,
     }
-    console.log(profile)
     updateProfile(profile)
   }
 
@@ -329,6 +382,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   updatePlayersShare(Number(playersShare))
   updateReferralsShare(Number(referralsShare))
   updatePlayersPot(Number(playersToShare))
+  updateFirstNumber(Number(firstNumber))
 
   // updateFundedAmount(Number(formattedFundedAmount))
   // updateFundersToAmt(Number(formattedFundersToAmt))
@@ -339,8 +393,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   socket.connect()
 
+  const [gameEnd, setGameEnd] = useState<boolean>(false)
+  const [blockNumber, setBlockNumber] = useState<bigint>()
   useEffect(() => {
-    refetch()
+    const isGameEnd = async () => {
+      try {
+        await refetch()
+        setBlockNumber(await runBlockNumber())
+        setGameEnd(canBuyTicket)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    isGameEnd()
   }, [])
 
   useAccountEffect({
@@ -397,8 +462,39 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     // },
   ]
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'GameEnd',
+    onLogs() {
+      toast({
+        variant: 'info',
+        description: <p className="text-xl">🙇‍♂️ The round has ended</p>,
+      })
+    },
+    poll: true,
+  })
+
   useSocketEvents(events)
 
+  const runBlockNumber = async () => {
+    return await getBlockNumber(rainbowConfig)
+  }
+
+  console.log(blockNumber)
+
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
+    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
+    return result
+  })
+
+  const toggleModal = () => {
+    setShowWelcomeModal((prevState) => !prevState)
+    localStorage.setItem('showWelcomeModal', 'false')
+  }
+
+  console.log(canBuyTicket)
+  console.log(gameEnd)
   return (
     <>
       <main
@@ -408,10 +504,12 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         }}
       >
         <div className="container mx-auto p-0">
+          {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
           <Header />
           {children}
           <Analytics />
-          <GameEnd open={!canBuyTicket} />
+          <GameEnd open={!canBuyTicket} countdown={true} />
+          {/* <GameEnd open={false} countdown={true} /> */}
         </div>
       </main>
     </>

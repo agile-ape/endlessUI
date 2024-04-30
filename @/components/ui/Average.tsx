@@ -81,7 +81,6 @@ export default function Average() {
   // }
 
   const currentAverage = useStoreState((state) => state.currentAverage)
-  console.log(currentAverage)
   const [showAverage, setShowAverage] = useState(currentAverage)
   // const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -116,7 +115,6 @@ export default function Average() {
 
   /*
   useEffect(() => {
-    console.log(isFirstRender)
     // Skip the first render
     if (isFirstRender.current) {
       isFirstRender.current = false
@@ -199,7 +197,7 @@ export default function Average() {
       <div>
         <div
           className="flex flex-col items-center py-2 \
-        rounded-lg px-6 border border-indigo-400 text-gray-400"
+        rounded-lg px-6 border border-indigo-300 text-gray-400"
         >
           <span className="text-xl">{canBuyTicket ? 'Current Average' : 'Final Average'}</span>
           <div className="font-digit text-4xl">{showAverage}</div>

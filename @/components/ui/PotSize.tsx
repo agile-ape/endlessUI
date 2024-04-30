@@ -58,6 +58,8 @@ export default function PotSize() {
   const potSize = useStoreState((state) => state.potSize)
   const winnersShare = useStoreState((state) => state.winnersShare)
   const playersShare = useStoreState((state) => state.playersShare)
+  const rolloverShare = useStoreState((state) => state.rolloverShare)
+  const ethPrice = useStoreState((state) => state.ethPrice)
 
   const currentPotSize = formatNumber(formatUnits(potSize, 18), {
     maximumFractionDigits: 3,
@@ -74,6 +76,19 @@ export default function PotSize() {
     minimumFractionDigits: 0,
   })
 
+  const currentRolloverPot = formatNumber(
+    (Number(formatUnits(potSize, 18)) * rolloverShare) / 100,
+    {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+    },
+  )
+
+  const potSizeInUSD = formatNumber(Number(currentPotSize) * Number(ethPrice), {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
@@ -85,13 +100,16 @@ export default function PotSize() {
 
                 <span className="ml-1">(ETH)</span>
               </div>
-              <div className="flex items-end">
+              <div className="flex flex-col items-end">
                 <div
                   className="
             font-digit text-4xl text-stone-200 \
             transition-all ease-linear place-self-center animate-pulse"
                 >
                   {currentPotSize}
+                </div>
+                <div className="text-2xl text-stone-100/50">
+                  <span className="text-lg">≈ </span>${potSizeInUSD}
                 </div>
               </div>
               {/* <AddToPot /> */}
@@ -106,6 +124,10 @@ export default function PotSize() {
           <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
             <span className="text-base">🟡</span> Winners share:{' '}
             <span className="font-digit text-2xl">{currentWinnersPot} </span>
+          </div>
+          <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
+            <span className="text-base">🔵</span> Rollover share:{' '}
+            <span className="font-digit text-2xl">{currentRolloverPot} </span>
           </div>
         </TooltipContent>
       </Tooltip>

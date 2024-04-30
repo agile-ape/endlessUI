@@ -89,11 +89,6 @@ function Referral() {
   const referral = useStoreState((state) => state.referral)
   const referralList = useStoreState((state) => state.referralList)
 
-  console.log(referral)
-  console.log(referralList)
-  console.log(typeof referralList)
-  console.log(referralList[0]?.referralCode)
-
   // const updateReferral = useStoreActions((actions) => actions.updateReferral)
   // const updateReferralList = useStoreActions((actions) => actions.updateReferralList)
 
@@ -190,14 +185,13 @@ function Referral() {
         // isTake: true,
       }
       const responseData = await poster(data, `/players/${data.player}`)
-      console.log(responseData)
 
       if (responseData?.status === 201) {
         setSubmitted(true)
       }
 
       if (responseData?.status !== 201) {
-        console.log('error')
+        console.error('error')
       }
 
       return responseData
@@ -221,7 +215,6 @@ function Referral() {
   //   }
   // }
 
-  // console.log(value)
   return (
     <>
       <Popover>
@@ -237,8 +230,8 @@ function Referral() {
           <div className="flex flex-col gap-4 justify-center items-center p-4">
             <div>
               <div className="text-3xl">Submit referrer</div>
-              <div className="text-xl">
-                Both of you get 5% of your purchases.
+              <div className="text-xl flex flex-col">
+                <span>Both of you get 5% of your purchases.</span>
                 <a href={DOCS_URL} target="_blank" className="ml-1 underline">
                   Learn more
                 </a>

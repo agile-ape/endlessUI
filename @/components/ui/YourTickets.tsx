@@ -80,6 +80,7 @@ const YourTickets = () => {
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const winnersPot = useStoreState((state) => state.winnersPot)
   const winnersShare = useStoreState((state) => state.winnersShare)
+  const rolloverShare = useStoreState((state) => state.rolloverShare)
   const potSize = useStoreState((state) => state.potSize)
   const ticketsBought = useStoreState((state) => state.ticketsBought)
   // const playersPot = useStoreState((state) => state.playersPot)
@@ -88,6 +89,8 @@ const YourTickets = () => {
   const profile = useStoreState((state) => state.profile)
   const canClaim = useStoreState((state) => state.canClaim)
   const unclaimedPot = useStoreState((state) => state.unclaimedPot)
+  const lastRoundUnclaimedPot = useStoreState((state) => state.lastRoundUnclaimedPot)
+  const lastProfile = useStoreState((state) => state.lastProfile)
 
   console.log(playerTickets)
   /* read contracts
@@ -361,10 +364,25 @@ const YourTickets = () => {
 
   const currentWinnersPot = (winnersShare * currentPotSize) / 100
 
-  const payoutPerWinner = currentWinnersPot / leaderboard.length
+  const payoutPerWinner = currentWinnersPot / leaderboard.length || 0
 
   const currentWinnings = payoutPerWinner * winningTicketCount
 
+  const currentRolloverPot = (rolloverShare * currentPotSize) / 100
+
+  let currentRollover: number = 0
+
+  if (lastProfile.isClaimed === false) {
+    const shareOfCurrentRollover =
+      Number(
+        formatNumber(formatUnits(lastProfile.claimAmount, 18), {
+          maximumFractionDigits: 7,
+          minimumFractionDigits: 0,
+        }),
+      ) / Number(lastRoundUnclaimedPot)
+
+    currentRollover = shareOfCurrentRollover * currentRolloverPot
+  }
   // setShowValue(currentAccumulated)
   // }
   // localStorage.setItem('accumulatedValue', String(currentAccumulated))
@@ -409,10 +427,13 @@ const YourTickets = () => {
 
   const [showValue, setShowValue] = useState<string>('-')
 
-  const totalWinnings = formatNumber(Number(currentAccumulated) + currentWinnings, {
-    maximumFractionDigits: 5,
-    minimumFractionDigits: 0,
-  })
+  const totalWinnings = formatNumber(
+    Number(currentAccumulated) + currentWinnings + currentRollover,
+    {
+      maximumFractionDigits: 5,
+      minimumFractionDigits: 0,
+    },
+  )
 
   const shareIfRoll = formatNumber((Number(totalWinnings) / Number(unclaimedPot)) * 100, {
     maximumFractionDigits: 2,
@@ -422,14 +443,14 @@ const YourTickets = () => {
   const { data, isPending, writeContract, writeContractAsync } = useWriteContract()
 
   const claimHandler = async () => {
-    console.log('claimedPressed')
+    // console.log('claimedPressed')
 
     try {
       await writeContractAsync({
         ...defaultContractObj,
         functionName: 'claim',
       })
-      console.log('claimedPressed')
+      // console.log('claimedPressed')
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -438,15 +459,22 @@ const YourTickets = () => {
     }
   }
 
+  const ethPrice = useStoreState((state) => state.ethPrice)
+
+  const winningsInUSD = formatNumber(Number(totalWinnings) * Number(ethPrice), {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+
   return (
-    <div className="flex flex-col py-2 px-2 my-2 items-center justify-center mx-auto">
+    <div className="flex flex-col py-2 sm:px-2 my-2 items-center justify-center mx-auto">
       <div
         className="flex flex-col items-center py-2 \
         rounded-lg px-6 border border-neutral-100 text-neutral-300"
       >
         <span className="text-xl">You are accumulating (ETH)</span>
 
-        <div className="flex my-1 justify-center items-center">
+        <div className="flex flex-col sm:flex-row my-1 justify-center items-center">
           <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
             <span className="text-base mr-1">🟣</span>{' '}
             {/* <span className="font-digit text-2xl mr-2">{currentAccumulated}</span>{' '} */}
@@ -458,7 +486,7 @@ const YourTickets = () => {
             />
           </div>
 
-          <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
+          <div className="px-2 max-w-[240px] text-lg cursor-default flex justify-center items-center">
             <span className="text-base mr-1">🟡</span>{' '}
             {/* <span className="font-digit text-2xl mr-2">{currentWinnings}</span>{' '} */}
             <CountUp
@@ -468,11 +496,21 @@ const YourTickets = () => {
               end={Number(currentWinnings)}
             />
           </div>
+
+          <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
+            <span className="text-base mr-1">🔵</span>{' '}
+            {/* <span className="font-digit text-2xl mr-2">{currentWinnings}</span>{' '} */}
+            <CountUp
+              decimals={5}
+              duration={2.75}
+              className="font-digit text-2xl mr-2"
+              end={Number(currentRollover)}
+            />
+          </div>
         </div>
 
-        {!canBuyTicket && canClaim && (
-          <div className="text-2xl border border-gray-100 p-2 bg-zinc-700 rounded-lg my-4">
-            {/* <div className="flex my-1 justify-center items-center">
+        <div className="text-2xl border border-gray-100 p-2 bg-zinc-700 rounded-lg my-4">
+          {/* <div className="flex my-1 justify-center items-center">
               Total accumulated: {totalWinnings} ETH
             </div>
             <div className="flex my-1 justify-center items-center">
@@ -482,37 +520,50 @@ const YourTickets = () => {
               % share if roll: {shareIfRoll}%
             </div> */}
 
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Total winnings:</p>
-              <p className="text-right"> {totalWinnings} ETH </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">Unclaimed pot so far:</p>
-              <p className="text-right"> {unclaimedPot} ETH </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-              <p className="text-left">% share if roll:</p>
-              <p className="text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
-            </div>
+          <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+            <p className="sm:text-left">Total winnings:</p>
+            <p className="sm:text-right">
+              {' '}
+              {totalWinnings} ETH{' '}
+              <span className="text-stone-100/70">
+                <span className="text-lg">(≈ </span>${winningsInUSD})
+              </span>
+            </p>
           </div>
-        )}
+
+          {!canBuyTicket && (
+            <>
+              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+                <p className="sm:text-left">Unclaimed pot so far:</p>
+                <p className="sm:text-right"> {unclaimedPot} ETH </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+                <p className="sm:text-left">
+                  {canClaim ? '% share so far if roll:' : 'Share of next rollover pot:'}
+                </p>
+                <p className="sm:text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
+              </div>
+            </>
+          )}
+        </div>
 
         <Button
-          className="w-[200px] text-2xl"
+          className="w-[240px] text-2xl"
           variant="claim"
           onClick={claimHandler}
           disabled={canBuyTicket || profile.isClaimed || !canClaim}
           // isLoading={isPending}
         >
-          {canBuyTicket
-            ? 'Claim'
-            : canClaim
-              ? profile.isClaimed
-                ? 'You have claimed'
-                : 'Claim'
-              : 'You have rolled to next pot'}
+          {isConnected
+            ? canBuyTicket
+              ? 'Claim'
+              : canClaim
+                ? profile.isClaimed
+                  ? 'You have claimed'
+                  : 'Claim'
+                : 'You rolled to next pot'
+            : 'Connect to claim'}
         </Button>
       </div>
 
@@ -525,7 +576,7 @@ const YourTickets = () => {
       <div className="flex">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <section className="mx-auto">
-          <div className="w-[380px] overflow-hidden" ref={emblaRef}>
+          <div className="w-[240px] sm:w-[420px] overflow-hidden" ref={emblaRef}>
             <div className="flex touch-pan-x">
               <>
                 {

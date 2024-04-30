@@ -19,29 +19,55 @@ import {
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
 import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 type SquareProps = {
   id?: number
   occurrences?: number | 0
   average: number | 0
   last?: boolean
+  first?: boolean
 }
 
 type SquareType = ReactElement<SquareProps>
 type SquaresType = SquareType[][]
 
-const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0, last }) => {
+const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0, last, first }) => {
   const chosenColorIntensity = occurrences * 1 // sums to 1
   // const averageColorIntensity = Math.min(average, 2) * 1 // sums to 1
 
   // purple
   const chosenColor = `rgba(168, 85, 247, ${chosenColorIntensity})`
 
-  let averageColor: string
-  const lastColor: string = 'rgb(220, 38, 38)'
+  // let averageColor: string
+  // const lastColor: string = 'rgb(220, 38, 38)'
   // yellow
 
-  average > 0 ? (averageColor = `rgb(253, 224, 71)`) : (averageColor = ``)
+  // average > 0 ? (averageColor = `rgb(253, 224, 71)`) : (averageColor = ``)
+
+  const averageColor: string = `rgb(253, 224, 71)`
+  const lastColor: string = 'rgb(220, 38, 38)'
+  const firstColor: string = 'rgb(240, 141, 15)'
+  const firstAndLastColor: string = 'rgb(20, 23, 13)'
+
+  let nextColor: string = ''
+
+  if (average > 0) {
+    nextColor = averageColor
+  }
+
+  if (first) {
+    nextColor = firstColor
+  }
+
+  if (last) {
+    nextColor = lastColor
+  }
+
+  if (first && last) {
+    nextColor = firstAndLastColor
+  }
+
   // average > 0 && last === true ? (averageColor = `rgb(253, 131, 13)`) : (averageColor = ``)
   // last && average > 0 ? (averageColor = `rgb(253, 131, 13)`) : (averageColor = ``)
 
@@ -65,7 +91,7 @@ const Square: FC<SquareProps> = ({ id, occurrences = 0, average = 0, last }) => 
             <div
               className="absolute w-5 h-5 mix-blend-hue \
       flex justify-center items-center"
-              style={last ? { backgroundColor: lastColor } : { backgroundColor: averageColor }}
+              style={{ backgroundColor: nextColor }}
             >
               {/* <span className="text-black">{occurrences}</span> */}
             </div>
@@ -124,6 +150,7 @@ const Grid = () => {
   const ticketsBought = Number(data?.[2].result || BigInt(0))
 
   */
+  const firstNumber = useStoreState((state) => state.firstNumber)
 
   const numberList = useStoreState((state) => state.numberList)
   const averageList = useStoreState((state) => state.averageList)
@@ -132,17 +159,19 @@ const Grid = () => {
   const totalNumber = useStoreState((state) => state.totalNumber)
   const ticketsBought = useStoreState((state) => state.ticketsBought)
   const leaderboard = useStoreState((state) => state.leaderboard)
+  const minAllowedNumber = useStoreState((state) => state.minAllowedNumber)
+  const maxAllowedNumber = useStoreState((state) => state.maxAllowedNumber)
 
   const [squares, setSquares] = useState<SquaresType>([])
 
   const rows = 50
-  const columns = 50
+  const columns = 10
 
   let rowsOfSquares: SquareType[][] = []
 
   const initialSquares = () => {
     let numberArray: SquareType[] = []
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i <= maxAllowedNumber; i++) {
       numberArray.push(<Square key={i} id={i} occurrences={0} average={0} />)
     }
     rowsOfSquares = chunkArray(numberArray, columns)
@@ -191,6 +220,12 @@ const Grid = () => {
               })
               squares[i][j] = updatedSquare
             }
+            if (Number(square.key) === firstNumber) {
+              const firstSquare = React.cloneElement(square, {
+                occurrences: (square.props.occurrences || 0) + 1,
+              })
+              squares[i][j] = firstSquare
+            }
           }
         }
         setSquares([...squares]) // Trigger re-render
@@ -209,7 +244,12 @@ const Grid = () => {
                 average: (square.props.average || 0) + 1,
               })
               squares[i][j] = updatedSquare
-            } else if (Number(square.key) == lastAvgNumber) {
+            } else if (Number(square.key) === firstNumber) {
+              const firstSquare = React.cloneElement(square, {
+                first: true,
+              })
+              squares[i][j] = firstSquare
+            } else if (Number(square.key) === lastAvgNumber) {
               const lastSquare = React.cloneElement(square, {
                 last: true,
               })
@@ -230,70 +270,84 @@ const Grid = () => {
     // setButtonState('done')
   }
 
+  const { xs } = useWindowSize()
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="text-center text-3xl">Catching the average</DialogTitle>
         <DialogDescription className="text-center text-2xl">
-          <p className="flex gap-4">
+          <p className="flex flex-col sm:flex-row gap-4">
             <span>Current average: {currentAverage}</span>
             <span>Total number: {totalNumber}</span>
             <span>Total bought: {ticketsBought}</span>
           </p>
 
-          <div className="text-yellow-500 ">Winning disk id </div>
-          <div
-            className="text-yellow-400  \
-         text-4xl \
-        flex overflow-auto max-w-[480px]"
-          >
-            {leaderboard.map((number, index) => (
-              <span className="border px-3 border-stone-500" key={index}>
-                {number}
-              </span>
-            ))}
-          </div>
-        </DialogDescription>
-      </DialogHeader>
-
-      <div className="flex flex-col justify-center items-center overflow-auto">
-        <>
-          {squares.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex">
-              {row.map((item, columnIndex) => (
-                <div key={columnIndex} className="">
-                  {item}
-                </div>
+          <div className="my-4">
+            <div className="text-yellow-500 ">Winning disk id </div>
+            <div
+              className="text-yellow-400  \
+            text-4xl \
+            flex overflow-auto max-w-[480px]"
+            >
+              {leaderboard.map((number, index) => (
+                <span className="border px-3 border-stone-500" key={index}>
+                  {number}
+                </span>
               ))}
             </div>
-          ))}
-        </>
-      </div>
+          </div>
 
-      <div className="text-center text-2xl"> 🟣 Numbers Picked 🟡 Average 🔴 Current Average </div>
+          <div className="flex flex-col justify-center items-center overflow-auto">
+            {xs ? (
+              <div className="my-20 border border-white p-10">View on desktop</div>
+            ) : (
+              <>
+                {squares.map((row, rowIndex) => (
+                  <div key={rowIndex} className="flex">
+                    {row.map((item, columnIndex) => (
+                      <div key={columnIndex} className="">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
 
-      <div className="flex">
-        <Button
-          variant="run"
-          onClick={() => numberRun()}
-          className={cn(
-            // buttonState === 'running' ? '' : '',
-            'flex flex-col items-center \
-      rounded-lg px-6 mr-2',
+          <div className="text-center text-base sm:text-2xl">
+            {' '}
+            🟣 # Picked 🟡 Average 🔴 Current Avg 🟠 First #{' '}
+          </div>
+          {xs ? (
+            <></>
+          ) : (
+            <div className="flex justify-center">
+              <Button
+                variant="run"
+                onClick={() => numberRun()}
+                className={cn(
+                  // buttonState === 'running' ? '' : '',
+                  'flex flex-col items-center \
+            rounded-lg px-6 mr-2',
+                )}
+              >
+                Run
+              </Button>
+
+              <Button
+                variant="reset"
+                onClick={() => clearSquares()}
+                className="flex flex-col items-center \
+          rounded-lg px-6 mx-2"
+              >
+                Reset
+              </Button>
+            </div>
           )}
-        >
-          Run
-        </Button>
-
-        <Button
-          variant="reset"
-          onClick={() => clearSquares()}
-          className="flex flex-col items-center \
-      rounded-lg px-6 mx-2"
-        >
-          Reset
-        </Button>
-      </div>
+        </DialogDescription>
+      </DialogHeader>
     </>
   )
 }

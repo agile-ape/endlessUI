@@ -1,7 +1,12 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 // import type { IApp, Ticket, Event } from 'types/app'
-import { API_ENDPOINT, GAME_ADDRESS, CHAIN_LIST } from '../../services/constant'
+import {
+  API_ENDPOINT,
+  GAME_ADDRESS,
+  CHAIN_LIST,
+  CRYTPOCOMPARE_ENDPOINT,
+} from '../../services/constant'
 import { formatUnits } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {

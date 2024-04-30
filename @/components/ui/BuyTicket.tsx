@@ -13,11 +13,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from '../shadcn/use-toast'
 
-const numberSchema = z
-  .number()
-  .max(1000, { message: 'Number must be less than 1000' })
-  .min(0, { message: 'No negative numbers' })
-
 export default function BuyTicket() {
   const [value, setValue] = useState<number>()
 
@@ -46,15 +41,15 @@ export default function BuyTicket() {
       },
     ],
   })
-
+  
   const currentAverage = Number(data?.[0].result || BigInt(0))
   const ticketsBought = Number(data?.[1].result || BigInt(0))
   const leaderboard: readonly bigint[] = data?.[2].result || []
   const ticketPrice = data?.[3].result || BigInt(0)
   const canBuyTicket = data?.[4].result || false
-
+  
   let winningNumbers: number[] = []
-
+  
   for (let i = 0; i < leaderboard.length; i++) {
     winningNumbers[i] = Number(leaderboard[i])
   }
@@ -63,7 +58,7 @@ export default function BuyTicket() {
     maximumFractionDigits: 3,
     minimumFractionDigits: 3,
   })
-
+  
   */
 
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
@@ -74,8 +69,14 @@ export default function BuyTicket() {
 
   const ticketsBought = useStoreState((state) => state.ticketsBought)
   const ticketPrice = useStoreState((state) => state.ticketPrice)
+  const minAllowedNumber = useStoreState((state) => state.minAllowedNumber)
+  const maxAllowedNumber = useStoreState((state) => state.maxAllowedNumber)
 
-  console.log(canBuyTicket)
+  const numberSchema = z
+    .number()
+    .max(maxAllowedNumber, { message: `Number must be less than ${maxAllowedNumber}` })
+    .min(minAllowedNumber, { message: 'No negative numbers' })
+
   const { data: hash, isPending, writeContract, writeContractAsync } = useWriteContract()
 
   const formattedTicketPrice = formatNumber(formatUnits(ticketPrice, 18), {
@@ -84,7 +85,7 @@ export default function BuyTicket() {
   })
 
   const buyTicketHandler = async () => {
-    console.log('buyTicketPressed')
+    // console.log('buyTicketPressed')
 
     try {
       const validatedData = numberSchema.parse(value)
@@ -94,7 +95,7 @@ export default function BuyTicket() {
         value: ticketPrice,
         args: [BigInt(validatedData)],
       })
-      console.log('buyTicketPressedEnd')
+      // console.log('buyTicketPressedEnd')
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.errors.map((err) => ({
@@ -116,7 +117,7 @@ export default function BuyTicket() {
   return (
     <div className="flex flex-col items-center justify-center gap-2 mt-4">
       <label htmlFor="number" className="text-xl text-center text-gray-300">
-        Pick a number from 0 - 999
+        Pick a number from {minAllowedNumber} - {maxAllowedNumber}
       </label>
       <div
         className="border-[2px] border-gray-400 \
