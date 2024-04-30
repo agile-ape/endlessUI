@@ -19,6 +19,7 @@ import {
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
 import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 type SquareProps = {
   id?: number
@@ -269,70 +270,84 @@ const Grid = () => {
     // setButtonState('done')
   }
 
+  const { xs } = useWindowSize()
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="text-center text-3xl">Catching the average</DialogTitle>
         <DialogDescription className="text-center text-2xl">
-          <p className="flex gap-4">
+          <p className="flex flex-col sm:flex-row gap-4">
             <span>Current average: {currentAverage}</span>
             <span>Total number: {totalNumber}</span>
             <span>Total bought: {ticketsBought}</span>
           </p>
 
-          <div className="text-yellow-500 ">Winning disk id </div>
-          <div
-            className="text-yellow-400  \
-         text-4xl \
-        flex overflow-auto max-w-[480px]"
-          >
-            {leaderboard.map((number, index) => (
-              <span className="border px-3 border-stone-500" key={index}>
-                {number}
-              </span>
-            ))}
-          </div>
-        </DialogDescription>
-      </DialogHeader>
-
-      <div className="flex flex-col justify-center items-center overflow-auto">
-        <>
-          {squares.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex">
-              {row.map((item, columnIndex) => (
-                <div key={columnIndex} className="">
-                  {item}
-                </div>
+          <div className="my-4">
+            <div className="text-yellow-500 ">Winning disk id </div>
+            <div
+              className="text-yellow-400  \
+            text-4xl \
+            flex overflow-auto max-w-[480px]"
+            >
+              {leaderboard.map((number, index) => (
+                <span className="border px-3 border-stone-500" key={index}>
+                  {number}
+                </span>
               ))}
             </div>
-          ))}
-        </>
-      </div>
+          </div>
 
-      <div className="text-center text-2xl"> 🟣 # Picked 🟡 Average 🔴 Current Avg 🟠 First # </div>
+          <div className="flex flex-col justify-center items-center overflow-auto">
+            {xs ? (
+              <div className="my-20 border border-white p-10">View on desktop</div>
+            ) : (
+              <>
+                {squares.map((row, rowIndex) => (
+                  <div key={rowIndex} className="flex">
+                    {row.map((item, columnIndex) => (
+                      <div key={columnIndex} className="">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
 
-      <div className="flex">
-        <Button
-          variant="run"
-          onClick={() => numberRun()}
-          className={cn(
-            // buttonState === 'running' ? '' : '',
-            'flex flex-col items-center \
-      rounded-lg px-6 mr-2',
+          <div className="text-center text-base sm:text-2xl">
+            {' '}
+            🟣 # Picked 🟡 Average 🔴 Current Avg 🟠 First #{' '}
+          </div>
+          {xs ? (
+            <></>
+          ) : (
+            <div className="flex justify-center">
+              <Button
+                variant="run"
+                onClick={() => numberRun()}
+                className={cn(
+                  // buttonState === 'running' ? '' : '',
+                  'flex flex-col items-center \
+            rounded-lg px-6 mr-2',
+                )}
+              >
+                Run
+              </Button>
+
+              <Button
+                variant="reset"
+                onClick={() => clearSquares()}
+                className="flex flex-col items-center \
+          rounded-lg px-6 mx-2"
+              >
+                Reset
+              </Button>
+            </div>
           )}
-        >
-          Run
-        </Button>
-
-        <Button
-          variant="reset"
-          onClick={() => clearSquares()}
-          className="flex flex-col items-center \
-      rounded-lg px-6 mx-2"
-        >
-          Reset
-        </Button>
-      </div>
+        </DialogDescription>
+      </DialogHeader>
     </>
   )
 }

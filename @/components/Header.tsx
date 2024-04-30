@@ -7,11 +7,14 @@ import { TWITTER_URL, TELEGRAM_URL } from '../../services/constant'
 import HowToPlay from './ui/HowToPlay'
 import Referral from './ui/Referral'
 import { useStoreActions, useStoreState } from '../../store'
+import { useWindowSize } from '../../hooks/useWindowSize'
 
 function Header() {
   const handleOnMouseDown: MouseEventHandler = () => {
     location.reload()
   }
+
+  const { xs } = useWindowSize()
 
   return (
     <>
@@ -32,7 +35,7 @@ function Header() {
         </div>
 
         {/* Rest */}
-        <div className="flex flex-col lg:flex-row justify-self-end gap-3 items-center space-x-4 order-3">
+        <div className="flex flex-col sm:flex-row justify-self-end gap-3 items-center space-x-4 order-3">
           <div className="flex gap-2">
             <Referral />
             <HowToPlay />
@@ -41,12 +44,12 @@ function Header() {
           <div className="flex">
             <a href={TWITTER_URL} target="_blank">
               <Button variant="link" className="px-2 text-lg">
-                Follow 🐦
+                {xs ? '🐦' : 'Follow 🐦'}
               </Button>
             </a>
             <a href={TELEGRAM_URL} target="_blank">
               <Button variant="link" className="px-2 text-lg">
-                Telegram 🧑‍🤝‍🧑
+                {xs ? '🧑‍🤝‍🧑' : 'Telegram 🧑‍🤝‍🧑'}
               </Button>
             </a>
           </div>

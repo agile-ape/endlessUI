@@ -197,7 +197,7 @@ export default function Average() {
       <div>
         <div
           className="flex flex-col items-center py-2 \
-        rounded-lg px-6 border border-indigo-400 text-gray-400"
+        rounded-lg px-6 border border-indigo-300 text-gray-400"
         >
           <span className="text-xl">{canBuyTicket ? 'Current Average' : 'Final Average'}</span>
           <div className="font-digit text-4xl">{showAverage}</div>

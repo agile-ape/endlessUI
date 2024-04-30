@@ -230,8 +230,8 @@ function Referral() {
           <div className="flex flex-col gap-4 justify-center items-center p-4">
             <div>
               <div className="text-3xl">Submit referrer</div>
-              <div className="text-xl">
-                Both of you get 5% of your purchases.
+              <div className="text-xl flex flex-col">
+                <span>Both of you get 5% of your purchases.</span>
                 <a href={DOCS_URL} target="_blank" className="ml-1 underline">
                   Learn more
                 </a>

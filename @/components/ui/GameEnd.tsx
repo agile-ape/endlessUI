@@ -3,6 +3,18 @@ import type { FC } from 'react'
 import Link from 'next/link'
 
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/shadcn/alert-dialog'
+
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -13,12 +25,20 @@ import {
 import { Button } from '../shadcn/button'
 import Image from 'next/image'
 import { Send, CheckCircle2 } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
 
 import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import { DOCS_URL, TWITTER_URL } from '../../../services/constant'
+import { DOCS_URL, TWITTER_URL, START_BLOCK } from '../../../services/constant'
+import { VIEM_CHAIN } from '../../../services/constant'
+import { createPublicClient, http } from 'viem'
 
 type TimeLeftType = {
   hours: number
@@ -40,11 +60,14 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 
 type GameEndType = {
   open: boolean
+  countdown: boolean
 }
 
-const GameEnd: FC<GameEndType> = ({ open }) => {
+const GameEnd: FC<GameEndType> = ({ open, countdown }) => {
   const [timeLeft, setTimeLeft] = useState<number>()
   const [isOpen, setIsOpen] = useState<boolean>(open)
+  const [enabled, setEnabled] = useState<boolean>(false)
+  const [blockNumber, setBlockNumber] = useState<string>('loading')
 
   const canBuyTicket = useStoreState((state) => state.canBuyTicket)
   const canClaim = useStoreState((state) => state.canClaim)
@@ -58,6 +81,11 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
 
   const modalState = useStoreState((state) => state.GameEndModal)
 
+  const publicClient = createPublicClient({
+    chain: VIEM_CHAIN,
+    transport: http(),
+  })
+
   // console.log(modalState.isOpen)
 
   // const updateGameEndModal = useStoreActions((actions) => actions.updateGameEndModal)
@@ -69,7 +97,23 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
     // })
   }
 
+  function refresh() {
+    // setIsOpen(false)
+    location.reload()
+  }
+
+  function enter() {
+    setIsOpen(false)
+    // location.reload()
+  }
+
   useEffect(() => {
+    publicClient.watchBlockNumber({
+      onBlockNumber: (blockNumber) => {
+        setBlockNumber(String(blockNumber))
+      },
+    })
+
     const interval = setInterval(() => {
       // Calculate the time left in each tick
       const now = new Date()
@@ -84,108 +128,140 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
     }, 1000) // Update every second
 
     return () => clearInterval(interval) // Cleanup on unmount
-  }, [gameCloseTime])
+  }, [gameCloseTime, blockNumber])
 
   // {!canBuyTicket && !canClaim && 'The Round Has Closed'}
   return (
-    <Dialog open={isOpen}>
-      <DialogContent className="bg-white rounded-lg p-0 w-[75%] md:w-[20rem]">
-        <div
-          ref={modalRef}
-          className="rounded-lg shadow-xl border-2 border-gray-800 flex flex-col text-gray-700 justify-center gap-4 items-center py-4"
-          style={{
-            backgroundImage: `url('/ticket/rainbow.svg')`, // different for true
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          }}
-        >
-          <>
-            {open && canClaim && (
+    <>
+      <Dialog open={isOpen}>
+        <DialogContent className="bg-white rounded-lg p-0 w-[75%] md:w-[20rem]">
+          <div
+            ref={modalRef}
+            className="rounded-lg shadow-xl border-2 border-gray-800 flex flex-col text-gray-700 justify-center gap-4 items-center py-4"
+            style={{
+              backgroundImage: `url('/ticket/rainbow.svg')`, // different for true
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+            }}
+          >
+            {countdown ? (
               <>
                 <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
-                  The Round Has Ended
+                  COUNTDOWN BEGINS
+                </div>
+
+                <div className="flex flex-col justify-center items-center text-2xl">
+                  <span>Round starts on block</span>{' '}
+                  <span className="font-digit text-black text-3xl">{START_BLOCK}</span>
                 </div>
                 <div className="flex flex-col gap-2 border border-gray-800 rounded-lg p-2 items-center justify-center">
-                  <div className=" text-2xl">Time till round close</div>
-                  <div className="flex justify-center items-center">
-                    <div className="flex flex-col text-3xl text-center  font-digit">
-                      {formatTime(Number(timeLeft)).hours} :
-                      <div className="uppercase -translate-x-1  text-sm text-center">hr</div>
-                    </div>
-                    <div className="ml-1 flex flex-col text-3xl text-center  font-digit">
-                      {' '}
-                      {formatTime(Number(timeLeft)).minutes} :
-                      <div className="uppercase -translate-x-1  text-sm text-center">min</div>
-                    </div>
-                    <div className="ml-1 flex flex-col text-3xl text-center  font-digit">
-                      {formatTime(Number(timeLeft)).seconds}
-                      <div className="uppercase  text-sm text-center">sec</div>
-                    </div>
+                  <div className=" text-2xl">Current block:</div>
+                  <div className="flex justify-center font-digit text-black text-3xl items-center">
+                    {Number(blockNumber) || 'Loading'}
                   </div>
                 </div>
-                <div className="text-center px-4 py-2 rounded-lg text-2xl ">
-                  Claim your winnings, or <a href=""></a>
-                  <a href={DOCS_URL} target="_blank" className="underline">
-                    roll them to the next round
-                  </a>
-                  .
-                </div>
-                <div className="flex items-center justify-center mb-4">
-                  <div className="flex justify-center" onClick={closeModal}>
-                    <Button variant="primary" className="w-[100%] px-10 py-2 mx-auto">
-                      Continue
-                    </Button>
-                  </div>
-                </div>
-              </>
-            )}
-          </>
-          <>
-            {open && !canClaim && (
-              <>
-                <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
-                  The Round Has Closed
-                </div>
-                <div className="flex flex-col gap-2 rounded-lg p-2 items-center justify-center">
-                  <Image
-                    priority
-                    src="/faces/dance.webp"
-                    className=""
-                    height={300}
-                    width={200}
-                    alt="dancing-pepe"
-                  />
-                </div>
-                <div className="text-left px-4 py-2 rounded-lg text-2xl ">
-                  Your winnings are rolled to next round if you have not claimed them.
-                  <div className="mt-4">
-                    <a href={TWITTER_URL} target="_blank" className="underline">
-                      Follow
-                    </a>{' '}
-                    to be kept updated.
-                  </div>
-                </div>
-                <div className="flex items-center justify-center mb-4">
-                  <div className="flex justify-center" onClick={closeModal}>
-                    <Button variant="primary" className="w-[100%] px-10 py-2 mx-auto">
-                      Continue
-                    </Button>
-                  </div>
-                </div>
-              </>
-            )}
-          </>
 
-          {/* <div className="flex items-center justify-center mb-4">
-            <div className="flex justify-center" onClick={closeModal}>
-              <Button variant="primary" className="w-[100%] px-10 py-2 mx-auto">
-                Continue
-              </Button>
-            </div>
-          </div> */}
-        </div>
-      </DialogContent>
-    </Dialog>
+                <div className="flex items-center justify-center mb-4">
+                  <div className="flex flex-col gap-2 justify-center">
+                    <Button
+                      variant="primary"
+                      onClick={refresh}
+                      className="w-[100%] px-10 py-2 mx-auto"
+                    >
+                      Refresh
+                    </Button>
+
+                    <Button
+                      variant="primary"
+                      onClick={enter}
+                      className="w-[100%] px-10 py-2 mx-auto"
+                    >
+                      Enter
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {open && canClaim && (
+                  <>
+                    <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
+                      The Round Has Ended
+                    </div>
+                    <div className="flex flex-col gap-2 border border-gray-800 rounded-lg p-2 items-center justify-center">
+                      <div className=" text-2xl">Time till round close</div>
+                      <div className="flex justify-center items-center">
+                        <div className="flex flex-col text-3xl text-center  font-digit">
+                          {formatTime(Number(timeLeft)).hours} :
+                          <div className="uppercase -translate-x-1  text-sm text-center">hr</div>
+                        </div>
+                        <div className="ml-1 flex flex-col text-3xl text-center  font-digit">
+                          {' '}
+                          {formatTime(Number(timeLeft)).minutes} :
+                          <div className="uppercase -translate-x-1  text-sm text-center">min</div>
+                        </div>
+                        <div className="ml-1 flex flex-col text-3xl text-center  font-digit">
+                          {formatTime(Number(timeLeft)).seconds}
+                          <div className="uppercase  text-sm text-center">sec</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-center px-4 py-2 rounded-lg text-2xl ">
+                      Claim your winnings, or <a href=""></a>
+                      <a href={DOCS_URL} target="_blank" className="underline">
+                        roll them to the next round
+                      </a>
+                      .
+                    </div>
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="flex justify-center" onClick={closeModal}>
+                        <Button variant="primary" className="w-[100%] px-10 py-2 mx-auto">
+                          Continue
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {open && !canClaim && (
+                  <>
+                    <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
+                      The Round Has Closed
+                    </div>
+                    <div className="flex flex-col gap-2 rounded-lg p-2 items-center justify-center">
+                      <Image
+                        priority
+                        src="/faces/dance.webp"
+                        className=""
+                        height={300}
+                        width={200}
+                        alt="dancing-pepe"
+                      />
+                    </div>
+                    <div className="text-left px-4 py-2 rounded-lg text-2xl ">
+                      Your winnings are rolled to next round if you have not claimed them.
+                      <div className="mt-4">
+                        <a href={TWITTER_URL} target="_blank" className="underline">
+                          Follow
+                        </a>{' '}
+                        to be kept updated.
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="flex justify-center" onClick={closeModal}>
+                        <Button variant="primary" className="w-[100%] px-10 py-2 mx-auto">
+                          Continue
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 

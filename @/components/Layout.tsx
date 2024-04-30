@@ -10,6 +10,7 @@ import {
   useReadContracts,
   useWalletClient,
   useBlockNumber,
+  useWatchContractEvent,
 } from 'wagmi'
 import { getBlockNumber } from '@wagmi/core'
 import { CHAIN_ID, defaultContractObj, GAME_ADDRESS } from '../../services/constant'
@@ -27,7 +28,7 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
-import WelcomeModal from '@/components/ui/WelcomeModal'
+import WelcomeModal from '@/components/ui/_WelcomeModal'
 import { rainbowConfig } from '../../pages/_app'
 
 import type { Profile } from '../../store'
@@ -35,16 +36,7 @@ import { z } from 'zod'
 import { getLayoutOrPageModule } from 'next/dist/server/lib/app-dir-module'
 
 import { createPublicClient, http } from 'viem'
-import { mainnet } from 'viem/chains'
-
-// const publicClient = createPublicClient({
-//   chain: mainnet,
-//   transport: http(),
-// })
-
-// const unwatch = publicClient.watchBlockNumber({
-//   onBlockNumber: (blockNumber) => console.log(blockNumber),
-// })
+import { mainnet, baseSepolia } from 'viem/chains'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -223,15 +215,15 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         ...defaultContractObj,
         functionName: 'firstNumber',
       },
-      {
-        ...defaultContractObj,
-        functionName: 'getLastRoundPlayerProfile',
-        args: [address as `0x${string}`],
-      },
-      {
-        ...defaultContractObj,
-        functionName: 'getLastRoundUnclaimedPot',
-      },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'getLastRoundPlayerProfile',
+      //   args: [address as `0x${string}`],
+      // },
+      // {
+      //   ...defaultContractObj,
+      //   functionName: 'getLastRoundUnclaimedPot',
+      // },
     ],
   })
 
@@ -264,36 +256,54 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   const referralsShare = data?.[26].result || BigInt(0)
   const playersPot = data?.[27].result || BigInt(0)
   const firstNumber = data?.[28].result || BigInt(0)
-  const lastRoundPlayerProfile = data?.[29].result || null
-  const lastRoundUnclaimedPot = data?.[30].result || BigInt(0)
 
-  // const formattedFundedAmount = formatNumber(formatUnits(BigInt(fundedAmount), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
+  /* 2ND ROUND
+   
+  const { data: lastRoundData } = useReadContracts({
+    contracts: [
+          {
+        ...defaultContractObj,
+        functionName: 'getLastRoundPlayerProfile',
+        args: [address as `0x${string}`],
+      },
+      {
+        ...defaultContractObj,
+        functionName: 'getLastRoundUnclaimedPot',
+      },
+    ]})
+    
+    const lastRoundPlayerProfile = lastRoundData?.[0].result || null
+    const lastRoundUnclaimedPot = lastRoundData?.[1].result || BigInt(0)
+    
+    const formattedLastRoundUnclaimedPot = formatNumber(
+      formatUnits(BigInt(lastRoundUnclaimedPot), 18),
+      {
+        maximumFractionDigits: 5,
+        minimumFractionDigits: 0,
+      },
+    )
+    updateLastRoundUnclaimedPot(Number(formattedLastRoundUnclaimedPot))
 
-  // const formattedFundersToAmt = formatNumber(formatUnits(BigInt(fundersToAmt), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
+      
+    if (lastRoundPlayerProfile) {
+      const { profileId, player, isClaimed, claimAmount } = lastRoundPlayerProfile
+      let profile: Profile = {
+        profileId: profileId,
+        player: player,
+        isClaimed: isClaimed,
+        claimAmount: claimAmount,
+      }
+      updateLastProfile(profile)
+    }
 
-  // const formattedFundersPot = formatNumber(formatUnits(BigInt(fundersPot), 18), {
-  //   maximumFractionDigits: 3,
-  //   minimumFractionDigits: 0,
-  // })
+
+      
+  */
 
   const formattedUnclaimedPot = formatNumber(formatUnits(BigInt(unclaimedPot), 18), {
     maximumFractionDigits: 5,
     minimumFractionDigits: 0,
   })
-
-  const formattedLastRoundUnclaimedPot = formatNumber(
-    formatUnits(BigInt(lastRoundUnclaimedPot), 18),
-    {
-      maximumFractionDigits: 5,
-      minimumFractionDigits: 0,
-    },
-  )
 
   let winningNumbers: number[] = []
 
@@ -344,21 +354,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     updateProfile(profile)
   }
 
-  if (lastRoundPlayerProfile) {
-    const { profileId, player, isClaimed, claimAmount } = lastRoundPlayerProfile
-    let profile: Profile = {
-      profileId: profileId,
-      player: player,
-      isClaimed: isClaimed,
-      claimAmount: claimAmount,
-    }
-    updateLastProfile(profile)
-  }
-
   updateCanBuyTicket(Boolean(canBuyTicket))
   updateCanClaim(Boolean(canClaim))
   updateUnclaimedPot(Number(formattedUnclaimedPot))
-  updateLastRoundUnclaimedPot(Number(formattedLastRoundUnclaimedPot))
   updateRolloverShare(Number(rolloverShare))
   updateRolloverPot(Number(rolloverPot))
   updateReferralsPot(Number(referralsToShare))
@@ -464,6 +462,18 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     // },
   ]
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'GameEnd',
+    onLogs() {
+      toast({
+        variant: 'info',
+        description: <p className="text-xl">🙇‍♂️ The round has ended</p>,
+      })
+    },
+    poll: true,
+  })
+
   useSocketEvents(events)
 
   const runBlockNumber = async () => {
@@ -494,11 +504,12 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         }}
       >
         <div className="container mx-auto p-0">
-          {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
+          {/* {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />} */}
           <Header />
           {children}
           <Analytics />
-          <GameEnd open={!canBuyTicket} />
+          <GameEnd open={!canBuyTicket} countdown={true} />
+          {/* <GameEnd open={false} countdown={true} /> */}
         </div>
       </main>
     </>

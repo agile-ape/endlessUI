@@ -33,7 +33,7 @@ const buttonVariants = cva(
         active:text-white active:bg-opacity-75',
 
         grid: 'text-gray-300 hover:text-gray-100 bg-indigo-700 \
-          hover:bg-indigo-500 rounded-xl text-xl border border-indigo-400 \
+          hover:bg-indigo-500 rounded-xl text-xl border border-indigo-300 \
            hover:border-indigo-200 hover:shadow-xs hover:shadow-white',
 
         buy: 'bg-gray-300 text-slate-900 border border-slate-100 border-2 rounded-xl \

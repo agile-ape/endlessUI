@@ -6,11 +6,6 @@ export const GAME_ABI = [
         name: '_firstNumber',
         type: 'uint256',
       },
-      {
-        internalType: 'address',
-        name: '_lastRoundContract',
-        type: 'address',
-      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -375,79 +370,12 @@ export const GAME_ABI = [
         type: 'address',
       },
     ],
-    name: 'getLastRoundPlayerProfile',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'uint256',
-            name: 'profileId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'address',
-            name: 'player',
-            type: 'address',
-          },
-          {
-            internalType: 'bool',
-            name: 'isClaimed',
-            type: 'bool',
-          },
-          {
-            internalType: 'uint256',
-            name: 'claimAmount',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct Profile',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getLastRoundUnclaimedPot',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_player',
-        type: 'address',
-      },
-    ],
     name: 'getTickets',
     outputs: [
       {
         internalType: 'uint256[]',
         name: '',
         type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'lastRound',
-    outputs: [
-      {
-        internalType: 'contract LastRound',
-        name: '',
-        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -701,6 +629,19 @@ export const GAME_ABI = [
         internalType: 'uint256',
         name: '',
         type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'round',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
     stateMutability: 'view',

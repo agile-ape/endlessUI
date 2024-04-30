@@ -1,6 +1,8 @@
 import { GAME_ABI } from './abi/game'
 
 import { defineChain } from 'viem'
+import { mainnet, baseSepolia } from 'viem/chains'
+
 /*---------------------------------------- ENV ---------------------------------------- */
 // import from .env
 const NODE_ENV = process.env.NODE_ENV
@@ -30,6 +32,10 @@ export const defaultContractObj = {
 }
 
 // console.log(GAME_ADDRESS)
+
+// NEED TO SET THESE 2 UP
+export const START_BLOCK: number = 9304570
+export const VIEM_CHAIN = baseSepolia
 
 export const baseSepolia1 = defineChain({
   id: 84532,

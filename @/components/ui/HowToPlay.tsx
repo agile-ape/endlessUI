@@ -4,6 +4,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
   DialogTrigger,
 } from '@/components/shadcn/dialog'
 import { useStoreActions, useStoreState } from '../../../store'
@@ -33,12 +34,12 @@ function HowToPlay() {
       <DialogContent>
         <div className="overflow-auto">
           <DialogHeader>
-            <DialogTitle className="text-center text-3xl font-digit">
+            <DialogTitle className="text-center text-xl sm:text-3xl font-digit">
               💾 FLOP THE AVERAGE
             </DialogTitle>
             <ScrollArea className="rounded-md border p-4">
               <DialogDescription>
-                <div className="text-3xl">
+                <div className="text-xl sm:text-3xl">
                   {/* <p className="mb-6">Pooh's Pot 🍯 has ETH</p> */}
                   {/* <p className="mb-6 underline text-center">How to play</p> */}
                   <p className="mb-8">
@@ -55,8 +56,8 @@ function HowToPlay() {
 
                   <p className="mb-2 underline text-center">Final Pot Split</p>
 
-                  <p className="text-3xl grid grid-cols-2 my-2">
-                    <span className="text-left mr-2 col-span-1"> 🟢 Referrals share </span>
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🟢 Referrals share </span>
                     <span className="text-right font-digit mr-6">{referralsShare}%</span>{' '}
                   </p>
 
@@ -65,22 +66,22 @@ function HowToPlay() {
                     <span className="text-right font-digit mr-4">20%</span>{' '}
                   </p> */}
 
-                  <p className="text-3xl grid grid-cols-2 my-2">
-                    <span className="text-left mr-2 col-span-1"> 🟣 Players share </span>
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🟣 Players share </span>
                     <span className="text-right font-digit mr-4">{playersShare}%</span>{' '}
                   </p>
 
-                  <p className="text-3xl grid grid-cols-2 my-2">
-                    <span className="text-left mr-2 col-span-1"> 🟡 Winners share </span>
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🟡 Winners share </span>
                     <span className="text-right font-digit mr-4">{winnersShare}%</span>{' '}
                   </p>
 
-                  <p className="text-3xl grid grid-cols-2 my-2">
-                    <span className="text-left mr-2 col-span-1"> 🔵 Rollover share </span>
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🔵 Rollover share </span>
                     <span className="text-right font-digit mr-4">{rolloverShare}%</span>{' '}
                   </p>
 
-                  <p className="text-xl my-4">
+                  <p className="text-base sm:text-xl my-4">
                     <span className="text-left mr-2 col-span-1">
                       {' '}
                       🔵 Hint: You can rollover your winnings to share in 5% of next pot.
@@ -88,14 +89,26 @@ function HowToPlay() {
                   </p>
                 </div>
 
-                <a href={DOCS_URL} target="_blank">
+                <div className="flex justify-around">
                   <Button
                     variant="primary"
-                    className="w-full text-3xl py-8 my-4 hover:bg-opacity-50"
+                    className="w-5/12 text-xl sm:text-3xl px-4 py-4 sm:py-8 my-4 hover:bg-opacity-50"
                   >
-                    Learn more
+                    <a href={DOCS_URL} className="" target="_blank">
+                      Learn more
+                    </a>
                   </Button>
-                </a>
+
+                  <DialogClose asChild>
+                    <Button
+                      type="button"
+                      variant="reset"
+                      className="w-5/12 text-xl sm:text-3xl py-4 sm:py-8 my-4 hover:bg-opacity-50"
+                    >
+                      Close
+                    </Button>
+                  </DialogClose>
+                </div>
               </DialogDescription>
             </ScrollArea>
           </DialogHeader>

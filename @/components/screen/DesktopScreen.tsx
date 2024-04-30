@@ -17,6 +17,7 @@ import { toast } from '@/components/shadcn/use-toast'
 import useSWR, { useSWRConfig } from 'swr'
 import { fetcher, poster, isJson, formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
+import { number } from 'zod'
 
 type Number = {
   chainId: number
@@ -54,9 +55,8 @@ export default function DesktopScreen() {
 
   // useWatchContractEvent({
   //   ...defaultContractObj,
-  //   eventName: 'NewTicketBought',
+  //   eventName: 'GameEnd',
   //   onLogs() {
-  //     console.log('ticket bought!')
   //     toast({
   //       variant: 'bought',
   //       description: <p className="text-xl">🔑 A key is bought</p>,
@@ -141,6 +141,8 @@ export default function DesktopScreen() {
     updateNumberList(numberList)
     updateAverageList(averageList)
   }
+
+  console.log(numberList)
 
   const {
     data: referralsData,

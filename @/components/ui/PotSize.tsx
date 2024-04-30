@@ -84,7 +84,10 @@ export default function PotSize() {
     },
   )
 
-  const potSizeInUSD = Number(currentPotSize) * Number(ethPrice)
+  const potSizeInUSD = formatNumber(Number(currentPotSize) * Number(ethPrice), {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
 
   return (
     <TooltipProvider delayDuration={10}>
@@ -105,7 +108,9 @@ export default function PotSize() {
                 >
                   {currentPotSize}
                 </div>
-                <div className="text-2xl text-stone-100/50">≈ ${potSizeInUSD}</div>
+                <div className="text-2xl text-stone-100/50">
+                  <span className="text-lg">≈ </span>${potSizeInUSD}
+                </div>
               </div>
               {/* <AddToPot /> */}
             </div>

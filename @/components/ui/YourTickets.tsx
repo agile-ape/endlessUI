@@ -340,8 +340,6 @@ const YourTickets = () => {
   const currentPotSize = Number(formatUnits(potSize, 18))
   const currentPayoutFactor = (playersShare * currentPotSize) / 100 / sumReciprocal
 
-  console.log(currentPayoutFactor)
-
   let accumulatedPlayersValue = 0
 
   for (let i = 0; i < playerTickets.length; i++) {
@@ -371,13 +369,6 @@ const YourTickets = () => {
   const currentWinnings = payoutPerWinner * winningTicketCount
 
   const currentRolloverPot = (rolloverShare * currentPotSize) / 100
-
-  console.log(leaderboard.length)
-  console.log(currentWinnersPot)
-  console.log(payoutPerWinner)
-  console.log(currentRolloverPot)
-  console.log(currentWinnings)
-  console.log(currentAccumulated)
 
   let currentRollover: number = 0
 
@@ -468,15 +459,22 @@ const YourTickets = () => {
     }
   }
 
+  const ethPrice = useStoreState((state) => state.ethPrice)
+
+  const winningsInUSD = formatNumber(Number(totalWinnings) * Number(ethPrice), {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+
   return (
-    <div className="flex flex-col py-2 px-2 my-2 items-center justify-center mx-auto">
+    <div className="flex flex-col py-2 sm:px-2 my-2 items-center justify-center mx-auto">
       <div
         className="flex flex-col items-center py-2 \
         rounded-lg px-6 border border-neutral-100 text-neutral-300"
       >
         <span className="text-xl">You are accumulating (ETH)</span>
 
-        <div className="flex my-1 justify-center items-center">
+        <div className="flex flex-col sm:flex-row my-1 justify-center items-center">
           <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
             <span className="text-base mr-1">🟣</span>{' '}
             {/* <span className="font-digit text-2xl mr-2">{currentAccumulated}</span>{' '} */}
@@ -488,7 +486,7 @@ const YourTickets = () => {
             />
           </div>
 
-          <div className="px-3 max-w-[240px] text-lg cursor-default flex justify-center items-center">
+          <div className="px-2 max-w-[240px] text-lg cursor-default flex justify-center items-center">
             <span className="text-base mr-1">🟡</span>{' '}
             {/* <span className="font-digit text-2xl mr-2">{currentWinnings}</span>{' '} */}
             <CountUp
@@ -522,23 +520,29 @@ const YourTickets = () => {
               % share if roll: {shareIfRoll}%
             </div> */}
 
-          <div className="grid grid-cols-2 gap-1">
-            <p className="text-left">Total winnings:</p>
-            <p className="text-right"> {totalWinnings} ETH </p>
+          <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+            <p className="sm:text-left">Total winnings:</p>
+            <p className="sm:text-right">
+              {' '}
+              {totalWinnings} ETH{' '}
+              <span className="text-stone-100/70">
+                <span className="text-lg">(≈ </span>${winningsInUSD})
+              </span>
+            </p>
           </div>
 
           {!canBuyTicket && (
             <>
-              <div className="grid grid-cols-2 gap-1">
-                <p className="text-left">Unclaimed pot so far:</p>
-                <p className="text-right"> {unclaimedPot} ETH </p>
+              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+                <p className="sm:text-left">Unclaimed pot so far:</p>
+                <p className="sm:text-right"> {unclaimedPot} ETH </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-1">
-                <p className="text-left">
+              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+                <p className="sm:text-left">
                   {canClaim ? '% share so far if roll:' : 'Share of next rollover pot:'}
                 </p>
-                <p className="text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
+                <p className="sm:text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
               </div>
             </>
           )}
@@ -551,13 +555,15 @@ const YourTickets = () => {
           disabled={canBuyTicket || profile.isClaimed || !canClaim}
           // isLoading={isPending}
         >
-          {canBuyTicket
-            ? 'Claim'
-            : canClaim
-              ? profile.isClaimed
-                ? 'You have claimed'
-                : 'Claim'
-              : 'You rolled to next pot'}
+          {isConnected
+            ? canBuyTicket
+              ? 'Claim'
+              : canClaim
+                ? profile.isClaimed
+                  ? 'You have claimed'
+                  : 'Claim'
+                : 'You rolled to next pot'
+            : 'Connect to claim'}
         </Button>
       </div>
 
@@ -570,7 +576,7 @@ const YourTickets = () => {
       <div className="flex">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <section className="mx-auto">
-          <div className="w-[380px] overflow-hidden" ref={emblaRef}>
+          <div className="w-[240px] sm:w-[420px] overflow-hidden" ref={emblaRef}>
             <div className="flex touch-pan-x">
               <>
                 {
