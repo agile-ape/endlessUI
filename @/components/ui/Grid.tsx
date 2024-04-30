@@ -224,7 +224,7 @@ const Grid = () => {
             }
             if (Number(square.key) === firstNumber) {
               const firstSquare = React.cloneElement(square, {
-                occurrences: (square.props.occurrences || 0) + 1,
+                occurrences: square.props.occurrences || 0,
               })
               squares[i][j] = firstSquare
             }
