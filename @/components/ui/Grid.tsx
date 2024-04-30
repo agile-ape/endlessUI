@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/shadcn/dialog'
 import {
   Tooltip,
@@ -166,7 +167,7 @@ const Grid = () => {
 
   // const rows = 50
   let columns: number
-  maxAllowedNumber > 100 ? (columns = 10) : (columns = 50)
+  maxAllowedNumber > 100 ? (columns = 50) : (columns = 10)
 
   let rowsOfSquares: SquareType[][] = []
 
@@ -278,18 +279,18 @@ const Grid = () => {
       <DialogHeader>
         <DialogTitle className="text-center text-3xl">Catching the average</DialogTitle>
         <DialogDescription className="text-center text-2xl">
-          <p className="flex flex-col sm:flex-row gap-4">
+          <p className="flex flex-col justify-center sm:flex-row gap-4">
             <span>Current average: {currentAverage}</span>
             <span>Total number: {totalNumber}</span>
             <span>Total bought: {ticketsBought}</span>
           </p>
 
-          <div className="my-4">
+          <div className="my-4 flex flex-col items-center justify-center">
             <div className="text-yellow-500 ">Winning disk id </div>
             <div
               className="text-yellow-400  \
             text-4xl \
-            flex overflow-auto max-w-[480px]"
+            flex justify-center items-center overflow-auto max-w-[480px]"
             >
               {leaderboard.map((number, index) => (
                 <span className="border px-3 border-stone-500" key={index}>
@@ -345,6 +346,17 @@ const Grid = () => {
               >
                 Reset
               </Button>
+
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="reset"
+                  className="flex flex-col items-center \
+                  rounded-lg px-6 mx-2"
+                >
+                  Close
+                </Button>
+              </DialogClose>
             </div>
           )}
         </DialogDescription>

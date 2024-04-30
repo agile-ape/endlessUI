@@ -479,8 +479,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     return result
   })
 
-  console.log(showWelcomeModal)
-
   return (
     <>
       <main

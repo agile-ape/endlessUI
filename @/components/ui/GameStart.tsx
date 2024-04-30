@@ -63,8 +63,8 @@ type GameStartType = {
 }
 
 const GameStart: FC<GameStartType> = () => {
-  const modalRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(modalRef, () => closeModal())
+  // const modalRef = useRef<HTMLDivElement | null>(null)
+  // useOutsideClick(modalRef, () => closeModal())
 
   function closeModal() {
     setIsOpen(false)
@@ -109,7 +109,7 @@ const GameStart: FC<GameStartType> = () => {
       <Dialog open={isOpen}>
         <DialogContent className="bg-white rounded-lg p-0 w-[75%] md:w-[20rem]">
           <div
-            ref={modalRef}
+            // ref={modalRef}
             className="rounded-lg shadow-xl border-2 border-gray-800 flex flex-col text-gray-700 justify-center gap-4 items-center py-4"
             style={{
               backgroundImage: `url('/ticket/rainbow.svg')`, // different for true
@@ -135,7 +135,7 @@ const GameStart: FC<GameStartType> = () => {
               </div>
 
               <div className="flex items-center justify-center mb-4">
-                <div className="flex flex-col gap-2 justify-center">
+                {/* <div className="flex flex-col gap-2 justify-center">
                   <Button
                     variant="primary"
                     onClick={refresh}
@@ -147,7 +147,7 @@ const GameStart: FC<GameStartType> = () => {
                   <Button variant="primary" onClick={enter} className="w-[100%] px-10 py-2 mx-auto">
                     Enter
                   </Button>
-                </div>
+                </div> */}
               </div>
             </>
           </div>

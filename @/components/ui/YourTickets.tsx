@@ -92,7 +92,6 @@ const YourTickets = () => {
   const lastRoundUnclaimedPot = useStoreState((state) => state.lastRoundUnclaimedPot)
   const lastProfile = useStoreState((state) => state.lastProfile)
 
-  console.log(playerTickets)
   /* read contracts
   const { data, refetch } = useReadContracts({
     contracts: [
