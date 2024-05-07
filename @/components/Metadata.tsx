@@ -35,9 +35,9 @@ export interface MetaProps {
  */
 const Metadata = ({
   title = 'Lastman',
-  description = 'Play, Yield, Outlast',
-  ogTitle = 'Lastman - How Long Can You Last',
-  ogDescription = 'Play, Yield, Outlast',
+  description = 'FLOP THE AVERAGE',
+  ogTitle = 'Lastman - PvP games like never before',
+  ogDescription = 'Current game - Flop the average',
   ogType = 'website',
   ogUrl = 'https://lastman.xyz',
   ogImageUrl = '',

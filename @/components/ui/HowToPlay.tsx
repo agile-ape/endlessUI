@@ -56,20 +56,10 @@ function HowToPlay() {
 
                   <p className="mb-2 underline text-center">Final Pot Split</p>
 
-                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
-                    <span className="text-left mr-2 col-span-2"> 🟢 Referrals share </span>
-                    <span className="text-right font-digit mr-6">{referralsShare}%</span>{' '}
-                  </p>
-
                   {/* <p className="text-3xl grid grid-cols-2 my-2">
                     <span className="text-left mr-2 col-span-1"> 🔴 Funders share </span>
                     <span className="text-right font-digit mr-4">20%</span>{' '}
                   </p> */}
-
-                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
-                    <span className="text-left mr-2 col-span-2"> 🟣 Players share </span>
-                    <span className="text-right font-digit mr-4">{playersShare}%</span>{' '}
-                  </p>
 
                   <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
                     <span className="text-left mr-2 col-span-2"> 🟡 Winners share </span>
@@ -77,10 +67,19 @@ function HowToPlay() {
                   </p>
 
                   <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🟣 Players share </span>
+                    <span className="text-right font-digit mr-4">{playersShare}%</span>{' '}
+                  </p>
+
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
+                    <span className="text-left mr-2 col-span-2"> 🟢 Referrals share </span>
+                    <span className="text-right font-digit mr-6">{referralsShare}%</span>{' '}
+                  </p>
+
+                  <p className="text-xl sm:text-3xl grid grid-cols-3 my-2">
                     <span className="text-left mr-2 col-span-2"> 🔵 Rollover share </span>
                     <span className="text-right font-digit mr-4">{rolloverShare}%</span>{' '}
                   </p>
-
                   <p className="text-base sm:text-xl my-4">
                     <span className="text-left mr-2 col-span-1">
                       {' '}

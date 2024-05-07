@@ -173,3 +173,50 @@ export async function findChainName(chainId: number) {
     return 'Error fetching data'
   }
 }
+
+export function showCurrentDate(date: Date): string {
+  const year = date.getFullYear()
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+  const month = monthNames[date.getMonth()] // Note: Month is zero-based, so add 1
+
+  const day = date.getDate()
+
+  return `${month} ${day}`
+}
+
+export function showCurrentTime(date: Date): string {
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
+
+  return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds}`
+}
+
+export function showLocaleDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+export function showLocaleTime(date: Date): string {
+  return date.toLocaleTimeString('en-US', {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+}

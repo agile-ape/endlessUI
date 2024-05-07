@@ -121,7 +121,8 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
             }}
           >
             <>
-              {open && canClaim && (
+              {/* {open && canClaim && ( */}
+              {canClaim && (
                 <>
                   <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
                     The Round Has Ended
@@ -161,7 +162,8 @@ const GameEnd: FC<GameEndType> = ({ open }) => {
                 </>
               )}
 
-              {open && !canClaim && (
+              {/* {open && !canClaim && ( */}
+              {!canClaim && (
                 <>
                   <div className="text-center px-4 py-2 rounded-lg text-3xl font-digit ">
                     The Round Has Closed

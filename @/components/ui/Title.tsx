@@ -46,7 +46,7 @@ const Title = () => {
 
     let i = 0
 
-    const stringResponse: string = 'FLOP THE AVERAGE'
+    const stringResponse: string = 'ROUND 0: TESTNET'
     // canBuyTicket ? (stringResponse ) : (stringResponse = 'THANKS FOR PLAYING')
 
     const intervalId = setInterval(() => {
@@ -58,14 +58,15 @@ const Title = () => {
         clearInterval(intervalId)
         setCompletedTyping(true)
       }
-    }, 180)
+    }, 120)
 
     return () => clearInterval(intervalId)
   }, [])
 
   return (
     <div className="text-3xl flex flex-col justify-center items-center">
-      <div className="text-xl font-digit">Round {roundName}</div>
+      {/* <div className="text-xl font-digit">Round {roundName}</div> */}
+      <div className="text-xl font-digit">Flop the average</div>
       <div className="text-3xl gap-0 font-digit text-gray-400 mx-3 capitalize">
         {displayResponse}
         {!completedTyping && <CursorSVG />}

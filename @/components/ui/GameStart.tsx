@@ -59,10 +59,10 @@ const formatTime = (timeInSeconds: number): TimeLeftType => {
 }
 
 type GameStartType = {
-  //   open: boolean
+  open: boolean
 }
 
-const GameStart: FC<GameStartType> = () => {
+const GameStart: FC<GameStartType> = ({ open }) => {
   // const modalRef = useRef<HTMLDivElement | null>(null)
   // useOutsideClick(modalRef, () => closeModal())
 
@@ -84,7 +84,7 @@ const GameStart: FC<GameStartType> = () => {
     transport: http(),
   })
 
-  const START_BLOCK: number = 935_5300
+  const START_BLOCK: number = 960_5650
   const [blockNumber, setBlockNumber] = useState<string>('LOADING')
   const [timeToStart, setTimeToStart] = useState<number>()
   const [isOpen, setIsOpen] = useState<boolean>(true)
@@ -96,7 +96,7 @@ const GameStart: FC<GameStartType> = () => {
         setTimeToStart(Math.round((START_BLOCK - Number(blockNumber)) * 2))
         if (START_BLOCK < Number(blockNumber)) {
           //   console.log(Number(blockNumber) - START_BLOCK)
-          localStorage.setItem('showWelcomeModal', 'false')
+          localStorage.setItem('round0Start', 'false')
           location.reload()
         }
       },
