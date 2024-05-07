@@ -16,7 +16,12 @@ import {
   useWriteContract,
 } from 'wagmi'
 import { readContract } from '@wagmi/core'
-import { GAME_ADDRESS, TWITTER_URL, defaultContractObj } from '../../../services/constant'
+import {
+  GAME_ADDRESS,
+  TWITTER_URL,
+  BLOCK_EXPLORER,
+  defaultContractObj,
+} from '../../../services/constant'
 import { cn } from '@/lib/utils'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -426,9 +431,9 @@ const YourTickets = () => {
 
   const [showValue, setShowValue] = useState<string>('-')
 
-  console.log(currentAccumulated)
-  console.log(currentWinnings)
-  console.log(currentRollover)
+  // console.log(currentAccumulated)
+  // console.log(currentWinnings)
+  // console.log(currentRollover)
 
   const totalWinnings = formatNumber(
     Number(currentAccumulated) + currentWinnings + currentRollover,
@@ -449,11 +454,28 @@ const YourTickets = () => {
     // console.log('claimedPressed')
 
     try {
-      await writeContractAsync({
+      const tx = await writeContractAsync({
         ...defaultContractObj,
         functionName: 'claim',
       })
-      // console.log('claimedPressed')
+
+      // console.log(tx)
+
+      if (tx) {
+        const txLink = `${BLOCK_EXPLORER}/tx/${tx}`
+        toast({
+          variant: 'success',
+          description: (
+            <p>
+              💾{' '}
+              <a href={txLink} target="_blank" className="text-xl text-black underline">
+                You have claimed!
+              </a>
+            </p>
+          ),
+        })
+        // refetch()
+      }
     } catch (error: any) {
       toast({
         variant: 'destructive',

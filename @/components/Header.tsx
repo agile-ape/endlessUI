@@ -8,11 +8,14 @@ import HowToPlay from './ui/HowToPlay'
 import Referral from './ui/Referral'
 import { useStoreActions, useStoreState } from '../../store'
 import { useWindowSize } from '../../hooks/useWindowSize'
+import { useAccount, useBalance, useWalletClient } from 'wagmi'
 
 function Header() {
   const handleOnMouseDown: MouseEventHandler = () => {
     location.reload()
   }
+
+  const { address, isConnected } = useAccount()
 
   const { xs } = useWindowSize()
 
@@ -37,7 +40,8 @@ function Header() {
         {/* Rest */}
         <div className="flex flex-col sm:flex-row justify-self-end gap-3 items-center space-x-4 order-3">
           <div className="flex gap-2">
-            <Referral />
+            {isConnected ? <Referral /> : <></>}
+
             <HowToPlay />
           </div>
 

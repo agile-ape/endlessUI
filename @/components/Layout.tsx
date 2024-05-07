@@ -27,8 +27,10 @@ import { useSocketEvents, type Event } from '../../hooks/useSocketEvents'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
+import GameFirst from '@/components/ui/GameFirst'
 import GameStart from '@/components/ui/GameStart'
 import GameEnd from '@/components/ui/GameEnd'
+import Banner from '@/components/ui/Banner'
 import WelcomeModal from '@/components/ui/WelcomeModal'
 import { rainbowConfig } from '../../pages/_app'
 
@@ -459,6 +461,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     ...defaultContractObj,
     eventName: 'GameEnd',
     onLogs() {
+      refetch()
       toast({
         variant: 'info',
         description: <p className="text-xl">🙇‍♂️ The round has ended</p>,
@@ -474,7 +477,8 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   }
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
+    const showWelcomeModal = localStorage.getItem('round0Start')
+    console.log(showWelcomeModal)
     const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
     return result
   })
@@ -482,18 +486,21 @@ const Layout = ({ children, metadata }: LayoutProps) => {
   return (
     <>
       <main
-        className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+        className={`font-VT323 bg-cover bg-center bg-white bg-opacity-50 bg-no-repeat min-h-screen`}
         style={{
-          backgroundImage: xs ? `url(/background/StartMobile.svg)` : `url(/background/Start.svg)`,
+          backgroundImage: `url(/background/street-craps-night.jpg)`,
         }}
       >
-        <div className="container mx-auto p-0">
-          {showWelcomeModal ? <GameStart /> : <></>}
+        {/* <div className="absolute inset-0 bg-white bg-opacity-50"></div> */}
+        <div className="container flex flex-col mx-auto p-0">
+          <GameFirst open={true} />
+          {showWelcomeModal ? <GameStart open={false} /> : <></>}
+          <GameEnd open={false} />
+
+          <Banner />
           <Header />
           {children}
           <Analytics />
-          <GameEnd open={false} />
-          {/* <GameEnd open={false} /> */}
         </div>
       </main>
     </>

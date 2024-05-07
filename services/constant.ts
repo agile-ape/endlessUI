@@ -96,12 +96,14 @@ export const blastSepolia1 = defineChain({
 
 export const DOCS_URL =
   'https://lastman.notion.site/Flop-the-average-23d94cce99234bbbbbbbbf298add4e95?pvs=4'
+
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
 export const BLOCK_EXPLORER = 'https://sepolia-explorer.base.org'
 
 /*-------------------- EXTERNAL LINKS -------------------- */
 export const BLOG_URL = 'https://blog.lastman.xyz'
 export const TWITTER_URL = 'https://twitter.com/lastman0x'
+export const SOON_LINK = 'https://x.com/lastman0x/status/1787678249343980010'
 export const TELEGRAM_URL = 'https://t.me/lastmangame'
 
 export const LIQUIDITY_POOL = 'https://app.uniswap.org/'
