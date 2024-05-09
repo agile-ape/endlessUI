@@ -1,6 +1,6 @@
 import { GAME_ABI } from './abi/game'
 
-import { defineChain } from 'viem'
+import { createPublicClient, http, defineChain } from 'viem'
 import { mainnet, baseSepolia, base } from 'viem/chains'
 
 /*---------------------------------------- ENV ---------------------------------------- */
@@ -10,6 +10,9 @@ const NODE_ENV = process.env.NODE_ENV
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID)
 // export const CHAIN_ID = 84532
+
+export const BASE_RPC =
+  'https://fragrant-methodical-surf.base-mainnet.quiknode.pro/c20edae03060241a42c4cbe8c10b4c7659f5f614'
 
 export const CRYTPOCOMPARE_ENDPOINT: string =
   'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD'
@@ -35,6 +38,11 @@ export const defaultContractObj = {
 
 // NEED TO SET THESE 2 UP
 export const VIEM_CHAIN = base
+
+export const publicClient = createPublicClient({
+  chain: VIEM_CHAIN,
+  transport: http(BASE_RPC),
+})
 // export const VIEM_CHAIN = baseSepolia
 
 /*

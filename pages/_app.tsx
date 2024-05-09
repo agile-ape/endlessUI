@@ -25,7 +25,7 @@ import {
   blastSepolia,
   blast,
 } from 'wagmi/chains'
-// import { blastSepolia1, baseSepolia1 } from '../services/constant'
+import { BASE_RPC } from '../services/constant'
 // import { publicProvider } from 'wagmi/providers/public'
 import { ThemeProvider } from '@/components/theme-provider'
 import { StoreProvider } from 'easy-peasy'
@@ -43,7 +43,8 @@ export const rainbowConfig = getDefaultConfig({
   // chains: [base],
   transports: {
     [base.id]: http(
-      'https://fragrant-methodical-surf.base-mainnet.quiknode.pro/c20edae03060241a42c4cbe8c10b4c7659f5f614',
+      BASE_RPC,
+      // 'https://fragrant-methodical-surf.base-mainnet.quiknode.pro/c20edae03060241a42c4cbe8c10b4c7659f5f614',
       // 'https://mainnet.base.org',
       // 'https://attentive-misty-friday.base-sepolia.quiknode.pro/9a84a5e1665e7fea4519dd1adfa096bd484baf95',
     ),

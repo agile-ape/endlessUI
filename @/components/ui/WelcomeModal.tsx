@@ -25,7 +25,7 @@ import {
 import { fetcher, poster, isJson, formatNumber } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import { createPublicClient, http } from 'viem'
-import { VIEM_CHAIN } from '../../../services/constant'
+import { VIEM_CHAIN, publicClient } from '../../../services/constant'
 
 interface WelcomeModalType {
   open: boolean
@@ -64,11 +64,6 @@ const WelcomeModal: FC<WelcomeModalType> = ({ open }) => {
     setIsOpen(false)
     // location.reload()
   }
-
-  const publicClient = createPublicClient({
-    chain: VIEM_CHAIN,
-    transport: http(),
-  })
 
   const START_BLOCK: number = 9344000
   const [blockNumber, setBlockNumber] = useState<string>('LOADING')
