@@ -34,7 +34,7 @@ const Title = () => {
 
   // const canBuyTicket = Boolean(data?.[0].result || false)
 
-  const roundName = useStoreState((state) => state.roundName)
+  const canBuyTicket = useStoreState((state) => state.canBuyTicket)
 
   const [completedTyping, setCompletedTyping] = useState(false)
   const [displayResponse, setDisplayResponse] = useState('')
@@ -46,7 +46,9 @@ const Title = () => {
 
     let i = 0
 
-    const stringResponse: string = 'PICK A NUMBER AND BUY A DISK'
+    const stringResponse: string = canBuyTicket
+      ? 'PICK A NUMBER AND BUY A DISK'
+      : 'CLAIM OR ROLL YOUR WINNINGS'
     // canBuyTicket ? (stringResponse ) : (stringResponse = 'THANKS FOR PLAYING')
 
     const intervalId = setInterval(() => {
@@ -67,7 +69,7 @@ const Title = () => {
     <div className="text-3xl flex flex-col justify-center items-center">
       {/* <div className="text-xl font-digit">Round {roundName}</div> */}
       <div className="text-xl font-digit">Flop the average</div>
-      <div className="text-3xl gap-0 font-digit text-gray-400 mx-3 capitalize">
+      <div className="text-3xl text-center gap-0 font-digit text-gray-400 mx-3 capitalize">
         {displayResponse}
         {!completedTyping && <CursorSVG />}
       </div>

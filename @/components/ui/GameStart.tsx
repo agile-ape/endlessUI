@@ -36,8 +36,8 @@ import { useStoreActions, useStoreState } from '../../../store'
 import dynamic from 'next/dynamic'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useOutsideClick } from '../../../hooks/useOutclideClick'
-import { DOCS_URL, TWITTER_URL } from '../../../services/constant'
-import { VIEM_CHAIN } from '../../../services/constant'
+import { DOCS_URL, TWITTER_URL, BASE_RPC } from '../../../services/constant'
+import { VIEM_CHAIN, publicClient } from '../../../services/constant'
 import { createPublicClient, http } from 'viem'
 
 type TimeLeftType = {
@@ -78,11 +78,6 @@ const GameStart: FC<GameStartType> = ({ open }) => {
     setIsOpen(false)
     // location.reload()
   }
-
-  const publicClient = createPublicClient({
-    chain: VIEM_CHAIN,
-    transport: http(),
-  })
 
   const START_BLOCK: number = 14_240_600
   const [blockNumber, setBlockNumber] = useState<string>('LOADING')

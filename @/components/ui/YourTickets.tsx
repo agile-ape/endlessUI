@@ -7,7 +7,12 @@ import Image from 'next/image'
 import { Button } from '../shadcn/button'
 import TicketUI from './TicketUI'
 import { useStoreActions, useStoreState } from '../../../store'
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip'
 import {
   useAccount,
   useReadContract,
@@ -558,15 +563,53 @@ const YourTickets = () => {
 
           {!canBuyTicket && (
             <>
-              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
+              {/* <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
                 <p className="sm:text-left">Unclaimed pot so far:</p>
                 <p className="sm:text-right"> {unclaimedPot} ETH </p>
-              </div>
+              </div> */}
 
-              <div className="grid sm:grid-cols-2 gap-1 mb-4 sm:mb-0">
-                <p className="sm:text-left">
-                  {canClaim ? '% share so far if roll:' : 'Share of next rollover pot:'}
-                </p>
+              <div className="grid sm:grid-cols-2 gap-1 mt-2 mb-4 sm:mb-0">
+                {/* <div>If roll</div> */}
+
+                <div className="sm:text-left">
+                  {canClaim ? (
+                    <div className="flex flex-col">
+                      <span>Rollover pot share:</span>
+                      <span className="text-lg italic">
+                        Current share of next rollover pot if you do not claim
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col">
+                      <span>Next rollover pot share:</span>
+                      <span className="text-lg italic">
+                        Your share of next round's rollover pot
+                      </span>
+                    </div>
+                    // <div>% share so far if roll:</div>
+                    // <TooltipProvider delayDuration={10}>
+                    //   <Tooltip>
+                    //     <TooltipTrigger className="">% share so far</TooltipTrigger>
+                    //     <TooltipContent side="top" align="center">
+                    //       <span className="text-xl px-4">
+                    //         If you roll, your % share of the rollover pot is:
+                    //       </span>
+                    //     </TooltipContent>
+                    //   </Tooltip>
+                    // </TooltipProvider>
+                    // <div>Share of next rollover pot:</div>
+                    // <TooltipProvider delayDuration={10}>
+                    //   <Tooltip>
+                    //     <TooltipTrigger className="">Share of next rollover pot:</TooltipTrigger>
+                    //     <TooltipContent side="top" align="center">
+                    //       <span className="text-xl px-4">
+                    //         Your finalized share of the rollover pot from the next round:
+                    //       </span>
+                    //     </TooltipContent>
+                    //   </Tooltip>
+                    // </TooltipProvider>
+                  )}
+                </div>
                 <p className="sm:text-right">{profile.isClaimed ? `NA` : `${shareIfRoll}%`}</p>
               </div>
             </>
@@ -590,6 +633,18 @@ const YourTickets = () => {
                 : 'You rolled to next pot'
             : 'Connect to claim'}
         </Button>
+
+        {/* <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger className="">
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              <span className="text-xl px-4">
+                Your winnings auto-roll to next pot if you do not claim
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider> */}
       </div>
 
       <p className="mt-4 text-2xl text-zinc-200 capitalized flex justify-center">

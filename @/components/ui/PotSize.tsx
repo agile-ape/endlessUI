@@ -60,6 +60,7 @@ export default function PotSize() {
   const playersShare = useStoreState((state) => state.playersShare)
   const rolloverShare = useStoreState((state) => state.rolloverShare)
   const ethPrice = useStoreState((state) => state.ethPrice)
+  const unclaimedPot = useStoreState((state) => state.unclaimedPot)
 
   const currentPotSize = formatNumber(formatUnits(potSize, 18), {
     maximumFractionDigits: 3,
@@ -129,6 +130,12 @@ export default function PotSize() {
             <span className="text-base">🔵</span> Rollover share:{' '}
             <span className="font-digit text-2xl">{currentRolloverPot} </span>
           </div>
+          {!canBuyTicket && (
+            <div className="px-3 py-1 max-w-[240px] text-lg cursor-default">
+              <p className="text-base">Unclaimed pot so far:</p>
+              <p className="font-digit text-2xl"> {unclaimedPot} ETH </p>
+            </div>
+          )}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
