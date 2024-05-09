@@ -437,24 +437,24 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         })
       },
     },
-    // {
-    //   name: `PotAdded`,
-    //   handler(data) {
-    //     const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
-    //       maximumFractionDigits: 3,
-    //       minimumFractionDigits: 0,
-    //     })
-    //     refetch()
-    //     toast({
-    //       variant: 'contributed',
-    //       description: (
-    //         <p className="text-xl">
-    //           🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
-    //         </p>
-    //       ),
-    //     })
-    //   },
-    // },
+    {
+      name: `PotAdded`,
+      handler(data) {
+        const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
+          maximumFractionDigits: 3,
+          minimumFractionDigits: 0,
+        })
+        refetch()
+        toast({
+          variant: 'contributed',
+          description: (
+            <p className="text-xl">
+              🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
+            </p>
+          ),
+        })
+      },
+    },
   ]
 
   useWatchContractEvent({
