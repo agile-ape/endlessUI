@@ -482,6 +482,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     poll: true,
   })
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'GameClose',
+    onLogs() {
+      refetch()
+      toast({
+        variant: 'info',
+        description: <p className="text-xl">🙏 The round has closed. See you in the next round</p>,
+      })
+    },
+    poll: true,
+  })
+
   useSocketEvents(events)
 
   const runBlockNumber = async () => {
