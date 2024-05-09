@@ -221,7 +221,7 @@ function Referral() {
         <PopoverTrigger asChild>
           <Button
             variant="referral"
-            className="rounded-sm border-2 border-gray-200 hover:border-gray-200/50 px-4"
+            className="rounded-sm border-2 text-lime-200 rounded-md border-lime-200 hover:border-gray-200/50 px-4"
           >
             🟢 Referral
           </Button>
@@ -240,10 +240,12 @@ function Referral() {
 
             <div className="flex flex-col justify-center items-center gap-2 p-2">
               {referral ? (
-                <>
-                  <div className="text-3xl">Your referrer is: {referral}</div>
-                  <div className="text-xl">Change referrer</div>
-                </>
+                <div className="">
+                  <div className="text-3xl text-lime-200 border border-lime-200 rounded-md py-2 px-4">
+                    Your referrer is: {referral}
+                  </div>
+                  <div className="text-xl text-center">Change referrer</div>
+                </div>
               ) : (
                 <>
                   <div className="text-xl">Add referre</div>
@@ -270,7 +272,7 @@ function Referral() {
                   <PopoverContentList className="w-[200px] p-0 overflow-auto h-[200px]">
                     {referralList?.map((referral) => (
                       <button
-                        className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-2xl hover:bg-opacity-80 hover:text-white outline-none aria-selected:bg-zinc-100 aria-selected:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:aria-selected:bg-zinc-800 dark:aria-selected:text-zinc-50"
+                        className="w-full relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-2xl hover:bg-lime-600/80 hover:text-white outline-none aria-selected:bg-zinc-100 aria-selected:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:aria-selected:bg-zinc-800 dark:aria-selected:text-zinc-50"
                         key={referral.referralCode}
                         value={referral.referralCode}
                         onClick={() => {

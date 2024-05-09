@@ -109,7 +109,8 @@ export const DOCS_URL =
   'https://lastman.notion.site/Flop-the-average-23d94cce99234bbbbbbbbf298add4e95?pvs=4'
 
 export const CHAIN_LIST = 'https://chainid.network/chains.json'
-export const BLOCK_EXPLORER = 'https://sepolia-explorer.base.org'
+// export const BLOCK_EXPLORER = 'https://sepolia-explorer.base.org'
+export const BLOCK_EXPLORER = 'https://basescan.org'
 
 /*-------------------- EXTERNAL LINKS -------------------- */
 export const BLOG_URL = 'https://blog.lastman.xyz'
