@@ -84,7 +84,7 @@ const GameStart: FC<GameStartType> = ({ open }) => {
     transport: http(),
   })
 
-  const START_BLOCK: number = 960_5650
+  const START_BLOCK: number = 14_240_600
   const [blockNumber, setBlockNumber] = useState<string>('LOADING')
   const [timeToStart, setTimeToStart] = useState<number>()
   const [isOpen, setIsOpen] = useState<boolean>(true)
@@ -96,7 +96,7 @@ const GameStart: FC<GameStartType> = ({ open }) => {
         setTimeToStart(Math.round((START_BLOCK - Number(blockNumber)) * 2))
         if (START_BLOCK < Number(blockNumber)) {
           //   console.log(Number(blockNumber) - START_BLOCK)
-          localStorage.setItem('round0Start', 'false')
+          localStorage.setItem('round1TestStart', 'false')
           location.reload()
         }
       },
