@@ -4,7 +4,7 @@ export default function Banner() {
   const screenWidth = window.screen.width
   console.log('Screen width:', screenWidth)
 
-  const wordWidth = 240
+  const wordWidth = 320
 
   const repeatCount = Math.round(screenWidth / wordWidth)
 

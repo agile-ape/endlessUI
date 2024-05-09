@@ -46,7 +46,7 @@ const Title = () => {
 
     let i = 0
 
-    const stringResponse: string = 'ROUND 0: TESTNET'
+    const stringResponse: string = 'PICK A NUMBER AND BUY A DISK'
     // canBuyTicket ? (stringResponse ) : (stringResponse = 'THANKS FOR PLAYING')
 
     const intervalId = setInterval(() => {
@@ -58,7 +58,7 @@ const Title = () => {
         clearInterval(intervalId)
         setCompletedTyping(true)
       }
-    }, 120)
+    }, 90)
 
     return () => clearInterval(intervalId)
   }, [])
