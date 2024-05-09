@@ -1,7 +1,7 @@
 import { GAME_ABI } from './abi/game'
 
 import { defineChain } from 'viem'
-import { mainnet, baseSepolia } from 'viem/chains'
+import { mainnet, baseSepolia, base } from 'viem/chains'
 
 /*---------------------------------------- ENV ---------------------------------------- */
 // import from .env
@@ -34,8 +34,10 @@ export const defaultContractObj = {
 // console.log(GAME_ADDRESS)
 
 // NEED TO SET THESE 2 UP
-export const VIEM_CHAIN = baseSepolia
+export const VIEM_CHAIN = base
+// export const VIEM_CHAIN = baseSepolia
 
+/*
 export const baseSepolia1 = defineChain({
   id: 84532,
   network: 'Base Sepolia',
@@ -93,6 +95,7 @@ export const blastSepolia1 = defineChain({
   },
   testnet: true,
 })
+*/
 
 export const DOCS_URL =
   'https://lastman.notion.site/Flop-the-average-23d94cce99234bbbbbbbbf298add4e95?pvs=4'
