@@ -493,7 +493,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         {/* <div className="absolute inset-0 bg-white bg-opacity-50"></div> */}
         <div className="container flex flex-col mx-auto p-0 pb-8">
           <GameFirst open={false} />
-          {showWelcomeModal ? <GameStart open={true} /> : <></>}
+          {showWelcomeModal ? <GameStart open={false} /> : <></>}
           <GameEnd open={false} />
 
           <Banner />
