@@ -17,12 +17,12 @@ export const CRYTPOCOMPARE_ENDPOINT: string =
 export let API_ENDPOINT: string
 NODE_ENV == 'development'
   ? (API_ENDPOINT = 'http://localhost:3001')
-  : (API_ENDPOINT = 'https://pepper-obky.onrender.com')
+  : (API_ENDPOINT = 'https://mutton.onrender.com')
 
 export let WEBSOCKET_ENDPOINT: string
 NODE_ENV == 'development'
   ? (WEBSOCKET_ENDPOINT = 'ws://localhost:3001/ws')
-  : (WEBSOCKET_ENDPOINT = 'wss://pepper-obky.onrender.com/ws')
+  : (WEBSOCKET_ENDPOINT = 'wss://mutton.onrender.com/ws')
 
 /*---------------------------------------- CONTRACTS ---------------------------------------- */
 export const GAME_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`

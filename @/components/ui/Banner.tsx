@@ -2,7 +2,6 @@ import { SOON_LINK } from '../../../services/constant'
 
 export default function Banner() {
   const screenWidth = window.screen.width
-  console.log('Screen width:', screenWidth)
 
   const wordWidth = 320
 
