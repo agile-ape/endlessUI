@@ -27,7 +27,7 @@ function HowToPlay() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="play" className=" px-4">
+        <Button variant="play" className="text-2xl flash px-4">
           How To Play
         </Button>
       </DialogTrigger>

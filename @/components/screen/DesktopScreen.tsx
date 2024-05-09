@@ -235,7 +235,7 @@ export default function DesktopScreen() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center mx-auto">
+      <div className="flex flex-col justify-center items-center mx-auto my-4">
         <Title />
 
         <div

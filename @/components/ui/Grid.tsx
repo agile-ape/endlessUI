@@ -300,7 +300,7 @@ const Grid = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center items-center overflow-auto">
+          <div className="my-4 flex flex-col justify-center items-center overflow-auto">
             {xs ? (
               <div className="my-20 border border-white p-10">View on desktop</div>
             ) : (
@@ -318,7 +318,7 @@ const Grid = () => {
             )}
           </div>
 
-          <div className="text-center text-base sm:text-2xl">
+          <div className="my-4 text-center text-base sm:text-2xl">
             {' '}
             🟣 # Picked 🟡 Average 🔴 Current Avg 🟠 First #{' '}
           </div>

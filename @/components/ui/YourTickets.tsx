@@ -506,7 +506,7 @@ const YourTickets = () => {
             <CountUp
               decimals={5}
               duration={2.75}
-              className="font-digit text-2xl mr-2"
+              className="font-digit text-3xl mr-2"
               end={Number(currentAccumulated)}
             />
           </div>
@@ -517,7 +517,7 @@ const YourTickets = () => {
             <CountUp
               decimals={5}
               duration={2.75}
-              className="font-digit text-2xl mr-2"
+              className="font-digit text-3xl mr-2"
               end={Number(currentWinnings)}
             />
           </div>
@@ -528,7 +528,7 @@ const YourTickets = () => {
             <CountUp
               decimals={5}
               duration={2.75}
-              className="font-digit text-2xl mr-2"
+              className="font-digit text-3xl mr-2"
               end={Number(currentRollover)}
             />
           </div>
