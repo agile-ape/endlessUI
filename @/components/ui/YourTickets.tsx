@@ -576,7 +576,7 @@ const YourTickets = () => {
                     <div className="flex flex-col">
                       <span>Rollover pot share:</span>
                       <span className="text-lg italic">
-                        Current share of next rollover pot if you do not claim
+                        Share of next rollover pot if you do not claim
                       </span>
                     </div>
                   ) : (
