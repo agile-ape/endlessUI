@@ -478,7 +478,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
     const showWelcomeModal = localStorage.getItem('round0Start')
-    console.log(showWelcomeModal)
     const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
     return result
   })
