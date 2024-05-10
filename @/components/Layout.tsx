@@ -46,6 +46,43 @@ type LayoutProps = {
   metadata: MetaProps
 }
 
+/*
+0 = Game First
+1 = 1 hour before Game Start
+2 = After launch
+3 = Game end
+*/
+const stages = [
+  {
+    gameFirst: true,
+    gameStart: false,
+    gameEnd: false,
+    canBuyTicket: false,
+  },
+  {
+    gameFirst: false,
+    gameStart: true,
+    gameEnd: false,
+    canBuyTicket: false,
+  },
+  {
+    gameFirst: false,
+    gameStart: false,
+    gameEnd: false,
+    canBuyTicket: true,
+  },
+  {
+    gameFirst: false,
+    gameStart: false,
+    gameEnd: true,
+    canBuyTicket: false,
+  },
+]
+
+const currentStage = Number(process.env.NEXT_PUBLIC_STAGE)
+
+export const setCanBuyTicket = stages[currentStage].canBuyTicket
+
 const Layout = ({ children, metadata }: LayoutProps) => {
   const updateLastProfile = useStoreActions((actions) => actions.updateLastProfile)
   const updateProfile = useStoreActions((actions) => actions.updateProfile)
@@ -517,9 +554,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       >
         {/* <div className="absolute inset-0 bg-white bg-opacity-50"></div> */}
         <div className="container flex flex-col mx-auto p-0 pb-8">
-          <GameFirst open={false} />
-          {showWelcomeModal ? <GameStart open={true} /> : <></>}
-          <GameEnd open={false} />
+          <GameFirst open={stages[currentStage].gameFirst} />
+          {showWelcomeModal ? <GameStart open={stages[currentStage].gameStart} /> : <></>}
+          <GameEnd open={stages[currentStage].gameEnd} />
 
           <Banner />
           <Header />
