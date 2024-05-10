@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useStoreState } from '../../../store'
 import { useReadContracts, useWatchContractEvent } from 'wagmi'
 import { defaultContractObj } from '../../../services/constant'
+import { setCanBuyTicket } from '../Layout'
 
 const CursorSVG = () => (
   <svg
@@ -46,7 +47,7 @@ const Title = () => {
 
     let i = 0
 
-    const stringResponse: string = canBuyTicket
+    const stringResponse: string = setCanBuyTicket
       ? 'PICK A NUMBER AND BUY A DISK'
       : 'CLAIM OR ROLL YOUR WINNINGS'
     // canBuyTicket ? (stringResponse ) : (stringResponse = 'THANKS FOR PLAYING')
