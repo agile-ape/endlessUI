@@ -383,7 +383,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     minimumFractionDigits: 0,
   })
 
-  const { data: playerProfileInfo } = useReadContract({
+  const { data: playerProfileInfo, refetch: refetchProfile } = useReadContract({
     ...defaultContractObj,
     functionName: 'profileIdToProfile',
     args: [playerProfileId],
@@ -537,6 +537,7 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     eventName: 'Claimed',
     onLogs() {
       refetch()
+      refetchProfile()
     },
     poll: true,
   })
