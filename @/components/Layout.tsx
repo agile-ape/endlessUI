@@ -532,6 +532,15 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     poll: true,
   })
 
+  useWatchContractEvent({
+    ...defaultContractObj,
+    eventName: 'Claimed',
+    onLogs() {
+      refetch()
+    },
+    poll: true,
+  })
+
   useSocketEvents(events)
 
   const runBlockNumber = async () => {
