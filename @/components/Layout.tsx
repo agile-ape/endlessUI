@@ -564,9 +564,9 @@ const Layout = ({ children, metadata }: LayoutProps) => {
       >
         {/* <div className="absolute inset-0 bg-white bg-opacity-50"></div> */}
         <div className="container flex flex-col mx-auto p-0 pb-8">
-          <GameFirst open={stages[currentStage].gameFirst} />
-          {showWelcomeModal ? <GameStart open={stages[currentStage].gameStart} /> : <></>}
-          <GameEnd open={stages[currentStage].gameEnd} />
+          {/* <GameFirst open={stages[currentStage].gameFirst} /> */}
+          {/* {showWelcomeModal ? <GameStart open={stages[currentStage].gameStart} /> : <></>} */}
+          {/* <GameEnd open={stages[currentStage].gameEnd} /> */}
 
           <Banner />
           <Header />
