@@ -1,4 +1,3 @@
-import Header from './Header'
 import { Analytics } from '@vercel/analytics/react'
 // import type { IApp, Ticket } from 'types/app'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../store'
@@ -27,7 +26,6 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { socket } from '@/lib/socket'
 import { useAccountEffect } from 'wagmi'
 import GameEnd from '@/components/ui/GameEnd'
-import WelcomeModal from '@/components/ui/WelcomeModal'
 import { rainbowConfig } from '../../pages/_app'
 
 import type { Profile } from '../../store'
@@ -444,24 +442,6 @@ const Layout = ({ children, metadata }: LayoutProps) => {
         })
       },
     },
-    // {
-    //   name: `PotAdded`,
-    //   handler(data) {
-    //     const formattedAmount = formatNumber(formatUnits(BigInt(data.args[0].hex), 18), {
-    //       maximumFractionDigits: 3,
-    //       minimumFractionDigits: 0,
-    //     })
-    //     refetch()
-    //     toast({
-    //       variant: 'contributed',
-    //       description: (
-    //         <p className="text-xl">
-    //           🍎 <span className="font-digit">{formattedAmount}</span> ETH was added to the pot
-    //         </p>
-    //       ),
-    //     })
-    //   },
-    // },
   ]
 
   useSocketEvents(events)
@@ -470,35 +450,19 @@ const Layout = ({ children, metadata }: LayoutProps) => {
     return await getBlockNumber(rainbowConfig)
   }
 
-  console.log(blockNumber)
-
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(() => {
-    const showWelcomeModal = localStorage.getItem('showWelcomeModal')
-    const result = showWelcomeModal ? JSON.parse(showWelcomeModal) : true
-    return result
-  })
-
-  const toggleModal = () => {
-    setShowWelcomeModal((prevState) => !prevState)
-    localStorage.setItem('showWelcomeModal', 'false')
-  }
-
-  console.log(canBuyTicket)
-  console.log(gameEnd)
   return (
     <>
       <main
-        className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen`}
+        className={`font-VT323 bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center`}
         style={{
+          // TODO: Update bg image
           backgroundImage: xs ? `url(/background/StartMobile.svg)` : `url(/background/Start.svg)`,
         }}
       >
         <div className="container mx-auto p-0">
-          {showWelcomeModal && <WelcomeModal toggleModal={toggleModal} />}
-          <Header />
+          {/* <Header /> */}
           {children}
           <Analytics />
-          <GameEnd open={!canBuyTicket} />
         </div>
       </main>
     </>

@@ -17,6 +17,7 @@ import { toast } from '@/components/shadcn/use-toast'
 import useSWR, { useSWRConfig } from 'swr'
 import { fetcher, poster, isJson, formatNumber } from '@/lib/utils'
 import { useStoreActions, useStoreDispatch, useStoreState } from '../../../store'
+import GameBoy from '../ui/GameBoy'
 
 type Number = {
   chainId: number
@@ -235,40 +236,5 @@ export default function DesktopScreen() {
   // const data = fetcher('/numbers')
   // console.log(data)
 
-  return (
-    <>
-      <div className="flex flex-col justify-center items-center mx-auto">
-        <Title />
-
-        <div
-          className="px-2 my-2 \
-          outer-last \
-          flex flex-col min-w-[220px]"
-        >
-          <Countdown />
-          <PotSize />
-        </div>
-
-        {/* <div
-          className="px-2 my-2 \
-          buy-last \
-          flex flex-col min-w-[280px]"
-        >
-          <BuyTicket />
-        </div> */}
-
-        <div className="average-last min-w-[280px]">
-          <Average />
-        </div>
-
-        <div
-          className="px-2 my-2 \
-          keys-last \
-          flex flex-col min-w-[320px]"
-        >
-          <YourTickets />
-        </div>
-      </div>
-    </>
-  )
+  return <GameBoy />
 }

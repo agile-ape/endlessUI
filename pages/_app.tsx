@@ -87,7 +87,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Metadata {...pageProps.metadata} />
               <Layout metadata={pageProps.metadata}>
                 <Component {...pageProps} />
-                <Toaster />
               </Layout>
             </ThemeProvider>
           </StoreProvider>
